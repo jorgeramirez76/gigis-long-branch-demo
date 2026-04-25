@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette — NY pizza shop: deep tomato, warm cream, char, pizza gold */
+  --color-brand-red: #9b121a;        /* deeper, richer tomato red */
+  --color-brand-red-dark: #6e0b12;
+  --color-brand-red-bright: #c0221d;
+  --color-cream: #faf2e1;
+  --color-cream-dark: #f0e5c8;
+  --color-cream-darker: #e7d9b8;
+  --color-ink: #1a1210;
+  --color-ink-soft: #3c2f2a;
+  --color-ink-mute: #6a5a52;
+  --color-gold: #c89441;
+  --color-gold-bright: #e6b45e;
+  --color-char: #2b1a14;
+
+  /* Italian tricolor (used sparingly, NOT cheesy) */
+  --color-italy-green: #008751;
+  --color-italy-white: #ffffff;
+  --color-italy-red: #cf2934;
+
+  /* Type */
+  --font-display: "Bebas Neue", "Oswald", Impact, system-ui, sans-serif;
+  --font-serif: "Playfair Display", "Georgia", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(26, 18, 16, 0.06), 0 1px 0 rgba(26, 18, 16, 0.02);
+  --shadow-md: 0 4px 14px rgba(26, 18, 16, 0.08), 0 1px 0 rgba(26, 18, 16, 0.02);
+  --shadow-lg: 0 14px 40px rgba(26, 18, 16, 0.12), 0 2px 6px rgba(26, 18, 16, 0.04);
+  --shadow-red: 0 10px 32px rgba(155, 18, 26, 0.32);
+  --shadow-gold: 0 10px 28px rgba(230, 180, 94, 0.30);
+}
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Prevent horizontal scrolling globally */
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: "kern", "liga", "ss01";
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0.005em;
+    line-height: 0.98;
+    font-weight: 400; /* Bebas Neue only ships one weight */
+  }
+  h1 { letter-spacing: -0.005em; }
+
+  .font-display { font-family: var(--font-display); letter-spacing: 0.005em; line-height: 1; }
+  .font-serif { font-family: var(--font-serif); }
+  .font-sans { font-family: var(--font-sans); }
+
+  img { display: block; max-width: 100%; height: auto; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-red-bright);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Hide scrollbars on horizontal-scrolling tab rows */
+  .scrollbar-none { scrollbar-width: none; -ms-overflow-style: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold tracking-wide text-white uppercase transition-all duration-200 hover:bg-[var(--color-brand-red-dark)] active:scale-[0.97];
+    box-shadow: var(--shadow-red);
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-gold-bright)] px-6 py-3.5 text-sm font-bold tracking-wide text-[var(--color-ink)] uppercase transition-all duration-200 hover:bg-[var(--color-gold)] active:scale-[0.97];
+    box-shadow: var(--shadow-gold);
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/70 bg-transparent px-6 py-3.5 text-sm font-bold tracking-wide text-white uppercase transition-all duration-200 hover:bg-white/10 active:scale-[0.97];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-ink)]/20 bg-white px-5 py-2.5 text-sm font-medium text-[var(--color-ink)] transition hover:border-[var(--color-brand-red)] hover:text-[var(--color-brand-red)];
+  }
+  .eyebrow {
+    @apply inline-block text-[11px] font-bold uppercase tracking-[0.25em] text-[var(--color-brand-red)] md:text-xs;
+  }
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 md:px-8;
+  }
+
+  /* Italian tricolor hairline — used sparingly for brand texture */
+  .tricolor {
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      var(--color-italy-green) 0 33.33%,
+      var(--color-italy-white) 33.33% 66.66%,
+      var(--color-italy-red) 66.66% 100%
+    );
+  }
+}
+
+/* ---------- Scroll reveal ----------
+   Add `data-reveal` to any element. It starts invisible + 16px down, then
+   fades/slides in when the element enters the viewport. Respects
+   prefers-reduced-motion. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  will-change: opacity, transform;
+}
+[data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+[data-reveal="right"] { transform: translate3d(24px, 0, 0); }
+[data-reveal="left"] { transform: translate3d(-24px, 0, 0); }
+[data-reveal="scale"] { transform: scale(0.96); }
+[data-reveal="scale"][data-revealed="true"] { transform: scale(1); }
+
+/* Stagger helper: add inline style={{ "--delay": "80ms" }} */
+[data-reveal][style*="--delay"] { transition-delay: var(--delay, 0ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ---------- Hero subtle animations ---------- */
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.hero-in { animation: heroFadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-in-1 { animation-delay: 0.05s; }
+.hero-in-2 { animation-delay: 0.18s; }
+.hero-in-3 { animation-delay: 0.30s; }
+.hero-in-4 { animation-delay: 0.42s; }
+.hero-in-5 { animation-delay: 0.54s; }
+
+@keyframes bulbPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.bulb-pulse { animation: bulbPulse 3.2s ease-in-out infinite; }
+
+/* Slow Ken-Burns zoom on hero image for premium feel (no loop hitch) */
+@keyframes kenBurns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+.ken-burns { animation: kenBurns 16s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in, .bulb-pulse, .ken-burns { animation: none !important; }
+}

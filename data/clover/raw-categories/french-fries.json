@@ -1,0 +1,99 @@
+{
+ "category": "French Fries",
+ "sortOrder": 3,
+ "items": [
+  {
+   "name": "French Fries Regular",
+   "price": 416,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Small Large Fry",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Upgrade To Large Fry",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cheese Fries",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Truffle Santana Fries",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pizza Fries",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "BBQ Pull Pork FF",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Buff Chic Cheese FF",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chili Chz Fries",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Vodka Genovese Fries",
+   "price": 1144,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Philly Cheesesteak FF",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Disco FF",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

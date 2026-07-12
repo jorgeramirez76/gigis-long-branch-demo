@@ -2,11 +2,12 @@ import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
 import { Gallery } from "./components/Gallery";
 import { About } from "./components/About";
-import { Highlights } from "./components/Highlights";
+import { FanFavorites } from "./components/FanFavorites";
 import { Menu } from "./components/Menu";
 import { Reviews } from "./components/Reviews";
 import { ServiceArea } from "./components/ServiceArea";
 import { FAQ } from "./components/FAQ";
+import { VipClub } from "./components/VipClub";
 import { Location } from "./components/Location";
 import { Footer } from "./components/Footer";
 import { StickyBar } from "./components/StickyBar";
@@ -27,11 +28,12 @@ export default function App() {
         <Hero />
         <Gallery />
         <About />
-        <Highlights />
+        <FanFavorites />
         <Menu />
         <Reviews />
         <ServiceArea />
         <FAQ />
+        <VipClub />
         <Location />
       </main>
       <Footer />

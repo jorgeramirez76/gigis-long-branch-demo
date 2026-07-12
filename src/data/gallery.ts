@@ -9,6 +9,7 @@ import sliceHeroPortrait from "../assets/brand/slice-hero-portrait.jpg";
 import sliceFull from "../assets/brand/slice-full.jpg";
 import sliceTile from "../assets/brand/slice-tile.jpg";
 import fanzTile from "../assets/brand/fanz-tile.jpg";
+import fanzFull from "../assets/brand/fanz-full.jpg";
 import signTile from "../assets/brand/sign-tile.jpg";
 import insideTile from "../assets/brand/inside-tile.jpg";
 import insideWide from "../assets/brand/inside-wide.jpg";
@@ -100,5 +101,26 @@ export const GALLERY: GalleryImage[] = [
     caption: "Pasta Dinners",
     credit: "Unsplash (placeholder)",
     aspect: "portrait",
+  },
+];
+
+/** Signature items with REAL owner-provided photos, shown in the Fan Favorites
+ * band that leads into the full menu. Only items we have a genuine Long Branch
+ * photo for appear here — prices mirror the live Clover menu (src/data/menu.ts).
+ * Add more cards as the owner supplies more real dish photography. */
+export const FAVORITES = [
+  {
+    src: sliceFull,
+    name: "Classic NY Cheese Pie",
+    price: "$17.68",
+    blurb: "Hand-stretched dough, house tomato sauce, fresh mozzarella — that perfect foldable New York slice.",
+    alt: "Hand lifting a New York style cheese slice from a whole pie at Gigi's Long Branch",
+  },
+  {
+    src: fanzFull,
+    name: "The Fonz",
+    price: "$26.00",
+    blurb: "The specialty square everyone on Brighton Ave asks for by name.",
+    alt: "The Fonz specialty pizza from Gigi's NY Style Pizza, Long Branch",
   },
 ];

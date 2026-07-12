@@ -1,0 +1,15 @@
+{
+ "category": "Brazilian",
+ "displayName": "Brazilian",
+ "verdict": "include",
+ "reason": "Single real Brazilian dish (frango no palito, chicken skewers) at a normal menu price — legitimate customer-facing food.",
+ "items": [
+  {
+   "name": "Frango No Palito",
+   "displayName": "Frango no Palito",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51"
+  }
+ ]
+}

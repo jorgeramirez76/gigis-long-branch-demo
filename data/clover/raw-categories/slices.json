@@ -1,0 +1,159 @@
+{
+ "category": "Slices",
+ "sortOrder": 1,
+ "items": [
+  {
+   "name": "Plain",
+   "price": 292,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Specialty",
+   "price": 338,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Gourmet",
+   "price": 390,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Soda",
+   "price": 300,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pinwheel (1)",
+   "price": 468,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Roll Window",
+   "price": 727,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Empenada (1)",
+   "price": 260,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Emp Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Beef",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Ham\\chz Roll",
+   "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Water",
+   "price": 203,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Hangover Slice",
+   "price": 520,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pizza Bagel",
+   "price": 260,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Mini Italian Hero",
+   "price": 338,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Garlic Knots",
+   "price": 624,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Extra Sauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Extra Sauce",
+       "price": 50,
+       "available": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

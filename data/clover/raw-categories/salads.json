@@ -1,0 +1,1111 @@
+{
+ "category": "Salads",
+ "sortOrder": 5,
+ "items": [
+  {
+   "name": "Chopped Salad",
+   "price": 1144,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Side Salad",
+   "price": 728,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gigi's Salad",
+   "price": 1768,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chicken Milanese",
+   "price": 2080,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Antipasto Large",
+   "price": 2392,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Caesar Salad",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cobb Salad",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sonny Salad",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cucumber Salad",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Spinach Salad",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kale Salad",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Antipasto Small",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Wedge Salad",
+   "price": 1039,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Salad With Chicken",
+   "price": 1663,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Popeye Salad",
+   "price": 1871,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Caesar",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chicken Murphy Special",
+   "price": 2703,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Custom Item",
+   "price": 1366,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Sandwiches",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oil",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vinegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Combo Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chicken",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Bread Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Wrap",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salami",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Roni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Procuitto",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Turkey",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Grill Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chiccutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tna",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Cheese",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Provolone",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mozz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Amer Chz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepperjack",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cheddar",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt\\pep",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oregano",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Red Vnegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Veggie",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Avocado",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Roasted Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Jalapeno",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hot Cherry Peps",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vegan Cheese",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Side FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Side FF",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chicken Salad",
+   "price": 1663,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

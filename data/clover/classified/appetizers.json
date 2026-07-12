@@ -1,0 +1,1210 @@
+{
+ "category": "Appetizers",
+ "displayName": "Appetizers",
+ "verdict": "include",
+ "reason": "Real appetizer menu category; only the POS split-line separator item was excluded.",
+ "items": [
+  {
+   "name": "Meatballs (3)",
+   "displayName": "Meatballs (3)",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40"
+  },
+  {
+   "name": "Gigis Wings (12)",
+   "displayName": "Gigi's Wings (12)",
+   "include": true,
+   "priceCents": 1560,
+   "priceDisplay": "$15.60",
+   "options": [
+    {
+     "groupName": "Wing Sauce",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Medium",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hot",
+       "priceDelta": 0
+      },
+      {
+       "name": "BBQ",
+       "priceDelta": 0
+      },
+      {
+       "name": "Honey BBQ",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic Parm",
+       "priceDelta": 0
+      },
+      {
+       "name": "Honey Sriracha",
+       "priceDelta": 0
+      },
+      {
+       "name": "General Tso's",
+       "priceDelta": 0
+      },
+      {
+       "name": "Asian Action",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sweet Chili",
+       "priceDelta": 0
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "1 Half",
+       "priceDelta": 0
+      },
+      {
+       "name": "2 Half",
+       "priceDelta": 0
+      },
+      {
+       "name": "Blue Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ranch",
+       "priceDelta": 0
+      },
+      {
+       "name": "Dry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wing Sauce on Side",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Dressing",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Extra Ranch",
+       "priceDelta": 50
+      },
+      {
+       "name": "Extra Blue Cheese",
+       "priceDelta": 50
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gigis Wings (20)",
+   "displayName": "Gigi's Wings (20)",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Wing Sauce",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Medium",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hot",
+       "priceDelta": 0
+      },
+      {
+       "name": "BBQ",
+       "priceDelta": 0
+      },
+      {
+       "name": "Honey BBQ",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic Parm",
+       "priceDelta": 0
+      },
+      {
+       "name": "Honey Sriracha",
+       "priceDelta": 0
+      },
+      {
+       "name": "General Tso's",
+       "priceDelta": 0
+      },
+      {
+       "name": "Asian Action",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sweet Chili",
+       "priceDelta": 0
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "1 Half",
+       "priceDelta": 0
+      },
+      {
+       "name": "2 Half",
+       "priceDelta": 0
+      },
+      {
+       "name": "Blue Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ranch",
+       "priceDelta": 0
+      },
+      {
+       "name": "Dry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wing Sauce on Side",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Dressing",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Extra Ranch",
+       "priceDelta": 50
+      },
+      {
+       "name": "Extra Blue Cheese",
+       "priceDelta": 50
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sausage & Long Hots",
+   "displayName": "Sausage & Long Hots",
+   "include": true,
+   "priceCents": 1560,
+   "priceDisplay": "$15.60"
+  },
+  {
+   "name": "Zuppa Di Clams",
+   "displayName": "Zuppa di Clams",
+   "include": true,
+   "priceCents": 1560,
+   "priceDisplay": "$15.60",
+   "options": [
+    {
+     "groupName": "Red or White",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Red",
+       "priceDelta": 0
+      },
+      {
+       "name": "White",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Zuppa Di Mussels",
+   "displayName": "Zuppa di Mussels",
+   "include": true,
+   "priceCents": 1560,
+   "priceDisplay": "$15.60",
+   "options": [
+    {
+     "groupName": "Red or White",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Red",
+       "priceDelta": 0
+      },
+      {
+       "name": "White",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fried Calamari Large",
+   "displayName": "Fried Calamari Large",
+   "include": true,
+   "priceCents": 1664,
+   "priceDisplay": "$16.64"
+  },
+  {
+   "name": "Broccoli Rabe",
+   "displayName": "Broccoli Rabe",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48",
+   "options": [
+    {
+     "groupName": "Extra Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sautee Spinach",
+   "displayName": "Sautéed Spinach",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40"
+  },
+  {
+   "name": "-------------SPLIT------------",
+   "displayName": "-------------SPLIT------------",
+   "include": false,
+   "priceCents": 0,
+   "priceDisplay": null
+  },
+  {
+   "name": "Garlic Bread",
+   "displayName": "Garlic Bread",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24",
+   "options": [
+    {
+     "groupName": "Add Cheese",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Cheese",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mozz Stix (6)",
+   "displayName": "Mozzarella Sticks (6)",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40"
+  },
+  {
+   "name": "Firecracker Shrimp",
+   "displayName": "Firecracker Shrimp",
+   "include": true,
+   "priceCents": 1560,
+   "priceDisplay": "$15.60"
+  },
+  {
+   "name": "Eggplant Rollatini(2)",
+   "displayName": "Eggplant Rollatini (2)",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48"
+  },
+  {
+   "name": "Large Family Calzone",
+   "displayName": "Large Family Calzone",
+   "include": true,
+   "priceCents": 1867,
+   "priceDisplay": "$18.67",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mini Rice Ball (3)",
+   "displayName": "Mini Rice Ball (3)",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48"
+  },
+  {
+   "name": "Prosc  Balls (3)",
+   "displayName": "Prosciutto Balls (3)",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48"
+  },
+  {
+   "name": "Everything Knots",
+   "displayName": "Everything Knots",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24",
+   "options": [
+    {
+     "groupName": "Extra Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Extra Sauce",
+       "priceDelta": 50
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Eggplant Vodkatini (2)",
+   "displayName": "Eggplant Vodkatini (2)",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52"
+  },
+  {
+   "name": "Fried Ravioli (8)",
+   "displayName": "Fried Ravioli (8)",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40"
+  },
+  {
+   "name": "Fish & Chips",
+   "displayName": "Fish & Chips",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Fried Shrimp \\FF",
+   "displayName": "Fried Shrimp & Fries",
+   "include": true,
+   "priceCents": 1663,
+   "priceDisplay": "$16.63"
+  },
+  {
+   "name": "Small Calzone",
+   "displayName": "Small Calzone",
+   "include": true,
+   "priceCents": 1039,
+   "priceDisplay": "$10.39",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Large Chic Parm Calz",
+   "displayName": "Large Chicken Parm Calzone",
+   "include": true,
+   "priceCents": 2391,
+   "priceDisplay": "$23.91",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sm Chic Parm Calz",
+   "displayName": "Small Chicken Parm Calzone",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Rolls",
+   "displayName": "Rolls",
+   "include": true,
+   "priceCents": 727,
+   "priceDisplay": "$7.27",
+   "options": [
+    {
+     "groupName": "Roll Type",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Chicken Parm",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant Parm",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage, Peppers & Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Buffalo Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball Parm",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meatball Bread Bowl",
+   "displayName": "Meatball Bread Bowl",
+   "include": true,
+   "priceCents": 1559,
+   "priceDisplay": "$15.59"
+  },
+  {
+   "name": "Jumbo Crab Cake",
+   "displayName": "Jumbo Crab Cake",
+   "include": true,
+   "priceCents": 1663,
+   "priceDisplay": "$16.63"
+  },
+  {
+   "name": "Meatball Special",
+   "displayName": "Meatball Special",
+   "include": true,
+   "priceCents": 1559,
+   "priceDisplay": "$15.59"
+  },
+  {
+   "name": "Clams Appatizer Special",
+   "displayName": "Clams Appetizer Special",
+   "include": true,
+   "priceCents": 1559,
+   "priceDisplay": "$15.59"
+  },
+  {
+   "name": "Jumbo Sicilian Meatballs (Special)",
+   "displayName": "Jumbo Sicilian Meatballs (Special)",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51"
+  },
+  {
+   "name": "Caesar",
+   "displayName": "Caesar Salad",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Add Protein",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 727
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 727
+      },
+      {
+       "name": "Shrimp",
+       "priceDelta": 935
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 831
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fried Cod Balls Special",
+   "displayName": "Fried Cod Balls Special",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Baked Clams And Shrimp",
+   "displayName": "Baked Clams and Shrimp",
+   "include": true,
+   "priceCents": 1872,
+   "priceDisplay": "$18.72"
+  },
+  {
+   "name": "Clams Casino",
+   "displayName": "Clams Casino",
+   "include": true,
+   "priceCents": 1399,
+   "priceDisplay": "$13.99"
+  },
+  {
+   "name": "Lobster Mac And Cheese  Special",
+   "displayName": "Lobster Mac and Cheese Special",
+   "include": true,
+   "priceCents": 1867,
+   "priceDisplay": "$18.67"
+  },
+  {
+   "name": "Pepperoni Sticks",
+   "displayName": "Pepperoni Sticks",
+   "include": true,
+   "priceCents": 104,
+   "priceDisplay": "$1.04"
+  },
+  {
+   "name": "Pepperoni Sticks 2 For 1.50",
+   "displayName": "Pepperoni Sticks (2 for $1.50)",
+   "include": true,
+   "priceCents": 156,
+   "priceDisplay": "$1.56"
+  },
+  {
+   "name": "Bacon Nuggets With Sweet And Salty Glaze",
+   "displayName": "Bacon Nuggets with Sweet and Salty Glaze",
+   "include": true,
+   "priceCents": 1243,
+   "priceDisplay": "$12.43"
+  },
+  {
+   "name": "Clams Oreganata Special",
+   "displayName": "Clams Oreganata Special",
+   "include": true,
+   "priceCents": 1559,
+   "priceDisplay": "$15.59"
+  },
+  {
+   "name": "Stuffed Peppers With Chop Meat",
+   "displayName": "Stuffed Peppers with Chop Meat",
+   "include": true,
+   "priceCents": 619,
+   "priceDisplay": "$6.19"
+  },
+  {
+   "name": "Gigis Wings 50 Piece Catering",
+   "displayName": "Gigi's Wings 50 Piece Catering",
+   "include": true,
+   "priceCents": 5200,
+   "priceDisplay": "$52.00"
+  },
+  {
+   "name": "Fried Calamari Small",
+   "displayName": "Fried Calamari Small",
+   "include": true,
+   "priceCents": 936,
+   "priceDisplay": "$9.36"
+  },
+  {
+   "name": "Sauteed Broccoli",
+   "displayName": "Sautéed Broccoli",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40"
+  },
+  {
+   "name": "Gigis Fire Roasted Wings (12)",
+   "displayName": "Gigi's Fire Roasted Wings (12)",
+   "include": true,
+   "priceCents": 1872,
+   "priceDisplay": "$18.72"
+  },
+  {
+   "name": "Baked Clams (10)",
+   "displayName": "Baked Clams (10)",
+   "include": true,
+   "priceCents": 1872,
+   "priceDisplay": "$18.72"
+  }
+ ]
+}

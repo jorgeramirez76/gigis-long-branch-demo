@@ -1,0 +1,90 @@
+{
+ "category": "French Fries",
+ "displayName": "French Fries",
+ "verdict": "include",
+ "reason": "Real customer-facing french fries category.",
+ "items": [
+  {
+   "name": "French Fries Regular",
+   "displayName": "French Fries Regular",
+   "include": true,
+   "priceCents": 416,
+   "priceDisplay": "$4.16",
+   "options": [
+    {
+     "groupName": "Small Large Fry",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Upgrade to Large Fry",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cheese Fries",
+   "displayName": "Cheese Fries",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31"
+  },
+  {
+   "name": "Truffle Santana Fries",
+   "displayName": "Truffle Santana Fries",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48"
+  },
+  {
+   "name": "Pizza Fries",
+   "displayName": "Pizza Fries",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "BBQ Pull Pork FF",
+   "displayName": "BBQ Pull Pork Fries",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52"
+  },
+  {
+   "name": "Buff Chic Cheese FF",
+   "displayName": "Buffalo Chicken Cheese Fries",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52"
+  },
+  {
+   "name": "Chili Chz Fries",
+   "displayName": "Chili Cheese Fries",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Vodka Genovese Fries",
+   "displayName": "Vodka Genovese Fries",
+   "include": true,
+   "priceCents": 1144,
+   "priceDisplay": "$11.44"
+  },
+  {
+   "name": "Philly Cheesesteak FF",
+   "displayName": "Philly Cheesesteak Fries",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52"
+  },
+  {
+   "name": "Disco FF",
+   "displayName": "Disco Fries",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48"
+  }
+ ]
+}

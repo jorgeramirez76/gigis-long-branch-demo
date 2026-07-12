@@ -1,0 +1,78 @@
+{
+ "category": "Soups",
+ "displayName": "Soups",
+ "verdict": "include",
+ "reason": "Real customer-facing soups category.",
+ "items": [
+  {
+   "name": "Pasta Fagioli Soup",
+   "displayName": "Pasta Fagioli Soup",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24"
+  },
+  {
+   "name": "Escarole, Bean & Sausage Soup",
+   "displayName": "Escarole, Bean & Sausage Soup",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24"
+  },
+  {
+   "name": "Chicken Soup",
+   "displayName": "Chicken Soup",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24"
+  },
+  {
+   "name": "Cream of Mushroom Soup",
+   "displayName": "Cream of Mushroom Soup",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24"
+  },
+  {
+   "name": "Split Pea",
+   "displayName": "Split Pea",
+   "include": true,
+   "priceCents": 623,
+   "priceDisplay": "$6.23"
+  },
+  {
+   "name": "Large Soup",
+   "displayName": "Large Soup",
+   "include": true,
+   "priceCents": 1039,
+   "priceDisplay": "$10.39"
+  },
+  {
+   "name": "Veggie Soup Special",
+   "displayName": "Veggie Soup Special",
+   "include": true,
+   "priceCents": 519,
+   "priceDisplay": "$5.19"
+  },
+  {
+   "name": "Chicken Murphy Special",
+   "displayName": "Chicken Murphy Special",
+   "include": false,
+   "priceCents": 2703,
+   "priceDisplay": "$27.03"
+  },
+  {
+   "name": "Minestrone Soup",
+   "displayName": "Minestrone Soup",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24"
+  },
+  {
+   "name": "Minestrone",
+   "displayName": "Minestrone",
+   "include": false,
+   "priceCents": 623,
+   "priceDisplay": "$6.23"
+  }
+ ]
+}

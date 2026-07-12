@@ -1,0 +1,14 @@
+{
+ "category": "Brazilian",
+ "sortOrder": 24,
+ "items": [
+  {
+   "name": "Frango No Palito",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

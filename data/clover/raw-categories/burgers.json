@@ -1,0 +1,617 @@
+{
+ "category": "Burgers",
+ "sortOrder": 10,
+ "items": [
+  {
+   "name": "Pizza Burger",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Sandwiches",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oil",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vinegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Brie Burger",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sonny Burger",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Veggie Burger Beyond",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bubba Turkey Burger",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bbq Bacon Burger",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Jersey Burger",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cheezy Wheezy",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chili Burger",
+   "price": 1559,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Burger",
+   "price": 0,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "TOPPING",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Pepperoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bacn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mushroom",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broccoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomatoes",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Anchovies",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Olives",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pineapple",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gr Chix",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Garlic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepi",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Extra Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Corn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hard Egg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Brazil Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Penne Pasta",
+       "price": 104,
+       "available": true
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt\\pep",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oregano",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Red Vnegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bussin Bussin BBQ Bacon Burger",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

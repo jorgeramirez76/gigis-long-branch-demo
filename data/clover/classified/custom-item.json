@@ -1,0 +1,7 @@
+{
+ "category": "Custom Item",
+ "displayName": "Custom Item",
+ "verdict": "exclude",
+ "reason": "Empty POS-internal placeholder category for ad-hoc custom-priced line items — nothing to display on the website.",
+ "items": []
+}

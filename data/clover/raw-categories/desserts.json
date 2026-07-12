@@ -1,0 +1,383 @@
+{
+ "category": "Desserts",
+ "sortOrder": 17,
+ "items": [
+  {
+   "name": "Cannoli (1)",
+   "price": 364,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Cannoli (2)",
+   "price": 623,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Zeppolis",
+   "price": 935,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Extra Nutella",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Extra Nutella",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cheesecake",
+   "price": 624,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Red Velvet",
+   "price": 545,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sweet Knots",
+   "price": 624,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Oreo Balls",
+   "price": 935,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Dessert Pizza",
+   "price": 1872,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sara Lee Cheesecake Special",
+   "price": 1039,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Monkey Cake",
+   "price": 993,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Choclate Peanut Butter Cake",
+   "price": 519,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Dessert Special Cannoli Choc Chip Pop",
+   "price": 1399,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Snickers Pie",
+   "price": 519,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Fruit Cup",
+   "price": 519,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Large Muffin",
+   "price": 520,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chocolate Covered Strawberries( 2 )",
+   "price": 624,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (1)",
+   "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (2)",
+   "price": 520,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (4)",
+   "price": 936,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Nutella",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Nutella",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pancake Or French Toast Combo",
+   "price": 1575,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pancake Topping",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Buttermilk",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Choclate Chip",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Strawberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blueberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Banana",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Nutella",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Choice Meat For Platters",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bacon",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Pancake & French Toast Platters",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "French Toast",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pancakes",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bogo Dessert Two (2)  For Tuesday",
+   "price": 623,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Nutella",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Nutella",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Extra Nutella",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Extra Nutella",
+       "price": 100,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Bogo Dessert",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Cheesecake",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Red Velvet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Triple Chocolate Cake",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cannoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Carrot Cake",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

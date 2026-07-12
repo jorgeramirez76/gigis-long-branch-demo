@@ -1,0 +1,318 @@
+{
+ "category": "Chubbzie Wubbzies",
+ "sortOrder": 15,
+ "items": [
+  {
+   "name": "The Fat Ken",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "The Big Daddy",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "The Beach Bomber",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Custom Item",
+   "price": 1366,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Sandwiches",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oil",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vinegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Combo Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chicken",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Bread Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Wrap",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salami",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Roni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Procuitto",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Turkey",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Grill Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chiccutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tna",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Cheese",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Provolone",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mozz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Amer Chz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepperjack",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cheddar",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt\\pep",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oregano",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Red Vnegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Veggie",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Avocado",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Roasted Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Jalapeno",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hot Cherry Peps",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vegan Cheese",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Side FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Side FF",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Toms Sweet & Spicy Sammy",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

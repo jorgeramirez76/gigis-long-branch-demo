@@ -1,0 +1,36 @@
+{
+ "category": "Hot Dogs",
+ "displayName": "Hot Dogs",
+ "verdict": "include",
+ "reason": "Real Gigi's hot dog menu — four priced items, data clean.",
+ "items": [
+  {
+   "name": "Plain Hot Dog",
+   "displayName": "Plain Hot Dog",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24"
+  },
+  {
+   "name": "Cheese Hot Dog",
+   "displayName": "Cheese Hot Dog",
+   "include": true,
+   "priceCents": 935,
+   "priceDisplay": "$9.35"
+  },
+  {
+   "name": "Sonny's Double Italian Hot Dog",
+   "displayName": "Sonny's Double Italian Hot Dog",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40"
+  },
+  {
+   "name": "Chili Dog",
+   "displayName": "Chili Dog",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  }
+ ]
+}

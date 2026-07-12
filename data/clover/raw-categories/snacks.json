@@ -1,0 +1,83 @@
+{
+ "category": "Snacks",
+ "sortOrder": 20,
+ "items": [
+  {
+   "name": "Big Chips",
+   "price": 208,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Joe Chips",
+   "price": 182,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Bagel Chips",
+   "price": 130,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pepperoni Sticks",
+   "price": 104,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pepperoni Sticks 2 For 1.50",
+   "price": 156,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (1)",
+   "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (2)",
+   "price": 520,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (4)",
+   "price": 936,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Nutella",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Nutella",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

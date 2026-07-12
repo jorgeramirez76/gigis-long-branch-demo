@@ -1,0 +1,22 @@
+{
+ "category": "Jar Sauce",
+ "sortOrder": 19,
+ "items": [
+  {
+   "name": "Jar Vodka",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Jar Marinara",
+   "price": 935,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

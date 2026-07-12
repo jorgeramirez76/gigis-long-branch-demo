@@ -1,0 +1,1364 @@
+{
+ "category": "MR BEAST",
+ "displayName": "MrBeast Burger",
+ "verdict": "exclude",
+ "reason": "MrBeast Burger virtual/ghost-kitchen brand run out of the same kitchen — not Gigi's own menu; trademark/licensing implications, do not publish on the Gigi's site.",
+ "items": [
+  {
+   "name": "BEAST Nash Hot Chix",
+   "displayName": "BEAST Nash Hot Chix",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST Crispy Chix",
+   "displayName": "BEAST Crispy Chix",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST Karls Gr Chz",
+   "displayName": "BEAST Karls Gr Chz",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST Karls Deluxe",
+   "displayName": "BEAST Karls Deluxe",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST STYLE Burger",
+   "displayName": "BEAST STYLE Burger",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST Chandler Style",
+   "displayName": "BEAST Chandler Style",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST Chris Style",
+   "displayName": "BEAST Chris Style",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST STYLE Fries",
+   "displayName": "BEAST STYLE Fries",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST Crinkle Fries",
+   "displayName": "BEAST Crinkle Fries",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST Cookie",
+   "displayName": "BEAST Cookie",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST Style TRIPLE",
+   "displayName": "BEAST Style TRIPLE",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Seasoned",
+   "displayName": "Seasoned",
+   "include": false,
+   "priceCents": 0,
+   "priceDisplay": null
+  },
+  {
+   "name": "Triple",
+   "displayName": "Triple",
+   "include": false,
+   "priceCents": 0,
+   "priceDisplay": null
+  },
+  {
+   "name": "BEAST BURGER COMBO",
+   "displayName": "BEAST BURGER COMBO",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Combo Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Seasoned FF",
+       "priceDelta": 0
+      },
+      {
+       "name": "Beast FF",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Nashville",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST CHIX COMBO",
+   "displayName": "BEAST CHIX COMBO",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Combo Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Seasoned FF",
+       "priceDelta": 0
+      },
+      {
+       "name": "Beast FF",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Nashville",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "SIDE FF Plain",
+   "displayName": "SIDE FF Plain",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null
+  },
+  {
+   "name": "SIDE BEAST STYLE FF",
+   "displayName": "SIDE BEAST STYLE FF",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null
+  },
+  {
+   "name": "Cheese Fries",
+   "displayName": "Cheese Fries",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null
+  },
+  {
+   "name": "Pepsi",
+   "displayName": "Pepsi",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BEAST spicy Chicken Combo",
+   "displayName": "BEAST Spicy Chicken Combo",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null,
+   "options": [
+    {
+     "groupName": "BEAST MOD",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "ADD",
+       "priceDelta": 0
+      },
+      {
+       "name": "NO",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caramelized Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon (2)",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chop Beef Patty",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sierra Mist",
+       "priceDelta": 0
+      },
+      {
+       "name": "Water",
+       "priceDelta": 0
+      },
+      {
+       "name": "Double",
+       "priceDelta": 0
+      },
+      {
+       "name": "Triple",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

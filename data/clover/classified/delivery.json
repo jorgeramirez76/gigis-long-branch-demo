@@ -1,0 +1,22 @@
+{
+ "category": "Delivery",
+ "displayName": "Delivery",
+ "verdict": "exclude",
+ "reason": "POS-internal delivery-fee line items added at checkout, not orderable menu food.",
+ "items": [
+  {
+   "name": "Non-Local Delivery Fee",
+   "displayName": "Non-Local Delivery Fee",
+   "include": true,
+   "priceCents": 500,
+   "priceDisplay": "$5.00"
+  },
+  {
+   "name": "WLB/LB Delivery Fee",
+   "displayName": "WLB/LB Delivery Fee",
+   "include": true,
+   "priceCents": 300,
+   "priceDisplay": "$3.00"
+  }
+ ]
+}

@@ -1,0 +1,76 @@
+{
+ "category": "Snacks",
+ "displayName": "Snacks",
+ "verdict": "include",
+ "reason": "Real grab-and-go snack items (chips, pepperoni sticks, churros); no POS-internal entries.",
+ "items": [
+  {
+   "name": "Big Chips",
+   "displayName": "Big Chips",
+   "include": true,
+   "priceCents": 208,
+   "priceDisplay": "$2.08"
+  },
+  {
+   "name": "Joe Chips",
+   "displayName": "Joe Chips",
+   "include": true,
+   "priceCents": 182,
+   "priceDisplay": "$1.82"
+  },
+  {
+   "name": "Bagel Chips",
+   "displayName": "Bagel Chips",
+   "include": true,
+   "priceCents": 130,
+   "priceDisplay": "$1.30"
+  },
+  {
+   "name": "Pepperoni Sticks",
+   "displayName": "Pepperoni Sticks",
+   "include": true,
+   "priceCents": 104,
+   "priceDisplay": "$1.04"
+  },
+  {
+   "name": "Pepperoni Sticks 2 For 1.50",
+   "displayName": "Pepperoni Sticks (2 for $1.50)",
+   "include": true,
+   "priceCents": 156,
+   "priceDisplay": "$1.56"
+  },
+  {
+   "name": "Churros (1)",
+   "displayName": "Churros (1)",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Churros (2)",
+   "displayName": "Churros (2)",
+   "include": true,
+   "priceCents": 520,
+   "priceDisplay": "$5.20"
+  },
+  {
+   "name": "Churros (4)",
+   "displayName": "Churros (4)",
+   "include": true,
+   "priceCents": 936,
+   "priceDisplay": "$9.36",
+   "options": [
+    {
+     "groupName": "Add Nutella",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Nutella",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

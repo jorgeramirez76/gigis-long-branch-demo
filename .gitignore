@@ -12,3 +12,6 @@ yarn-debug.log*
 yarn-error.log*
 .vscode/*
 !.vscode/extensions.json
+.vercel
+.env*
+.env.crm.local

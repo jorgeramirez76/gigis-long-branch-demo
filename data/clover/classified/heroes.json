@@ -1,0 +1,3170 @@
+{
+ "category": "Heroes",
+ "displayName": "Heroes",
+ "verdict": "include",
+ "reason": "Real customer-facing category of hero, club, and numbered specialty sandwiches sold at Gigi's.",
+ "items": [
+  {
+   "name": "Cheesesteak Whole Classic",
+   "displayName": "Cheesesteak Whole Classic",
+   "include": true,
+   "priceCents": 1560,
+   "priceDisplay": "$15.60",
+   "options": [
+    {
+     "groupName": "Cheesesteak Options",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Beef",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Classic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cali",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Hot Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "No Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "No Onions",
+       "priceDelta": 0
+      },
+      {
+       "name": "No Mushrooms",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vegan Cheese",
+       "priceDelta": 208
+      },
+      {
+       "name": "Buffalo Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Chipotle",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Bacon Ranch",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken Cali Style",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Saus\\BrocRabe Hero",
+   "displayName": "Sausage & Broccoli Rabe Hero",
+   "include": true,
+   "priceCents": 1414,
+   "priceDisplay": "$14.14",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chic Parm Hero",
+   "displayName": "Chicken Parm Hero",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Saus Parm Hero",
+   "displayName": "Sausage Parm Hero",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Parm Hero Options",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "No Sauce",
+       "priceDelta": 0
+      },
+      {
+       "name": "No Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Sauce",
+       "priceDelta": 78
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 78
+      },
+      {
+       "name": "Sub Vodka Sauce",
+       "priceDelta": 130
+      },
+      {
+       "name": "Lite Sauce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lite Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vegan Cheese",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Turkey Club Sub",
+   "displayName": "Turkey Club Sub",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#2 Kelly's Italian",
+   "displayName": "#2 Kelly's Italian",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#24 Gigis Mosbeef Sandwich",
+   "displayName": "#24 Gigi's Mosbeef Sandwich",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#26 The Big Guy",
+   "displayName": "#26 The Big Guy",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Italian Beef",
+   "displayName": "Italian Beef",
+   "include": true,
+   "priceCents": 1414,
+   "priceDisplay": "$14.14",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#1 Kenny Action",
+   "displayName": "#1 Kenny Action",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#3 The Nicky Poblano Breaded",
+   "displayName": "#3 The Nicky Poblano Breaded",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#3 The Nicky Poblano Grilled",
+   "displayName": "#3 The Nicky Poblano Grilled",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#4 Domb The Bomb",
+   "displayName": "#4 Domb The Bomb",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#5 Razzle Dazzle",
+   "displayName": "#5 Razzle Dazzle",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#6 Greenwich Village",
+   "displayName": "#6 Greenwich Village",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#7 Hustler",
+   "displayName": "#7 Hustler",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#8 My Cousin Vinny",
+   "displayName": "#8 My Cousin Vinny",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#9 Tiffa Tacchino",
+   "displayName": "#9 Tiffa Tacchino",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#11 Beef On Weck",
+   "displayName": "#11 Beef on Weck",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#10 Drita",
+   "displayName": "#10 Drita",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#12 Big Nick",
+   "displayName": "#12 Big Nick",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#13 Sonny Cubano",
+   "displayName": "#13 Sonny Cubano",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#14 Shrimp Garlic",
+   "displayName": "#14 Shrimp Garlic",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#15 Patty Geno",
+   "displayName": "#15 Patty Geno",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#16 S&P 500",
+   "displayName": "#16 S&P 500",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#17 Little Italy Franc",
+   "displayName": "#17 Little Italy Franc",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#17 Little Italy Mars",
+   "displayName": "#17 Little Italy Mars",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#18 Chickster",
+   "displayName": "#18 Chickster",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#19 Johnny Roastbeef",
+   "displayName": "#19 Johnny Roastbeef",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#20 Greatest Chic",
+   "displayName": "#20 Greatest Chicken",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Grilled Chicken Sandwich",
+   "displayName": "Grilled Chicken Sandwich",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BLT Club Sandwich",
+   "displayName": "BLT Club Sandwich",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Turkey Club",
+   "displayName": "Turkey Club",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chic Salad Club",
+   "displayName": "Chicken Salad Club",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Tuna Club",
+   "displayName": "Tuna Club",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cyo Cold",
+   "displayName": "Create Your Own Cold Hero",
+   "include": true,
+   "priceCents": 1414,
+   "priceDisplay": "$14.14",
+   "options": [
+    {
+     "groupName": "Bread",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Wrap",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Choose Your Meat",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salami",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Prosciutto",
+       "priceDelta": 0
+      },
+      {
+       "name": "Turkey",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tuna",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Cheese",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Provolone",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mozzarella",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepperjack",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cheddar",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Condiments",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil & Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt & Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oregano",
+       "priceDelta": 0
+      },
+      {
+       "name": "Red Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Glaze",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Veggies",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Avocado",
+       "priceDelta": 0
+      },
+      {
+       "name": "Roasted Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Jalapeno",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hot Cherry Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vegan Cheese",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Piggly Wiggly",
+   "displayName": "Piggly Wiggly",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Triple C",
+   "displayName": "The Triple C",
+   "include": true,
+   "priceCents": 1455,
+   "priceDisplay": "$14.55",
+   "options": [
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Eggplant Parm Hero",
+   "displayName": "Eggplant Parm Hero",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Italian Beef Special With French Fries",
+   "displayName": "Italian Beef Special with French Fries",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Shrimp Parm Hero",
+   "displayName": "Shrimp Parm Hero",
+   "include": true,
+   "priceCents": 1622,
+   "priceDisplay": "$16.22",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Custom Item",
+   "displayName": "Custom Item",
+   "include": false,
+   "priceCents": 1366,
+   "priceDisplay": "$13.66",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Combo Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Shrimp",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Bread",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Wrap",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Choose Your Meat",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salami",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Prosciutto",
+       "priceDelta": 0
+      },
+      {
+       "name": "Turkey",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tuna",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Cheese",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Provolone",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mozzarella",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepperjack",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cheddar",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Condiments",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil & Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt & Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oregano",
+       "priceDelta": 0
+      },
+      {
+       "name": "Red Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Glaze",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Veggies",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Avocado",
+       "priceDelta": 0
+      },
+      {
+       "name": "Roasted Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Jalapeno",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hot Cherry Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vegan Cheese",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Side FF",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Side FF",
+       "priceDelta": 234
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#21 The Racetrack Special",
+   "displayName": "#21 The Racetrack Special",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#22 The Charlie Chopped Italian",
+   "displayName": "#22 The Charlie Chopped Italian",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#23 Big Al Capones Italian Beef",
+   "displayName": "#23 Big Al Capone's Italian Beef",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#25 The \"Hard Hero\"",
+   "displayName": "#25 The \"Hard Hero\"",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#27 Jersey Boy",
+   "displayName": "#27 Jersey Boy",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#29 Sausage & Broccoli Rabe",
+   "displayName": "#29 Sausage & Broccoli Rabe",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#30 Roast Beef & Provo",
+   "displayName": "#30 Roast Beef & Provolone",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cheesesteak Half Small",
+   "displayName": "Cheesesteak Half Small",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40",
+   "options": [
+    {
+     "groupName": "Cheesesteak Options",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Beef",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Classic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cali",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Hot Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "No Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "No Onions",
+       "priceDelta": 0
+      },
+      {
+       "name": "No Mushrooms",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vegan Cheese",
+       "priceDelta": 208
+      },
+      {
+       "name": "Buffalo Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy Chipotle",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Bacon Ranch",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken Cali Style",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chicken Cutlet Hero",
+   "displayName": "Chicken Cutlet Hero",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Wednesday 9-9-9  9\" Hoagie",
+   "displayName": "Wednesday 9-9-9 9\" Hoagie",
+   "include": true,
+   "priceCents": 936,
+   "priceDisplay": "$9.36",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Extra Sauce",
+       "priceDelta": 50
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

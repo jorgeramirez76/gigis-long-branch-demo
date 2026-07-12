@@ -1,0 +1,2273 @@
+{
+ "category": "Breakfast",
+ "displayName": "Breakfast",
+ "verdict": "include",
+ "reason": "Full customer-facing breakfast menu of real dishes, sides, and drinks; no POS-internal, test, fee, or exact-duplicate items found.",
+ "items": [
+  {
+   "name": "Classic Benedict",
+   "displayName": "Classic Benedict",
+   "include": true,
+   "priceCents": 1664,
+   "priceDisplay": "$16.64",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Irishman Benedict",
+   "displayName": "Irishman Benedict",
+   "include": true,
+   "priceCents": 1664,
+   "priceDisplay": "$16.64",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Popeye Benedict",
+   "displayName": "Popeye Benedict",
+   "include": true,
+   "priceCents": 1455,
+   "priceDisplay": "$14.55",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "California Benedict",
+   "displayName": "California Benedict",
+   "include": true,
+   "priceCents": 1664,
+   "priceDisplay": "$16.64",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gigis Avacado Toast",
+   "displayName": "Gigi's Avocado Toast",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Condiment",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "S/P/K",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Egg Sandwich",
+   "displayName": "Egg Sandwich",
+   "include": true,
+   "priceCents": 416,
+   "priceDisplay": "$4.16",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Served On",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Kaiser Roll",
+       "priceDelta": 0
+      },
+      {
+       "name": "English Muffin",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Plain Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "Everything Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten-Free",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Condiment",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "S/P/K",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bacon Egg & Cheese",
+   "displayName": "Bacon Egg & Cheese",
+   "include": true,
+   "priceCents": 619,
+   "priceDisplay": "$6.19",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Served On",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Kaiser Roll",
+       "priceDelta": 0
+      },
+      {
+       "name": "English Muffin",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Plain Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "Everything Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten-Free",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Condiment",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "S/P/K",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sausage Egg & Cheese",
+   "displayName": "Sausage Egg & Cheese",
+   "include": true,
+   "priceCents": 619,
+   "priceDisplay": "$6.19",
+   "options": [
+    {
+     "groupName": "Served On",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Kaiser Roll",
+       "priceDelta": 0
+      },
+      {
+       "name": "English Muffin",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Plain Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "Everything Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten-Free",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Condiment",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "S/P/K",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pork Roll Egg & Cheese",
+   "displayName": "Pork Roll Egg & Cheese",
+   "include": true,
+   "priceCents": 727,
+   "priceDisplay": "$7.27",
+   "options": [
+    {
+     "groupName": "Served On",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Kaiser Roll",
+       "priceDelta": 0
+      },
+      {
+       "name": "English Muffin",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Plain Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "Everything Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten-Free",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Condiment",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "S/P/K",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Turkey Bacon Egg & Cheese",
+   "displayName": "Turkey Bacon Egg & Cheese",
+   "include": true,
+   "priceCents": 650,
+   "priceDisplay": "$6.50",
+   "options": [
+    {
+     "groupName": "Served On",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Kaiser Roll",
+       "priceDelta": 0
+      },
+      {
+       "name": "English Muffin",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Plain Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "Everything Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten-Free",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Condiment",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "S/P/K",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Katie",
+   "displayName": "The Katie",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Lox N Loaded",
+   "displayName": "Lox N Loaded",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Served On",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Kaiser Roll",
+       "priceDelta": 0
+      },
+      {
+       "name": "English Muffin",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Plain Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "Everything Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten-Free",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Condiment",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ketchup",
+       "priceDelta": 0
+      },
+      {
+       "name": "S/P/K",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Acai Nutty Nutella",
+   "displayName": "Acai Nutty Nutella",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48",
+   "options": [
+    {
+     "groupName": "Acai",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Honey Dew",
+       "priceDelta": 1144
+      },
+      {
+       "name": "B-Bowl",
+       "priceDelta": 1144
+      },
+      {
+       "name": "Island Vibes",
+       "priceDelta": 1144
+      },
+      {
+       "name": "Nutella",
+       "priceDelta": 1248
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Full Stack Pancakes (3)",
+   "displayName": "Full Stack Pancakes (3)",
+   "include": true,
+   "priceCents": 936,
+   "priceDisplay": "$9.36",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pancake Topping",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Buttermilk",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chocolate Chip",
+       "priceDelta": 0
+      },
+      {
+       "name": "Strawberry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Blueberry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Banana",
+       "priceDelta": 0
+      },
+      {
+       "name": "Nutella",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "French Toast (2)",
+   "displayName": "French Toast (2)",
+   "include": true,
+   "priceCents": 936,
+   "priceDisplay": "$9.36",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pancake Topping",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Buttermilk",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chocolate Chip",
+       "priceDelta": 0
+      },
+      {
+       "name": "Strawberry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Blueberry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Banana",
+       "priceDelta": 0
+      },
+      {
+       "name": "Nutella",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Short Stack Pancakes (2)",
+   "displayName": "Short Stack Pancakes (2)",
+   "include": true,
+   "priceCents": 832,
+   "priceDisplay": "$8.32",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pancake Topping",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Buttermilk",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chocolate Chip",
+       "priceDelta": 0
+      },
+      {
+       "name": "Strawberry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Blueberry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Banana",
+       "priceDelta": 0
+      },
+      {
+       "name": "Nutella",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The #1 Platter",
+   "displayName": "The #1 Platter",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The #2 Platter",
+   "displayName": "The #2 Platter",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Choice of Meat",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The #3 Platter",
+   "displayName": "The #3 Platter",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Choice of Meat",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Pancakes or French Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "French Toast",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pancakes",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Gigi Skillet",
+   "displayName": "The Gigi Skillet",
+   "include": true,
+   "priceCents": 983,
+   "priceDisplay": "$9.83",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Choice of Meat",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meat Lovers - B-fast Pizza",
+   "displayName": "Meat Lovers Breakfast Pizza",
+   "include": true,
+   "priceCents": 1555,
+   "priceDisplay": "$15.55",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Veggie Breakfast Pizza",
+   "displayName": "Veggie Breakfast Pizza",
+   "include": true,
+   "priceCents": 1451,
+   "priceDisplay": "$14.51",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Coffee",
+   "displayName": "Coffee",
+   "include": true,
+   "priceCents": 208,
+   "priceDisplay": "$2.08"
+  },
+  {
+   "name": "Apple Juice",
+   "displayName": "Apple Juice",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Espresso",
+   "displayName": "Espresso",
+   "include": true,
+   "priceCents": 208,
+   "priceDisplay": "$2.08"
+  },
+  {
+   "name": "Double Espresso",
+   "displayName": "Double Espresso",
+   "include": true,
+   "priceCents": 416,
+   "priceDisplay": "$4.16"
+  },
+  {
+   "name": "Cheese Omlette",
+   "displayName": "Cheese Omelette",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meat & Cheese Omlette",
+   "displayName": "Meat & Cheese Omelette",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43",
+   "options": [
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Veggie Omlette",
+   "displayName": "Veggie Omelette",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Egg White Omlette",
+   "displayName": "Egg White Omelette",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "B-Fit Omlette",
+   "displayName": "B-Fit Omelette",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Greek Omlette",
+   "displayName": "Greek Omelette",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Western Omlette",
+   "displayName": "Western Omelette",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mediterranean Omlette",
+   "displayName": "Mediterranean Omelette",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mid Night Run Omlette",
+   "displayName": "Midnight Run Omelette",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rye Bread",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chico Burrito",
+   "displayName": "Chico Burrito",
+   "include": true,
+   "priceCents": 1039,
+   "priceDisplay": "$10.39"
+  },
+  {
+   "name": "Burrito Bomber",
+   "displayName": "Burrito Bomber",
+   "include": true,
+   "priceCents": 1039,
+   "priceDisplay": "$10.39"
+  },
+  {
+   "name": "Vegito Burrito",
+   "displayName": "Vegito Burrito",
+   "include": true,
+   "priceCents": 1039,
+   "priceDisplay": "$10.39"
+  },
+  {
+   "name": "Taco Bacon Avacado & Tomato",
+   "displayName": "Taco - Bacon Avocado & Tomato",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Taco Black Beans Jalapeno & Avocado",
+   "displayName": "Taco - Black Beans Jalapeño & Avocado",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Taco - Chorizo Cheddar Cheese & Scallion",
+   "displayName": "Taco - Chorizo Cheddar Cheese & Scallion",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Taco - Breakfast Sausage Chipotle Sour Cream & Hash Browns",
+   "displayName": "Taco - Breakfast Sausage Chipotle Sour Cream & Hash Browns",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Taco- Bacon & Homefries With Queso Fresco",
+   "displayName": "Taco - Bacon & Home Fries with Queso Fresco",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Chorizo Con Huevos",
+   "displayName": "Chorizo con Huevos",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47",
+   "options": [
+    {
+     "groupName": "Add Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sausage",
+       "priceDelta": 312
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 312
+      },
+      {
+       "name": "Canadian Bacon",
+       "priceDelta": 312
+      },
+      {
+       "name": "Turkey Bacon",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Empanada Breakfast Platter",
+   "displayName": "Empanada Breakfast Platter",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pupusa Breakfast Platter",
+   "displayName": "Pupusa Breakfast Platter",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48",
+   "options": [
+    {
+     "groupName": "Pupusa",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach & Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pork Black Bean & Cheese",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Ham & Cheese Breakfast Platter",
+   "displayName": "Ham & Cheese Breakfast Platter",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Egg & Cheese Sandwich Breakfast",
+   "displayName": "Egg & Cheese Sandwich",
+   "include": true,
+   "priceCents": 562,
+   "priceDisplay": "$5.62",
+   "options": [
+    {
+     "groupName": "Served On",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Kaiser Roll",
+       "priceDelta": 0
+      },
+      {
+       "name": "English Muffin",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach Wrap",
+       "priceDelta": 0
+      },
+      {
+       "name": "Plain Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "Everything Bagel",
+       "priceDelta": 0
+      },
+      {
+       "name": "White Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Wheat Bread",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten-Free",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#4 Breakfast Platter (Meat,eggs,homefries,french Toast/pancakes)",
+   "displayName": "#4 Breakfast Platter (Meat, Eggs, Home Fries, French Toast/Pancakes)",
+   "include": true,
+   "priceCents": 1455,
+   "priceDisplay": "$14.55",
+   "options": [
+    {
+     "groupName": "Pancake Topping",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Buttermilk",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chocolate Chip",
+       "priceDelta": 0
+      },
+      {
+       "name": "Strawberry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Blueberry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Banana",
+       "priceDelta": 0
+      },
+      {
+       "name": "Nutella",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Choice of Meat",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pork Roll",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Pancakes or French Toast",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "French Toast",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pancakes",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add 1 Egg",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add 1 Egg",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Add 1 Egg",
+   "displayName": "Add 1 Egg",
+   "include": true,
+   "priceCents": 208,
+   "priceDisplay": "$2.08",
+   "options": [
+    {
+     "groupName": "Eggs",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Scrambled",
+       "priceDelta": 0
+      },
+      {
+       "name": "Fried",
+       "priceDelta": 0
+      },
+      {
+       "name": "Over Easy",
+       "priceDelta": 0
+      },
+      {
+       "name": "Egg Whites",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Beff Patty",
+   "displayName": "Beef Patty",
+   "include": true,
+   "priceCents": 260,
+   "priceDisplay": "$2.60"
+  },
+  {
+   "name": "Beef Patty With Cheese",
+   "displayName": "Beef Patty with Cheese",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Large Muffin",
+   "displayName": "Large Muffin",
+   "include": true,
+   "priceCents": 520,
+   "priceDisplay": "$5.20"
+  },
+  {
+   "name": "Side Home Fries",
+   "displayName": "Side Home Fries",
+   "include": true,
+   "priceCents": 416,
+   "priceDisplay": "$4.16"
+  },
+  {
+   "name": "Hashbrown",
+   "displayName": "Hash Brown",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Sausage - (3)",
+   "displayName": "Sausage (3)",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40"
+  },
+  {
+   "name": "Bacon - 2 Pieces",
+   "displayName": "Bacon (2 Pieces)",
+   "include": true,
+   "priceCents": 416,
+   "priceDisplay": "$4.16"
+  },
+  {
+   "name": "Turkey Bacon 2 Pieces",
+   "displayName": "Turkey Bacon (2 Pieces)",
+   "include": true,
+   "priceCents": 572,
+   "priceDisplay": "$5.72"
+  },
+  {
+   "name": "Pork Roll 2 Pieces",
+   "displayName": "Pork Roll (2 Pieces)",
+   "include": true,
+   "priceCents": 468,
+   "priceDisplay": "$4.68"
+  },
+  {
+   "name": "Famous Crunch Quesadilla",
+   "displayName": "Famous Crunch Quesadilla",
+   "include": true,
+   "priceCents": 1451,
+   "priceDisplay": "$14.51"
+  },
+  {
+   "name": "Churros (1)",
+   "displayName": "Churros (1)",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Churros (2)",
+   "displayName": "Churros (2)",
+   "include": true,
+   "priceCents": 520,
+   "priceDisplay": "$5.20"
+  },
+  {
+   "name": "Churros (4)",
+   "displayName": "Churros (4)",
+   "include": true,
+   "priceCents": 936,
+   "priceDisplay": "$9.36",
+   "options": [
+    {
+     "groupName": "Add Nutella",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Nutella",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Breakfast Burrito",
+   "displayName": "Breakfast Burrito",
+   "include": true,
+   "priceCents": 1144,
+   "priceDisplay": "$11.44"
+  },
+  {
+   "name": "Egg Platter",
+   "displayName": "Egg Platter",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52"
+  }
+ ]
+}

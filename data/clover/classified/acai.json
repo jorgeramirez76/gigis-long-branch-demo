@@ -1,0 +1,39 @@
+{
+ "category": "Acai",
+ "displayName": "Acai",
+ "verdict": "include",
+ "reason": "Real customer-facing acai bowl category; its single item is an orderable dish (also cross-listed under Breakfast in the POS).",
+ "items": [
+  {
+   "name": "Acai Nutty Nutella",
+   "displayName": "Acai Nutty Nutella",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48",
+   "options": [
+    {
+     "groupName": "Acai",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Honey Dew",
+       "priceDelta": 1144
+      },
+      {
+       "name": "B-Bowl",
+       "priceDelta": 1144
+      },
+      {
+       "name": "Island Vibes",
+       "priceDelta": 1144
+      },
+      {
+       "name": "Nutella",
+       "priceDelta": 1248
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

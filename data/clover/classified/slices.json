@@ -1,0 +1,143 @@
+{
+ "category": "Slices",
+ "displayName": "Slices",
+ "verdict": "include",
+ "reason": "Real slice-counter category of slices, snacks, and grab-and-go items.",
+ "items": [
+  {
+   "name": "Plain",
+   "displayName": "Plain",
+   "include": true,
+   "priceCents": 292,
+   "priceDisplay": "$2.92"
+  },
+  {
+   "name": "Specialty",
+   "displayName": "Specialty",
+   "include": true,
+   "priceCents": 338,
+   "priceDisplay": "$3.38"
+  },
+  {
+   "name": "Gourmet",
+   "displayName": "Gourmet",
+   "include": true,
+   "priceCents": 390,
+   "priceDisplay": "$3.90"
+  },
+  {
+   "name": "Soda",
+   "displayName": "Soda",
+   "include": true,
+   "priceCents": 300,
+   "priceDisplay": "$3.00"
+  },
+  {
+   "name": "Pinwheel (1)",
+   "displayName": "Pinwheel (1)",
+   "include": true,
+   "priceCents": 468,
+   "priceDisplay": "$4.68"
+  },
+  {
+   "name": "Roll Window",
+   "displayName": "Roll Window",
+   "include": true,
+   "priceCents": 727,
+   "priceDisplay": "$7.27"
+  },
+  {
+   "name": "Empenada (1)",
+   "displayName": "Empanada (1)",
+   "include": true,
+   "priceCents": 260,
+   "priceDisplay": "$2.60",
+   "options": [
+    {
+     "groupName": "Filling",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Beef",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Ham\\chz Roll",
+   "displayName": "Ham & Cheese Roll",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Water",
+   "displayName": "Water",
+   "include": true,
+   "priceCents": 203,
+   "priceDisplay": "$2.03"
+  },
+  {
+   "name": "Hangover Slice",
+   "displayName": "Hangover Slice",
+   "include": true,
+   "priceCents": 520,
+   "priceDisplay": "$5.20"
+  },
+  {
+   "name": "Pizza Bagel",
+   "displayName": "Pizza Bagel",
+   "include": true,
+   "priceCents": 260,
+   "priceDisplay": "$2.60"
+  },
+  {
+   "name": "Mini Italian Hero",
+   "displayName": "Mini Italian Hero",
+   "include": true,
+   "priceCents": 338,
+   "priceDisplay": "$3.38",
+   "options": [
+    {
+     "groupName": "Add Fries",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips, Add Fries",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Garlic Knots",
+   "displayName": "Garlic Knots",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24",
+   "options": [
+    {
+     "groupName": "Extra Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Extra Sauce",
+       "priceDelta": 50
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

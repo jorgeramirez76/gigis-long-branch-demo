@@ -1,0 +1,43 @@
+{
+ "category": "Wine",
+ "displayName": "Wine",
+ "verdict": "include",
+ "reason": "Five specific labeled bottles (Rosé, Painted White, Traminette, Vintner's Red, Charger Red) at realistic bottle prices — real retail wines, not POS-internal alcohol line items; suitable as a display-only listing.",
+ "items": [
+  {
+   "name": "Wine Rosé",
+   "displayName": "Rosé",
+   "include": true,
+   "priceCents": 2288,
+   "priceDisplay": "$22.88"
+  },
+  {
+   "name": "Wine Painted White",
+   "displayName": "Painted White",
+   "include": true,
+   "priceCents": 2288,
+   "priceDisplay": "$22.88"
+  },
+  {
+   "name": "Wine Traminette",
+   "displayName": "Traminette",
+   "include": true,
+   "priceCents": 2392,
+   "priceDisplay": "$23.92"
+  },
+  {
+   "name": "Wine Vintners Red",
+   "displayName": "Vintner's Red",
+   "include": true,
+   "priceCents": 2392,
+   "priceDisplay": "$23.92"
+  },
+  {
+   "name": "Wine Charger Red",
+   "displayName": "Charger Red",
+   "include": true,
+   "priceCents": 2496,
+   "priceDisplay": "$24.96"
+  }
+ ]
+}

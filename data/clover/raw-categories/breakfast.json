@@ -1,0 +1,2696 @@
+{
+ "category": "Breakfast",
+ "sortOrder": 29,
+ "items": [
+  {
+   "name": "Classic Benedict",
+   "price": 1664,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Irishman Benedict",
+   "price": 1664,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Popeye Benedict",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "California Benedict",
+   "price": 1664,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gigis Avacado Toast",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Egg Sandwich",
+   "price": 416,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Served On",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Kaiser Roll",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "English Muffin",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel Plain",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel \\ Everything",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten-Free",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bacon Egg & Cheese",
+   "price": 619,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Served On",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Kaiser Roll",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "English Muffin",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel Plain",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel \\ Everything",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten-Free",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sausage Egg & Cheese",
+   "price": 619,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Served On",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Kaiser Roll",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "English Muffin",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel Plain",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel \\ Everything",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten-Free",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pork Roll Egg & Cheese",
+   "price": 727,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Served On",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Kaiser Roll",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "English Muffin",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel Plain",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel \\ Everything",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten-Free",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Turkey Bacon Egg & Cheese",
+   "price": 650,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Served On",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Kaiser Roll",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "English Muffin",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel Plain",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel \\ Everything",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten-Free",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Katie",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lox N Loaded",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Served On",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Kaiser Roll",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "English Muffin",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel Plain",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel \\ Everything",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten-Free",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Acai Nutty Nutella",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Acai",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Honey Dew",
+       "price": 1144,
+       "available": true
+      },
+      {
+       "name": "B-Bowl",
+       "price": 1144,
+       "available": true
+      },
+      {
+       "name": "Island Vibes",
+       "price": 1144,
+       "available": true
+      },
+      {
+       "name": "Nutella",
+       "price": 1248,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Full Stack Pancakes (3)",
+   "price": 936,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Pancake Topping",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Buttermilk",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Choclate Chip",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Strawberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blueberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Banana",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Nutella",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "French Toast (2)",
+   "price": 936,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Pancake Topping",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Buttermilk",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Choclate Chip",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Strawberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blueberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Banana",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Nutella",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Short Stack Pancakes (2)",
+   "price": 832,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Pancake Topping",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Buttermilk",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Choclate Chip",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Strawberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blueberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Banana",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Nutella",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The #1 Platter",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The #2 Platter",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Choice Meat For Platters",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bacon",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The #3 Platter",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Choice Meat For Platters",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bacon",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Pancake & French Toast Platters",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "French Toast",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pancakes",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Gigi Skillet",
+   "price": 983,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Choice Meat For Platters",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bacon",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meat Lovers - B-fast Pizza",
+   "price": 1555,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Veggie Breakfast Pizza",
+   "price": 1451,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Coffee",
+   "price": 208,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Apple Juice",
+   "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Espresso",
+   "price": 208,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Double Espresso",
+   "price": 416,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Cheese Omlette",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meat & Cheese Omlette",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Veggie Omlette",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Egg White Omlette",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "B-Fit Omlette",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Greek Omlette",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Western Omlette",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mediterranean Omlette",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mid Night Run Omlette",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chico Burrito",
+   "price": 1039,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Burrito Bomber",
+   "price": 1039,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Vegito Burrito",
+   "price": 1039,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco Bacon Avacado & Tomato",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco Black Beans Jalapeno & Avocado",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco - Chorizo Cheddar Cheese & Scallion",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco - Breakfast Sausage Chipotle Sour Cream & Hash Browns",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco- Bacon & Homefries With Queso Fresco",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chorizo Con Huevos",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Empanada Breakfast Platter",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pupusa Breakfast Platter",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pupusa",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach & Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pork Black Bean & Cheese",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Ham & Cheese Breakfast Platter",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Egg & Cheese Sandwich Breakfast",
+   "price": 562,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Served On",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Kaiser Roll",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "English Muffin",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel Plain",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel \\ Everything",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten-Free",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#4 Breakfast Platter (Meat,eggs,homefries,french Toast/pancakes)",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pancake Topping",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Buttermilk",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Choclate Chip",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Strawberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blueberry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Banana",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Nutella",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Choice Meat For Platters",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bacon",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Pancake & French Toast Platters",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "French Toast",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pancakes",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add 1 Egg",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add 1 Egg",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Add 1 Egg",
+   "price": 208,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Beff Patty",
+   "price": 260,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Beef Patty With Cheese",
+   "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Large Muffin",
+   "price": 520,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Side Home Fries",
+   "price": 416,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Hashbrown",
+   "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sausage - (3)",
+   "price": 1040,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Bacon - 2 Pieces",
+   "price": 416,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Turkey Bacon 2 Pieces",
+   "price": 572,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pork Roll 2 Pieces",
+   "price": 468,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Famous Crunch Quesadilla",
+   "price": 1451,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (1)",
+   "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (2)",
+   "price": 520,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Churros (4)",
+   "price": 936,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Nutella",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Nutella",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Breakfast Burrito",
+   "price": 1144,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Egg Platter",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

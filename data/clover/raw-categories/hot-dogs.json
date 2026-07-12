@@ -1,0 +1,38 @@
+{
+ "category": "Hot Dogs",
+ "sortOrder": 7,
+ "items": [
+  {
+   "name": "Plain Hot Dog",
+   "price": 624,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Cheese Hot Dog",
+   "price": 935,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sonny's Double Italian Hot Dog",
+   "price": 1040,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chili Dog",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

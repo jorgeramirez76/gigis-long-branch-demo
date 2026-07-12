@@ -1,0 +1,46 @@
+{
+ "category": "Wine",
+ "sortOrder": 22,
+ "items": [
+  {
+   "name": "Wine Rosé",
+   "price": 2288,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Wine Painted White",
+   "price": 2288,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Wine Traminette",
+   "price": 2392,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Wine Vintners Red",
+   "price": 2392,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Wine Charger Red",
+   "price": 2496,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

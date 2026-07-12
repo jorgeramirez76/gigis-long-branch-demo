@@ -1,0 +1,9471 @@
+{
+ "category": "Pizza",
+ "displayName": "Pizza",
+ "verdict": "include",
+ "reason": "Core customer-facing pizza menu — plain, specialty, stuffed, and weekly-special pies all belong on the site.",
+ "items": [
+  {
+   "name": "Plain Pie",
+   "displayName": "Plain Pie",
+   "include": true,
+   "priceCents": 1768,
+   "priceDisplay": "$17.68",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "White Pie",
+   "displayName": "White Pie",
+   "include": true,
+   "priceCents": 2288,
+   "priceDisplay": "$22.88",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meat Lover Pie",
+   "displayName": "Meat Lover's Pie",
+   "include": true,
+   "priceCents": 2392,
+   "priceDisplay": "$23.92",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Margherita",
+   "displayName": "Margherita",
+   "include": true,
+   "priceCents": 2288,
+   "priceDisplay": "$22.88",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Vodka Pie",
+   "displayName": "Vodka Pie",
+   "include": true,
+   "priceCents": 2288,
+   "priceDisplay": "$22.88",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Red Clam Pie",
+   "displayName": "Red Clam Pie",
+   "include": true,
+   "priceCents": 2495,
+   "priceDisplay": "$24.95",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "White Clam Pie",
+   "displayName": "White Clam Pie",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Veggie Pie",
+   "displayName": "Veggie Pie",
+   "include": true,
+   "priceCents": 2392,
+   "priceDisplay": "$23.92",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Philly Chzstk Pie",
+   "displayName": "Philly Cheesesteak Pie",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Grandma",
+   "displayName": "Grandma",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Spin\\Artichoke Pie",
+   "displayName": "Spinach & Artichoke Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chic Fran Pie",
+   "displayName": "Chicken Francese Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chic Marsala Pie",
+   "displayName": "Chicken Marsala Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sicilian",
+   "displayName": "Sicilian",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Buff Chicken Pie",
+   "displayName": "Buffalo Chicken Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BBQ Chic Pizza",
+   "displayName": "BBQ Chicken Pizza",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chic Parm Pie",
+   "displayName": "Chicken Parm Pie",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Eggplant Parm Pie",
+   "displayName": "Eggplant Parm Pie",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "General Tso",
+   "displayName": "General Tso's",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Staten Island",
+   "displayName": "Staten Island",
+   "include": true,
+   "priceCents": 2496,
+   "priceDisplay": "$24.96",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Drunken Grandma",
+   "displayName": "Drunken Grandma",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Quad",
+   "displayName": "The Quad",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Detroit Rock",
+   "displayName": "Detroit Rock",
+   "include": true,
+   "priceCents": 2392,
+   "priceDisplay": "$23.92",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Grandpa Pie",
+   "displayName": "Grandpa Pie",
+   "include": true,
+   "priceCents": 2808,
+   "priceDisplay": "$28.08",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "El Prez",
+   "displayName": "El Prez",
+   "include": true,
+   "priceCents": 2184,
+   "priceDisplay": "$21.84",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Tomato Pie",
+   "displayName": "Tomato Pie",
+   "include": true,
+   "priceCents": 1664,
+   "priceDisplay": "$16.64",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mozz\\tomato Pie",
+   "displayName": "Mozzarella & Tomato Pie",
+   "include": true,
+   "priceCents": 1976,
+   "priceDisplay": "$19.76",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Fonz",
+   "displayName": "The Fonz",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Action Pie",
+   "displayName": "Action Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Money Pie",
+   "displayName": "Money Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Best Pizza Ever",
+   "displayName": "Best Pizza Ever",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "White Truffle",
+   "displayName": "White Truffle",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fair Haven Pie",
+   "displayName": "Fair Haven Pie",
+   "include": true,
+   "priceCents": 2807,
+   "priceDisplay": "$28.07",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Famous Pepi",
+   "displayName": "Famous Pepi",
+   "include": true,
+   "priceCents": 2808,
+   "priceDisplay": "$28.08",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gigis Upside Down Pie",
+   "displayName": "Gigi's Upside Down Pie",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kelly Salad Pie",
+   "displayName": "Kelly Salad Pie",
+   "include": true,
+   "priceCents": 2392,
+   "priceDisplay": "$23.92",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Upside Down Vodka Pie",
+   "displayName": "Upside Down Vodka Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bobby Boombotz Upside Down Vodka Pepi",
+   "displayName": "Bobby Boombotz Upside Down Vodka Pepi",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Portugesa Pizza",
+   "displayName": "Portuguesa Pizza",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Tuscany Pizza",
+   "displayName": "Tuscany Pizza",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Amoda",
+   "displayName": "Amoda",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04"
+  },
+  {
+   "name": "Milano",
+   "displayName": "Milano",
+   "include": true,
+   "priceCents": 2599,
+   "priceDisplay": "$25.99"
+  },
+  {
+   "name": "Calabrese",
+   "displayName": "Calabrese",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00"
+  },
+  {
+   "name": "gluten free",
+   "displayName": "Gluten Free",
+   "include": true,
+   "priceCents": 1768,
+   "priceDisplay": "$17.68",
+   "options": [
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Vegan Pizza Pie",
+   "displayName": "Vegan Pizza Pie",
+   "include": true,
+   "priceCents": 2079,
+   "priceDisplay": "$20.79",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pepperoni Sticks",
+   "displayName": "Pepperoni Sticks",
+   "include": true,
+   "priceCents": 104,
+   "priceDisplay": "$1.04"
+  },
+  {
+   "name": "Pepperoni Sticks 2 For 1.50",
+   "displayName": "Pepperoni Sticks (2 for $1.50)",
+   "include": true,
+   "priceCents": 156,
+   "priceDisplay": "$1.56"
+  },
+  {
+   "name": "Personal Pizza",
+   "displayName": "Personal Pizza",
+   "include": true,
+   "priceCents": 1040,
+   "priceDisplay": "$10.40",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sunday Sauce Pie",
+   "displayName": "Sunday Sauce Pie",
+   "include": true,
+   "priceCents": 2808,
+   "priceDisplay": "$28.08"
+  },
+  {
+   "name": "Porky Pig Pie",
+   "displayName": "Porky Pig Pie",
+   "include": true,
+   "priceCents": 2392,
+   "priceDisplay": "$23.92",
+   "options": [
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Di Fara Style Pie",
+   "displayName": "Di Fara Style Pie",
+   "include": true,
+   "priceCents": 2184,
+   "priceDisplay": "$21.84",
+   "options": [
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "French Onion Soup Pie",
+   "displayName": "French Onion Soup Pie",
+   "include": true,
+   "priceCents": 2496,
+   "priceDisplay": "$24.96"
+  },
+  {
+   "name": "Takis Pie",
+   "displayName": "Takis Pie",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00"
+  },
+  {
+   "name": "Angry Pepi-Dew Sausage Pie",
+   "displayName": "Angry Pepi-Dew Sausage Pie",
+   "include": true,
+   "priceCents": 2808,
+   "priceDisplay": "$28.08"
+  },
+  {
+   "name": "The Rooney Pie",
+   "displayName": "The Rooney Pie",
+   "include": true,
+   "priceCents": 2288,
+   "priceDisplay": "$22.88"
+  },
+  {
+   "name": "Chick Fil A Pie",
+   "displayName": "Chick-fil-A Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04"
+  },
+  {
+   "name": "Nickys Sausage Cup Vodka Pie",
+   "displayName": "Nicky's Sausage Cup Vodka Pie",
+   "include": true,
+   "priceCents": 2808,
+   "priceDisplay": "$28.08"
+  },
+  {
+   "name": "Ellios Pie",
+   "displayName": "Ellio's Pie",
+   "include": true,
+   "priceCents": 1976,
+   "priceDisplay": "$19.76"
+  },
+  {
+   "name": "Chicken Rancheros Pie",
+   "displayName": "Chicken Rancheros Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04",
+   "options": [
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Stuffed Veggie",
+   "displayName": "Stuffed Veggie",
+   "include": true,
+   "priceCents": 2808,
+   "priceDisplay": "$28.08"
+  },
+  {
+   "name": "Stuffed Meat Pie",
+   "displayName": "Stuffed Meat Pie",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12"
+  },
+  {
+   "name": "Stuffed Hangover Pie",
+   "displayName": "Stuffed Hangover Pie",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12"
+  },
+  {
+   "name": "Stuffed Pep Pie",
+   "displayName": "Stuffed Pep Pie",
+   "include": true,
+   "priceCents": 3037,
+   "priceDisplay": "$30.37"
+  },
+  {
+   "name": "Stuffed Baked Ziti Pie",
+   "displayName": "Stuffed Baked Ziti Pie",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12"
+  },
+  {
+   "name": "Stuffed Margherita Pie",
+   "displayName": "Stuffed Margherita Pie",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12"
+  },
+  {
+   "name": "Italian Stallion Pie",
+   "displayName": "Italian Stallion Pie",
+   "include": true,
+   "priceCents": 2808,
+   "priceDisplay": "$28.08"
+  },
+  {
+   "name": "Garbage Pie",
+   "displayName": "Garbage Pie",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04"
+  },
+  {
+   "name": "Sicilian Pan Pie",
+   "displayName": "Sicilian Pan Pie",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12",
+   "options": [
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Lobster Pie",
+   "displayName": "Lobster Pie",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12"
+  },
+  {
+   "name": "Bar Stool Pie",
+   "displayName": "Bar Stool Pie",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bee Sting",
+   "displayName": "Bee Sting",
+   "include": true,
+   "priceCents": 2287,
+   "priceDisplay": "$22.87",
+   "options": [
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Add Side Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo Sauce",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "2 Two Pie Special",
+   "displayName": "Two Pie Special",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Thursday Pizza & Knots",
+   "displayName": "Thursday Pizza & Knots",
+   "include": true,
+   "priceCents": 2079,
+   "priceDisplay": "$20.79",
+   "options": [
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Monday Madness Two (2) Pizzas",
+   "displayName": "Monday Madness Two (2) Pizzas",
+   "include": true,
+   "priceCents": 2600,
+   "priceDisplay": "$26.00",
+   "options": [
+    {
+     "groupName": "Toppings",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacon",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grilled Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Topping Charges (Whole / Half Pie)",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Extra Sauce",
+       "priceDelta": 50
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Saturday Night Special",
+   "displayName": "Saturday Night Special",
+   "include": true,
+   "priceCents": 5199,
+   "priceDisplay": "$51.99",
+   "options": [
+    {
+     "groupName": "Pizza Style",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Everything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Pasta Options",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Penne",
+       "priceDelta": 0
+      },
+      {
+       "name": "Capellini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rigatoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Linguini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten Free",
+       "priceDelta": 260
+      },
+      {
+       "name": "Cavatelli",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Pasta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Meatball (3)",
+       "priceDelta": 832
+      },
+      {
+       "name": "Add Chicken Cutlet",
+       "priceDelta": 624
+      },
+      {
+       "name": "Add Sausage (2)",
+       "priceDelta": 728
+      },
+      {
+       "name": "Add Shrimp",
+       "priceDelta": 936
+      },
+      {
+       "name": "Pappardelle",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Chicken Murphy",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Sweet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Can of Soda",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Pepsi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Starry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1445 @@
+{
+ "category": "Appetizers",
+ "sortOrder": 2,
+ "items": [
+  {
+   "name": "Meatballs (3)",
+   "price": 1040,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Gigis Wings (12)",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Wing Sauce",
+     "minRequired": 1,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hot",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "BBQ",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey BBQ",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Garlic Parm",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Sriracha",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gen Tso",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sweet Chili",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well Done",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "1 Half",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "2 Half",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Chz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wing Sauce On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Extra Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Extra Ranch",
+       "price": 50,
+       "available": true
+      },
+      {
+       "name": "Extra Blue Cheese",
+       "price": 50,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gigis Wings (20)",
+   "price": 2600,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Wing Sauce",
+     "minRequired": 1,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hot",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "BBQ",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey BBQ",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Garlic Parm",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Sriracha",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gen Tso",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sweet Chili",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well Done",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "1 Half",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "2 Half",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Chz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dry",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wing Sauce On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Extra Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Extra Ranch",
+       "price": 50,
+       "available": true
+      },
+      {
+       "name": "Extra Blue Cheese",
+       "price": 50,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sausage & Long Hots",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Zuppa Di Clams",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Red\\white",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Red",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Zuppa Di Mussels",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Red\\white",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Red",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fried Calamari Large",
+   "price": 1664,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Broccoli Rabe",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "$ TOPPING $",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "1st Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "2nd Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "1st Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "2nd Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "Full Max",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Full Topping",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sautee Spinach",
+   "price": 1040,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "-------------SPLIT------------",
+   "price": 0,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Garlic Bread",
+   "price": 624,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Garlic Brd Chz",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Cheese",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mozz Stix (6)",
+   "price": 1040,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Firecracker Shrimp",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Eggplant Rollatini(2)",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Large Family Calzone",
+   "price": 1867,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "TOPPING",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Pepperoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bacn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mushroom",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broccoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomatoes",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Anchovies",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Olives",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pineapple",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gr Chix",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Garlic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepi",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Extra Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Corn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hard Egg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Brazil Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Penne Pasta",
+       "price": 104,
+       "available": true
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "$ TOPPING $",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "1st Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "2nd Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "1st Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "2nd Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "Full Max",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Full Topping",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Mini Rice Ball (3)",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Prosc  Balls (3)",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Everything Knots",
+   "price": 624,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Extra Sauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Extra Sauce",
+       "price": 50,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Eggplant Vodkatini (2)",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Fried Ravioli (8)",
+   "price": 1040,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Fish & Chips",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Fried Shrimp \\FF",
+   "price": 1663,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Small Calzone",
+   "price": 1039,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "TOPPING",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Pepperoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bacn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mushroom",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broccoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomatoes",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Anchovies",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Olives",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pineapple",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gr Chix",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Garlic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepi",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Extra Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Corn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hard Egg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Brazil Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Penne Pasta",
+       "price": 104,
+       "available": true
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "$ TOPPING $",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "1st Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "2nd Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "1st Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "2nd Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "Full Max",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Full Topping",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Large Chic Parm Calz",
+   "price": 2391,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "TOPPING",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Pepperoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bacn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mushroom",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broccoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomatoes",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Anchovies",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Olives",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pineapple",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gr Chix",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Garlic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepi",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Extra Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Corn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hard Egg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Brazil Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Penne Pasta",
+       "price": 104,
+       "available": true
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "$ TOPPING $",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "1st Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "2nd Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "1st Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "2nd Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "Full Max",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Full Topping",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sm Chic Parm Calz",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "TOPPING",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Pepperoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bacn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mushroom",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broccoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomatoes",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Anchovies",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Olives",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pineapple",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gr Chix",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Garlic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepi",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Extra Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Corn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hard Egg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Brazil Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Penne Pasta",
+       "price": 104,
+       "available": true
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "$ TOPPING $",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "1st Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "2nd Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "1st Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "2nd Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "Full Max",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Full Topping",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Rolls",
+   "price": 727,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Roll Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chic Parm",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "EP Parm",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Saus, Pep, Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Buff Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball Parm",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meatball Bread Bowl",
+   "price": 1559,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Jumbo Crab Cake",
+   "price": 1663,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Meatball Special",
+   "price": 1559,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Clams Appatizer Special",
+   "price": 1559,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Jumbo Sicilian Meatballs (Special)",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Caesar",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fried Cod Balls Special",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Baked Clams And Shrimp",
+   "price": 1872,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Clams Casino",
+   "price": 1399,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lobster Mac And Cheese  Special",
+   "price": 1867,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pepperoni Sticks",
+   "price": 104,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pepperoni Sticks 2 For 1.50",
+   "price": 156,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Bacon Nuggets With Sweet And Salty Glaze",
+   "price": 1243,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Clams Oreganata Special",
+   "price": 1559,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Stuffed Peppers With Chop Meat",
+   "price": 619,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Gigis Wings 50 Piece Catering",
+   "price": 5200,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Fried Calamari Small",
+   "price": 936,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sauteed Broccoli",
+   "price": 1040,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Gigis Fire Roasted Wings (12)",
+   "price": 1872,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Baked Clams (10)",
+   "price": 1872,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

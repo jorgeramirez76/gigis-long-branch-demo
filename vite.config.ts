@@ -15,5 +15,11 @@ export default defineConfig({
     cssCodeSplit: true,
     sourcemap: false,
     minify: "esbuild",
+    rollupOptions: {
+      input: {
+        main: new URL("./index.html", import.meta.url).pathname,
+        admin: new URL("./admin.html", import.meta.url).pathname,
+      },
+    },
   },
 });

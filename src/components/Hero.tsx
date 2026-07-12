@@ -18,7 +18,6 @@ export function Hero() {
             alt={HERO_IMAGE.alt}
             className="ken-burns h-full w-full object-cover object-center"
             loading="eager"
-            fetchPriority="high"
             decoding="async"
           />
         </picture>

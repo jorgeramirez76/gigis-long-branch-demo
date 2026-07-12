@@ -1,0 +1,1129 @@
+{
+ "category": "Seafood",
+ "sortOrder": 14,
+ "items": [
+  {
+   "name": "GiGi’s Capellini",
+   "price": 2704,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Shrimp Scampi",
+   "price": 2704,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Veggie Mod Dinner",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Brocoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broc Rabe",
+       "price": 234,
+       "available": true
+      },
+      {
+       "name": "Mixed Veg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sauteed Spinach",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Shrimp Francese",
+   "price": 2599,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Veggie Mod Dinner",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Brocoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broc Rabe",
+       "price": 234,
+       "available": true
+      },
+      {
+       "name": "Mixed Veg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sauteed Spinach",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Filet of Sole",
+   "price": 2704,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Veggie Mod Dinner",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Brocoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broc Rabe",
+       "price": 234,
+       "available": true
+      },
+      {
+       "name": "Mixed Veg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sauteed Spinach",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Shrimp Oreganata",
+   "price": 2704,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Veggie Mod Dinner",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Brocoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broc Rabe",
+       "price": 234,
+       "available": true
+      },
+      {
+       "name": "Mixed Veg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sauteed Spinach",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Seafood Fra Diavolo",
+   "price": 2808,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Veggie Mod Dinner",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Brocoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broc Rabe",
+       "price": 234,
+       "available": true
+      },
+      {
+       "name": "Mixed Veg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sauteed Spinach",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Linguine in Red Clam Sauce",
+   "price": 2288,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Linguine in White Clam Sauce",
+   "price": 2288,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lobster Ravioli",
+   "price": 2496,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Scungili Marinara",
+   "price": 2808,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fried shrimp (3)Scallop (3)",
+   "price": 2808,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Fish & Chips Dinner",
+   "price": 1871,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Shrimp Parmigiana",
+   "price": 2600,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Veggie Mod Dinner",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Brocoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broc Rabe",
+       "price": 234,
+       "available": true
+      },
+      {
+       "name": "Mixed Veg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sauteed Spinach",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Clams With Pasta Special",
+   "price": 1871,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Pesto Zuppa Di Mare",
+   "price": 2911,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Veggie Mod Dinner",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Brocoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broc Rabe",
+       "price": 234,
+       "available": true
+      },
+      {
+       "name": "Mixed Veg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sauteed Spinach",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Flounde alla Funghi Tartufo",
+   "price": 2703,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "The Big O Seafood Platterd  Comes With Soup Or Salad",
+   "price": 3015,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Clams Casino",
+   "price": 1399,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lobster Mac And Cheese  Special",
+   "price": 1867,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Parmigiana Combo Dinner",
+   "price": 2287,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Veggie Mod Dinner",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Brocoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broc Rabe",
+       "price": 234,
+       "available": true
+      },
+      {
+       "name": "Mixed Veg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sauteed Spinach",
+       "price": 234,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Combo Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chicken",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Clams Oreganata Special",
+   "price": 1559,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

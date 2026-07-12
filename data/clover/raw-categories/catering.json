@@ -1,0 +1,1124 @@
+{
+ "category": "Catering",
+ "sortOrder": 26,
+ "items": [
+  {
+   "name": "Chic Marsala Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chic Francese Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chic Santino Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chic Italiano Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chic Parm Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Grill Chic Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Chic Saltimbocca Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Shrimp Scampi Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Salmon Orgeanata Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Zuppa Clams Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Red\\white",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Red",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Zuppa Mussles Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Red\\white",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Red",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Shrimp Oreganata",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sole Oreganata Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sausage\\pep Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Meatball Parm Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Meatball/Sausage Combo Tray",
+   "price": 6240,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Saus\\broc Rabe Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Eggplant Rollatini Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Roast Beef Tray",
+   "price": 6240,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Penne Vodka Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Penne Vodka Chic Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Penne Vodka Shrimp Tray",
+   "price": 7280,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Rig Bolo Trayb",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Ravioli Parm Tray",
+   "price": 6240,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Manicotti Parm",
+   "price": 6240,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Stuffed Shells Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Baked Ziti Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Tortellini Carbonara Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Cav\\broc Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lasagna Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lob Ravioli Tray",
+   "price": 8840,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Casar Tray",
+   "price": 4680,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sonny Salad Tray",
+   "price": 5200,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Spinach Salad Tray",
+   "price": 6240,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Spring Salad Tray",
+   "price": 6240,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gigi Salad Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chic Milanese Tray",
+   "price": 7280,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cobb Salad Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chopped Salad Tray",
+   "price": 4680,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Dressing",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Bals Vinegarette",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Italian",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Honey Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Blue Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Dressing",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Asian Action",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caesar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Dressing On Side",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Antipast Platter Small Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Antipast Platter Large Tray",
+   "price": 9360,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Mini Chz Steak",
+   "price": 0,
+   "priceType": "VARIABLE",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Mini Grill Chz",
+   "price": 0,
+   "priceType": "VARIABLE",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sliders Catering",
+   "price": 0,
+   "priceType": "VARIABLE",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Crab Cakes Catering",
+   "price": 0,
+   "priceType": "VARIABLE",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Potato Croquettes Catering",
+   "price": 0,
+   "priceType": "VARIABLE",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "3 Foot Hero",
+   "price": 5616,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "6 Foot Hero",
+   "price": 11232,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Proscuitto Balls Tray",
+   "price": 7280,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Rice Balls Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sautéed spinach Tray",
+   "price": 5200,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sauteed Broccoli Tray",
+   "price": 5200,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Mashed Potatoes Tray Or French Fry Tray",
+   "price": 4680,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Mix Veg Tray",
+   "price": 6760,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Red Rosemary Potato Tray",
+   "price": 4680,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Mac & Chz Tray",
+   "price": 4680,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Brussel Spr W Bacon Tray",
+   "price": 4680,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Empenada Tray",
+   "price": 5200,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Empenada",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chicken",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Beef",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meatballs Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Italian Saus Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Fried Ravioli Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Small Tray.  Cold Cut Platter",
+   "price": 7800,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Small Container Tuna Salad",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Small Container Chicken Salad",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "12 Grilled Shrimp 9\"",
+   "price": 2600,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Calamari Tray",
+   "price": 6240,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sausage Long Hots Tray",
+   "price": 7800,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Gigis Wings 50 Piece Catering",
+   "price": 5200,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Spaghetti Marinara Tray",
+   "price": 5200,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Manicotti Tray",
+   "price": 5720,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

@@ -1,0 +1,817 @@
+{
+ "category": "Uncategorized",
+ "displayName": "Uncategorized",
+ "verdict": "exclude",
+ "reason": "POS-internal bucket — hospital/catering order tickets, staff items, gift cards, dated party lines, and cross-listed duplicates. Not a customer menu section.",
+ "items": [
+  {
+   "name": "Ice Cream (3)",
+   "displayName": "Ice Cream (3)",
+   "include": true,
+   "priceCents": 1560,
+   "priceDisplay": "$15.60"
+  },
+  {
+   "name": "Ice Cream (1)",
+   "displayName": "Ice Cream (1)",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24"
+  },
+  {
+   "name": "Chicken Caesar w/chicken tray",
+   "displayName": "Chicken Caesar W/chicken Tray",
+   "include": true,
+   "priceCents": 6760,
+   "priceDisplay": "$67.60"
+  },
+  {
+   "name": "Bilky 11\\08",
+   "displayName": "Bilky 11\\08",
+   "include": true,
+   "priceCents": 11681,
+   "priceDisplay": "$116.81"
+  },
+  {
+   "name": "Smart Water",
+   "displayName": "Smart Water",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Sunday Special",
+   "displayName": "Sunday Special",
+   "include": true,
+   "priceCents": 3952,
+   "priceDisplay": "$39.52"
+  },
+  {
+   "name": "Med Pat",
+   "displayName": "Med Pat",
+   "include": true,
+   "priceCents": 6508,
+   "priceDisplay": "$65.08"
+  },
+  {
+   "name": "Gatorade Small",
+   "displayName": "Gatorade Small",
+   "include": true,
+   "priceCents": 182,
+   "priceDisplay": "$1.82"
+  },
+  {
+   "name": "Billy 11\\08",
+   "displayName": "Billy 11\\08",
+   "include": true,
+   "priceCents": 11648,
+   "priceDisplay": "$116.48"
+  },
+  {
+   "name": "Pizza Miercoles",
+   "displayName": "Pizza Miercoles",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56"
+  },
+  {
+   "name": "Pizza 23",
+   "displayName": "Pizza 23",
+   "include": true,
+   "priceCents": 1344,
+   "priceDisplay": "$13.44"
+  },
+  {
+   "name": "Pizza Wednes",
+   "displayName": "Pizza Wednes",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56"
+  },
+  {
+   "name": "Piizaa Fre",
+   "displayName": "Piizaa Fre",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56"
+  },
+  {
+   "name": "Pizza Free",
+   "displayName": "Pizza Free",
+   "include": true,
+   "priceCents": 63648,
+   "priceDisplay": "$636.48"
+  },
+  {
+   "name": "Pizza Free",
+   "displayName": "Pizza Free",
+   "include": true,
+   "priceCents": 1399,
+   "priceDisplay": "$13.99"
+  },
+  {
+   "name": "Pizzas Free",
+   "displayName": "Pizzas Free",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56"
+  },
+  {
+   "name": "Billy Hospital",
+   "displayName": "Billy Hospital",
+   "include": true,
+   "priceCents": 26495,
+   "priceDisplay": "$264.95"
+  },
+  {
+   "name": "Hospital Bilky 5-8",
+   "displayName": "Hospital Bilky 5-8",
+   "include": true,
+   "priceCents": 23816,
+   "priceDisplay": "$238.16"
+  },
+  {
+   "name": "Stuffed Mushrooms",
+   "displayName": "Stuffed Mushrooms",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Hats And Apron",
+   "displayName": "Hats and Apron",
+   "include": true,
+   "priceCents": 11440,
+   "priceDisplay": "$114.40"
+  },
+  {
+   "name": "Tuesday Bogo Gourmet Two (2) For Tuesday",
+   "displayName": "Tuesday Bogo Gourmet Two (2) For Tuesday",
+   "include": true,
+   "priceCents": 390,
+   "priceDisplay": "$3.90"
+  },
+  {
+   "name": "Tuesday Bogo Special Slice Two (2) For Tuesday",
+   "displayName": "Tuesday Bogo Special Slice Two (2) For Tuesday",
+   "include": true,
+   "priceCents": 338,
+   "priceDisplay": "$3.38"
+  },
+  {
+   "name": "Tuesday Bogo Slice Plain Two (2) For One",
+   "displayName": "Tuesday Bogo Slice Plain Two (2) For One",
+   "include": true,
+   "priceCents": 286,
+   "priceDisplay": "$2.86"
+  },
+  {
+   "name": "Doughball",
+   "displayName": "Doughball",
+   "include": true,
+   "priceCents": 520,
+   "priceDisplay": "$5.20"
+  },
+  {
+   "name": "Tommy",
+   "displayName": "Tommy",
+   "include": true,
+   "priceCents": 260,
+   "priceDisplay": "$2.60"
+  },
+  {
+   "name": "Carrot Cake",
+   "displayName": "Carrot Cake",
+   "include": true,
+   "priceCents": 519,
+   "priceDisplay": "$5.19"
+  },
+  {
+   "name": "Veal Scallopini Special",
+   "displayName": "Veal Scallopini Special",
+   "include": true,
+   "priceCents": 2283,
+   "priceDisplay": "$22.83"
+  },
+  {
+   "name": "MYOP PIZZA  PARTY ( Kids Price)",
+   "displayName": "MYOP PIZZA PARTY ( Kids Price)",
+   "include": true,
+   "priceCents": 2079,
+   "priceDisplay": "$20.79"
+  },
+  {
+   "name": "Party 29.99 (+7% Tax +13% Gratuity) 19 People",
+   "displayName": "Party 29.99 (+7% Tax +13% Gratuity) 19 People",
+   "include": true,
+   "priceCents": 71112,
+   "priceDisplay": "$711.12"
+  },
+  {
+   "name": "Jarrito",
+   "displayName": "Jarrito",
+   "include": true,
+   "priceCents": 311,
+   "priceDisplay": "$3.11"
+  },
+  {
+   "name": "Oreo Mouse",
+   "displayName": "Oreo Mouse",
+   "include": true,
+   "priceCents": 519,
+   "priceDisplay": "$5.19"
+  },
+  {
+   "name": "Tropicana Orange",
+   "displayName": "Tropicana Orange",
+   "include": true,
+   "priceCents": 311,
+   "priceDisplay": "$3.11"
+  },
+  {
+   "name": "Cheese Steak Fries",
+   "displayName": "Cheese Steak Fries",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47"
+  },
+  {
+   "name": "Tuna BLT Wrap",
+   "displayName": "Tuna BLT Wrap",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48"
+  },
+  {
+   "name": "Caesar Salad Tray",
+   "displayName": "Caesar Salad Tray",
+   "include": true,
+   "priceCents": 4680,
+   "priceDisplay": "$46.80"
+  },
+  {
+   "name": "Bacon Stick",
+   "displayName": "Bacon Stick",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Oss Bucco Sandwich",
+   "displayName": "Oss Bucco Sandwich",
+   "include": true,
+   "priceCents": 727,
+   "priceDisplay": "$7.27"
+  },
+  {
+   "name": "Gift Card",
+   "displayName": "Gift Card",
+   "include": true,
+   "priceCents": 2704,
+   "priceDisplay": "$27.04"
+  },
+  {
+   "name": "Chicken Fingers Catering",
+   "displayName": "Chicken Fingers Catering",
+   "include": true,
+   "priceCents": 6240,
+   "priceDisplay": "$62.40"
+  },
+  {
+   "name": "Cavatelli Broc With Sausage",
+   "displayName": "Cavatelli Broc with Sausage",
+   "include": true,
+   "priceCents": 2079,
+   "priceDisplay": "$20.79"
+  },
+  {
+   "name": "Crouquet Special 2-5$",
+   "displayName": "Crouquet Special 2-5$",
+   "include": true,
+   "priceCents": 520,
+   "priceDisplay": "$5.20"
+  },
+  {
+   "name": "Derosa Cookies",
+   "displayName": "Derosa Cookies",
+   "include": true,
+   "priceCents": 519,
+   "priceDisplay": "$5.19"
+  },
+  {
+   "name": "Buff Pinwheel",
+   "displayName": "Buff Pinwheel",
+   "include": true,
+   "priceCents": 468,
+   "priceDisplay": "$4.68"
+  },
+  {
+   "name": "Resses",
+   "displayName": "Resses",
+   "include": true,
+   "priceCents": 260,
+   "priceDisplay": "$2.60"
+  },
+  {
+   "name": "Giant Cookies (2)",
+   "displayName": "Giant Cookies (2)",
+   "include": true,
+   "priceCents": 520,
+   "priceDisplay": "$5.20"
+  },
+  {
+   "name": "Giant Cookies (1)",
+   "displayName": "Giant Cookies (1)",
+   "include": true,
+   "priceCents": 312,
+   "priceDisplay": "$3.12"
+  },
+  {
+   "name": "Lunch Special Coupon 2 Slices And Can Of Soda",
+   "displayName": "Lunch Special Coupon 2 Slices and Can of Soda",
+   "include": true,
+   "priceCents": 623,
+   "priceDisplay": "$6.23"
+  },
+  {
+   "name": "Gift card",
+   "displayName": "Gift Card",
+   "include": true,
+   "priceCents": null,
+   "priceDisplay": null
+  },
+  {
+   "name": "Antipasto Spevial Hot Cold",
+   "displayName": "Antipasto Spevial Hot Cold",
+   "include": true,
+   "priceCents": 1409,
+   "priceDisplay": "$14.09"
+  },
+  {
+   "name": "Eggplant Napoleon Special",
+   "displayName": "Eggplant Napoleon Special",
+   "include": true,
+   "priceCents": 2495,
+   "priceDisplay": "$24.95"
+  },
+  {
+   "name": "Frito Misto Special App",
+   "displayName": "Frito Misto Special App",
+   "include": true,
+   "priceCents": 2079,
+   "priceDisplay": "$20.79"
+  },
+  {
+   "name": "Pork Special",
+   "displayName": "Pork Special",
+   "include": true,
+   "priceCents": 2495,
+   "priceDisplay": "$24.95"
+  },
+  {
+   "name": "Cyo Hot",
+   "displayName": "Cyo Hot",
+   "include": true,
+   "priceCents": 1414,
+   "priceDisplay": "$14.14",
+   "options": [
+    {
+     "groupName": "CYO Bread Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Wrap",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "CYO Meat",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salami",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Procuitto",
+       "priceDelta": 0
+      },
+      {
+       "name": "Turkey",
+       "priceDelta": 0
+      },
+      {
+       "name": "Grill Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chiccutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tna",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "CYO Cheese",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Provolone",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mozzarella",
+       "priceDelta": 0
+      },
+      {
+       "name": "American Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepperjack",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cheddar",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "CYO Condiment",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil & Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt & pep",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oregano",
+       "priceDelta": 0
+      },
+      {
+       "name": "Red Vnegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Glaze",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "CYO Veggie",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Avocado",
+       "priceDelta": 0
+      },
+      {
+       "name": "Roasted Pepper",
+       "priceDelta": 0
+      },
+      {
+       "name": "Jalapeno",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hot Cherry Peps",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vegan Cheese",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "FF",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips Add FF",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chicken On Stick",
+   "displayName": "Chicken on Stick",
+   "include": true,
+   "priceCents": 416,
+   "priceDisplay": "$4.16"
+  },
+  {
+   "name": "Hawaiian",
+   "displayName": "Hawaiian",
+   "include": true,
+   "priceCents": 2288,
+   "priceDisplay": "$22.88",
+   "options": [
+    {
+     "groupName": "TOPPING",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gr Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "$ TOPPING $",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "PIZZA STYLE",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Eveything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Truf Santana FF",
+   "displayName": "Truf Santana FF",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Disco FF",
+   "displayName": "Disco FF",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Chili Chz Fries",
+   "displayName": "Chili Chz Fries",
+   "include": true,
+   "priceCents": 1039,
+   "priceDisplay": "$10.39"
+  },
+  {
+   "name": "Chz Fries",
+   "displayName": "Chz Fries",
+   "include": true,
+   "priceCents": 727,
+   "priceDisplay": "$7.27"
+  },
+  {
+   "name": "Cold",
+   "displayName": "Cold",
+   "include": true,
+   "priceCents": 0,
+   "priceDisplay": null
+  },
+  {
+   "name": "Rigatoni A La Maria",
+   "displayName": "Rigatoni a La Maria",
+   "include": true,
+   "priceCents": 2252,
+   "priceDisplay": "$22.52"
+  },
+  {
+   "name": "MeatBall Parm Hero",
+   "displayName": "MeatBall Parm Hero",
+   "include": true,
+   "priceCents": 1352,
+   "priceDisplay": "$13.52",
+   "options": [
+    {
+     "groupName": "FF",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips Add FF",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Meat Lover's Sandwich Breakfast",
+   "displayName": "Meat Lover's Sandwich Breakfast",
+   "include": true,
+   "priceCents": 1014,
+   "priceDisplay": "$10.14"
+  },
+  {
+   "name": "Classic Sandwich Breakfast",
+   "displayName": "Classic Sandwich Breakfast",
+   "include": true,
+   "priceCents": 785,
+   "priceDisplay": "$7.85"
+  },
+  {
+   "name": "Billy Pie",
+   "displayName": "Billy Pie",
+   "include": true,
+   "priceCents": 2288,
+   "priceDisplay": "$22.88"
+  }
+ ]
+}

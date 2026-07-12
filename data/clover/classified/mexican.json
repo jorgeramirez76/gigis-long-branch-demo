@@ -1,0 +1,80 @@
+{
+ "category": "Mexican",
+ "displayName": "Mexican",
+ "verdict": "include",
+ "reason": "Real Mexican entrees category of tacos, burritos, quesadillas, and empanada dinners.",
+ "items": [
+  {
+   "name": "Tacos (3)",
+   "displayName": "Tacos (3)",
+   "include": true,
+   "priceCents": 1248,
+   "priceDisplay": "$12.48"
+  },
+  {
+   "name": "Burrito",
+   "displayName": "Burrito",
+   "include": true,
+   "priceCents": 1560,
+   "priceDisplay": "$15.60"
+  },
+  {
+   "name": "Cheese Quesadilla",
+   "displayName": "Cheese Quesadilla",
+   "include": true,
+   "priceCents": 1144,
+   "priceDisplay": "$11.44"
+  },
+  {
+   "name": "Chicken Quesadilla",
+   "displayName": "Chicken Quesadilla",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56"
+  },
+  {
+   "name": "Beef Quesadilla",
+   "displayName": "Beef Quesadilla",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56"
+  },
+  {
+   "name": "Al Pastor Quesadilla",
+   "displayName": "Al Pastor Quesadilla",
+   "include": true,
+   "priceCents": 1456,
+   "priceDisplay": "$14.56"
+  },
+  {
+   "name": "Chimichanga",
+   "displayName": "Chimichanga",
+   "include": true,
+   "priceCents": 1664,
+   "priceDisplay": "$16.64"
+  },
+  {
+   "name": "Empanada (3) Dinner",
+   "displayName": "Empanada (3) Dinner",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51",
+   "options": [
+    {
+     "groupName": "Filling",
+     "rule": "Choose 1",
+     "choices": [
+      {
+       "name": "Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Beef",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

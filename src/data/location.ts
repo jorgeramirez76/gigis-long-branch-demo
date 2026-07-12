@@ -31,9 +31,26 @@ export const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destinatio
 
 export const MAP_EMBED_URL = `https://www.google.com/maps?q=${LOCATION.googleMapsQuery}&output=embed`;
 
-/** Canonical online ordering URL — Slice matches in-store pricing. */
-export const ORDER_ONLINE_URL =
+/**
+ * Online ordering URL — Slice today. The whole "kill Slice fees" play is to
+ * route owned traffic (this site, Google, regulars) to Clover Online Ordering
+ * once the owner turns it on, so orders hit the POS with no per-order fee.
+ *
+ * Switching is a deploy-time env var, no code edit:
+ *   VITE_ORDER_PROVIDER=clover  → all Order Online buttons point at Clover.
+ * Anything else (or unset)      → Slice.
+ *
+ * TODO(go-live): confirm the live Clover Online Ordering URL for the Long
+ * Branch merchant (2J9HNTSEXBHG1) before flipping the env var — the value
+ * below is the standard cloveronline.com pattern and must be verified.
+ */
+const SLICE_ORDER_URL =
   "https://slicelife.com/restaurants/nj/long-branch/07740/gigi-s-ny-style-pizza-restaurant/menu";
+
+export const CLOVER_ORDER_URL = "https://gigis-pizza-long-branch.cloveronline.com";
+
+export const ORDER_ONLINE_URL =
+  import.meta.env.VITE_ORDER_PROVIDER === "clover" ? CLOVER_ORDER_URL : SLICE_ORDER_URL;
 
 /** Socials. Note: accounts are multi-location — posts clearly reference
  * Long Branch in captions. Link but don't claim exclusivity. */

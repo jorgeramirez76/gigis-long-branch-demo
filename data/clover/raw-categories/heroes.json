@@ -1,0 +1,3781 @@
+{
+ "category": "Heroes",
+ "sortOrder": 6,
+ "items": [
+  {
+   "name": "Cheesesteak Whole Classic",
+   "price": 1560,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Chzsteak Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Beef",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Classic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cali",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Hot Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Onions",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Mush",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vegan Cheese",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "Buff Chicken",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spicy Chipotle",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chicken Bacon Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Grilled Chicken Cali Style",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Saus\\BrocRabe Hero",
+   "price": 1414,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chic Parm Hero",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Saus Parm Hero",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Hero Parm Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "No Sauce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Extra Sauce",
+       "price": 78,
+       "available": true
+      },
+      {
+       "name": "Extra Cheese",
+       "price": 78,
+       "available": true
+      },
+      {
+       "name": "Sub Vodka Sauce",
+       "price": 130,
+       "available": true
+      },
+      {
+       "name": "Lite Sauce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Lite Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vegan Cheese",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Turkey Club Sub",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#2 Kelly's Italian",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#24 Gigis Mosbeef Sandwich",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#26 The Big Guy",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Italian Beef",
+   "price": 1414,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#1 Kenny Action",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#3 The Nicky Poblano Breaded",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#3 The Nicky Poblano Grilled",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#4 Domb The Bomb",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#5 Razzle Dazzle",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#6 Greenwich Village",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#7 Hustler",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#8 My Cousin Vinny",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#9 Tiffa Tacchino",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#11 Beef On Weck",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#10 Drita",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#12 Big Nick",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#13 Sonny Cubano",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#14 Shrimp Garlic",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#15 Patty Geno",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#16 S&P 500",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#17 Little Italy Franc",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#17 Little Italy Mars",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#18 Chickster",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#19 Johnny Roastbeef",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#20 Greatest Chic",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Grilled Chicken Sandwich",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Sandwiches",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oil",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vinegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BLT Club Sandwich",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Sandwiches",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oil",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vinegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Turkey Club",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chic Salad Club",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Tuna Club",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cyo Cold",
+   "price": 1414,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "CYO Bread Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Wrap",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salami",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Roni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Procuitto",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Turkey",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Grill Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chiccutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tna",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Cheese",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Provolone",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mozz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Amer Chz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepperjack",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cheddar",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt\\pep",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oregano",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Red Vnegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Veggie",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Avocado",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Roasted Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Jalapeno",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hot Cherry Peps",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vegan Cheese",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Piggly Wiggly",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Triple C",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Eggplant Parm Hero",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Italian Beef Special With French Fries",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Sandwiches",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oil",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vinegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Shrimp Parm Hero",
+   "price": 1622,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Custom Item",
+   "price": 1366,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Sandwiches",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oil",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vinegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Combo Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chicken",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Bread Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Wrap",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salami",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Roni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Procuitto",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Turkey",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Grill Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chiccutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tna",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Cheese",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Provolone",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mozz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Amer Chz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepperjack",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cheddar",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "O\\V",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt\\pep",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oregano",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Red Vnegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Glaze",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "CYO Veggie",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Avocado",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Roasted Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Jalapeno",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hot Cherry Peps",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vegan Cheese",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Side FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Side FF",
+       "price": 234,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#21 The Racetrack Special",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#22 The Charlie Chopped Italian",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#23 Big Al Capones Italian Beef",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#25 The \"Hard Hero\"",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#27 Jersey Boy",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#29 Sausage & Broccoli Rabe",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "#30 Roast Beef & Provo",
+   "price": 1456,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cheesesteak Half Small",
+   "price": 1040,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Chzsteak Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Beef",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Classic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cali",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Hot Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Onions",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "No Mush",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vegan Cheese",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "Buff Chicken",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spicy Chipotle",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chicken Bacon Ranch",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Grilled Chicken Cali Style",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chicken Cutlet Hero",
+   "price": 1352,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Wednesday 9-9-9  9\" Hoagie",
+   "price": 936,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Sandwiches",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomato",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Oil",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Vinegar",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Extra Sauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Extra Sauce",
+       "price": 50,
+       "available": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1343 @@
+{
+ "category": "Special",
+ "displayName": "Specials",
+ "verdict": "include",
+ "reason": "Live house specials and standing weekly deals from the POS; kept the real dishes, dropped a stale duplicate Clams Casino entry and a one-off dessert promo.",
+ "items": [
+  {
+   "name": "Sara Lee Cheesecake Special",
+   "displayName": "Sara Lee Cheesecake Special",
+   "include": true,
+   "priceCents": 1039,
+   "priceDisplay": "$10.39"
+  },
+  {
+   "name": "Jumbo Crab Cake",
+   "displayName": "Jumbo Crab Cake",
+   "include": true,
+   "priceCents": 1663,
+   "priceDisplay": "$16.63"
+  },
+  {
+   "name": "Meatball Special",
+   "displayName": "Meatball Special",
+   "include": true,
+   "priceCents": 1559,
+   "priceDisplay": "$15.59"
+  },
+  {
+   "name": "Pasta Basile",
+   "displayName": "Pasta Basile",
+   "include": true,
+   "priceCents": 2287,
+   "priceDisplay": "$22.87"
+  },
+  {
+   "name": "Grandpa Sunday Sauce",
+   "displayName": "Grandpa Sunday Sauce",
+   "include": true,
+   "priceCents": 2495,
+   "priceDisplay": "$24.95"
+  },
+  {
+   "name": "Butter Scallops",
+   "displayName": "Butter Scallops",
+   "include": true,
+   "priceCents": 2599,
+   "priceDisplay": "$25.99"
+  },
+  {
+   "name": "Clams Appatizer Special",
+   "displayName": "Clams Appetizer Special",
+   "include": true,
+   "priceCents": 1559,
+   "priceDisplay": "$15.59"
+  },
+  {
+   "name": "Clams With Pasta Special",
+   "displayName": "Clams with Pasta Special",
+   "include": true,
+   "priceCents": 1871,
+   "priceDisplay": "$18.71"
+  },
+  {
+   "name": "Jumbo Sicilian Meatballs (Special)",
+   "displayName": "Jumbo Sicilian Meatballs",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51"
+  },
+  {
+   "name": "Popeye Salad",
+   "displayName": "Popeye Salad",
+   "include": true,
+   "priceCents": 1871,
+   "priceDisplay": "$18.71"
+  },
+  {
+   "name": "Piggly Wiggly",
+   "displayName": "Piggly Wiggly",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51",
+   "options": [
+    {
+     "groupName": "FF",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips Add FF",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Sidesauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Triple C",
+   "displayName": "The Triple C",
+   "include": true,
+   "priceCents": 1455,
+   "priceDisplay": "$14.55",
+   "options": [
+    {
+     "groupName": "Add Sidesauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pesto Zuppa Di Mare",
+   "displayName": "Pesto Zuppa di Mare",
+   "include": true,
+   "priceCents": 2911,
+   "priceDisplay": "$29.11",
+   "options": [
+    {
+     "groupName": "Pasta Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Penne",
+       "priceDelta": 0
+      },
+      {
+       "name": "Capellini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rigatoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Linguini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten Free",
+       "priceDelta": 260
+      },
+      {
+       "name": "Cavatelli",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Pasta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Meatball (3)",
+       "priceDelta": 832
+      },
+      {
+       "name": "Add Chicken Cutlet",
+       "priceDelta": 624
+      },
+      {
+       "name": "Add Sausage (2)",
+       "priceDelta": 728
+      },
+      {
+       "name": "Add Shrimp",
+       "priceDelta": 936
+      },
+      {
+       "name": "Parpadelle",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Veggie Mod Dinner",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Brocoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broc Rabe",
+       "priceDelta": 234
+      },
+      {
+       "name": "Mixed Veg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sauteed Spinach",
+       "priceDelta": 234
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Laz-Alfredo",
+   "displayName": "Laz-Alfredo",
+   "include": true,
+   "priceCents": 2391,
+   "priceDisplay": "$23.91"
+  },
+  {
+   "name": "Flounde alla Funghi Tartufo",
+   "displayName": "Flounder alla Funghi Tartufo",
+   "include": true,
+   "priceCents": 2703,
+   "priceDisplay": "$27.03"
+  },
+  {
+   "name": "Monkey Cake",
+   "displayName": "Monkey Cake",
+   "include": true,
+   "priceCents": 993,
+   "priceDisplay": "$9.93"
+  },
+  {
+   "name": "Hanger Steak Special",
+   "displayName": "Hanger Steak Special",
+   "include": true,
+   "priceCents": 2855,
+   "priceDisplay": "$28.55",
+   "options": [
+    {
+     "groupName": "Meat Temp",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Rare",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium Rare",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium Well",
+       "priceDelta": 0
+      },
+      {
+       "name": "Well",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Big O Seafood Platterd  Comes With Soup Or Salad",
+   "displayName": "The Big O Seafood Platter (Comes with Soup or Salad)",
+   "include": true,
+   "priceCents": 3015,
+   "priceDisplay": "$30.15"
+  },
+  {
+   "name": "Veggie Soup Special",
+   "displayName": "Veggie Soup Special",
+   "include": true,
+   "priceCents": 519,
+   "priceDisplay": "$5.19"
+  },
+  {
+   "name": "Italian Beef Special With French Fries",
+   "displayName": "Italian Beef Special with French Fries",
+   "include": true,
+   "priceCents": 1351,
+   "priceDisplay": "$13.51",
+   "options": [
+    {
+     "groupName": "Sandwiches",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Add Sidesauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fried Cod Balls Special",
+   "displayName": "Fried Cod Balls Special",
+   "include": true,
+   "priceCents": 1143,
+   "priceDisplay": "$11.43"
+  },
+  {
+   "name": "Stroganoff Special",
+   "displayName": "Stroganoff Special",
+   "include": true,
+   "priceCents": 2183,
+   "priceDisplay": "$21.83"
+  },
+  {
+   "name": "Shrimp Saltimbocca Special",
+   "displayName": "Shrimp Saltimbocca Special",
+   "include": true,
+   "priceCents": 2599,
+   "priceDisplay": "$25.99"
+  },
+  {
+   "name": "Rollatini Special",
+   "displayName": "Rollatini Special",
+   "include": true,
+   "priceCents": 2495,
+   "priceDisplay": "$24.95"
+  },
+  {
+   "name": "Butchers Cut Special",
+   "displayName": "Butcher's Cut Special",
+   "include": true,
+   "priceCents": 2751,
+   "priceDisplay": "$27.51",
+   "options": [
+    {
+     "groupName": "Meat Temp",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Rare",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium Rare",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium Well",
+       "priceDelta": 0
+      },
+      {
+       "name": "Well",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chicken Murphy Special",
+   "displayName": "Chicken Murphy Special",
+   "include": true,
+   "priceCents": 2703,
+   "priceDisplay": "$27.03"
+  },
+  {
+   "name": "Primavera Plaza Ham Roll",
+   "displayName": "Primavera Plaza Ham Roll",
+   "include": true,
+   "priceCents": 889,
+   "priceDisplay": "$8.89"
+  },
+  {
+   "name": "Italian Chicken Soup",
+   "displayName": "Italian Chicken Soup",
+   "include": true,
+   "priceCents": 624,
+   "priceDisplay": "$6.24"
+  },
+  {
+   "name": "Potato Croquettes",
+   "displayName": "Potato Croquettes",
+   "include": true,
+   "priceCents": 993,
+   "priceDisplay": "$9.93"
+  },
+  {
+   "name": "Hot Antipasto",
+   "displayName": "Hot Antipasto",
+   "include": true,
+   "priceCents": 2391,
+   "priceDisplay": "$23.91"
+  },
+  {
+   "name": "Upside Down Steak And Cheese Sandwich",
+   "displayName": "Upside Down Steak and Cheese Sandwich",
+   "include": true,
+   "priceCents": 1305,
+   "priceDisplay": "$13.05"
+  },
+  {
+   "name": "Italian Hot Dog With Zesty Cheesesauce",
+   "displayName": "Italian Hot Dog with Zesty Cheese Sauce",
+   "include": true,
+   "priceCents": 1039,
+   "priceDisplay": "$10.39"
+  },
+  {
+   "name": "Pastipasto",
+   "displayName": "Pastipasto",
+   "include": true,
+   "priceCents": 2553,
+   "priceDisplay": "$25.53",
+   "options": [
+    {
+     "groupName": "Combo Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Shrimp",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Choclate Peanut Butter Cake",
+   "displayName": "Chocolate Peanut Butter Cake",
+   "include": true,
+   "priceCents": 519,
+   "priceDisplay": "$5.19"
+  },
+  {
+   "name": "Clams Casino",
+   "displayName": "Clams Casino",
+   "include": true,
+   "priceCents": 1399,
+   "priceDisplay": "$13.99"
+  },
+  {
+   "name": "Penne Italia Special",
+   "displayName": "Penne Italia Special",
+   "include": true,
+   "priceCents": 2543,
+   "priceDisplay": "$25.43"
+  },
+  {
+   "name": "Grilled Chicken With Bacon Mozzarella Special",
+   "displayName": "Grilled Chicken with Bacon Mozzarella Special",
+   "include": true,
+   "priceCents": 2439,
+   "priceDisplay": "$24.39"
+  },
+  {
+   "name": "Dessert Special Cannoli Choc Chip Pop",
+   "displayName": "Dessert Special Cannoli Choc Chip Pop",
+   "include": false,
+   "priceCents": 1399,
+   "priceDisplay": "$13.99"
+  },
+  {
+   "name": "Stuffed Chicken Special With Side Salad",
+   "displayName": "Stuffed Chicken Special with Side Salad",
+   "include": true,
+   "priceCents": 2647,
+   "priceDisplay": "$26.47",
+   "options": [
+    {
+     "groupName": "Pasta Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Penne",
+       "priceDelta": 0
+      },
+      {
+       "name": "Capellini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rigatoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Linguini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten Free",
+       "priceDelta": 260
+      },
+      {
+       "name": "Cavatelli",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Pasta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Meatball (3)",
+       "priceDelta": 832
+      },
+      {
+       "name": "Add Chicken Cutlet",
+       "priceDelta": 624
+      },
+      {
+       "name": "Add Sausage (2)",
+       "priceDelta": 728
+      },
+      {
+       "name": "Add Shrimp",
+       "priceDelta": 936
+      },
+      {
+       "name": "Parpadelle",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bbq Chicken Special",
+   "displayName": "BBQ Chicken Special",
+   "include": true,
+   "priceCents": 2184,
+   "priceDisplay": "$21.84"
+  },
+  {
+   "name": "Clams Casino",
+   "displayName": "Clams Casino",
+   "include": false,
+   "priceCents": 1243,
+   "priceDisplay": "$12.43"
+  },
+  {
+   "name": "Bacon Nuggets With Sweet And Salty Glaze",
+   "displayName": "Bacon Nuggets with Sweet and Salty Glaze",
+   "include": true,
+   "priceCents": 1243,
+   "priceDisplay": "$12.43"
+  },
+  {
+   "name": "Eggplant Lasagna",
+   "displayName": "Eggplant Lasagna",
+   "include": true,
+   "priceCents": 2075,
+   "priceDisplay": "$20.75"
+  },
+  {
+   "name": "Veal Parm Special Over Pasta",
+   "displayName": "Veal Parm Special over Pasta",
+   "include": true,
+   "priceCents": 2283,
+   "priceDisplay": "$22.83",
+   "options": [
+    {
+     "groupName": "Pasta Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Penne",
+       "priceDelta": 0
+      },
+      {
+       "name": "Capellini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rigatoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Linguini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten Free",
+       "priceDelta": 260
+      },
+      {
+       "name": "Cavatelli",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Pasta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Meatball (3)",
+       "priceDelta": 832
+      },
+      {
+       "name": "Add Chicken Cutlet",
+       "priceDelta": 624
+      },
+      {
+       "name": "Add Sausage (2)",
+       "priceDelta": 728
+      },
+      {
+       "name": "Add Shrimp",
+       "priceDelta": 936
+      },
+      {
+       "name": "Parpadelle",
+       "priceDelta": 208
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Clams Oreganata Special",
+   "displayName": "Clams Oreganata Special",
+   "include": true,
+   "priceCents": 1559,
+   "priceDisplay": "$15.59"
+  },
+  {
+   "name": "Stuffed Peppers With Chop Meat",
+   "displayName": "Stuffed Peppers with Chop Meat",
+   "include": true,
+   "priceCents": 619,
+   "priceDisplay": "$6.19"
+  },
+  {
+   "name": "Chicken Rollatini",
+   "displayName": "Chicken Rollatini",
+   "include": true,
+   "priceCents": 2391,
+   "priceDisplay": "$23.91"
+  },
+  {
+   "name": "Cod Filet Over Escarole Beans",
+   "displayName": "Cod Filet over Escarole & Beans",
+   "include": true,
+   "priceCents": 2481,
+   "priceDisplay": "$24.81"
+  },
+  {
+   "name": "Lobster Ravioli",
+   "displayName": "Lobster Ravioli",
+   "include": true,
+   "priceCents": 2391,
+   "priceDisplay": "$23.91"
+  },
+  {
+   "name": "Early-bird Special",
+   "displayName": "Early Bird Special",
+   "include": true,
+   "priceCents": 2075,
+   "priceDisplay": "$20.75",
+   "options": [
+    {
+     "groupName": "Dressing",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Balsamic Vinaigrette",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ranch",
+       "priceDelta": 0
+      },
+      {
+       "name": "Italian",
+       "priceDelta": 0
+      },
+      {
+       "name": "Honey Mustard",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil & Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Blue Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "No Dressing",
+       "priceDelta": 0
+      },
+      {
+       "name": "Glaze",
+       "priceDelta": 0
+      },
+      {
+       "name": "Asian Action",
+       "priceDelta": 0
+      },
+      {
+       "name": "Caesar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Dressing on Side",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Pasta Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Penne",
+       "priceDelta": 0
+      },
+      {
+       "name": "Capellini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rigatoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Linguini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten Free",
+       "priceDelta": 260
+      },
+      {
+       "name": "Cavatelli",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Pasta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Meatball (3)",
+       "priceDelta": 832
+      },
+      {
+       "name": "Add Chicken Cutlet",
+       "priceDelta": 624
+      },
+      {
+       "name": "Add Sausage (2)",
+       "priceDelta": 728
+      },
+      {
+       "name": "Add Shrimp",
+       "priceDelta": 936
+      },
+      {
+       "name": "Parpadelle",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Choice For Early Bird",
+     "rule": "Choose 1–2",
+     "choices": [
+      {
+       "name": "Soup",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salad",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant Parm",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Parm",
+       "priceDelta": 0
+      },
+      {
+       "name": "Stuffed Shells",
+       "priceDelta": 0
+      },
+      {
+       "name": "Lasagna",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Shrimp Stir-fry",
+   "displayName": "Shrimp Stir-fry",
+   "include": true,
+   "priceCents": 2231,
+   "priceDisplay": "$22.31"
+  },
+  {
+   "name": "2 Two Pie Special",
+   "displayName": "Two Pie Special",
+   "include": true,
+   "priceCents": 2912,
+   "priceDisplay": "$29.12",
+   "options": [
+    {
+     "groupName": "TOPPING",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepperoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Sausage",
+       "priceDelta": 0
+      },
+      {
+       "name": "Meatball",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ham",
+       "priceDelta": 0
+      },
+      {
+       "name": "Eggplant",
+       "priceDelta": 0
+      },
+      {
+       "name": "Bacn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mushroom",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Broccoli",
+       "priceDelta": 0
+      },
+      {
+       "name": "Peppers",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spinach",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomatoes",
+       "priceDelta": 0
+      },
+      {
+       "name": "Anchovies",
+       "priceDelta": 0
+      },
+      {
+       "name": "Olives",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pineapple",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gr Chicken",
+       "priceDelta": 0
+      },
+      {
+       "name": "Chicken Cutlet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Garlic",
+       "priceDelta": 0
+      },
+      {
+       "name": "Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Extra Cheese",
+       "priceDelta": 0
+      },
+      {
+       "name": "Corn",
+       "priceDelta": 0
+      },
+      {
+       "name": "Hard Egg",
+       "priceDelta": 0
+      },
+      {
+       "name": "Brazil Ricotta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Penne Pasta",
+       "priceDelta": 104
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "$ TOPPING $",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "1st Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "2nd Half",
+       "priceDelta": 208
+      },
+      {
+       "name": "1st Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "2nd Half Max",
+       "priceDelta": 416
+      },
+      {
+       "name": "Full Max",
+       "priceDelta": 624
+      },
+      {
+       "name": "Full Topping",
+       "priceDelta": 312
+      }
+     ]
+    },
+    {
+     "groupName": "PIZZA STYLE",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Eveything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bogo Two (2) For Tuesday Pasta",
+   "displayName": "Two for Tuesday Pasta (BOGO)",
+   "include": true,
+   "priceCents": 1767,
+   "priceDisplay": "$17.67",
+   "options": [
+    {
+     "groupName": "Bogo Pasta Tuesday",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Baked Ziti",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spaghetti and Meatballs (2)",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Wednesday 9-9-9  9\" Hoagie",
+   "displayName": "Wednesday 9-9-9 9\" Hoagie",
+   "include": true,
+   "priceCents": 936,
+   "priceDisplay": "$9.36",
+   "options": [
+    {
+     "groupName": "Sandwiches",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Lettuce",
+       "priceDelta": 0
+      },
+      {
+       "name": "Tomato",
+       "priceDelta": 0
+      },
+      {
+       "name": "Onion",
+       "priceDelta": 0
+      },
+      {
+       "name": "Mayo",
+       "priceDelta": 0
+      },
+      {
+       "name": "Oil",
+       "priceDelta": 0
+      },
+      {
+       "name": "Vinegar",
+       "priceDelta": 0
+      },
+      {
+       "name": "Salt",
+       "priceDelta": 0
+      },
+      {
+       "name": "Pepper",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "FF",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Fries",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Chips Add FF",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Add Sidesauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add Blue Cheese",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Ranch",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Balsamic",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Buffalo",
+       "priceDelta": 100
+      },
+      {
+       "name": "Add Marinara",
+       "priceDelta": 100
+      }
+     ]
+    },
+    {
+     "groupName": "Extra Sauce",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Extra Sauce",
+       "priceDelta": 50
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Saturday Night Special",
+   "displayName": "Saturday Night Special",
+   "include": true,
+   "priceCents": 5199,
+   "priceDisplay": "$51.99",
+   "options": [
+    {
+     "groupName": "PIZZA STYLE",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Eveything Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Sesame Seed",
+       "priceDelta": 244
+      },
+      {
+       "name": "Well Done",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 16",
+       "priceDelta": 0
+      },
+      {
+       "name": "Cut Into 12",
+       "priceDelta": 0
+      },
+      {
+       "name": "Round",
+       "priceDelta": 0
+      },
+      {
+       "name": "Square",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Pasta Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Penne",
+       "priceDelta": 0
+      },
+      {
+       "name": "Capellini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rigatoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Linguini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten Free",
+       "priceDelta": 260
+      },
+      {
+       "name": "Cavatelli",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Pasta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Meatball (3)",
+       "priceDelta": 832
+      },
+      {
+       "name": "Add Chicken Cutlet",
+       "priceDelta": 624
+      },
+      {
+       "name": "Add Sausage (2)",
+       "priceDelta": 728
+      },
+      {
+       "name": "Add Shrimp",
+       "priceDelta": 936
+      },
+      {
+       "name": "Parpadelle",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Chicken Murphy",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Sweet",
+       "priceDelta": 0
+      },
+      {
+       "name": "Spicy",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Can of Soda",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Pepsi",
+       "priceDelta": 0
+      },
+      {
+       "name": "Starry",
+       "priceDelta": 0
+      },
+      {
+       "name": "Diet Pepsi",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

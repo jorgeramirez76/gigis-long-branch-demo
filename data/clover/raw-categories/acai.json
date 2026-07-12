@@ -1,0 +1,42 @@
+{
+ "category": "Acai",
+ "sortOrder": 30,
+ "items": [
+  {
+   "name": "Acai Nutty Nutella",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Acai",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Honey Dew",
+       "price": 1144,
+       "available": true
+      },
+      {
+       "name": "B-Bowl",
+       "price": 1144,
+       "available": true
+      },
+      {
+       "name": "Island Vibes",
+       "price": 1144,
+       "available": true
+      },
+      {
+       "name": "Nutella",
+       "price": 1248,
+       "available": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

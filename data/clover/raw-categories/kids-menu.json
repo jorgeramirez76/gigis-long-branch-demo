@@ -1,0 +1,441 @@
+{
+ "category": "Kids Menu",
+ "sortOrder": 16,
+ "items": [
+  {
+   "name": "Kid Chic Fing (3)",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Kids Fingers",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add 2 Chicken Fingers",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Grill Chz",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Hotdog",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid's Burger",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kids Chzburger",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Meat Temp",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Rare",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Medium",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Med Well",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Well",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Mozz Stix (3)",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Chz Quesadilla",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Pasta Butter",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kids Pasta Marniara",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pasta Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Penne",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Capellini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rigatoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Linguini",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten Free",
+       "price": 260,
+       "available": true
+      },
+      {
+       "name": "Cavatelli",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Pasta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Add Meatball (3)",
+       "price": 832,
+       "available": true
+      },
+      {
+       "name": "Add Chic Cutlet",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Add Sausage (2)",
+       "price": 728,
+       "available": true
+      },
+      {
+       "name": "Add Shrimp",
+       "price": 936,
+       "available": true
+      },
+      {
+       "name": "Parpadelle",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Mac\\chz",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Kids Drink",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Juice",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kids Grill Cheese",
+   "price": 831,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "No Fries Sub Veggies",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": []
+    }
+   ]
+  }
+ ]
+}

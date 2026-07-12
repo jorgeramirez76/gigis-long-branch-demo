@@ -1,0 +1,22 @@
+{
+ "category": "Delivery",
+ "sortOrder": 23,
+ "items": [
+  {
+   "name": "Non-Local Delivery Fee",
+   "price": 500,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "WLB/LB Delivery Fee",
+   "price": 300,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  }
+ ]
+}

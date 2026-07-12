@@ -1,0 +1,22 @@
+{
+ "category": "Jar Sauce",
+ "displayName": "Jar Sauce",
+ "verdict": "include",
+ "reason": "Retail jars of Gigi's house vodka and marinara sauces — real, charming take-home products.",
+ "items": [
+  {
+   "name": "Jar Vodka",
+   "displayName": "Vodka Sauce (Jar)",
+   "include": true,
+   "priceCents": 1247,
+   "priceDisplay": "$12.47"
+  },
+  {
+   "name": "Jar Marinara",
+   "displayName": "Marinara Sauce (Jar)",
+   "include": true,
+   "priceCents": 935,
+   "priceDisplay": "$9.35"
+  }
+ ]
+}

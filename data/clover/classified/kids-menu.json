@@ -1,0 +1,375 @@
+{
+ "category": "Kids Menu",
+ "displayName": "Kids Menu",
+ "verdict": "include",
+ "reason": "Real customer-facing kids menu category.",
+ "items": [
+  {
+   "name": "Kid Chic Fing (3)",
+   "displayName": "Kids Chicken Fingers (3)",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Kids Fingers",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Add 2 Chicken Fingers",
+       "priceDelta": 312
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Grill Chz",
+   "displayName": "Kids Grilled Cheese",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Hotdog",
+   "displayName": "Kids Hot Dog",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid's Burger",
+   "displayName": "Kids Burger",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Meat Temp",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Rare",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium Rare",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium Well",
+       "priceDelta": 0
+      },
+      {
+       "name": "Well",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kids Chzburger",
+   "displayName": "Kids Cheeseburger",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    },
+    {
+     "groupName": "Meat Temp",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Rare",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium Rare",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium",
+       "priceDelta": 0
+      },
+      {
+       "name": "Medium Well",
+       "priceDelta": 0
+      },
+      {
+       "name": "Well",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Mozz Stix (3)",
+   "displayName": "Kids Mozzarella Sticks (3)",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Chz Quesadilla",
+   "displayName": "Kids Cheese Quesadilla",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Pasta Butter",
+   "displayName": "Kids Pasta with Butter",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Pasta Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Penne",
+       "priceDelta": 0
+      },
+      {
+       "name": "Capellini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rigatoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Linguini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten Free",
+       "priceDelta": 260
+      },
+      {
+       "name": "Cavatelli",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Pasta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Meatball (3)",
+       "priceDelta": 832
+      },
+      {
+       "name": "Add Chicken Cutlet",
+       "priceDelta": 624
+      },
+      {
+       "name": "Add Sausage (2)",
+       "priceDelta": 728
+      },
+      {
+       "name": "Add Shrimp",
+       "priceDelta": 936
+      },
+      {
+       "name": "Parpadelle",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kids Pasta Marniara",
+   "displayName": "Kids Pasta Marinara",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Pasta Mod",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Penne",
+       "priceDelta": 0
+      },
+      {
+       "name": "Capellini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Rigatoni",
+       "priceDelta": 0
+      },
+      {
+       "name": "Linguini",
+       "priceDelta": 0
+      },
+      {
+       "name": "Gluten Free",
+       "priceDelta": 260
+      },
+      {
+       "name": "Cavatelli",
+       "priceDelta": 208
+      },
+      {
+       "name": "No Pasta",
+       "priceDelta": 0
+      },
+      {
+       "name": "Add Meatball (3)",
+       "priceDelta": 832
+      },
+      {
+       "name": "Add Chicken Cutlet",
+       "priceDelta": 624
+      },
+      {
+       "name": "Add Sausage (2)",
+       "priceDelta": 728
+      },
+      {
+       "name": "Add Shrimp",
+       "priceDelta": 936
+      },
+      {
+       "name": "Parpadelle",
+       "priceDelta": 208
+      }
+     ]
+    },
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kid Mac\\chz",
+   "displayName": "Kids Mac & Cheese",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31",
+   "options": [
+    {
+     "groupName": "Kids Drink",
+     "rule": "Optional",
+     "choices": [
+      {
+       "name": "Juice",
+       "priceDelta": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kids Grill Cheese",
+   "displayName": "Kids Grilled Cheese",
+   "include": true,
+   "priceCents": 831,
+   "priceDisplay": "$8.31"
+  }
+ ]
+}

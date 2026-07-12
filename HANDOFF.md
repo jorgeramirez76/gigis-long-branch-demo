@@ -4,9 +4,13 @@ Brought the Long Branch site up to the **Gigi's Sea Bright** standard: the full
 Clover-driven menu, VIP Club CRM + admin dashboard, cross-category menu search,
 and a real-photo "Fan Favorites" band. Built 2026-07-12.
 
+- **LIVE:** https://gigis-long-branch-site.vercel.app (Vercel, production)
 - **Local:** `~/Desktop/gigis-long-branch-site/`
 - **Stack:** React 18 + Vite 6 + TS + Tailwind v4 + Vercel serverless `/api` (same as Sea Bright)
-- **Repo:** `jorgeramirez76/gigis-long-branch-demo` (local changes NOT committed/pushed — awaiting your review)
+- **Repo:** `jorgeramirez76/gigis-long-branch-demo` (committed + pushed; Vercel auto-deploys on push to main)
+- **GitHub Pages:** retired — Vercel is the sole deployment now
+- **DB:** isolated Neon resource `neon-crimson-queen` (separate from Sea Bright's DB)
+- **Admin token / CRM secrets:** gitignored `.env.crm.local`
 - **Canonical domain (not yet registered):** `gigisnystylepizza-longbranch.com`
 
 ## The menu (the main ask) — DONE
@@ -54,20 +58,20 @@ The Fonz). Gallery still uses Unsplash placeholders for pepperoni/wings/sticks/
 heroes/pasta (clearly credited). Get real dish photos from the owner to replace
 them; add more Fan Favorites cards as photos come in.
 
-## Go-live checklist (all need you / external — none are code)
+## Status
 
-1. **Confirm the Clover Online Ordering URL** for Long Branch, then flip site
-   buttons Slice→Clover: set `VITE_ORDER_PROVIDER=clover` at build/deploy.
-   Placeholder in `src/data/location.ts` (`CLOVER_ORDER_URL`) is a guess — verify
-   it in the Clover dashboard first. Default today = Slice (works now).
-2. **Deploy to Vercel** (currently only GitHub Pages static preview; the VIP
-   backend needs Vercel serverless). Set env: `ADMIN_TOKEN`, `SMS_WEBHOOK_TOKEN`,
-   `UNSUB_SECRET`, `PUBLIC_BASE_URL`, `DATABASE_URL`.
-3. **Provision Neon Postgres** + run `db/schema.sql`.
-4. **Twilio A2P 10DLC** + a Long Branch SMS number for VIP texts.
-5. **Resend** API key + verified sending domain for VIP emails.
-6. **Register + point the domain** `gigisnystylepizza-longbranch.com`.
-7. Replace Unsplash placeholder photos with owner dish photos.
+DONE:
+- ✅ **Deployed to Vercel** (production, live).
+- ✅ **Neon Postgres provisioned** (isolated `neon-crimson-queen`) + `db/schema.sql` loaded (5 tables).
+- ✅ **Env set** on Vercel prod: `DATABASE_URL`+`POSTGRES_*` (Neon), `ADMIN_TOKEN`, `SMS_WEBHOOK_TOKEN`, `UNSUB_SECRET`, `PUBLIC_BASE_URL`.
+- ✅ **VIP CRM verified end-to-end on prod** (signup → DB → admin read; test rows cleaned up). Admin at `/admin.html`, token in `.env.crm.local`.
+
+STILL TODO (external — none are code):
+1. **Twilio A2P 10DLC** + a Long Branch SMS number → VIP *text* sends (today gated `twilio_not_configured`; signup/admin work without it).
+2. **Resend** API key + verified sending domain → VIP *email* sends (today gated `email_not_configured`).
+3. **Register + point the domain** `gigisnystylepizza-longbranch.com` as a Vercel custom domain (update `PUBLIC_BASE_URL` after).
+4. **Confirm the Clover Online Ordering URL** for Long Branch, then flip buttons Slice→Clover via `VITE_ORDER_PROVIDER=clover`. `CLOVER_ORDER_URL` in `src/data/location.ts` is a guess — verify first. Default today = Slice (works now).
+5. Replace Unsplash placeholder gallery photos with owner dish photos.
 
 ## Verified working (local, 2026-07-12)
 `npm run build` clean; dev server QA passed — 27 menu tabs render, Pizza panel

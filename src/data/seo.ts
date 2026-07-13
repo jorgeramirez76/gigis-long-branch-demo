@@ -83,7 +83,7 @@ export const FAQS = [
   },
   {
     q: "Where is Gigi's and what are the hours?",
-    a: "Gigi's is at 140 Brighton Avenue in the West End of Long Branch, NJ 07740, with easy parking and quick pickup. Hours are 10 AM to 10 PM Monday, Wednesday, Thursday and Sunday, 10 AM to 11 PM Friday and Saturday, and closed on Tuesdays. Call (732) 377-2468 to confirm holiday hours.",
+    a: "Gigi's is at 140 Brighton Avenue in the West End of Long Branch, NJ 07740, with easy parking and quick pickup. We're open seven days a week: 10 AM to 11 PM Monday through Wednesday, and 10 AM to midnight Thursday through Sunday. Call (732) 377-2468 to confirm holiday hours.",
   },
 ] as const;
 

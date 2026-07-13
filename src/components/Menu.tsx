@@ -106,8 +106,8 @@ export function Menu() {
           <h2 className="mt-3 text-4xl md:text-6xl">Our full Long Branch menu</h2>
           <p className="mt-4 text-base text-[var(--color-ink-soft)] md:text-lg">
             NY pies, Grandma squares, specialty pizzas, heroes, pasta, and Italian
-            dinners — plus gluten-free &amp; vegan pizza, breakfast, and açaí. Straight
-            from our kitchen, updated July 2026.
+            dinners — plus gluten-free &amp; vegan pizza. Straight from our kitchen,
+            updated July 2026.
           </p>
         </div>
 
@@ -118,7 +118,7 @@ export function Menu() {
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search the menu — “grandma”, “buffalo”, “omelette”…"
+              placeholder="Search the menu — “grandma”, “buffalo”, “parm”…"
               aria-label="Search the menu"
               className="w-full rounded-full border border-[var(--color-cream-darker)] bg-white py-3 pl-11 pr-4 text-sm shadow-[var(--shadow-sm)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
             />

@@ -47,9 +47,9 @@ export function About() {
               </p>
               <p>
                 Alongside our round pies we serve Grandma and Sicilian squares,
-                stuffed and specialty pizzas, heroes, pasta, Italian dinners,
-                breakfast, and açaí — plus gluten-free and vegan pizza. A full
-                neighborhood kitchen, open year-round, not just a summer slice stop.
+                stuffed and specialty pizzas, heroes, pasta, and Italian dinners
+                — plus gluten-free and vegan pizza. A full neighborhood kitchen,
+                open year-round, not just a summer slice stop.
               </p>
             </div>
 

@@ -70,10 +70,6 @@ export const FAQS = [
     a: "Yes. Gigi's caters pizza parties, office lunches, graduations, and beach-house gatherings across Long Branch and Monmouth County. We offer half and full trays of pizza, pasta, and salads, plus 3-foot and 6-foot hero platters. Call (732) 377-2468 to plan your order — a day or two of notice helps for larger parties.",
   },
   {
-    q: "Does Gigi's serve breakfast and açaí bowls?",
-    a: "Yes. Gigi's serves breakfast every morning — omelettes, Benedicts, pancakes, French toast, and breakfast pizza. We also make açaí bowls with granola, fresh fruit, and honey. It's a rare all-day pizzeria where you can get morning eats and a fresh slice from the same kitchen on Brighton Avenue.",
-  },
-  {
     q: "Is Gigi's more than a pizzeria?",
     a: "Yes. Beyond pizza, Gigi's is a full Italian-American restaurant. The menu includes heroes and subs, pasta dinners, chicken and seafood entrées, wraps, burgers, wings, salads, and a kids' menu. One order can feed a whole family or a mixed-craving group — a solid choice for beach-house rentals and group dinners.",
   },

@@ -1,331 +1,220 @@
 {
- "category": "Desserts",
- "displayName": "Desserts",
- "verdict": "include",
- "reason": "Real, orderable dessert menu items at plausible prices; no POS-internal or test entries.",
- "items": [
-  {
-   "name": "Cannoli (1)",
-   "displayName": "Cannoli (1)",
-   "include": true,
-   "priceCents": 364,
-   "priceDisplay": "$3.64"
-  },
-  {
-   "name": "Cannoli (2)",
-   "displayName": "Cannoli (2)",
-   "include": true,
-   "priceCents": 623,
-   "priceDisplay": "$6.23"
-  },
-  {
-   "name": "Zeppolis",
-   "displayName": "Zeppole",
-   "include": true,
-   "priceCents": 935,
-   "priceDisplay": "$9.35",
-   "options": [
+  "category": "Desserts",
+  "displayName": "Desserts",
+  "verdict": "include",
+  "reason": "Real, orderable dessert menu items at plausible prices; no POS-internal or test entries.",
+  "items": [
     {
-     "groupName": "Extra Nutella",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Extra Nutella",
-       "priceDelta": 100
-      }
-     ]
+      "name": "Cannoli (1)",
+      "displayName": "Cannoli (1)",
+      "include": true,
+      "priceCents": 364,
+      "priceDisplay": "$3.64"
+    },
+    {
+      "name": "Cannoli (2)",
+      "displayName": "Cannoli (2)",
+      "include": true,
+      "priceCents": 623,
+      "priceDisplay": "$6.23"
+    },
+    {
+      "name": "Zeppolis",
+      "displayName": "Zeppole",
+      "include": true,
+      "priceCents": 935,
+      "priceDisplay": "$9.35",
+      "options": [
+        {
+          "groupName": "Extra Nutella",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Extra Nutella",
+              "priceDelta": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cheesecake",
+      "displayName": "Cheesecake",
+      "include": true,
+      "priceCents": 624,
+      "priceDisplay": "$6.24"
+    },
+    {
+      "name": "Red Velvet",
+      "displayName": "Red Velvet",
+      "include": true,
+      "priceCents": 545,
+      "priceDisplay": "$5.45"
+    },
+    {
+      "name": "Sweet Knots",
+      "displayName": "Sweet Knots",
+      "include": true,
+      "priceCents": 624,
+      "priceDisplay": "$6.24"
+    },
+    {
+      "name": "Oreo Balls",
+      "displayName": "Oreo Balls",
+      "include": true,
+      "priceCents": 935,
+      "priceDisplay": "$9.35"
+    },
+    {
+      "name": "Dessert Pizza",
+      "displayName": "Dessert Pizza",
+      "include": true,
+      "priceCents": 1872,
+      "priceDisplay": "$18.72"
+    },
+    {
+      "name": "Sara Lee Cheesecake Special",
+      "displayName": "Sara Lee Cheesecake Special",
+      "include": true,
+      "priceCents": 1039,
+      "priceDisplay": "$10.39"
+    },
+    {
+      "name": "Monkey Cake",
+      "displayName": "Monkey Cake",
+      "include": true,
+      "priceCents": 993,
+      "priceDisplay": "$9.93"
+    },
+    {
+      "name": "Choclate Peanut Butter Cake",
+      "displayName": "Chocolate Peanut Butter Cake",
+      "include": true,
+      "priceCents": 519,
+      "priceDisplay": "$5.19"
+    },
+    {
+      "name": "Dessert Special Cannoli Choc Chip Pop",
+      "displayName": "Dessert Special Cannoli Choc Chip Pop",
+      "include": true,
+      "priceCents": 1399,
+      "priceDisplay": "$13.99"
+    },
+    {
+      "name": "Snickers Pie",
+      "displayName": "Snickers Pie",
+      "include": true,
+      "priceCents": 519,
+      "priceDisplay": "$5.19"
+    },
+    {
+      "name": "Fruit Cup",
+      "displayName": "Fruit Cup",
+      "include": true,
+      "priceCents": 519,
+      "priceDisplay": "$5.19"
+    },
+    {
+      "name": "Large Muffin",
+      "displayName": "Large Muffin",
+      "include": true,
+      "priceCents": 520,
+      "priceDisplay": "$5.20"
+    },
+    {
+      "name": "Chocolate Covered Strawberries( 2 )",
+      "displayName": "Chocolate Covered Strawberries (2)",
+      "include": true,
+      "priceCents": 624,
+      "priceDisplay": "$6.24"
+    },
+    {
+      "name": "Churros (1)",
+      "displayName": "Churros (1)",
+      "include": true,
+      "priceCents": 312,
+      "priceDisplay": "$3.12"
+    },
+    {
+      "name": "Churros (2)",
+      "displayName": "Churros (2)",
+      "include": true,
+      "priceCents": 520,
+      "priceDisplay": "$5.20"
+    },
+    {
+      "name": "Churros (4)",
+      "displayName": "Churros (4)",
+      "include": true,
+      "priceCents": 936,
+      "priceDisplay": "$9.36",
+      "options": [
+        {
+          "groupName": "Add Nutella",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Add Nutella",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bogo Dessert Two (2)  For Tuesday",
+      "displayName": "BOGO Dessert Two (2) for Tuesday",
+      "include": true,
+      "priceCents": 623,
+      "priceDisplay": "$6.23",
+      "options": [
+        {
+          "groupName": "Add Nutella",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Add Nutella",
+              "priceDelta": 208
+            }
+          ]
+        },
+        {
+          "groupName": "Extra Nutella",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Extra Nutella",
+              "priceDelta": 100
+            }
+          ]
+        },
+        {
+          "groupName": "BOGO Dessert Choices",
+          "rule": "Choose 2",
+          "choices": [
+            {
+              "name": "Cheesecake",
+              "priceDelta": 0
+            },
+            {
+              "name": "Red Velvet",
+              "priceDelta": 0
+            },
+            {
+              "name": "Triple Chocolate Cake",
+              "priceDelta": 0
+            },
+            {
+              "name": "Cannoli",
+              "priceDelta": 0
+            },
+            {
+              "name": "Carrot Cake",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
     }
-   ]
-  },
-  {
-   "name": "Cheesecake",
-   "displayName": "Cheesecake",
-   "include": true,
-   "priceCents": 624,
-   "priceDisplay": "$6.24"
-  },
-  {
-   "name": "Red Velvet",
-   "displayName": "Red Velvet",
-   "include": true,
-   "priceCents": 545,
-   "priceDisplay": "$5.45"
-  },
-  {
-   "name": "Sweet Knots",
-   "displayName": "Sweet Knots",
-   "include": true,
-   "priceCents": 624,
-   "priceDisplay": "$6.24"
-  },
-  {
-   "name": "Oreo Balls",
-   "displayName": "Oreo Balls",
-   "include": true,
-   "priceCents": 935,
-   "priceDisplay": "$9.35"
-  },
-  {
-   "name": "Dessert Pizza",
-   "displayName": "Dessert Pizza",
-   "include": true,
-   "priceCents": 1872,
-   "priceDisplay": "$18.72"
-  },
-  {
-   "name": "Sara Lee Cheesecake Special",
-   "displayName": "Sara Lee Cheesecake Special",
-   "include": true,
-   "priceCents": 1039,
-   "priceDisplay": "$10.39"
-  },
-  {
-   "name": "Monkey Cake",
-   "displayName": "Monkey Cake",
-   "include": true,
-   "priceCents": 993,
-   "priceDisplay": "$9.93"
-  },
-  {
-   "name": "Choclate Peanut Butter Cake",
-   "displayName": "Chocolate Peanut Butter Cake",
-   "include": true,
-   "priceCents": 519,
-   "priceDisplay": "$5.19"
-  },
-  {
-   "name": "Dessert Special Cannoli Choc Chip Pop",
-   "displayName": "Dessert Special Cannoli Choc Chip Pop",
-   "include": true,
-   "priceCents": 1399,
-   "priceDisplay": "$13.99"
-  },
-  {
-   "name": "Snickers Pie",
-   "displayName": "Snickers Pie",
-   "include": true,
-   "priceCents": 519,
-   "priceDisplay": "$5.19"
-  },
-  {
-   "name": "Fruit Cup",
-   "displayName": "Fruit Cup",
-   "include": true,
-   "priceCents": 519,
-   "priceDisplay": "$5.19"
-  },
-  {
-   "name": "Large Muffin",
-   "displayName": "Large Muffin",
-   "include": true,
-   "priceCents": 520,
-   "priceDisplay": "$5.20"
-  },
-  {
-   "name": "Chocolate Covered Strawberries( 2 )",
-   "displayName": "Chocolate Covered Strawberries (2)",
-   "include": true,
-   "priceCents": 624,
-   "priceDisplay": "$6.24"
-  },
-  {
-   "name": "Churros (1)",
-   "displayName": "Churros (1)",
-   "include": true,
-   "priceCents": 312,
-   "priceDisplay": "$3.12"
-  },
-  {
-   "name": "Churros (2)",
-   "displayName": "Churros (2)",
-   "include": true,
-   "priceCents": 520,
-   "priceDisplay": "$5.20"
-  },
-  {
-   "name": "Churros (4)",
-   "displayName": "Churros (4)",
-   "include": true,
-   "priceCents": 936,
-   "priceDisplay": "$9.36",
-   "options": [
-    {
-     "groupName": "Add Nutella",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Add Nutella",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Pancake Or French Toast Combo",
-   "displayName": "Pancake or French Toast Combo",
-   "include": true,
-   "priceCents": 1575,
-   "priceDisplay": "$15.75",
-   "options": [
-    {
-     "groupName": "Pancake Topping",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Buttermilk",
-       "priceDelta": 0
-      },
-      {
-       "name": "Chocolate Chip",
-       "priceDelta": 0
-      },
-      {
-       "name": "Strawberry",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blueberry",
-       "priceDelta": 0
-      },
-      {
-       "name": "Banana",
-       "priceDelta": 0
-      },
-      {
-       "name": "Nutella",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "Eggs",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Scrambled",
-       "priceDelta": 0
-      },
-      {
-       "name": "Fried",
-       "priceDelta": 0
-      },
-      {
-       "name": "Over Easy",
-       "priceDelta": 0
-      },
-      {
-       "name": "Egg Whites",
-       "priceDelta": 208
-      }
-     ]
-    },
-    {
-     "groupName": "Toast",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "White Bread",
-       "priceDelta": 0
-      },
-      {
-       "name": "Wheat Bread",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rye Bread",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "Choice of Meat",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Bacon",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pork Roll",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "Pancakes or French Toast",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "French Toast",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pancakes",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Bogo Dessert Two (2)  For Tuesday",
-   "displayName": "BOGO Dessert Two (2) for Tuesday",
-   "include": true,
-   "priceCents": 623,
-   "priceDisplay": "$6.23",
-   "options": [
-    {
-     "groupName": "Add Nutella",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Add Nutella",
-       "priceDelta": 208
-      }
-     ]
-    },
-    {
-     "groupName": "Extra Nutella",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Extra Nutella",
-       "priceDelta": 100
-      }
-     ]
-    },
-    {
-     "groupName": "BOGO Dessert Choices",
-     "rule": "Choose 2",
-     "choices": [
-      {
-       "name": "Cheesecake",
-       "priceDelta": 0
-      },
-      {
-       "name": "Red Velvet",
-       "priceDelta": 0
-      },
-      {
-       "name": "Triple Chocolate Cake",
-       "priceDelta": 0
-      },
-      {
-       "name": "Cannoli",
-       "priceDelta": 0
-      },
-      {
-       "name": "Carrot Cake",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  }
- ]
+  ]
 }

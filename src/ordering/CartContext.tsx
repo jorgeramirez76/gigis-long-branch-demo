@@ -57,13 +57,39 @@ export function parsePrice(display?: string | null): number {
   return Math.round(parseFloat(m) * 100);
 }
 
+/** Per-line quantity cap (mirrors the server's per-line bound). */
+export const MAX_LINE_QTY = 50;
+
+const clampQty = (q: number) => Math.min(Math.max(1, Math.floor(q)), MAX_LINE_QTY);
+
+/** Guard hydrated localStorage against malformed/tampered shapes that would crash the cart. */
+function isValidLine(l: unknown): l is CartLine {
+  const x = l as CartLine;
+  return (
+    !!x &&
+    typeof x.lineId === "string" &&
+    typeof x.itemName === "string" &&
+    typeof x.basePrice === "number" &&
+    Number.isFinite(x.basePrice) &&
+    Number.isFinite(x.quantity) &&
+    x.quantity > 0 &&
+    Array.isArray(x.options) &&
+    x.options.every(
+      (o) => o && typeof o.name === "string" && typeof o.delta === "number" && Number.isFinite(o.delta),
+    )
+  );
+}
+
 let lineCounter = 0;
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>(() => {
     try {
       const raw = typeof localStorage !== "undefined" && localStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as CartLine[]) : [];
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(isValidLine).map((l) => ({ ...l, quantity: clampQty(l.quantity) }));
     } catch {
       return [];
     }
@@ -91,11 +117,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
           const idx = prev.findIndex((l) => key(l) === key(line));
           if (idx >= 0) {
             const next = [...prev];
-            next[idx] = { ...next[idx], quantity: next[idx].quantity + line.quantity };
+            next[idx] = { ...next[idx], quantity: clampQty(next[idx].quantity + line.quantity) };
             return next;
           }
           lineCounter += 1;
-          return [...prev, { ...line, lineId: `l${Date.now()}_${lineCounter}` }];
+          return [...prev, { ...line, quantity: clampQty(line.quantity), lineId: `l${Date.now()}_${lineCounter}` }];
         });
         setIsOpen(true);
       },
@@ -103,7 +129,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setLines((prev) =>
           quantity <= 0
             ? prev.filter((l) => l.lineId !== lineId)
-            : prev.map((l) => (l.lineId === lineId ? { ...l, quantity } : l)),
+            : prev.map((l) => (l.lineId === lineId ? { ...l, quantity: clampQty(quantity) } : l)),
         ),
       removeLine: (lineId) => setLines((prev) => prev.filter((l) => l.lineId !== lineId)),
       clear: () => setLines([]),

@@ -5,8 +5,10 @@ import { createHmac, timingSafeEqual } from "node:crypto";
  * to ADMIN_TOKEN so email can work with one less env var, but set both).
  */
 function secret(): string {
-  const s = process.env.UNSUB_SECRET || process.env.ADMIN_TOKEN;
-  if (!s) throw new Error("UNSUB_SECRET / ADMIN_TOKEN not set");
+  // Dedicated secret only — do NOT fall back to ADMIN_TOKEN (that would reuse the
+  // admin credential across an unrelated trust boundary). UNSUB_SECRET is set in prod.
+  const s = process.env.UNSUB_SECRET;
+  if (!s) throw new Error("UNSUB_SECRET not set");
   return s;
 }
 

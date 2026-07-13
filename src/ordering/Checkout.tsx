@@ -1,12 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { lineUnitPrice, money, useCart } from "./CartContext";
 import { LOCATION } from "../data/location";
 import { cardPaymentEnabled, initCloverCard, type CloverCard } from "./cloverPayment";
+import { Turnstile } from "../components/Turnstile";
+import { turnstileEnabled } from "../lib/turnstile";
 
 type Fulfillment = "pickup" | "delivery";
 type PaymentMethod = "pickup" | "card";
 const TIP_PCTS = [0, 10, 15, 20];
 const CARD_ENABLED = cardPaymentEnabled();
+const TURNSTILE_ON = turnstileEnabled();
 
 type Confirmation = { orderId?: string; paid: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean };
 
@@ -22,10 +25,25 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [orderNote, setOrderNote] = useState("");
   const [status, setStatus] = useState<"form" | "submitting" | "error">("form");
   const [errorMsg, setErrorMsg] = useState("");
+  const [cardInitFailed, setCardInitFailed] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileReset, setTurnstileReset] = useState(0);
   const [confirmed, setConfirmed] = useState<Confirmation | null>(null);
 
   const tip = Math.round(cart.subtotal * (tipPct / 100));
   const grandTotal = cart.total + tip;
+
+  // One idempotency key per unique order (amount/params). Stable across pure
+  // retries so a lost response can't double-charge; regenerated if the order
+  // changes (Clover requires a fresh key when charge params differ).
+  const idempotencyKey = useMemo(
+    () =>
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.round(Math.random() * 1e9)}`,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(cart.lines), tip, fulfillment, payment],
+  );
   const contactOk = name.trim() && phone.replace(/\D/g, "").length >= 10;
   const deliveryOk = fulfillment === "pickup" || address.trim().length > 4;
 
@@ -41,6 +59,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     if (payment !== "card" || !CARD_ENABLED) return;
     let cancelled = false;
     setCardReady(false);
+    setCardInitFailed(false);
     initCloverCard()
       .then((card) => {
         if (cancelled) {
@@ -56,9 +75,15 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             postal: postalRef.current,
           });
           setCardReady(true);
+        } else {
+          setCardInitFailed(true);
         }
       })
-      .catch((e) => setErrorMsg(e instanceof Error ? e.message : "Payment fields failed to load."));
+      .catch((e) => {
+        if (cancelled) return;
+        setCardInitFailed(true);
+        setErrorMsg(e instanceof Error ? e.message : "Payment fields couldn't load.");
+      });
     return () => {
       cancelled = true;
       cardRef.current?.destroy();
@@ -82,10 +107,19 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           fulfillment,
           paymentMethod: payment,
           cardToken,
+          idempotencyKey,
+          turnstileToken,
           customer: { name, phone, email, address: fulfillment === "delivery" ? address : undefined },
           tipCents: tip,
           orderNote,
-          lines: cart.lines,
+          // Send identifiers only — the server prices from its own catalog.
+          lines: cart.lines.map((l) => ({
+            itemName: l.itemName,
+            categoryId: l.categoryId,
+            options: l.options.map((o) => ({ group: o.group, name: o.name })),
+            quantity: l.quantity,
+            notes: l.notes,
+          })),
         }),
       });
       const data = await res.json();
@@ -101,6 +135,12 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     } catch (e) {
       setStatus("error");
       setErrorMsg(e instanceof Error ? e.message : "Something went wrong. Please call to order.");
+      // The Turnstile token was consumed by this attempt — force a fresh one so a
+      // retry isn't rejected for reusing a spent token.
+      if (TURNSTILE_ON) {
+        setTurnstileToken(null);
+        setTurnstileReset((n) => n + 1);
+      }
     }
   }
 
@@ -209,7 +249,15 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                     <CardField label="CVV" innerRef={cvvRef} />
                   </div>
                   <CardField label="ZIP" innerRef={postalRef} />
-                  {!cardReady && <p className="text-xs text-[var(--color-ink)]/45">Loading secure card fields…</p>}
+                  {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-ink)]/45">Loading secure card fields…</p>}
+                  {cardInitFailed && (
+                    <div className="rounded-xl bg-[var(--color-brand-red)]/8 px-3 py-2.5 text-xs text-[var(--color-ink)]">
+                      Card payment isn't available right now.{" "}
+                      <button type="button" onClick={() => setPayment("pickup")} className="font-bold text-[var(--color-brand-red)] underline">
+                        Pay at {fulfillment} instead
+                      </button>
+                    </div>
+                  )}
                   <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-ink)]/40">
                     <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                     Encrypted & processed by Clover. We never see your card number.
@@ -270,10 +318,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="border-t border-[var(--color-ink)]/10 bg-white p-5">
+        {TURNSTILE_ON && <Turnstile onToken={setTurnstileToken} resetSignal={turnstileReset} />}
         <button
           type="button"
           onClick={placeOrder}
-          disabled={!contactOk || !deliveryOk || submitting || cart.lines.length === 0 || (payment === "card" && !cardReady)}
+          disabled={!contactOk || !deliveryOk || submitting || cart.lines.length === 0 || (payment === "card" && !cardReady) || (TURNSTILE_ON && !turnstileToken)}
           className="flex w-full items-center justify-between rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span>{submitting ? "Placing order…" : payment === "card" ? "Pay & place order" : "Place order"}</span>

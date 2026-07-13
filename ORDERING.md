@@ -69,9 +69,37 @@ live-ready today.
 4. Push → Vercel auto-deploys → the live site switches order buttons to the
    in-house flow. Until then the current Clover hosted page stays live.
 
+## Security hardening (done)
+
+Audited adversarially (correctness + security) before launch and hardened:
+
+- **Prices are server-authoritative** — the browser sends item/option IDs only;
+  the server prices from the catalog (`api/lib/menuCatalog.ts`) and rejects
+  unknown items/options. Client prices are never trusted. (Runtime-tested.)
+- **Rate limiting** (`api/lib/rateLimit.ts`, atomic Neon counter) on
+  `/api/order/create` and `/api/vip-signup`, per normalized IP + phone.
+- **Charge idempotency** — `idempotency-key` on every Clover charge + atomic
+  order-key reservation (`web_orders.idempotency_key`) so retries/concurrency
+  can't double-charge or double-fire. Stale/uncertain attempts are flagged to
+  staff, never silently re-fired.
+- **Atomic orders** — draft → bulk line items → fire, with rollback.
+- **Never lose a paid order** — chargeId persisted before the POS step; a
+  post-charge POS failure → `paid_unrouted` + `alertStaff`.
+- **Generic card errors** (no decline oracle), **CSV-injection** fix on admin
+  export, **localStorage** hardening, **security headers** + CSP (`vercel.json`).
+
 ## Known follow-ups
 
-- Optional hardening: re-price each line against `menuGenerated.ts` server-side
-  (today the server recomputes the arithmetic from posted base prices/deltas).
-- Charge↔order reconciliation: online-paid orders are marked PAID on the v3 order
-  with the charge id in the note; verify the owner's preferred reporting view.
+- **Rotate secrets** that have touched plaintext `.env` on disk (Clover token,
+  Neon password, ADMIN_TOKEN) — best practice, owner's call.
+- **Cloudflare Turnstile** (CAPTCHA) is built into checkout + VIP signup, env-gated
+  and OFF until keys are set. To turn on: create a Turnstile widget at
+  dash.cloudflare.com, then set `VITE_TURNSTILE_SITE_KEY` (client) +
+  `TURNSTILE_SECRET_KEY` (server) in Vercel. Defeats IP/phone rotation on top of
+  the rate limiter. Until keys are set, rate limiting is the abuse control.
+- **Set `STAFF_ALERT_PHONE`** (Vercel env) so paid-but-unrouted / uncertain
+  orders SMS a human. Until then they're logged + saved to `web_orders`.
+- **Card reconciliation** (card mode only): the PAID POS order's line items sum
+  to subtotal; tax/tip live in the ecommerce charge + the order note. Confirm the
+  owner's preferred reporting view before enabling online card payment.
+- **Promote CSP** from the current allowlist to stricter once verified in prod.

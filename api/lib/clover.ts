@@ -8,8 +8,9 @@
  *  2. REST Orders API (api.clover.com/v3) — drops an itemized order into the
  *     merchant's POS / kitchen so staff can make it.
  *
- * Everything is env-gated: with no CLOVER_API_TOKEN the endpoint degrades to a
- * clear "call the store" message instead of throwing on cold start.
+ * Prices are NEVER taken from the client — callers pass lines already re-priced
+ * against the server catalog (see menuCatalog.ts). Everything is env-gated: with
+ * no CLOVER_API_TOKEN the endpoint degrades to a clear "call the store" message.
  */
 
 const ECOMMERCE_BASE = "https://scl.clover.com";
@@ -18,6 +19,9 @@ const REST_BASE = "https://api.clover.com";
 /** NJ Sales Tax — mirrors the merchant's Clover tax config (6.625%). */
 export const TAX_RATE = 0.06625;
 export const CURRENCY = "usd";
+
+/** Hard cap on total units per order (abuse + upstream-amplification guard). */
+export const MAX_UNITS = 100;
 
 /** Clover order-type element IDs on this merchant (verified via /v3 order_types). */
 export const ORDER_TYPES = {
@@ -30,7 +34,7 @@ export type Fulfillment = keyof typeof ORDER_TYPES;
 export type CartOptionInput = { group: string; name: string; delta: number };
 export type CartLineInput = {
   itemName: string;
-  basePrice: number; // cents
+  basePrice: number; // authoritative cents (from menuCatalog)
   options: CartOptionInput[];
   quantity: number;
   notes?: string;
@@ -48,18 +52,20 @@ export function cloverConfigured(): boolean {
   return !!token() && !!merchantId();
 }
 
-/** Unit price (base + option deltas), cents. Mirrors the client's lineUnitPrice. */
+/** Unit price (base + option deltas), whole cents. */
 export function unitPrice(line: Pick<CartLineInput, "basePrice" | "options">): number {
-  return line.basePrice + line.options.reduce((s, o) => s + (o.delta || 0), 0);
+  return Math.round(line.basePrice + line.options.reduce((s, o) => s + Math.round(o.delta || 0), 0));
 }
 
 export type Totals = { subtotal: number; tax: number; tip: number; total: number };
 
-/** Authoritative server-side totals — never trust a client-sent total. */
+/** Authoritative server-side totals. Lines must already be catalog-priced.
+ * Tip is clamped to [0, max($20, subtotal)] so a client bug (dollars-vs-cents)
+ * or tampering can't drive the captured charge to an absurd amount. */
 export function computeTotals(lines: CartLineInput[], tipCents: number): Totals {
   const subtotal = lines.reduce((s, l) => s + unitPrice(l) * l.quantity, 0);
   const tax = Math.round(subtotal * TAX_RATE);
-  const tip = Math.max(0, Math.round(tipCents || 0));
+  const tip = Math.min(Math.max(0, Math.round(tipCents || 0)), Math.max(2000, subtotal));
   return { subtotal, tax, tip, total: subtotal + tax + tip };
 }
 
@@ -71,13 +77,15 @@ export class CloverError extends Error {
 
 /**
  * Charge a tokenized card via the Ecommerce API. `amount` is the full amount to
- * capture in cents (subtotal + tax + tip); `taxAmount` is the informational tax
- * portion. Returns the charge id for reconciliation.
+ * capture in cents (subtotal + tax + tip). `idempotencyKey` (a UUID) makes a
+ * retry after a lost response return the SAME charge instead of double-charging.
+ * `clientIp` must be the platform-derived real IP (never a caller-supplied header).
  */
 export async function createCharge(opts: {
   amount: number;
   source: string;
   taxAmount: number;
+  idempotencyKey: string;
   clientIp?: string;
   description?: string;
   email?: string;
@@ -90,6 +98,8 @@ export async function createCharge(opts: {
     headers: {
       Authorization: `Bearer ${t}`,
       "Content-Type": "application/json",
+      "idempotency-key": opts.idempotencyKey,
+      // Trusted (platform-derived) client IP for Clover's fraud/velocity scoring.
       ...(opts.clientIp ? { "X-Forwarded-For": opts.clientIp } : {}),
     },
     body: JSON.stringify({
@@ -129,23 +139,20 @@ async function rest(path: string, init: RequestInit): Promise<any> {
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new CloverError(
-      (data as any)?.message || `Clover REST ${res.status}`,
-      res.status,
-      data,
-    );
+    throw new CloverError((data as any)?.message || `Clover REST ${res.status}`, res.status, data);
   }
   return data;
 }
 
 /**
- * Create an itemized order in the merchant's POS so the kitchen can make it.
+ * Create an itemized order in the merchant's POS, atomically.
  *
- * Custom line items (name + price) are used rather than inventory-item refs so
- * option deltas price correctly regardless of Clover modifier setup. A full
- * human-readable ticket (customer, fulfillment, per-line options, special
- * instructions, payment status) is written to the order note so nothing is lost
- * even if custom-line notes don't print on a given kitchen device.
+ * Sequence: create a DRAFT order (no state → not fired) → add ALL line items in
+ * one bulk call → flip state to "open" so it fires to the kitchen only once it's
+ * complete. If anything fails before firing, the partial draft is deleted so a
+ * half-built ticket never reaches the make-line. Custom line items (name+price)
+ * price correctly regardless of Clover modifier config; a full human-readable
+ * ticket (safety notes front-loaded) is written to the order note.
  */
 export async function createPosOrder(opts: {
   lines: CartLineInput[];
@@ -154,49 +161,58 @@ export async function createPosOrder(opts: {
   paid: boolean;
 }): Promise<{ id: string; href: string }> {
   const mid = merchantId()!;
+  const title = `WEBSITE • ${opts.fulfillment === "delivery" ? "DELIVERY" : "PICKUP"}`;
 
-  // 1) Create the order shell with type + note, fired to the POS (state "open").
+  // 1) Draft order (NO state → does not fire yet).
   const order = await rest(`/orders`, {
     method: "POST",
     body: JSON.stringify({
       orderType: { id: ORDER_TYPES[opts.fulfillment] },
-      state: "open",
-      title: "Online order — website",
-      note: opts.note.slice(0, 490), // Clover note cap is ~500 chars
+      title,
+      note: opts.note.slice(0, 490), // Clover note cap ~500 chars; safety fields are front-loaded
     }),
   });
   const orderId = order.id as string;
 
-  // 2) Add each line item (one POST per unit so the kitchen sees each pie).
-  for (const line of opts.lines) {
-    const price = unitPrice(line);
-    const optionSummary = line.options.map((o) => o.name).join(", ");
-    const name = line.itemName.slice(0, 120);
-    const lineNote = [optionSummary, line.notes].filter(Boolean).join(" · ").slice(0, 200);
-    const qty = Math.min(Math.max(1, line.quantity), 50);
-    for (let i = 0; i < qty; i++) {
-      await rest(`/orders/${orderId}/line_items`, {
-        method: "POST",
-        body: JSON.stringify({ name, price, ...(lineNote ? { note: lineNote } : {}) }),
-      });
+  try {
+    // 2) Build every unit as a line item, then add them all in ONE bulk call.
+    const items: { name: string; price: number; note?: string }[] = [];
+    for (const line of opts.lines) {
+      const price = unitPrice(line);
+      const optionSummary = line.options.map((o) => o.name).join(", ");
+      const name = line.itemName.slice(0, 120);
+      // "WEB • " prefix makes each kitchen chit self-identifying regardless of print profile.
+      const lineNote = ("WEB • " + [optionSummary, line.notes].filter(Boolean).join(" · ")).slice(0, 220);
+      const qty = Math.min(Math.max(1, Math.floor(line.quantity)), MAX_UNITS);
+      for (let i = 0; i < qty && items.length < MAX_UNITS; i++) {
+        items.push({ name, price, note: lineNote });
+      }
     }
-  }
+    await rest(`/orders/${orderId}/bulk_line_items`, {
+      method: "POST",
+      body: JSON.stringify({ items }),
+    });
 
-  // 3) Flag payment state. Card orders are captured via the ecommerce charge;
-  //    the charge id lives in the note for reconciliation.
-  if (opts.paid) {
+    // 3) Fire it (and mark paid for card orders) in a single update.
     await rest(`/orders/${orderId}`, {
       method: "POST",
-      body: JSON.stringify({ paymentState: "PAID" }),
-    }).catch(() => {
-      /* non-fatal: order still lands in POS, note records it as paid */
+      body: JSON.stringify({ state: "open", ...(opts.paid ? { paymentState: "PAID" } : {}) }),
     });
+  } catch (err) {
+    // Roll back the partial draft so nothing half-built reaches the kitchen.
+    await rest(`/orders/${orderId}`, { method: "DELETE" }).catch(() => {});
+    throw err;
   }
 
   return { id: orderId, href: `https://www.clover.com/v3/merchants/${mid}/orders/${orderId}` };
 }
 
-/** Build the human-readable kitchen ticket note. */
+/**
+ * Build the human-readable kitchen ticket note. Safety-critical fields (payment
+ * status, delivery address, customer allergy/special note) are FRONT-loaded so
+ * the 490-char cap can only ever truncate the tail (the itemized list), never
+ * the allergy warning or the address.
+ */
 export function buildOrderNote(opts: {
   fulfillment: Fulfillment;
   customer: { name: string; phone: string; email?: string; address?: string };
@@ -207,26 +223,28 @@ export function buildOrderNote(opts: {
   orderNote?: string;
 }): string {
   const money = (c: number) => `$${(c / 100).toFixed(2)}`;
-  const head =
-    opts.fulfillment === "delivery"
-      ? `DELIVERY → ${opts.customer.address ?? "(no address)"}`
-      : "PICKUP";
+  const kind = opts.fulfillment === "delivery" ? "DELIVERY (in-house driver)" : "PICKUP";
   const pay =
     opts.payment === "card"
-      ? `PAID ONLINE${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
+      ? `PAID ONLINE ${money(opts.totals.total)}${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
       : "PAY ON PICKUP/DELIVERY";
+  const addr = opts.fulfillment === "delivery" ? ` → ${opts.customer.address ?? "(no address)"}` : "";
   const items = opts.lines
     .map((l) => {
       const opt = l.options.map((o) => o.name).join(", ");
       return `${l.quantity}x ${l.itemName}${opt ? ` [${opt}]` : ""}${l.notes ? ` (${l.notes})` : ""}`;
     })
     .join("; ");
+  // Front-loaded so the 490-char cap can only ever drop the item/total TAIL:
+  //   header → ⚠ allergy note → customer + address → items → totals.
+  // (create.ts caps: name ≤80, orderNote ≤130, address ≤120 — worst case ends at
+  //  ~455 chars, inside the 490 slice, so the allergy note + address always survive.)
   const parts = [
-    `WEB ORDER · ${head} · ${pay}`,
-    `${opts.customer.name} ${opts.customer.phone}`,
+    `WEBSITE ORDER · ${kind} · ${pay}`,
+    opts.orderNote ? `⚠ NOTE: ${opts.orderNote}` : "",
+    `${opts.customer.name} ${opts.customer.phone}${addr}`,
     items,
     `Sub ${money(opts.totals.subtotal)} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
-    opts.orderNote ? `Note: ${opts.orderNote}` : "",
   ].filter(Boolean);
   return parts.join(" | ");
 }

@@ -230,11 +230,17 @@ function Members({ business }: { business: Business }) {
   }, [business, q, consent]);
 
   function exportCsv() {
+    // Neutralize CSV/formula injection: a member name/email starting with = + - @
+    // (or a control char) could execute as a formula when the owner opens the file
+    // in Excel/Sheets. Prefix such values with a single quote, then quote-escape.
+    const cell = (v: unknown) => {
+      let s = String(v);
+      if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
+      return `"${s.replace(/"/g, '""')}"`;
+    };
     const head = "name,phone,email,sms_consent,email_consent,joined";
     const rows = members.map((m) =>
-      [m.name, m.phone ?? "", m.email ?? "", m.sms_consent, m.email_consent, m.created_at]
-        .map((v) => `"${String(v).replace(/"/g, '""')}"`)
-        .join(","),
+      [m.name, m.phone ?? "", m.email ?? "", m.sms_consent, m.email_consent, m.created_at].map(cell).join(","),
     );
     const blob = new Blob([[head, ...rows].join("\n")], { type: "text/csv" });
     const a = document.createElement("a");

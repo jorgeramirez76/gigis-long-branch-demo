@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "noUnusedLocals": false
+  },
+  "include": ["api", "src/data/menuGenerated.ts", "src/data/menuTypes.ts"]
+}

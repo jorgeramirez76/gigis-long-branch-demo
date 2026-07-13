@@ -48,7 +48,7 @@ export async function sendSms(toE164: string, message: string): Promise<SendResu
   const auth = twilioAuth();
   const from = process.env.TWILIO_FROM_NUMBER;
   if (!auth || !from) {
-    console.log(`[vip-club] SMS not sent (Twilio not configured) — would send to ${toE164}: ${message}`);
+    console.log(`[vip-club] SMS not sent (Twilio not configured) — recipient •••${toE164.slice(-4)}`);
     return { sent: false, error: "twilio_not_configured" };
   }
 
@@ -81,11 +81,19 @@ export async function sendEmail(
 ): Promise<SendResult> {
   const { RESEND_API_KEY, EMAIL_FROM } = process.env;
   if (!RESEND_API_KEY || !EMAIL_FROM) {
-    console.log(`[vip-club] Email not sent (Resend not configured) — would send to ${toEmail}: ${subject}`);
+    console.log(`[vip-club] Email not sent (Resend not configured) — recipient ${toEmail.replace(/(.).*(@.*)/, "$1•••$2")}`);
     return { sent: false, error: "email_not_configured" };
   }
 
-  const unsubUrl = unsubscribeUrl(toEmail);
+  let unsubUrl: string;
+  try {
+    unsubUrl = unsubscribeUrl(toEmail);
+  } catch (e) {
+    // A missing UNSUB_SECRET must fail THIS send gracefully, not throw through the
+    // signup handler (which already inserted the member + sent the welcome SMS).
+    console.error("[vip-club] cannot build unsubscribe URL — email skipped", e);
+    return { sent: false, error: "unsub_not_configured" };
+  }
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -111,6 +119,21 @@ export async function sendEmail(
   }
   const data = (await res.json()) as { id: string };
   return { sent: true, providerId: data.id };
+}
+
+/**
+ * Fire-and-forget internal alert to store staff. Used when a paid order fails to
+ * reach the POS so a human can recover it before the customer shows up. Env-gated
+ * on STAFF_ALERT_PHONE — a no-op (loud log only) until that's set. Never throws.
+ */
+export async function alertStaff(message: string): Promise<void> {
+  const phone = process.env.STAFF_ALERT_PHONE;
+  try {
+    if (phone) await sendSms(phone, message.slice(0, 320));
+    else console.error("[alertStaff] (set STAFF_ALERT_PHONE to receive these) —", message);
+  } catch (e) {
+    console.error("[alertStaff] failed", e);
+  }
 }
 
 // Back-compat names used by vip-signup.ts

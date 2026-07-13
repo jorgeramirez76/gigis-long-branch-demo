@@ -2,6 +2,8 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql, isVipBusiness } from "./lib/db.js";
 import { ensureWelcomeCode } from "./lib/promo.js";
 import { sendWelcomeSms, sendWelcomeEmail } from "./lib/notify.js";
+import { rateLimitAll } from "./lib/rateLimit.js";
+import { verifyTurnstile } from "./lib/turnstile.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Accepts loose US 10-digit input; normalizes to E.164 (+1XXXXXXXXXX).
@@ -13,13 +15,20 @@ function normalizePhone(input: string): string | null {
   return `+1${match[1]}${match[2]}${match[3]}`;
 }
 
+function clientIp(req: VercelRequest): string | undefined {
+  // Vercel-set trusted IP only — no x-forwarded-for fallback (its leftmost hop is
+  // client-spoofable off-platform, which would let one IP evade the signup limit).
+  const real = req.headers["x-real-ip"];
+  return typeof real === "string" && real ? real : undefined;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "method_not_allowed" });
     return;
   }
 
-  const { business, name, phone, email, smsConsent, emailConsent, consentText } = req.body ?? {};
+  const { business, name, phone, email, smsConsent, emailConsent, consentText, turnstileToken } = req.body ?? {};
 
   if (!isVipBusiness(business)) {
     res.status(400).json({ error: "invalid_business" });
@@ -58,6 +67,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return;
     }
     normalizedEmail = email.trim().toLowerCase();
+  }
+
+  // Rate limit BEFORE any DB write or (costly, spammable) SMS/email send. Guards
+  // against an attacker looping victim numbers to send unsolicited texts on the
+  // store's dime. Keyed by IP (primary) plus the target contact.
+  const ip = clientIp(req);
+  if (!(await verifyTurnstile(typeof turnstileToken === "string" ? turnstileToken : undefined, ip))) {
+    res.status(403).json({ error: "verification_failed" });
+    return;
+  }
+  const contactKey = normalizedPhone || normalizedEmail || "unknown";
+  const allowed = await rateLimitAll([
+    ...(ip
+      ? [
+          { bucket: `signup:ip:${ip}:h`, max: 4, windowSec: 3600 },
+          { bucket: `signup:ip:${ip}:d`, max: 20, windowSec: 86400 },
+        ]
+      : []),
+    { bucket: `signup:contact:${contactKey}`, max: 2, windowSec: 86400 },
+  ]);
+  if (!allowed) {
+    res.status(429).json({ error: "rate_limited" });
+    return;
   }
 
   try {
@@ -99,7 +131,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       results.email = mail;
     }
 
-    res.status(200).json({ ok: true, code, sendResults: results });
+    // Do NOT echo provider send results to the public caller — that leaks
+    // Twilio/Resend error detail. Delivery status is recorded in vip_sends.
+    void results;
+    res.status(200).json({ ok: true, code });
   } catch (err) {
     console.error("[vip-signup] error", err);
     res.status(500).json({ error: "internal_error" });

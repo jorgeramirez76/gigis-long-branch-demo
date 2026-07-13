@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { LOCATION } from "../data/location";
+import { Turnstile } from "./Turnstile";
+import { turnstileEnabled } from "../lib/turnstile";
 
 const CONSENT_TEXT =
   "By joining, you agree to receive promotional texts and/or emails from Gigi's NY Style Pizza (Long Branch, NJ). Message/data rates may apply. Message frequency varies. Reply STOP to unsubscribe from texts, or use the unsubscribe link in any email. No purchase necessary.";
+
+const TURNSTILE_ON = turnstileEnabled();
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -14,12 +18,26 @@ export function VipClub() {
   const [emailConsent, setEmailConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileReset, setTurnstileReset] = useState(0);
+
+  function bumpTurnstile() {
+    if (TURNSTILE_ON) {
+      setTurnstileToken(null);
+      setTurnstileReset((n) => n + 1);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!smsConsent && !emailConsent) {
       setStatus("error");
       setErrorMsg("Pick at least one way to hear from us (text or email).");
+      return;
+    }
+    if (TURNSTILE_ON && !turnstileToken) {
+      setStatus("error");
+      setErrorMsg("Please complete the verification below.");
       return;
     }
     setStatus("submitting");
@@ -36,18 +54,21 @@ export function VipClub() {
           smsConsent,
           emailConsent,
           consentText: CONSENT_TEXT,
+          turnstileToken,
         }),
       });
       const data = await res.json();
       if (!res.ok) {
         setStatus("error");
-        setErrorMsg(data.error === "invalid_phone" ? "That phone number doesn't look right." : data.error === "invalid_email" ? "That email doesn't look right." : "Something went wrong — try again or call us.");
+        setErrorMsg(data.error === "invalid_phone" ? "That phone number doesn't look right." : data.error === "invalid_email" ? "That email doesn't look right." : data.error === "verification_failed" ? "Verification failed — please try again." : data.error === "rate_limited" ? "Too many attempts — please wait a bit." : "Something went wrong — try again or call us.");
+        bumpTurnstile();
         return;
       }
       setStatus("success");
     } catch {
       setStatus("error");
       setErrorMsg("Couldn't reach the server — try again in a moment.");
+      bumpTurnstile();
     }
   }
 
@@ -137,9 +158,11 @@ export function VipClub() {
             <p className="rounded-lg bg-black/25 px-4 py-2.5 text-sm text-white">{errorMsg}</p>
           )}
 
+          {TURNSTILE_ON && <Turnstile onToken={setTurnstileToken} resetSignal={turnstileReset} />}
+
           <button
             type="submit"
-            disabled={status === "submitting"}
+            disabled={status === "submitting" || (TURNSTILE_ON && !turnstileToken)}
             className="w-full rounded-full bg-[var(--color-gold-bright)] px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)] transition hover:brightness-95 disabled:opacity-60"
           >
             {status === "submitting" ? "Joining…" : "Join the VIP Club"}

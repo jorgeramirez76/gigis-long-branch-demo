@@ -4,6 +4,7 @@ import { Gallery } from "./components/Gallery";
 import { About } from "./components/About";
 import { FanFavorites } from "./components/FanFavorites";
 import { Menu } from "./components/Menu";
+import { AddOns } from "./components/AddOns";
 import { Reviews } from "./components/Reviews";
 import { ServiceArea } from "./components/ServiceArea";
 import { FAQ } from "./components/FAQ";
@@ -30,6 +31,7 @@ export default function App() {
         <About />
         <FanFavorites />
         <Menu />
+        <AddOns />
         <Reviews />
         <ServiceArea />
         <FAQ />

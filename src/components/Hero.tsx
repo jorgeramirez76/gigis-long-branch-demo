@@ -2,6 +2,7 @@ import { LOCATION, DIRECTIONS_URL } from "../data/location";
 import { HOURS_ONE_LINE } from "../data/hours";
 import { HERO_IMAGE } from "../data/gallery";
 import { PhoneIcon, MenuIcon, PinIcon, ArrowIcon, StarIcon } from "./Icons";
+import { OpenStatusPill } from "./OpenStatusPill";
 
 export function Hero() {
   return (
@@ -61,10 +62,9 @@ export function Hero() {
 
           {/* Hours + address strip */}
           <div className="hero-in hero-in-4 mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-cream/85 md:text-sm">
-            <span className="inline-flex items-center gap-2">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-gold-bright)] shadow-[0_0_10px_rgba(230,180,94,0.9)]" />
-              {HOURS_ONE_LINE}
-            </span>
+            <OpenStatusPill className="text-[var(--color-gold-bright)]" />
+            <span className="hidden h-1 w-1 rounded-full bg-white/25 md:inline-block" />
+            <span>{HOURS_ONE_LINE}</span>
             <span className="hidden h-1 w-1 rounded-full bg-white/25 md:inline-block" />
             <span className="text-[var(--color-gold-bright)]">{LOCATION.street}, Long Branch</span>
           </div>

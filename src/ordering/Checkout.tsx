@@ -4,6 +4,7 @@ import { LOCATION } from "../data/location";
 import { cardPaymentEnabled, initCloverCard, type CloverCard } from "./cloverPayment";
 import { Turnstile } from "../components/Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
+import { getOpenStatus, type OpenStatus } from "../lib/openStatus";
 
 type Fulfillment = "pickup" | "delivery";
 type PaymentMethod = "pickup" | "card";
@@ -23,6 +24,8 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [address, setAddress] = useState("");
   const [tipPct, setTipPct] = useState(15);
   const [orderNote, setOrderNote] = useState("");
+  const [openStatus, setOpenStatus] = useState<OpenStatus | null>(null);
+  useEffect(() => setOpenStatus(getOpenStatus()), []);
   const [status, setStatus] = useState<"form" | "submitting" | "error">("form");
   const [errorMsg, setErrorMsg] = useState("");
   const [cardInitFailed, setCardInitFailed] = useState(false);
@@ -186,6 +189,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   return (
     <Shell onClose={onClose} title="Checkout">
       <div className="flex-1 space-y-5 overflow-y-auto p-5">
+        {openStatus && !openStatus.open && (
+          <div className="rounded-2xl border border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
+            <span className="font-bold">We're closed right now.</span> Ordering opens at 10 AM — you can still place this
+            order and we'll start it as soon as we open.
+          </div>
+        )}
+
         {/* Fulfillment */}
         <Segmented
           options={["pickup", "delivery"] as Fulfillment[]}

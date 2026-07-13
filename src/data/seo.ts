@@ -81,6 +81,10 @@ export const FAQS = [
     q: "Where is Gigi's and what are the hours?",
     a: "Gigi's is at 140 Brighton Avenue in the West End of Long Branch, NJ 07740, with easy parking and quick pickup. We're open seven days a week: 10 AM to 11 PM Monday through Wednesday, and 10 AM to midnight Thursday through Sunday. Call (732) 377-2468 to confirm holiday hours.",
   },
+  {
+    q: "Is there late-night pizza in Long Branch?",
+    a: "Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday through Sunday, and 11 PM Monday through Wednesday — for pickup or delivery on Brighton Avenue in Long Branch. It's a go-to for a late slice after the beach, a night out, or the game.",
+  },
 ] as const;
 
 /** Display-friendly comma-separated string of service areas. */

@@ -1,19 +1,7 @@
-import { StrictMode } from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
 import "./styles/index.css";
+import { ViteReactSSG } from "vite-react-ssg/single-page";
 import App from "./App";
 
-const root = document.getElementById("root")!;
-const app = (
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
-
-// Prod ships prerendered HTML in #root → hydrate it (keeps the crawlable markup
-// while attaching interactivity). Dev serves an empty #root → create fresh.
-if (root.hasChildNodes()) {
-  hydrateRoot(root, app);
-} else {
-  createRoot(root).render(app);
-}
+// Build-time prerender + client hydrate (single route). Ships fully rendered
+// HTML so search engines and non-JS AI crawlers get the real content.
+export const createRoot = ViteReactSSG(<App />);

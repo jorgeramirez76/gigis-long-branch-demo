@@ -152,7 +152,7 @@ export function VipClub() {
             </label>
           </div>
 
-          <p className="text-xs leading-relaxed text-white/60">{CONSENT_TEXT}</p>
+          <p className="text-xs leading-relaxed text-white/85">{CONSENT_TEXT}</p>
 
           {status === "error" && (
             <p className="rounded-lg bg-black/25 px-4 py-2.5 text-sm text-white">{errorMsg}</p>
@@ -168,7 +168,7 @@ export function VipClub() {
             {status === "submitting" ? "Joining…" : "Join the VIP Club"}
           </button>
 
-          <p className="text-center text-xs text-white/50">
+          <p className="text-center text-xs text-white/80">
             Prefer to call? {LOCATION.phone}
           </p>
         </form>

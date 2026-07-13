@@ -311,7 +311,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         </div>
 
         {status === "error" && (
-          <p className="rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
+          <p role="alert" className="rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
             {errorMsg} You can also call <a className="font-semibold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>.
           </p>
         )}
@@ -394,13 +394,17 @@ function CardField({ label, innerRef }: { label: string; innerRef: React.RefObje
 function Field({
   label, value, onChange, placeholder, type = "text", required,
 }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; required?: boolean }) {
+  const id = "checkout-" + label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   return (
     <div>
-      <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/55">
+      <label htmlFor={id} className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/55">
         {label}{required && <span className="text-[var(--color-brand-red)]"> *</span>}
       </label>
       <input
+        id={id}
         type={type}
+        required={required}
+        aria-required={required || undefined}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}

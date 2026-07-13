@@ -33,7 +33,7 @@ export const REVIEW_THEMES: ReviewTheme[] = [
   },
   {
     heading: "Specialty pies are a draw",
-    body: "Favorites that come up again and again: the hot-honey Bee Sting, General Tso's pizza, the Money Pie, and the Famous Pepi Roni.",
+    body: "Favorites that come up again and again: the hot-honey Bee Sting, General Tso's pizza, the Money Pie, and the Famous Pepi.",
     sourceNote: "Recurring mentions across public review snippets.",
   },
   {

@@ -6,11 +6,11 @@ import { money, useCart } from "./CartContext";
  * Prices mirror the live Clover menu (src/data/menuGenerated.ts).
  */
 const SUGGESTIONS = [
-  { itemName: "Garlic Knots", categoryId: "slices", basePrice: 624, tag: "Most added" },
+  { itemName: "Garlic Knots", categoryId: "appetizers", basePrice: 624, tag: "Most added" },
   { itemName: "Mozzarella Sticks (6)", categoryId: "appetizers", basePrice: 1040, tag: "Crowd favorite" },
   { itemName: "Cannoli (2)", categoryId: "desserts", basePrice: 623, tag: "Sweet finish" },
-  { itemName: "French Fries", categoryId: "french-fries", basePrice: 416, tag: "Classic side" },
-  { itemName: "Two Liter Soda", categoryId: "drinks", basePrice: 300, tag: "For the table" },
+  { itemName: "French Fries Regular", categoryId: "french-fries", basePrice: 416, tag: "Classic side" },
+  { itemName: "Two Liter Soda", categoryId: "drinks", basePrice: 415, tag: "For the table" },
 ];
 
 export function Upsell() {

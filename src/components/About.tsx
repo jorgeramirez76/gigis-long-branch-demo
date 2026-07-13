@@ -1,5 +1,6 @@
 import { BRAND_INSIDE } from "../data/gallery";
 import { LOCATION } from "../data/location";
+import { MENU } from "../data/menu";
 import { PhoneIcon, StarIcon } from "./Icons";
 
 export function About() {
@@ -95,7 +96,7 @@ export function About() {
                   Menu
                 </dt>
                 <dd className="mt-2 font-display text-2xl text-white md:text-3xl">
-                  27 cats.
+                  {MENU.length} cats.
                 </dd>
               </div>
               <div>

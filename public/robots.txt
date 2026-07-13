@@ -2,6 +2,9 @@
 # Public site is fully crawlable. AI answer engines are explicitly welcomed
 # so the business can be cited in AI-generated answers (see also the JSON-LD
 # in index.html). Only the private admin + API surfaces are disallowed.
+#
+# NOTE: a crawler obeys only its single most-specific User-agent group, so the
+# admin/api Disallow lines are repeated in every named group below.
 
 User-agent: *
 Allow: /
@@ -11,35 +14,57 @@ Disallow: /api/
 # --- AI search / answer engines (explicit allow so they can cite us) ---
 User-agent: GPTBot
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: Claude-Web
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
 Sitemap: https://gigislongbranch.com/sitemap.xml

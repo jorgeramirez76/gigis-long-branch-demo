@@ -85,7 +85,7 @@
             ],
             "logo": "https://gigislongbranch.com/logo.png",
             "url": "https://gigislongbranch.com/",
-            "description": "Gigi's NY Style Pizza & Restaurant is a family-run pizzeria at 140 Brighton Avenue in the West End of Long Branch, New Jersey. We make real New York-style pizza with hand-stretched dough, fresh mozzarella, and house tomato sauce, sold as whole pies and by the slice. The menu also covers Grandma and Sicilian squares, stuffed and specialty pies, heroes and subs, pasta, chicken and seafood dinners, salads, wraps, burgers, wings, breakfast, and açaí — plus gluten-free and vegan pizza. Open daily with pickup, delivery, and catering across Long Branch and Monmouth County.",
+            "description": "Gigi's NY Style Pizza & Restaurant is a family-run pizzeria at 140 Brighton Avenue in the West End of Long Branch, New Jersey. We make real New York-style pizza with hand-stretched dough, fresh mozzarella, and house tomato sauce, sold as whole pies and by the slice. The menu also covers Grandma and Sicilian squares, stuffed and specialty pies, heroes and subs, pasta, chicken and seafood dinners, salads, wraps, burgers, wings, breakfast, and açaí — plus gluten-free and vegan pizza. Open six days a week (closed Tuesdays) with pickup, delivery, and catering across Long Branch and Monmouth County.",
             "telephone": "+1-732-377-2468",
             "priceRange": "$$",
             "currenciesAccepted": "USD",
@@ -131,9 +131,15 @@
             "openingHoursSpecification": [
               {
                 "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                "opens": "09:00",
-                "closes": "23:59"
+                "dayOfWeek": ["Monday", "Wednesday", "Thursday", "Sunday"],
+                "opens": "10:00",
+                "closes": "22:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Friday", "Saturday"],
+                "opens": "10:00",
+                "closes": "23:00"
               }
             ],
             "sameAs": [
@@ -155,10 +161,21 @@
               { "@type": "Place", "name": "West End, Long Branch" },
               { "@type": "Place", "name": "Elberon, Long Branch" }
             ],
-            "potentialAction": {
-              "@type": "ReserveAction",
-              "target": { "@type": "EntryPoint", "urlTemplate": "tel:+17323772468" }
-            }
+            "potentialAction": [
+              {
+                "@type": "OrderAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://gigislongbranch.cloveronline.com",
+                  "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+                },
+                "deliveryMethod": ["http://purl.org/goodrelations/v1#DeliveryModePickUp", "http://purl.org/goodrelations/v1#DeliveryModeOwnFleet"]
+              },
+              {
+                "@type": "ReserveAction",
+                "target": { "@type": "EntryPoint", "urlTemplate": "tel:+17323772468" }
+              }
+            ]
           },
           {
             "@type": "Menu",
@@ -298,7 +315,7 @@
                 "name": "Where is Gigi's and what are the hours?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Gigi's is at 140 Brighton Avenue in the West End of Long Branch, NJ 07740, with easy parking and quick pickup. We're open daily from 9 AM and the kitchen runs late every night. Holiday and seasonal hours can change, so call (732) 377-2468 to confirm before a late-night or early-morning visit."
+                  "text": "Gigi's is at 140 Brighton Avenue in the West End of Long Branch, NJ 07740, with easy parking and quick pickup. Hours are 10 AM to 10 PM Monday, Wednesday, Thursday and Sunday, 10 AM to 11 PM Friday and Saturday, and closed on Tuesdays. Call (732) 377-2468 to confirm holiday hours."
                 }
               }
             ]

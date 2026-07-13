@@ -27,10 +27,11 @@ export function ServiceArea() {
             <span className="text-[var(--color-brand-red)]"> Jersey Shore neighborhood</span>
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-soft)] md:text-lg">
-            Hot pies, fresh heroes, and full Italian dinners delivered to{" "}
+            Hot pies, fresh heroes, and full Italian dinners for pickup or
+            delivery to{" "}
             <span className="font-semibold text-[var(--color-ink)]">Long Branch</span>{" "}
-            and the surrounding 5-mile shore neighborhoods — order through Slice,
-            Uber Eats, DoorDash, or Grubhub, or call ahead and pick up at the counter.
+            and the surrounding 5-mile shore neighborhoods — order direct online,
+            or call ahead and pick up at the counter.
           </p>
         </div>
 

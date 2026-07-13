@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { LOCATION, ORDER_ONLINE_URL } from "../data/location";
-import { ArrowIcon, MenuIcon, PhoneIcon } from "./Icons";
+import { LOCATION } from "../data/location";
+import { MenuIcon, PhoneIcon } from "./Icons";
+import { CartButton } from "../ordering/CartButton";
+import { useCart } from "../ordering/CartContext";
 import logoPng from "../assets/brand/logo.png";
 
 const LINKS = [
@@ -13,6 +15,7 @@ const LINKS = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const cart = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -64,18 +67,16 @@ export function Nav() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <a href={ORDER_ONLINE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-gold-bright)] px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)] transition hover:bg-[var(--color-gold)]">
-            Order
-            <ArrowIcon className="h-3.5 w-3.5" />
-          </a>
+          <CartButton variant="gold" label="Order" />
           <a href={`tel:${LOCATION.phoneTel}`} className="inline-flex items-center gap-2 rounded-full bg-[var(--color-brand-red)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(155,18,26,0.35)] transition hover:bg-[var(--color-brand-red-dark)]" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}>
             <PhoneIcon className="h-4 w-4" />
             {LOCATION.phone}
           </a>
         </div>
 
-        {/* Mobile: hamburger + phone */}
+        {/* Mobile: cart + hamburger */}
         <div className="flex items-center gap-2 md:hidden">
+          <CartButton label="" className="!px-3" />
           <a href={`tel:${LOCATION.phoneTel}`} className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-red)] p-3 text-white shadow-[var(--shadow-red)]" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}>
             <PhoneIcon className="h-4 w-4" />
           </a>
@@ -143,10 +144,16 @@ export function Nav() {
               <PhoneIcon className="h-4 w-4" />
               Call {LOCATION.phone}
             </a>
-            <a href={ORDER_ONLINE_URL} target="_blank" rel="noreferrer" className="btn-gold w-full text-base">
-              Order Online
-              <ArrowIcon className="h-4 w-4" />
-            </a>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                cart.openCart();
+              }}
+              className="btn-gold w-full text-base"
+            >
+              {cart.count > 0 ? `View your order · ${cart.count}` : "Start your order"}
+            </button>
           </div>
         </div>
       </div>

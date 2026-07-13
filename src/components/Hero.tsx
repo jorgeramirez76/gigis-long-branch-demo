@@ -1,4 +1,4 @@
-import { LOCATION, DIRECTIONS_URL, ORDER_ONLINE_URL } from "../data/location";
+import { LOCATION, DIRECTIONS_URL } from "../data/location";
 import { HOURS_ONE_LINE } from "../data/hours";
 import { HERO_IMAGE } from "../data/gallery";
 import { PhoneIcon, MenuIcon, PinIcon, ArrowIcon, StarIcon } from "./Icons";
@@ -79,9 +79,7 @@ export function Hero() {
               Call {LOCATION.phone}
             </a>
             <a
-              href={ORDER_ONLINE_URL}
-              target="_blank"
-              rel="noreferrer"
+              href="#menu"
               className="btn-gold w-full text-base sm:w-auto"
             >
               Order Online

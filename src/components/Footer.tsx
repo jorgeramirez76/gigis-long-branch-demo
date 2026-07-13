@@ -1,4 +1,4 @@
-import { ADDRESS_ONE_LINE, DIRECTIONS_URL, LOCATION, ORDER_ONLINE_URL, SOCIALS } from "../data/location";
+import { ADDRESS_ONE_LINE, DIRECTIONS_URL, LOCATION, SOCIALS } from "../data/location";
 import { HOURS_ONE_LINE } from "../data/hours";
 import logoPng from "../assets/brand/logo.png";
 
@@ -64,7 +64,7 @@ export function Footer() {
               Hours
             </p>
             <p className="mt-3 text-sm text-cream/85">{HOURS_ONE_LINE}</p>
-            <a href={ORDER_ONLINE_URL} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm font-semibold text-[var(--color-gold-bright)] hover:underline">
+            <a href="#menu" className="mt-3 inline-block text-sm font-semibold text-[var(--color-gold-bright)] hover:underline">
               Order online →
             </a>
           </div>

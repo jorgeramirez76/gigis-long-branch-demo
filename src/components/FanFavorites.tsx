@@ -1,5 +1,4 @@
 import { FAVORITES } from "../data/gallery";
-import { ORDER_ONLINE_URL } from "../data/location";
 
 /** Signature pies with real photos — the conversion bridge between the
  * gallery vibe and the (very long) full menu. */
@@ -53,9 +52,7 @@ export function FanFavorites() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3" data-reveal>
           <a
-            href={ORDER_ONLINE_URL}
-            target="_blank"
-            rel="noopener"
+            href="#menu"
             className="rounded-full bg-[var(--color-brand-red)] px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)]"
           >
             Order one now

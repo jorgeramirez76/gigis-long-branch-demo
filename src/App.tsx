@@ -12,11 +12,12 @@ import { Location } from "./components/Location";
 import { Footer } from "./components/Footer";
 import { StickyBar } from "./components/StickyBar";
 import { useReveal } from "./hooks/useReveal";
+import { OrderingProvider } from "./ordering/OrderingProvider";
 
 export default function App() {
   useReveal();
   return (
-    <>
+    <OrderingProvider>
       <a
         href="#menu"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-[var(--color-brand-red)] focus:px-4 focus:py-2 focus:text-white"
@@ -38,6 +39,6 @@ export default function App() {
       </main>
       <Footer />
       <StickyBar />
-    </>
+    </OrderingProvider>
   );
 }

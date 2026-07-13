@@ -1,5 +1,5 @@
 import { SERVICE_AREAS } from "../data/seo";
-import { LOCATION, ORDER_ONLINE_URL } from "../data/location";
+import { LOCATION } from "../data/location";
 import { ArrowIcon, PhoneIcon, PinIcon } from "./Icons";
 
 /**
@@ -59,9 +59,7 @@ export function ServiceArea() {
             Call {LOCATION.phone}
           </a>
           <a
-            href={ORDER_ONLINE_URL}
-            target="_blank"
-            rel="noreferrer"
+            href="#menu"
             className="btn-gold w-full sm:w-auto"
           >
             Order Online

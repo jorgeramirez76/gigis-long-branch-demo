@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { DIRECTIONS_URL, LOCATION, ORDER_ONLINE_URL } from "../data/location";
-import { ArrowIcon, MenuIcon, PhoneIcon, PinIcon } from "./Icons";
+import { DIRECTIONS_URL, LOCATION } from "../data/location";
+import { MenuIcon, PhoneIcon, PinIcon } from "./Icons";
+import { useCart } from "../ordering/CartContext";
 
 /**
  * Sticky mobile bottom bar: Call / Order / Menu / Directions.
@@ -9,6 +10,7 @@ import { ArrowIcon, MenuIcon, PhoneIcon, PinIcon } from "./Icons";
  */
 export function StickyBar() {
   const [show, setShow] = useState(false);
+  const cart = useCart();
 
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > 120);
@@ -33,15 +35,25 @@ export function StickyBar() {
           <PhoneIcon className="h-[22px] w-[22px]" />
           Call
         </a>
-        <a
-          href={ORDER_ONLINE_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="flex flex-col items-center gap-1 border-l border-black/10 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-ink)] transition active:bg-black/5"
+        <button
+          type="button"
+          onClick={cart.openCart}
+          className="relative flex flex-col items-center gap-1 border-l border-black/10 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-brand-red)] transition active:bg-[var(--color-brand-red)]/5"
+          aria-label={`Open your order, ${cart.count} item${cart.count === 1 ? "" : "s"}`}
         >
-          <ArrowIcon className="h-[22px] w-[22px]" />
+          <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 6h15l-1.5 9h-12z" />
+            <circle cx="9" cy="20" r="1" />
+            <circle cx="18" cy="20" r="1" />
+            <path d="M6 6 5 3H3" />
+          </svg>
           Order
-        </a>
+          {cart.count > 0 && (
+            <span className="absolute right-2.5 top-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[var(--color-brand-red)] px-1 text-[9px] font-extrabold text-white">
+              {cart.count}
+            </span>
+          )}
+        </button>
         <a
           href="#menu"
           className="flex flex-col items-center gap-1 border-l border-black/10 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-ink)] transition active:bg-black/5"

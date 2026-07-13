@@ -1,76 +1,70 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MENU, PRICING_DISCLAIMER, MENU_VERIFIED } from "../data/menu";
 import type { MenuItem } from "../data/menu";
-import { LOCATION, ORDER_ONLINE_URL } from "../data/location";
-import { ArrowIcon, PhoneIcon } from "./Icons";
+import { LOCATION } from "../data/location";
+import { PhoneIcon } from "./Icons";
+import { useOrderingUI } from "../ordering/OrderingProvider";
+import { useCart } from "../ordering/CartContext";
 
-/** One menu line — name, popular flag, description, expandable options, price.
- * `categoryLabel` is shown only in search results so a hit is placeable. */
-function MenuItemRow({ item, categoryLabel }: { item: MenuItem; categoryLabel?: string }) {
-  return (
-    <li className="flex items-baseline justify-between gap-4 border-b border-dotted border-[var(--color-ink)]/15 pb-4">
-      <div className="min-w-0 flex-1">
-        {categoryLabel && (
-          <p className="mb-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-brand-red)]/70">
-            {categoryLabel}
-          </p>
-        )}
-        <p className="font-serif text-[17px] font-semibold text-[var(--color-ink)] md:text-lg">
-          {item.name}
-          {item.popular && (
-            <span className="ml-2 inline-flex items-center rounded-full bg-[var(--color-brand-red)]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-brand-red)]">
-              Popular
-            </span>
-          )}
+/** One orderable menu line. The whole row opens the item modal (options +
+ * quantity → add to cart). `categoryLabel` is shown only in search results. */
+function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; categoryId: string; categoryLabel?: string }) {
+  const { configureItem, isOrderable } = useOrderingUI();
+  const orderable = isOrderable(item);
+  const hasOptions = !!item.options && item.options.length > 0;
+
+  const info = (
+    <div className="min-w-0 flex-1">
+      {categoryLabel && (
+        <p className="mb-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-brand-red)]/70">
+          {categoryLabel}
         </p>
-        {item.description && (
-          <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-            {item.description}
-          </p>
+      )}
+      <p className="font-serif text-[17px] font-semibold text-[var(--color-ink)] md:text-lg">
+        {item.name}
+        {item.popular && (
+          <span className="ml-2 inline-flex items-center rounded-full bg-[var(--color-brand-red)]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-brand-red)]">
+            Popular
+          </span>
         )}
-        {item.options && item.options.length > 0 && (
-          <details className="group/opts mt-2">
-            <summary className="cursor-pointer select-none text-xs font-bold uppercase tracking-wider text-[var(--color-brand-red)] hover:text-[var(--color-brand-red-bright)]">
-              <span className="group-open/opts:hidden">+ Options &amp; toppings</span>
-              <span className="hidden group-open/opts:inline">− Hide options</span>
-            </summary>
-            <div className="mt-3 space-y-3">
-              {item.options.map((g) => (
-                <div key={g.group}>
-                  <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-ink-mute)]">
-                    {g.group}
-                    {g.rule && (
-                      <span className="ml-1.5 font-medium normal-case tracking-normal text-[var(--color-ink)]/45">
-                        · {g.rule}
-                      </span>
-                    )}
-                  </p>
-                  <div className="mt-1.5 flex flex-wrap gap-1.5">
-                    {g.choices.map((ch) => (
-                      <span
-                        key={ch.name}
-                        className="inline-flex items-baseline gap-1 rounded-full bg-[var(--color-cream)] px-2.5 py-1 text-xs text-[var(--color-ink-soft)]"
-                      >
-                        {ch.name}
-                        {ch.delta && (
-                          <span className="font-semibold text-[var(--color-brand-red)]">{ch.delta}</span>
-                        )}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </details>
-        )}
-      </div>
-      {item.price ? (
-        <span className="shrink-0 font-display text-xl text-[var(--color-brand-red)]">{item.price}</span>
-      ) : (
+      </p>
+      {item.description && (
+        <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{item.description}</p>
+      )}
+      {hasOptions && orderable && (
+        <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-brand-red)]/60">
+          Customizable · toppings &amp; options
+        </p>
+      )}
+    </div>
+  );
+
+  if (!orderable) {
+    return (
+      <li className="flex items-baseline justify-between gap-4 border-b border-dotted border-[var(--color-ink)]/15 pb-4">
+        {info}
         <span className="shrink-0 text-xs font-medium uppercase tracking-wider text-[var(--color-ink)]/50">
           Call to confirm
         </span>
-      )}
+      </li>
+    );
+  }
+
+  return (
+    <li className="border-b border-dotted border-[var(--color-ink)]/15">
+      <button
+        type="button"
+        onClick={() => configureItem(item, categoryId)}
+        className="group/item flex w-full items-center justify-between gap-4 rounded-lg pb-4 text-left transition"
+      >
+        {info}
+        <span className="flex shrink-0 flex-col items-end gap-1.5">
+          <span className="font-display text-xl text-[var(--color-brand-red)]">{item.price}</span>
+          <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-brand-red)] px-3.5 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition group-hover/item:bg-[var(--color-brand-red-bright)]">
+            Add +
+          </span>
+        </span>
+      </button>
     </li>
   );
 }
@@ -80,6 +74,7 @@ export function Menu() {
   const [query, setQuery] = useState("");
   const active = MENU.find((c) => c.id === activeId) ?? MENU[0];
   const panelRef = useRef<HTMLDivElement>(null);
+  const cart = useCart();
 
   const q = query.trim().toLowerCase();
   const searching = q.length >= 2;
@@ -90,7 +85,7 @@ export function Menu() {
     return MENU.flatMap((c) =>
       c.items
         .filter((it) => it.name.toLowerCase().includes(q) || c.name.toLowerCase().includes(q))
-        .map((it) => ({ item: it, category: c.name })),
+        .map((it) => ({ item: it, category: c.name, categoryId: c.id })),
     );
   }, [q, searching]);
 
@@ -192,8 +187,8 @@ export function Menu() {
                 </div>
                 {results.length > 0 ? (
                   <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
-                    {results.map(({ item, category }) => (
-                      <MenuItemRow key={`${category}-${item.name}`} item={item} categoryLabel={category} />
+                    {results.map(({ item, category, categoryId }) => (
+                      <MenuItemRow key={`${category}-${item.name}`} item={item} categoryId={categoryId} categoryLabel={category} />
                     ))}
                   </ul>
                 ) : (
@@ -213,7 +208,7 @@ export function Menu() {
                 </div>
                 <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
                   {active.items.map((item) => (
-                    <MenuItemRow key={item.name} item={item} />
+                    <MenuItemRow key={item.name} item={item} categoryId={active.id} />
                   ))}
                 </ul>
               </>
@@ -233,10 +228,9 @@ export function Menu() {
             <PhoneIcon className="h-4 w-4" />
             Call ahead for pickup · {LOCATION.phone}
           </a>
-          <a href={ORDER_ONLINE_URL} target="_blank" rel="noreferrer" className="btn-gold w-full sm:w-auto">
-            Order Online
-            <ArrowIcon className="h-4 w-4" />
-          </a>
+          <button type="button" onClick={cart.openCart} className="btn-gold w-full sm:w-auto">
+            {cart.count > 0 ? `View your order · ${cart.count}` : "Start your order"}
+          </button>
         </div>
         {MENU_VERIFIED && (
           <p className="mt-6 text-center text-xs text-[var(--color-ink)]/50">{PRICING_DISCLAIMER}</p>

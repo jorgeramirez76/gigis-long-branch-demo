@@ -3,7 +3,6 @@ import {
   DIRECTIONS_URL,
   LOCATION,
   MAP_EMBED_URL,
-  ORDER_ONLINE_URL,
 } from "../data/location";
 import { HOURS, HOURS_VERIFIED } from "../data/hours";
 import { ArrowIcon, ClockIcon, PhoneIcon, PinIcon } from "./Icons";
@@ -66,7 +65,7 @@ export function Location() {
                 <PhoneIcon className="h-4 w-4" />
                 Call Long Branch
               </a>
-              <a href={ORDER_ONLINE_URL} target="_blank" rel="noreferrer" className="btn-gold w-full sm:w-auto">
+              <a href="#menu" className="btn-gold w-full sm:w-auto">
                 Order Online
                 <ArrowIcon className="h-4 w-4" />
               </a>

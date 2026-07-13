@@ -1,4 +1,45 @@
+# Gigi's NY Style Pizza — Long Branch, NJ
+# Public site is fully crawlable. AI answer engines are explicitly welcomed
+# so the business can be cited in AI-generated answers (see also the JSON-LD
+# in index.html). Only the private admin + API surfaces are disallowed.
+
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /api/
 
-Sitemap: https://gigisnystylepizza-longbranch.com/sitemap.xml
+# --- AI search / answer engines (explicit allow so they can cite us) ---
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://gigislongbranch.com/sitemap.xml

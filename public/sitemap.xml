@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://gigisnystylepizza-longbranch.com/</loc>
+    <loc>https://gigislongbranch.com/</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://gigisnystylepizza-longbranch.com/#menu</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://gigisnystylepizza-longbranch.com/#location</loc>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://gigisnystylepizza-longbranch.com/#faq</loc>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
   </url>
 </urlset>

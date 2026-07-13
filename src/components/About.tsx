@@ -40,17 +40,20 @@ export function About() {
 
             <div className="mt-8 space-y-5 text-lg leading-relaxed text-cream/90" data-reveal style={{ ["--delay" as string]: "160ms" }}>
               <p>
-                Located on Brighton Ave in Long Branch, Gigi's NY Style Pizza serves
-                classic New York-style pizza, specialty pies, Italian dinners,
-                heroes, wraps, salads, appetizers, and more.
+                Gigi's NY Style Pizza &amp; Restaurant is a family-run pizzeria at
+                140 Brighton Avenue in the West End of Long Branch. We make real New
+                York-style pizza — hand-stretched dough, house tomato sauce, real
+                mozzarella — sold as whole pies and by the slice.
               </p>
               <p>
-                Fresh-stretched dough. House tomato sauce. Real mozzarella. A full
-                neighborhood kitchen — not just a slice shop.
+                Alongside our round pies we serve Grandma and Sicilian squares,
+                stuffed and specialty pizzas, heroes, pasta, Italian dinners,
+                breakfast, and açaí — plus gluten-free and vegan pizza. A full
+                neighborhood kitchen, open year-round, not just a summer slice stop.
               </p>
             </div>
 
-            {/* Recognition callout */}
+            {/* Recognition callout — real, verified rating (no unverified award claims) */}
             <div
               className="mt-8 inline-flex items-center gap-3 rounded-xl border border-[var(--color-gold-bright)]/30 bg-black/40 px-5 py-4 backdrop-blur"
               data-reveal="scale"
@@ -59,10 +62,10 @@ export function About() {
               <StarIcon className="h-6 w-6 shrink-0 text-[var(--color-gold-bright)]" />
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-                  Recognition
+                  Loved locally
                 </p>
                 <p className="font-display text-xl text-white md:text-2xl">
-                  Voted one of the top pizzas in New Jersey
+                  Rated 4.6 out of 5 on Restaurantji
                 </p>
               </div>
             </div>
@@ -92,7 +95,7 @@ export function About() {
                   Menu
                 </dt>
                 <dd className="mt-2 font-display text-2xl text-white md:text-3xl">
-                  16 cats.
+                  27 cats.
                 </dd>
               </div>
               <div>

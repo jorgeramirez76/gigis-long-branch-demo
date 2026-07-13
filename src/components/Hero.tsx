@@ -45,7 +45,7 @@ export function Hero() {
         <div className="max-w-3xl text-cream">
           <span className="hero-in hero-in-1 inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--color-gold-bright)]/60 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-gold-bright)] backdrop-blur sm:tracking-[0.22em] md:text-xs">
             <StarIcon className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate sm:whitespace-normal">Voted one of the top pizzas in NJ</span>
+            <span className="truncate sm:whitespace-normal">A West End neighborhood favorite · Brighton Ave</span>
           </span>
 
           <h1 className="hero-in hero-in-2 mt-5 text-[2.6rem] leading-[0.95] text-white sm:text-[3.25rem] md:text-[4.25rem] lg:text-[5.5rem] xl:text-[6.5rem]">

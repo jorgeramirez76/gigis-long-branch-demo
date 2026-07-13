@@ -14,15 +14,14 @@ export function Reviews() {
           <span className="eyebrow mt-4 block">What locals say</span>
           <h2 className="mt-3 text-4xl md:text-5xl">The neighborhood take</h2>
           <p className="mt-4 text-base text-[var(--color-ink-soft)] md:text-lg">
-            {ACCOLADE.label}. Themes below paraphrased from publicly visible reviews on Google, Slice, Uber Eats, and Restaurantji.
+            {ACCOLADE.label}. Themes below are paraphrased from publicly visible reviews on Google, Restaurantji, and Restaurant Guru.
           </p>
         </div>
 
-        {/* Rating tiles */}
-        <div className="mx-auto mt-10 grid max-w-3xl grid-cols-3 gap-3 text-center" data-reveal>
-          <RatingTile score={RATING_SNAPSHOT.slice.score} count={`${RATING_SNAPSHOT.slice.count} reviews`} label="on Slice" href={RATING_SNAPSHOT.slice.url} />
-          <RatingTile score={RATING_SNAPSHOT.uberEats.score} count={`${RATING_SNAPSHOT.uberEats.countLabel} ratings`} label="on Uber Eats" href={RATING_SNAPSHOT.uberEats.url} />
+        {/* Rating tiles — real, single-source ratings with attribution + links */}
+        <div className="mx-auto mt-10 grid max-w-md grid-cols-2 gap-3 text-center" data-reveal>
           <RatingTile score={RATING_SNAPSHOT.restaurantji.score} count={`${RATING_SNAPSHOT.restaurantji.count} reviews`} label="on Restaurantji" href={RATING_SNAPSHOT.restaurantji.url} />
+          <RatingTile score={RATING_SNAPSHOT.restaurantGuru.score} count={`${RATING_SNAPSHOT.restaurantGuru.count} reviews`} label="on Restaurant Guru" href={RATING_SNAPSHOT.restaurantGuru.url} />
         </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
@@ -52,7 +51,7 @@ export function Reviews() {
         </div>
 
         <p className="mt-10 text-center text-xs text-[var(--color-ink)]/40">
-          Ratings pulled 2026-04-24. Themes paraphrased from publicly visible reviews; individual reviews belong to their authors.
+          Ratings verified July 2026. Themes paraphrased from publicly visible reviews; individual reviews belong to their authors.
         </p>
       </div>
     </section>

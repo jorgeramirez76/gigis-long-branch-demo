@@ -14,17 +14,19 @@
       rel="stylesheet"
     />
 
-    <title>Gigi's NY Style Pizza — Long Branch, NJ | Best NY Pizza on Brighton Ave</title>
+    <title>NY Style Pizza in Long Branch, NJ | Gigi's on Brighton Ave</title>
     <meta
       name="description"
-      content="Voted one of the top pizzas in New Jersey. Real New York style pizza in Long Branch, NJ — hand-stretched dough, fresh mozzarella, classic NY slices, specialty pies, heroes, pasta, and Italian classics at 140 Brighton Ave. Open daily 9 AM – 12 AM. Delivery to Long Branch, West Long Branch, Monmouth Beach, Eatontown, Deal, Allenhurst & nearby. Call (732) 377-2468."
+      content="Real New York style pizza in Long Branch, NJ — hand-stretched crust, Grandma squares, specialty pies, heroes, pasta, and Italian dinners on Brighton Ave. Gluten-free & vegan pizza too. Pickup, delivery & catering. Call (732) 377-2468."
     />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-    <meta name="keywords" content="pizza Long Branch NJ, NY style pizza Long Branch, best pizza Long Branch, Italian food Long Branch, pizza delivery Long Branch, pizza near Brighton Ave, Gigi's Pizza Long Branch, West Long Branch pizza, Monmouth Beach pizza, Eatontown pizza, Deal NJ pizza, Asbury Park pizza, Long Branch restaurant" />
+    <meta name="keywords" content="pizza Long Branch NJ, NY style pizza Long Branch, best pizza Long Branch, gluten free pizza Long Branch, vegan pizza Long Branch, Italian food Long Branch, pizza delivery Long Branch, pizza catering Long Branch, pizza near Brighton Ave, Gigi's Pizza Long Branch, West End pizza, Pier Village pizza, Monmouth Beach pizza, Eatontown pizza" />
     <meta name="author" content="Gigi's NY Style Pizza & Restaurant — Long Branch" />
-    <link rel="canonical" href="https://gigisnystylepizza-longbranch.com/" />
+    <link rel="canonical" href="https://gigislongbranch.com/" />
 
-    <!-- Geo (legacy but supported by some search engines + map services) -->
+    <!-- Geo (legacy but supported by some search engines + map services).
+         NOTE: coordinates are approximate — confirm the exact pin from the
+         Google Business Profile and keep this in sync with src/data/location.ts. -->
     <meta name="geo.region" content="US-NJ" />
     <meta name="geo.placename" content="Long Branch, New Jersey" />
     <meta name="geo.position" content="40.3010;-73.9990" />
@@ -36,10 +38,10 @@
     <meta property="og:title" content="Gigi's NY Style Pizza — Long Branch, NJ" />
     <meta
       property="og:description"
-      content="Voted one of the top pizzas in NJ. Real New York style pizza, specialty pies, heroes, pasta, and Italian classics on Brighton Ave, Long Branch. Open daily 9 AM – 12 AM."
+      content="Real New York style pizza, Grandma squares, specialty pies, heroes, and Italian classics on Brighton Ave, Long Branch. Pickup, delivery & catering. Call (732) 377-2468."
     />
-    <meta property="og:url" content="https://gigisnystylepizza-longbranch.com/" />
-    <meta property="og:image" content="https://gigisnystylepizza-longbranch.com/og-image.jpg" />
+    <meta property="og:url" content="https://gigislongbranch.com/" />
+    <meta property="og:image" content="https://gigislongbranch.com/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Hand lifting a New York cheese slice from a whole pie at Gigi's Long Branch" />
@@ -62,25 +64,27 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Gigi's NY Style Pizza — Long Branch, NJ" />
-    <meta name="twitter:description" content="Real NY style slices, specialty pies, heroes, pasta, and Italian classics on Brighton Ave. Open daily 9 AM – midnight." />
-    <meta name="twitter:image" content="https://gigisnystylepizza-longbranch.com/og-image.jpg" />
+    <meta name="twitter:description" content="Real NY style slices, specialty pies, heroes, pasta, and Italian classics on Brighton Ave, Long Branch NJ. Pickup, delivery & catering." />
+    <meta name="twitter:image" content="https://gigislongbranch.com/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Gigi's NY Style Pizza in Long Branch, NJ" />
 
-    <!-- Schema.org graph: Restaurant + LocalBusiness + Place + FAQPage + Menu -->
+    <!-- Schema.org @graph: Restaurant + Menu + FAQ + Breadcrumb + WebSite + WebPage.
+         Keep the FAQPage questions in sync with src/data/seo.ts (FAQS). -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
             "@type": ["Restaurant", "LocalBusiness", "FoodEstablishment"],
-            "@id": "https://gigisnystylepizza-longbranch.com/#restaurant",
+            "@id": "https://gigislongbranch.com/#restaurant",
             "name": "Gigi's NY Style Pizza & Restaurant",
             "alternateName": ["Gigi's Pizza Long Branch", "Gigi's NY Style Pizza Long Branch"],
             "image": [
-              "https://gigisnystylepizza-longbranch.com/og-image.jpg",
-              "https://gigisnystylepizza-longbranch.com/logo.png"
+              "https://gigislongbranch.com/og-image.jpg",
+              "https://gigislongbranch.com/logo.png"
             ],
-            "logo": "https://gigisnystylepizza-longbranch.com/logo.png",
-            "url": "https://gigisnystylepizza-longbranch.com/",
+            "logo": "https://gigislongbranch.com/logo.png",
+            "url": "https://gigislongbranch.com/",
             "telephone": "+1-732-377-2468",
             "priceRange": "$$",
             "currenciesAccepted": "USD",
@@ -89,20 +93,22 @@
               "Pizza",
               "New York Style Pizza",
               "Italian",
+              "Italian-American",
               "American",
+              "Seafood",
               "Sandwiches",
-              "Pasta",
               "Breakfast"
             ],
             "knowsAbout": [
               "New York style pizza",
-              "Sicilian pizza",
               "Grandma pizza",
+              "Sicilian pizza",
               "specialty pizza",
+              "gluten-free pizza",
+              "vegan pizza",
               "Italian heroes and subs",
               "pasta dinners",
-              "buffalo wings",
-              "mozzarella sticks",
+              "pizza catering in Long Branch NJ",
               "pizza delivery in Long Branch NJ"
             ],
             "address": {
@@ -118,172 +124,210 @@
               "latitude": 40.3010,
               "longitude": -73.9990
             },
-            "hasMap": "https://www.google.com/maps?q=140+Brighton+Ave,+Long+Branch,+NJ+07740",
-            "acceptsReservations": "True",
-            "menu": "https://gigisnystylepizza-longbranch.com/#menu",
+            "hasMap": "https://www.google.com/maps?q=Gigi's+NY+Style+Pizza+140+Brighton+Ave+Long+Branch+NJ+07740",
+            "acceptsReservations": true,
+            "hasMenu": { "@id": "https://gigislongbranch.com/#menu" },
             "openingHoursSpecification": [
               {
                 "@type": "OpeningHoursSpecification",
                 "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
                 "opens": "09:00",
-                "closes": "00:00"
+                "closes": "23:59"
               }
             ],
             "sameAs": [
               "https://www.instagram.com/gigisnystylepizza/",
               "https://www.facebook.com/gigispizzasb/",
-              "https://slicelife.com/restaurants/nj/long-branch/07740/gigi-s-ny-style-pizza-restaurant/menu",
-              "https://www.ubereats.com/store/gigis-ny-style-pizza/CWb8PzzGRGuaw9RGJc1OQQ",
-              "https://www.restaurantji.com/nj/long-branch/gigis-ny-style-pizza-and-restaurant-lb-/"
+              "https://www.restaurantji.com/nj/long-branch/gigis-ny-style-pizza-and-restaurant-lb-/",
+              "https://restaurantguru.com/Gigis-NY-Style-Pizza-and-Restaurant-Long-Branch"
             ],
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.6",
-              "reviewCount": "286",
-              "bestRating": "5"
-            },
-            "award": "Voted one of the top pizzas in New Jersey",
             "areaServed": [
               { "@type": "City", "name": "Long Branch", "@id": "https://en.wikipedia.org/wiki/Long_Branch,_New_Jersey" },
               { "@type": "City", "name": "West Long Branch" },
               { "@type": "City", "name": "Monmouth Beach" },
               { "@type": "City", "name": "Oceanport" },
               { "@type": "City", "name": "Eatontown" },
-              { "@type": "City", "name": "Tinton Falls" },
               { "@type": "City", "name": "Deal" },
               { "@type": "City", "name": "Allenhurst" },
-              { "@type": "City", "name": "Loch Arbour" },
-              { "@type": "City", "name": "Oakhurst" },
-              { "@type": "City", "name": "Asbury Park" },
-              { "@type": "City", "name": "Shrewsbury" }
+              { "@type": "City", "name": "Ocean Township" },
+              { "@type": "Place", "name": "Pier Village, Long Branch" },
+              { "@type": "Place", "name": "West End, Long Branch" },
+              { "@type": "Place", "name": "Elberon, Long Branch" }
             ],
-            "potentialAction": [
-              {
-                "@type": "OrderAction",
-                "target": "https://slicelife.com/restaurants/nj/long-branch/07740/gigi-s-ny-style-pizza-restaurant/menu",
-                "deliveryMethod": ["http://schema.org/OnSitePickup", "http://schema.org/ParcelService"]
-              },
-              {
-                "@type": "ReserveAction",
-                "target": "tel:+17323772468"
-              }
-            ]
-          },
-          {
-            "@type": "Place",
-            "@id": "https://gigisnystylepizza-longbranch.com/#place",
-            "name": "Gigi's NY Style Pizza Long Branch",
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "140 Brighton Ave",
-              "addressLocality": "Long Branch",
-              "addressRegion": "NJ",
-              "postalCode": "07740",
-              "addressCountry": "US"
-            },
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": 40.3010,
-              "longitude": -73.9990
-            },
-            "containedInPlace": [
-              { "@type": "City", "name": "Long Branch", "address": { "@type": "PostalAddress", "addressRegion": "NJ", "addressCountry": "US" } },
-              { "@type": "AdministrativeArea", "name": "Monmouth County, New Jersey" }
-            ]
+            "potentialAction": {
+              "@type": "ReserveAction",
+              "target": { "@type": "EntryPoint", "urlTemplate": "tel:+17323772468" }
+            }
           },
           {
             "@type": "Menu",
-            "@id": "https://gigisnystylepizza-longbranch.com/#menu",
+            "@id": "https://gigislongbranch.com/#menu",
             "name": "Gigi's NY Style Pizza Menu — Long Branch",
-            "url": "https://gigisnystylepizza-longbranch.com/#menu",
+            "url": "https://gigislongbranch.com/#menu",
+            "inLanguage": "en-US",
             "hasMenuSection": [
-              { "@type": "MenuSection", "name": "Pizza" },
-              { "@type": "MenuSection", "name": "Gigi's Signature Pizza" },
-              { "@type": "MenuSection", "name": "Sicilian & Grandma" },
-              { "@type": "MenuSection", "name": "Pizza by the Slice" },
-              { "@type": "MenuSection", "name": "Appetizers" },
-              { "@type": "MenuSection", "name": "Salads & Soups" },
-              { "@type": "MenuSection", "name": "Heroes & Sandwiches" },
-              { "@type": "MenuSection", "name": "Paninis & Wraps" },
-              { "@type": "MenuSection", "name": "Pasta & Dinners" },
-              { "@type": "MenuSection", "name": "Burgers, Dogs & Fries" },
-              { "@type": "MenuSection", "name": "Chubbzie Wubbzies" },
-              { "@type": "MenuSection", "name": "Mexican" },
-              { "@type": "MenuSection", "name": "Breakfast" },
-              { "@type": "MenuSection", "name": "Kids Menu" },
-              { "@type": "MenuSection", "name": "Desserts" },
-              { "@type": "MenuSection", "name": "Beverages" }
+              {
+                "@type": "MenuSection",
+                "name": "Signature Specialty Pizzas",
+                "description": "House specialty pies you won't find everywhere.",
+                "hasMenuItem": [
+                  { "@type": "MenuItem", "name": "The Fonz", "description": "Gigi's flagship specialty pie.", "offers": { "@type": "Offer", "price": "26.00", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "Bee Sting", "description": "Pepperoni pie finished with hot honey.", "offers": { "@type": "Offer", "price": "22.87", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "Drunken Grandma", "description": "Creamy vodka sauce on a thin square Grandma crust.", "offers": { "@type": "Offer", "price": "27.04", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "Bobby Boombotz Upside Down Vodka Pepi", "description": "Upside-down vodka pie loaded with crisp pepperoni cups.", "offers": { "@type": "Offer", "price": "29.12", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "White Truffle Pie", "description": "Premium white truffle specialty pie.", "offers": { "@type": "Offer", "price": "29.12", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "Lobster Pie", "description": "Premium seafood specialty pie.", "offers": { "@type": "Offer", "price": "29.12", "priceCurrency": "USD" } }
+                ]
+              },
+              {
+                "@type": "MenuSection",
+                "name": "NY Pies, Grandma & Slices",
+                "hasMenuItem": [
+                  { "@type": "MenuItem", "name": "Plain Cheese Pie", "description": "Classic hand-stretched NY-style cheese pizza.", "offers": { "@type": "Offer", "price": "17.68", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "Grandma Pie", "description": "Thin square Grandma pizza with fresh mozzarella and marinara.", "offers": { "@type": "Offer", "price": "26.00", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "Vodka Pie", "description": "Round pie with creamy vodka sauce.", "offers": { "@type": "Offer", "price": "22.88", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "Cheese Slice", "description": "Classic NY thin-crust cheese slice, all day.", "offers": { "@type": "Offer", "price": "2.92", "priceCurrency": "USD" } }
+                ]
+              },
+              {
+                "@type": "MenuSection",
+                "name": "Gluten-Free & Vegan Pizza",
+                "description": "Prepared in a shared kitchen; not guaranteed allergen-free.",
+                "hasMenuItem": [
+                  { "@type": "MenuItem", "name": "Gluten-Free Pizza", "description": "NY-style pizza on a gluten-free crust, add any toppings. Baked in a shared oven.", "suitableForDiet": "https://schema.org/GlutenFreeDiet", "offers": { "@type": "Offer", "price": "17.68", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "Vegan Pizza", "description": "NY-style crust with dairy-free cheese and vegetable toppings.", "suitableForDiet": "https://schema.org/VeganDiet", "offers": { "@type": "Offer", "price": "20.79", "priceCurrency": "USD" } }
+                ]
+              },
+              {
+                "@type": "MenuSection",
+                "name": "Breakfast & Açaí",
+                "hasMenuItem": [
+                  { "@type": "MenuItem", "name": "Açaí Bowl", "description": "Açaí with granola, fresh fruit, and honey.", "offers": { "@type": "Offer", "price": "12.48", "priceCurrency": "USD" } }
+                ]
+              },
+              {
+                "@type": "MenuSection",
+                "name": "Catering",
+                "description": "Trays and party heroes for Long Branch & Monmouth County. Call (732) 377-2468.",
+                "hasMenuItem": [
+                  { "@type": "MenuItem", "name": "3-Foot Party Hero", "description": "Party hero that feeds a group.", "offers": { "@type": "Offer", "price": "56.16", "priceCurrency": "USD" } },
+                  { "@type": "MenuItem", "name": "6-Foot Party Hero", "description": "Large party hero for bigger crowds.", "offers": { "@type": "Offer", "price": "112.32", "priceCurrency": "USD" } }
+                ]
+              }
             ]
           },
           {
             "@type": "FAQPage",
-            "@id": "https://gigisnystylepizza-longbranch.com/#faq",
+            "@id": "https://gigislongbranch.com/#faq",
             "mainEntity": [
               {
                 "@type": "Question",
-                "name": "Where is Gigi's NY Style Pizza in Long Branch?",
+                "name": "What is the best NY-style pizza in Long Branch?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "We're at 140 Brighton Ave, Long Branch, NJ 07740 — right on Brighton Ave with easy parking and quick pickup. Call (732) 377-2468 with any questions."
+                  "text": "Gigi's NY Style Pizza on Brighton Avenue is a longtime local favorite for New York pizza in Long Branch. Regulars come back for the thin, hand-stretched crust, the balanced sauce-to-cheese ratio, and specialty pies like the Bee Sting and The Fonz. Order a whole pie or grab it by the slice."
                 }
               },
               {
                 "@type": "Question",
-                "name": "What are Gigi's Long Branch hours?",
+                "name": "What is New York-style pizza?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "We're open daily, 9 AM to midnight (12 AM). Breakfast, lunch, dinner, and late-night slices — every day of the week."
+                  "text": "New York-style pizza is a large, thin, hand-tossed round with a crust crisp enough to hold its shape but flexible enough to fold. It's topped with tomato sauce and whole-milk mozzarella and sold as whole pies and by the slice. Gigi's makes its NY-style pies with hand-stretched dough baked to order."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Do you deliver in Long Branch and the surrounding area?",
+                "name": "Does Gigi's have gluten-free pizza?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes — order online through Slice, Uber Eats, DoorDash, or Grubhub for delivery to Long Branch, West Long Branch, Monmouth Beach, Oceanport, Eatontown, Deal, Allenhurst, and the surrounding 5-mile radius. Call (732) 377-2468 for pickup."
+                  "text": "Yes. Gigi's makes a gluten-free NY-style pizza on a gluten-free crust, and you can add any toppings you like. Please note our pizzas are prepared and baked in a shared kitchen, so we can't guarantee a fully allergen-free pie. If you have celiac disease, tell our staff and we'll take extra care."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Is Gigi's pizza authentic New York style?",
+                "name": "Is there vegan pizza in Long Branch, NJ?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes. We hand-stretch our dough fresh each day, build our pies on house tomato sauce with real fresh mozzarella, and bake them up in NY-style fashion — thin crust with that classic foldable slice."
+                  "text": "Yes. Gigi's makes a vegan pizza on our NY-style crust with dairy-free cheese and your choice of vegetable toppings. It's one of the few vegan pizza options right in town, so you don't have to drive out of Long Branch to find one. Vegan-friendly salads and marinara pies are also available."
                 }
               },
               {
                 "@type": "Question",
-                "name": "What's on the menu besides pizza?",
+                "name": "What are Gigi's signature specialty pizzas?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "We're a full neighborhood Italian kitchen. Specialty pies, hot and cold heroes, pasta dinners, chicken parm, seafood, paninis, wraps, salads, soups, and Italian classics — plus a full breakfast menu with benedicts, omelets, and acai bowls."
+                  "text": "Gigi's is known for creative pies you won't find everywhere. Favorites include the Bee Sting with hot honey, the vodka-sauced Drunken Grandma on a square crust, The Fonz, the upside-down Bobby Boombotz Vodka Pepi, and premium pies like White Truffle and Lobster. There's also a full lineup of stuffed pizzas."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Do you take reservations or host parties?",
+                "name": "Does Gigi's cater events in Long Branch?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes — we accept reservations and we host make-your-own-pizza parties for kids and groups. Call (732) 377-2468 to arrange."
+                  "text": "Yes. Gigi's caters pizza parties, office lunches, graduations, and beach-house gatherings across Long Branch and Monmouth County. We offer half and full trays of pizza, pasta, and salads, plus 3-foot and 6-foot hero platters. Call (732) 377-2468 to plan your order — a day or two of notice helps for larger parties."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Are you family-friendly?",
+                "name": "Does Gigi's serve breakfast and açaí bowls?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Absolutely. Kid-friendly seating, a fireplace, a kids' menu, and the kind of warm neighborhood feel families come back to."
+                  "text": "Yes. Gigi's serves breakfast every morning — omelettes, Benedicts, pancakes, French toast, and breakfast pizza. We also make açaí bowls with granola, fresh fruit, and honey. It's a rare all-day pizzeria where you can get morning eats and a fresh slice from the same kitchen on Brighton Avenue."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is Gigi's more than a pizzeria?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Beyond pizza, Gigi's is a full Italian-American restaurant. The menu includes heroes and subs, pasta dinners, chicken and seafood entrées, wraps, burgers, wings, salads, and a kids' menu. One order can feed a whole family or a mixed-craving group — a solid choice for beach-house rentals and group dinners."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Gigi's deliver, and where?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Gigi's delivers across Long Branch and nearby towns, including the West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. You can order pizza, heroes, pasta, salads, and full dinners for delivery, or call (732) 377-2468 to place an order for pickup."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Where is Gigi's and what are the hours?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Gigi's is at 140 Brighton Avenue in the West End of Long Branch, NJ 07740, with easy parking and quick pickup. We're open daily from 9 AM and the kitchen runs late every night. Holiday and seasonal hours can change, so call (732) 377-2468 to confirm before a late-night or early-morning visit."
                 }
               }
             ]
           },
           {
+            "@type": "BreadcrumbList",
+            "@id": "https://gigislongbranch.com/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gigislongbranch.com/" }
+            ]
+          },
+          {
             "@type": "WebSite",
-            "@id": "https://gigisnystylepizza-longbranch.com/#website",
-            "url": "https://gigisnystylepizza-longbranch.com/",
-            "name": "Gigi's NY Style Pizza — Long Branch",
-            "description": "Real NY style pizza in Long Branch, NJ — official site for the 140 Brighton Ave location.",
-            "publisher": { "@id": "https://gigisnystylepizza-longbranch.com/#restaurant" },
+            "@id": "https://gigislongbranch.com/#website",
+            "url": "https://gigislongbranch.com/",
+            "name": "Gigi's NY Style Pizza & Restaurant — Long Branch",
+            "description": "Official site for Gigi's NY Style Pizza at 140 Brighton Ave, Long Branch, NJ.",
+            "publisher": { "@id": "https://gigislongbranch.com/#restaurant" },
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://gigislongbranch.com/#webpage",
+            "url": "https://gigislongbranch.com/",
+            "name": "NY Style Pizza in Long Branch, NJ | Gigi's on Brighton Ave",
+            "isPartOf": { "@id": "https://gigislongbranch.com/#website" },
+            "about": { "@id": "https://gigislongbranch.com/#restaurant" },
+            "primaryImageOfPage": "https://gigislongbranch.com/og-image.jpg",
+            "datePublished": "2026-04-24",
+            "dateModified": "2026-07-12",
             "inLanguage": "en-US"
           }
         ]

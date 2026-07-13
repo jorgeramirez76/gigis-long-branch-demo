@@ -108,9 +108,11 @@ export function Menu() {
       <div className="container-x">
         <div className="mx-auto max-w-2xl text-center" data-reveal>
           <span className="eyebrow">The full menu</span>
-          <h2 className="mt-3 text-4xl md:text-6xl">Made-to-order classics</h2>
+          <h2 className="mt-3 text-4xl md:text-6xl">Our full Long Branch menu</h2>
           <p className="mt-4 text-base text-[var(--color-ink-soft)] md:text-lg">
-            Pizzas, heroes, pasta dinners, wraps, salads, and Italian favorites.
+            NY pies, Grandma squares, specialty pizzas, heroes, pasta, and Italian
+            dinners — plus gluten-free &amp; vegan pizza, breakfast, and açaí. Straight
+            from our Clover kitchen, updated July 2026.
           </p>
         </div>
 

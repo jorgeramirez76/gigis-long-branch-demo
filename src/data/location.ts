@@ -15,12 +15,12 @@ export const LOCATION = {
   zip: "07740",
   phone: "732-377-2468",
   phoneTel: "+17323772468",
-  // Approximate coords for 140 Brighton Ave, Long Branch NJ.
-  // Refine from the Google Business Profile when verifying on-site.
-  lat: 40.3015,
-  lng: -74.0015,
+  // Approximate coords for 140 Brighton Ave, Long Branch NJ — kept in sync with
+  // the geo in index.html. Refine both from the Google Business Profile pin.
+  lat: 40.301,
+  lng: -73.999,
   googleMapsQuery: "140+Brighton+Ave,+Long+Branch,+NJ+07740",
-  canonicalUrl: "https://gigisnystylepizza-longbranch.com/",
+  canonicalUrl: "https://gigislongbranch.com/",
 } as const;
 
 export const ADDRESS_ONE_LINE = `${LOCATION.street}, ${LOCATION.city}, ${LOCATION.state} ${LOCATION.zip}`;

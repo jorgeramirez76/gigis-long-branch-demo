@@ -107,7 +107,7 @@ export function Menu() {
           <p className="mt-4 text-base text-[var(--color-ink-soft)] md:text-lg">
             NY pies, Grandma squares, specialty pizzas, heroes, pasta, and Italian
             dinners — plus gluten-free &amp; vegan pizza, breakfast, and açaí. Straight
-            from our Clover kitchen, updated July 2026.
+            from our kitchen, updated July 2026.
           </p>
         </div>
 

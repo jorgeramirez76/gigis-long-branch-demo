@@ -23,4 +23,4 @@ export const MENU: MenuCategory[] = MENU_GENERATED;
 export const MENU_VERIFIED = true;
 
 export const PRICING_DISCLAIMER =
-  "This menu mirrors Gigi's Clover point-of-sale system. Prices and availability can change — your final total is confirmed when you order. Questions? Call 732-377-2468.";
+  "This menu mirrors our in-store menu. Prices and availability can change — your final total is confirmed when you order. Questions? Call 732-377-2468.";

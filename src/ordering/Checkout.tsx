@@ -260,7 +260,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   )}
                   <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-ink)]/40">
                     <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                    Encrypted & processed by Clover. We never see your card number.
+                    Encrypted & processed securely. We never see your card number.
                   </p>
                 </div>
               )}

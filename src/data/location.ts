@@ -31,17 +31,6 @@ export const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destinatio
 
 export const MAP_EMBED_URL = `https://www.google.com/maps?q=${LOCATION.googleMapsQuery}&output=embed`;
 
-/**
- * Online ordering — this site orders STRICTLY through Clover Online Ordering
- * (published + live 2026-07-12 for merchant 2J9HNTSEXBHG1). Orders hit the POS
- * directly with no per-order marketplace fee. Slice's own marketplace listing
- * stays live independently for discovery — it's just no longer linked from here,
- * so owned traffic (site, Google, regulars) never routes through a fee channel.
- */
-export const CLOVER_ORDER_URL = "https://gigislongbranch.cloveronline.com";
-
-export const ORDER_ONLINE_URL = CLOVER_ORDER_URL;
-
 /** Socials. Note: accounts are multi-location — posts clearly reference
  * Long Branch in captions. Link but don't claim exclusivity. */
 export const SOCIALS = {

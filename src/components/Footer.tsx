@@ -82,7 +82,20 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-xs leading-relaxed text-cream/55">
+        <nav className="mt-10 border-t border-white/10 pt-6" aria-label="Popular pages">
+          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-gold-bright)]">Explore</p>
+          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-cream/75">
+            <a href="/late-night-pizza-long-branch/" className="hover:text-white">Late-Night Pizza</a>
+            <a href="/gluten-free-pizza-long-branch/" className="hover:text-white">Gluten-Free Pizza</a>
+            <a href="/vegan-pizza-long-branch/" className="hover:text-white">Vegan Pizza</a>
+            <a href="/catering-long-branch/" className="hover:text-white">Catering in Long Branch</a>
+            <a href="/pizza-delivery-pier-village/" className="hover:text-white">Pier Village Delivery</a>
+            <a href="/pizza-delivery-west-end-long-branch/" className="hover:text-white">West End Pizza</a>
+            <a href="/pizza-delivery-elberon/" className="hover:text-white">Elberon Delivery</a>
+          </div>
+        </nav>
+
+        <div className="mt-10 border-t border-white/10 pt-6 text-xs leading-relaxed text-cream/55">
           <p>
             © {year} Gigi's NY Style Pizza — Long Branch. This website represents the
             Long Branch location only. Menu items, pricing, hours, and availability

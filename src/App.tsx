@@ -3,6 +3,7 @@ import { Hero } from "./components/Hero";
 import { Gallery } from "./components/Gallery";
 import { About } from "./components/About";
 import { FanFavorites } from "./components/FanFavorites";
+import { Breakfast } from "./components/Breakfast";
 import { Menu } from "./components/Menu";
 import { Reviews } from "./components/Reviews";
 import { ServiceArea } from "./components/ServiceArea";
@@ -30,6 +31,7 @@ export default function App() {
         <Gallery />
         <About />
         <FanFavorites />
+        <Breakfast />
         <Menu />
         <Reviews />
         <ServiceArea />

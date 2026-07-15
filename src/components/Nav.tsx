@@ -7,6 +7,7 @@ import logoPng from "../assets/brand/logo.png";
 
 const LINKS = [
   { href: "#menu", label: "Menu" },
+  { href: "#breakfast", label: "Breakfast" },
   { href: "#about", label: "About" },
   { href: "#reviews", label: "Reviews" },
   { href: "#location", label: "Visit" },

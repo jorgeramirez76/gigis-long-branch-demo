@@ -93,6 +93,10 @@
       footer a { color: var(--gold); text-decoration: none; font-weight: 700; }
       footer .cta { display: inline-block; margin-top: 14px; background: var(--red); color: #fff; font-weight: 700; text-decoration: none; padding: 11px 22px; border-radius: 999px; font-size: 14px; }
       .add-line { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; }
+
+      /* Dish photos (owner's poster shots) */
+      .dish { display: block; width: 100%; max-width: 480px; height: auto; border-radius: 16px; box-shadow: 0 10px 26px rgba(42,33,27,0.16); margin: 4px auto 14px; }
+      .dish--sm { max-width: 280px; }
     </style>
   </head>
   <body>
@@ -122,6 +126,7 @@
       <!-- The Gigi Skillet -->
       <div class="cat">
         <div class="cat-h green">The Gigi Skillet</div>
+        <img class="dish" src="/img/breakfast-skillet.jpg" alt="The Gigi Skillet — tater tots with homemade cheese sauce and bacon in a cast-iron skillet" loading="lazy" decoding="async" width="698" height="526" />
         <div class="feature">
           <div class="price-big">$11</div>
           <p>Tater-tots smothered in our homemade cheese sauce, with your choice of breakfast meat: <span class="meats">bacon, sausage, or pork roll</span>.</p>
@@ -131,6 +136,7 @@
       <!-- Sandwiches -->
       <div class="cat">
         <div class="cat-h green">Sandwiches</div>
+        <img class="dish" src="/img/breakfast-sandwich.jpg" alt="Bacon, egg and cheese breakfast sandwich on a Kaiser roll" loading="lazy" decoding="async" width="636" height="392" />
         <div class="cat-note">Served on a Kaiser roll, wrap, bagel, white, or wheat.</div>
         <div class="item"><span class="n">Egg Sandwich</span><span class="dots"></span><span class="p">$6</span></div>
         <div class="item"><span class="n">Egg &amp; Cheese Sandwich</span><span class="dots"></span><span class="p">$7</span></div>
@@ -144,6 +150,7 @@
       <!-- Toasty-Tasty Burritos -->
       <div class="cat">
         <div class="cat-h green">Gigi's Toasty-Tasty Burritos</div>
+        <img class="dish dish--sm" src="/img/breakfast-burrito.jpg" alt="Breakfast burrito filled with scrambled eggs, tater tots and cheese, with a side of salsa" loading="lazy" decoding="async" width="408" height="508" />
         <div class="cat-note">3 fluffy scrambled eggs, choice of ham, bacon, pork roll, or sausage, with crispy tater tots &amp; melted cheese inside a huge tortilla.</div>
         <div class="item"><span class="n">Chico Burrito<span class="d">Chorizo, home-fries, mozzarella cheese &amp; avocado</span></span><span class="dots"></span><span class="p">$10</span></div>
         <div class="item"><span class="n">Burrito Bomber<span class="d">Pork roll, sausage, American cheese &amp; home-fries</span></span><span class="dots"></span><span class="p">$10</span></div>
@@ -153,6 +160,7 @@
       <!-- Omelettes -->
       <div class="cat">
         <div class="cat-h red">Omelettes</div>
+        <img class="dish" src="/img/breakfast-omelette.jpg" alt="Loaded omelette with spinach, tomatoes and mushrooms in a cast-iron skillet" loading="lazy" decoding="async" width="602" height="540" />
         <div class="cat-note">Served with Gigi's famous home-fries &amp; toast. Add breakfast meat — <b>pork roll, bacon, or sausage +$3</b></div>
         <div class="item"><span class="n">Cheese<span class="d">American cheese</span></span><span class="dots"></span><span class="p">$13</span></div>
         <div class="item"><span class="n">Meat &amp; Cheese<span class="d">American cheese, choice of sausage, bacon or pork roll</span></span><span class="dots"></span><span class="p">$13</span></div>

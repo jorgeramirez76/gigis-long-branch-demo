@@ -69,9 +69,9 @@
         background-size: 18px 18px;
         background-position: 0 0, 0 9px, 9px -9px, -9px 0;
       }
-      .wrap { max-width: 720px; margin: 0 auto; padding: 0 28px; }
+      .wrap { max-width: 640px; margin: 0 auto; padding: 0 34px; }
 
-      header.hero { text-align: center; padding: 26px 28px 14px; }
+      header.hero { text-align: center; padding: 26px 34px 14px; }
       .hero .g { font-family: "Anton", sans-serif; color: var(--red); font-size: clamp(48px, 15vw, 96px); line-height: 0.86; letter-spacing: 0.02em; }
       .hero .b { font-family: "Anton", sans-serif; color: var(--green); font-size: clamp(40px, 12.5vw, 82px); line-height: 0.9; letter-spacing: 0.01em; margin-top: 2px; }
       .served { display: inline-block; margin-top: 12px; background: var(--red); color: #fff; font-family: "Bebas Neue", sans-serif; letter-spacing: 0.22em; font-size: 15px; padding: 6px 20px; border-radius: 3px; }
@@ -90,11 +90,11 @@
       .cat-note { font-size: 12.5px; color: var(--ink-soft); font-style: italic; margin-bottom: 12px; }
       .cat-note b { font-style: normal; color: var(--red); font-weight: 700; }
 
-      .item { display: flex; align-items: baseline; gap: 8px; padding: 7px 0; border-bottom: 1px dashed rgba(42,33,27,0.14); }
+      .item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; padding: 7px 0; border-bottom: 1px dashed rgba(42,33,27,0.14); }
       .item:last-child { border-bottom: 0; }
       .item .n { font-weight: 700; font-size: 15px; }
-      .item .d { display: block; font-weight: 400; font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
-      .item .dots { flex: 1; border-bottom: 1.5px dotted rgba(42,33,27,0.28); transform: translateY(-4px); min-width: 14px; }
+      .item .d { flex: 1 0 100%; font-weight: 400; font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+      .item .dots { flex: 0 0 2rem; border-bottom: 1.5px dotted rgba(42,33,27,0.28); transform: translateY(-4px); }
       .item .p { font-family: "Bebas Neue", sans-serif; font-size: 20px; color: var(--red); letter-spacing: 0.03em; white-space: nowrap; }
 
       /* Featured cards (skillet + pizza) */
@@ -109,7 +109,7 @@
       .pizza-card h4 { font-family: "Bebas Neue", sans-serif; font-size: 21px; letter-spacing: 0.05em; color: var(--green-bright); }
       .pizza-card .pc-price { font-family: "Anton", sans-serif; color: var(--red); font-size: 26px; line-height: 1; margin: 2px 0 6px; }
 
-      footer { background: var(--ink); color: var(--cream); text-align: center; padding: 22px 28px; }
+      footer { background: var(--ink); color: var(--cream); text-align: center; padding: 22px 34px; }
       footer .fl { font-family: "Bebas Neue", sans-serif; font-size: 22px; letter-spacing: 0.06em; }
       footer .fa { font-size: 13px; opacity: 0.85; margin-top: 4px; }
       footer a { color: var(--gold); text-decoration: none; font-weight: 700; }
@@ -139,10 +139,10 @@
         <div class="item"><span class="n">Full Stack (3)</span><span class="dots"></span><span class="p">$8</span></div>
         <div class="item"><span class="n">Short Stack (2)</span><span class="dots"></span><span class="p">$6</span></div>
         <div class="item"><span class="n">French Toast (2)</span><span class="dots"></span><span class="p">$6</span></div>
-        <div class="item"><span class="n">The #1<span class="d">3 eggs any style, served with home-fries &amp; toast</span></span><span class="dots"></span><span class="p">$11</span></div>
-        <div class="item"><span class="n">The #2<span class="d">3 eggs any style with choice of meat, served with home-fries &amp; toast</span></span><span class="dots"></span><span class="p">$13</span></div>
-        <div class="item"><span class="n">The #3<span class="d">3 eggs any style with choice of meat &amp; pancakes or French toast</span></span><span class="dots"></span><span class="p">$15</span></div>
-        <div class="item"><span class="n">The Nicky Brunch<span class="d">4 eggs any style, choice of meat, pancakes or French toast, home-fries &amp; toast</span></span><span class="dots"></span><span class="p">$17</span></div>
+        <div class="item"><span class="n">The #1</span><span class="dots"></span><span class="p">$11</span><span class="d">3 eggs any style, served with home-fries &amp; toast</span></div>
+        <div class="item"><span class="n">The #2</span><span class="dots"></span><span class="p">$13</span><span class="d">3 eggs any style with choice of meat, served with home-fries &amp; toast</span></div>
+        <div class="item"><span class="n">The #3</span><span class="dots"></span><span class="p">$15</span><span class="d">3 eggs any style with choice of meat &amp; pancakes or French toast</span></div>
+        <div class="item"><span class="n">The Nicky Brunch</span><span class="dots"></span><span class="p">$17</span><span class="d">4 eggs any style, choice of meat, pancakes or French toast, home-fries &amp; toast</span></div>
       </div>
 
       <!-- The Gigi Skillet -->
@@ -166,7 +166,7 @@
         <div class="item"><span class="n">Sausage, Egg &amp; Cheese</span><span class="dots"></span><span class="p">$8</span></div>
         <div class="item"><span class="n">Pork Roll, Egg &amp; Cheese</span><span class="dots"></span><span class="p">$8</span></div>
         <div class="item"><span class="n">Turkey Bacon, Egg &amp; Cheese</span><span class="dots"></span><span class="p">$8</span></div>
-        <div class="item"><span class="n">The 'Katie'<span class="d">2 fried eggs on French toast w/ choice of meat, served with a side of syrup</span></span><span class="dots"></span><span class="p">$10</span></div>
+        <div class="item"><span class="n">The 'Katie'</span><span class="dots"></span><span class="p">$10</span><span class="d">2 fried eggs on French toast w/ choice of meat, served with a side of syrup</span></div>
       </div>
 
       <!-- Toasty-Tasty Burritos -->
@@ -174,9 +174,9 @@
         <div class="cat-h green">Gigi's Toasty-Tasty Burritos</div>
         <img class="dish dish--sm" src="/img/breakfast-burrito.jpg" alt="Breakfast burrito filled with scrambled eggs, tater tots and cheese, with a side of salsa" loading="lazy" decoding="async" width="408" height="508" />
         <div class="cat-note">3 fluffy scrambled eggs, choice of ham, bacon, pork roll, or sausage, with crispy tater tots &amp; melted cheese inside a huge tortilla.</div>
-        <div class="item"><span class="n">Chico Burrito<span class="d">Chorizo, home-fries, mozzarella cheese &amp; avocado</span></span><span class="dots"></span><span class="p">$10</span></div>
-        <div class="item"><span class="n">Burrito Bomber<span class="d">Pork roll, sausage, American cheese &amp; home-fries</span></span><span class="dots"></span><span class="p">$10</span></div>
-        <div class="item"><span class="n">Veggie Burrito<span class="d">Spinach, peppers, mushrooms &amp; onions</span></span><span class="dots"></span><span class="p">$10</span></div>
+        <div class="item"><span class="n">Chico Burrito</span><span class="dots"></span><span class="p">$10</span><span class="d">Chorizo, home-fries, mozzarella cheese &amp; avocado</span></div>
+        <div class="item"><span class="n">Burrito Bomber</span><span class="dots"></span><span class="p">$10</span><span class="d">Pork roll, sausage, American cheese &amp; home-fries</span></div>
+        <div class="item"><span class="n">Veggie Burrito</span><span class="dots"></span><span class="p">$10</span><span class="d">Spinach, peppers, mushrooms &amp; onions</span></div>
       </div>
 
       <!-- Omelettes -->
@@ -184,14 +184,14 @@
         <div class="cat-h red">Omelettes</div>
         <img class="dish" src="/img/breakfast-omelette.jpg" alt="Loaded omelette with spinach, tomatoes and mushrooms in a cast-iron skillet" loading="lazy" decoding="async" width="602" height="540" />
         <div class="cat-note">Served with Gigi's famous home-fries &amp; toast. Add breakfast meat — <b>pork roll, bacon, or sausage +$3</b></div>
-        <div class="item"><span class="n">Cheese<span class="d">American cheese</span></span><span class="dots"></span><span class="p">$13</span></div>
-        <div class="item"><span class="n">Meat &amp; Cheese<span class="d">American cheese, choice of sausage, bacon or pork roll</span></span><span class="dots"></span><span class="p">$13</span></div>
-        <div class="item"><span class="n">Veggie<span class="d">Spinach, peppers, mushrooms, onions &amp; tomato</span></span><span class="dots"></span><span class="p">$13</span></div>
-        <div class="item"><span class="n">Egg White<span class="d">3 fresh egg whites w/ cheese</span></span><span class="dots"></span><span class="p">$13</span></div>
-        <div class="item"><span class="n">B-Fit<span class="d">Egg whites, turkey bacon, pepper jack &amp; spinach</span></span><span class="dots"></span><span class="p">$14</span></div>
-        <div class="item"><span class="n">Western<span class="d">Ham, diced onions &amp; peppers</span></span><span class="dots"></span><span class="p">$13</span></div>
-        <div class="item"><span class="n">Mediterranean<span class="d">Goat cheese, mushrooms &amp; spinach</span></span><span class="dots"></span><span class="p">$13</span></div>
-        <div class="item"><span class="n">Chorizo Con Huevos<span class="d">Chorizo, onions, tomatoes, cheddar cheese, sour cream, salsa &amp; avocado</span></span><span class="dots"></span><span class="p">$13</span></div>
+        <div class="item"><span class="n">Cheese</span><span class="dots"></span><span class="p">$13</span><span class="d">American cheese</span></div>
+        <div class="item"><span class="n">Meat &amp; Cheese</span><span class="dots"></span><span class="p">$13</span><span class="d">American cheese, choice of sausage, bacon or pork roll</span></div>
+        <div class="item"><span class="n">Veggie</span><span class="dots"></span><span class="p">$13</span><span class="d">Spinach, peppers, mushrooms, onions &amp; tomato</span></div>
+        <div class="item"><span class="n">Egg White</span><span class="dots"></span><span class="p">$13</span><span class="d">3 fresh egg whites w/ cheese</span></div>
+        <div class="item"><span class="n">B-Fit</span><span class="dots"></span><span class="p">$14</span><span class="d">Egg whites, turkey bacon, pepper jack &amp; spinach</span></div>
+        <div class="item"><span class="n">Western</span><span class="dots"></span><span class="p">$13</span><span class="d">Ham, diced onions &amp; peppers</span></div>
+        <div class="item"><span class="n">Mediterranean</span><span class="dots"></span><span class="p">$13</span><span class="d">Goat cheese, mushrooms &amp; spinach</span></div>
+        <div class="item"><span class="n">Chorizo Con Huevos</span><span class="dots"></span><span class="p">$13</span><span class="d">Chorizo, onions, tomatoes, cheddar cheese, sour cream, salsa &amp; avocado</span></div>
       </div>
 
       <!-- Breakfast Pizza -->
@@ -214,7 +214,7 @@
       <!-- Breakfast Sides -->
       <div class="cat">
         <div class="cat-h green">Breakfast Sides</div>
-        <div class="item"><span class="n">Bagels<span class="d">1 for $2 · 6 for $11 · 13 for $20</span></span><span class="dots"></span><span class="p">$2</span></div>
+        <div class="item"><span class="n">Bagels</span><span class="dots"></span><span class="p">$2</span><span class="d">1 for $2 · 6 for $11 · 13 for $20</span></div>
         <div class="item"><span class="n">Bacon (3)</span><span class="dots"></span><span class="p">$3</span></div>
         <div class="item"><span class="n">Sausage — Patty (2) or Links (3)</span><span class="dots"></span><span class="p">$5</span></div>
         <div class="item"><span class="n">Pork Roll (2)</span><span class="dots"></span><span class="p">$5</span></div>

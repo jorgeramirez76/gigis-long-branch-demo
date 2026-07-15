@@ -1,432 +1,432 @@
 {
- "category": "Paninis",
- "displayName": "Paninis",
- "verdict": "include",
- "reason": "Real customer-facing paninis category.",
- "items": [
-  {
-   "name": "Panini Italiano",
-   "displayName": "Panini Italiano",
-   "include": true,
-   "priceCents": 1456,
-   "priceDisplay": "$14.56",
-   "options": [
+  "category": "Paninis",
+  "displayName": "Paninis",
+  "verdict": "include",
+  "reason": "Real customer-facing paninis category.",
+  "items": [
     {
-     "groupName": "Panini Side",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Fries",
-       "priceDelta": 0
-      },
-      {
-       "name": "Side Salad",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Panini Italiano",
+      "displayName": "Panini Italiano",
+      "include": true,
+      "priceCents": 1456,
+      "priceDisplay": "$14.56",
+      "options": [
+        {
+          "groupName": "Panini Side",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Fries",
+              "priceDelta": 0
+            },
+            {
+              "name": "Side Salad",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sunshine Panini",
+      "displayName": "Sunshine Panini",
+      "include": true,
+      "priceCents": 1456,
+      "priceDisplay": "$14.56",
+      "options": [
+        {
+          "groupName": "Panini Side",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Fries",
+              "priceDelta": 0
+            },
+            {
+              "name": "Side Salad",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Grilled Vegetable Panini",
+      "displayName": "Grilled Vegetable Panini",
+      "include": true,
+      "priceCents": 1456,
+      "priceDisplay": "$14.56",
+      "options": [
+        {
+          "groupName": "Panini Side",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Fries",
+              "priceDelta": 0
+            },
+            {
+              "name": "Side Salad",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Classic Patty Melt",
+      "displayName": "Classic Patty Melt",
+      "include": true,
+      "priceCents": 1456,
+      "priceDisplay": "$14.56",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Panini Side",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Fries",
+              "priceDelta": 0
+            },
+            {
+              "name": "Side Salad",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Custom Item",
+      "displayName": "Custom Item",
+      "include": false,
+      "priceCents": 1366,
+      "priceDisplay": "$13.66",
+      "options": [
+        {
+          "groupName": "Sandwiches",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Lettuce",
+              "priceDelta": 0
+            },
+            {
+              "name": "Tomato",
+              "priceDelta": 0
+            },
+            {
+              "name": "Onion",
+              "priceDelta": 0
+            },
+            {
+              "name": "Mayo",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil",
+              "priceDelta": 0
+            },
+            {
+              "name": "Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Salt",
+              "priceDelta": 0
+            },
+            {
+              "name": "Pepper",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Combo Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Chicken",
+              "priceDelta": 0
+            },
+            {
+              "name": "Meatball",
+              "priceDelta": 0
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 0
+            },
+            {
+              "name": "Eggplant",
+              "priceDelta": 0
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 312
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Bread Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Wrap",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Meat",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Ham",
+              "priceDelta": 0
+            },
+            {
+              "name": "Salami",
+              "priceDelta": 0
+            },
+            {
+              "name": "Pepperoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Procuitto",
+              "priceDelta": 0
+            },
+            {
+              "name": "Turkey",
+              "priceDelta": 0
+            },
+            {
+              "name": "Grill Chicken",
+              "priceDelta": 0
+            },
+            {
+              "name": "Chiccutlet",
+              "priceDelta": 0
+            },
+            {
+              "name": "Tna",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Cheese",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Provolone",
+              "priceDelta": 0
+            },
+            {
+              "name": "Mozzarella",
+              "priceDelta": 0
+            },
+            {
+              "name": "American Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "Pepperjack",
+              "priceDelta": 0
+            },
+            {
+              "name": "Cheddar",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Condiment",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Mayo",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Salt & pep",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oregano",
+              "priceDelta": 0
+            },
+            {
+              "name": "Red Vnegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Veggie",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Lettuce",
+              "priceDelta": 0
+            },
+            {
+              "name": "Tomato",
+              "priceDelta": 0
+            },
+            {
+              "name": "Onion",
+              "priceDelta": 0
+            },
+            {
+              "name": "Avocado",
+              "priceDelta": 0
+            },
+            {
+              "name": "Roasted Pepper",
+              "priceDelta": 0
+            },
+            {
+              "name": "Jalapeno",
+              "priceDelta": 0
+            },
+            {
+              "name": "Hot Cherry Peps",
+              "priceDelta": 0
+            },
+            {
+              "name": "Vegan Cheese",
+              "priceDelta": 208
+            }
+          ]
+        },
+        {
+          "groupName": "Side FF",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Side FF",
+              "priceDelta": 234
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Spicy Patty Melt",
+      "displayName": "Spicy Patty Melt",
+      "include": true,
+      "priceCents": 1456,
+      "priceDisplay": "$14.56",
+      "options": [
+        {
+          "groupName": "Panini Side",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Fries",
+              "priceDelta": 0
+            },
+            {
+              "name": "Side Salad",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bacon Patty Melt",
+      "displayName": "Bacon Patty Melt",
+      "include": true,
+      "priceCents": 1456,
+      "priceDisplay": "$14.56",
+      "options": [
+        {
+          "groupName": "Panini Side",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Fries",
+              "priceDelta": 0
+            },
+            {
+              "name": "Side Salad",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Roast Beef Club Sandwich",
+      "displayName": "Roast Beef Club Sandwich",
+      "include": true,
+      "priceCents": 1352,
+      "priceDisplay": "$13.52"
     }
-   ]
-  },
-  {
-   "name": "Sunshine Panini",
-   "displayName": "Sunshine Panini",
-   "include": true,
-   "priceCents": 1456,
-   "priceDisplay": "$14.56",
-   "options": [
-    {
-     "groupName": "Panini Side",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Fries",
-       "priceDelta": 0
-      },
-      {
-       "name": "Side Salad",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Grilled Vegetable Panini",
-   "displayName": "Grilled Vegetable Panini",
-   "include": true,
-   "priceCents": 1456,
-   "priceDisplay": "$14.56",
-   "options": [
-    {
-     "groupName": "Panini Side",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Fries",
-       "priceDelta": 0
-      },
-      {
-       "name": "Side Salad",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Classic Patty Melt",
-   "displayName": "Classic Patty Melt",
-   "include": true,
-   "priceCents": 1456,
-   "priceDisplay": "$14.56",
-   "options": [
-    {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "Panini Side",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Fries",
-       "priceDelta": 0
-      },
-      {
-       "name": "Side Salad",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Custom Item",
-   "displayName": "Custom Item",
-   "include": false,
-   "priceCents": 1366,
-   "priceDisplay": "$13.66",
-   "options": [
-    {
-     "groupName": "Sandwiches",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Lettuce",
-       "priceDelta": 0
-      },
-      {
-       "name": "Tomato",
-       "priceDelta": 0
-      },
-      {
-       "name": "Onion",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mayo",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil",
-       "priceDelta": 0
-      },
-      {
-       "name": "Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Salt",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepper",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "Combo Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Chicken",
-       "priceDelta": 0
-      },
-      {
-       "name": "Meatball",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 0
-      },
-      {
-       "name": "Eggplant",
-       "priceDelta": 0
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 312
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Bread Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Wrap",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Meat",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Ham",
-       "priceDelta": 0
-      },
-      {
-       "name": "Salami",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepperoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Procuitto",
-       "priceDelta": 0
-      },
-      {
-       "name": "Turkey",
-       "priceDelta": 0
-      },
-      {
-       "name": "Grill Chicken",
-       "priceDelta": 0
-      },
-      {
-       "name": "Chiccutlet",
-       "priceDelta": 0
-      },
-      {
-       "name": "Tna",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Cheese",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Provolone",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mozzarella",
-       "priceDelta": 0
-      },
-      {
-       "name": "American Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepperjack",
-       "priceDelta": 0
-      },
-      {
-       "name": "Cheddar",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Condiment",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Mayo",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Salt & pep",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oregano",
-       "priceDelta": 0
-      },
-      {
-       "name": "Red Vnegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Veggie",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Lettuce",
-       "priceDelta": 0
-      },
-      {
-       "name": "Tomato",
-       "priceDelta": 0
-      },
-      {
-       "name": "Onion",
-       "priceDelta": 0
-      },
-      {
-       "name": "Avocado",
-       "priceDelta": 0
-      },
-      {
-       "name": "Roasted Pepper",
-       "priceDelta": 0
-      },
-      {
-       "name": "Jalapeno",
-       "priceDelta": 0
-      },
-      {
-       "name": "Hot Cherry Peps",
-       "priceDelta": 0
-      },
-      {
-       "name": "Vegan Cheese",
-       "priceDelta": 208
-      }
-     ]
-    },
-    {
-     "groupName": "Side FF",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Side FF",
-       "priceDelta": 234
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Spicy Patty Melt",
-   "displayName": "Spicy Patty Melt",
-   "include": true,
-   "priceCents": 1456,
-   "priceDisplay": "$14.56",
-   "options": [
-    {
-     "groupName": "Panini Side",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Fries",
-       "priceDelta": 0
-      },
-      {
-       "name": "Side Salad",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Bacon Patty Melt",
-   "displayName": "Bacon Patty Melt",
-   "include": true,
-   "priceCents": 1456,
-   "priceDisplay": "$14.56",
-   "options": [
-    {
-     "groupName": "Panini Side",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Fries",
-       "priceDelta": 0
-      },
-      {
-       "name": "Side Salad",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Roast Beef Club Sandwich",
-   "displayName": "Roast Beef Club Sandwich",
-   "include": true,
-   "priceCents": 1352,
-   "priceDisplay": "$13.52"
-  }
- ]
+  ]
 }

@@ -1,519 +1,305 @@
 {
- "category": "Burgers",
- "displayName": "Burgers",
- "verdict": "include",
- "reason": "Real Gigi's burger menu — priced items with standard burger modifiers.",
- "items": [
-  {
-   "name": "Pizza Burger",
-   "displayName": "Pizza Burger",
-   "include": true,
-   "priceCents": 1455,
-   "priceDisplay": "$14.55",
-   "options": [
+  "category": "Burgers",
+  "displayName": "Burgers",
+  "verdict": "include",
+  "reason": "Real Gigi's burger menu — priced items with standard burger modifiers.",
+  "items": [
     {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Pizza Burger",
+      "displayName": "Pizza Burger",
+      "include": true,
+      "priceCents": 1455,
+      "priceDisplay": "$14.55",
+      "options": [
+        {
+          "groupName": "Meat Temp",
+          "rule": "Choose 1",
+          "choices": [
+            {
+              "name": "Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Well",
+              "priceDelta": 0
+            },
+            {
+              "name": "Well",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Toppings",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Lettuce",
+              "priceDelta": 0
+            },
+            {
+              "name": "Tomato",
+              "priceDelta": 0
+            },
+            {
+              "name": "Onion",
+              "priceDelta": 0
+            },
+            {
+              "name": "Mayo",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil",
+              "priceDelta": 0
+            },
+            {
+              "name": "Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Salt",
+              "priceDelta": 0
+            },
+            {
+              "name": "Pepper",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
     },
     {
-     "groupName": "Toppings",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Lettuce",
-       "priceDelta": 0
-      },
-      {
-       "name": "Tomato",
-       "priceDelta": 0
-      },
-      {
-       "name": "Onion",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mayo",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil",
-       "priceDelta": 0
-      },
-      {
-       "name": "Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Salt",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepper",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Brie Burger",
-   "displayName": "Brie Burger",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60",
-   "options": [
-    {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Sonny Burger",
-   "displayName": "Sonny Burger",
-   "include": true,
-   "priceCents": 1352,
-   "priceDisplay": "$13.52",
-   "options": [
-    {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Veggie Burger Beyond",
-   "displayName": "Veggie Burger Beyond",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60",
-   "options": [
-    {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Bubba Turkey Burger",
-   "displayName": "Bubba Turkey Burger",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60",
-   "options": [
-    {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Bbq Bacon Burger",
-   "displayName": "BBQ Bacon Burger",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60",
-   "options": [
-    {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Jersey Burger",
-   "displayName": "Jersey Burger",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60",
-   "options": [
-    {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Cheezy Wheezy",
-   "displayName": "Cheezy Wheezy",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60"
-  },
-  {
-   "name": "Chili Burger",
-   "displayName": "Chili Burger",
-   "include": true,
-   "priceCents": 1559,
-   "priceDisplay": "$15.59",
-   "options": [
-    {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Burger",
-   "displayName": "Burger",
-   "include": false,
-   "priceCents": 0,
-   "priceDisplay": null,
-   "options": [
-    {
-     "groupName": "TOPPING",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Pepperoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 0
-      },
-      {
-       "name": "Meatball",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ham",
-       "priceDelta": 0
-      },
-      {
-       "name": "Eggplant",
-       "priceDelta": 0
-      },
-      {
-       "name": "Bacn",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mushroom",
-       "priceDelta": 0
-      },
-      {
-       "name": "Onion",
-       "priceDelta": 0
-      },
-      {
-       "name": "Broccoli",
-       "priceDelta": 0
-      },
-      {
-       "name": "Peppers",
-       "priceDelta": 0
-      },
-      {
-       "name": "Spinach",
-       "priceDelta": 0
-      },
-      {
-       "name": "Tomatoes",
-       "priceDelta": 0
-      },
-      {
-       "name": "Anchovies",
-       "priceDelta": 0
-      },
-      {
-       "name": "Olives",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pineapple",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gr Chicken",
-       "priceDelta": 0
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 0
-      },
-      {
-       "name": "Garlic",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ricotta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepi",
-       "priceDelta": 0
-      },
-      {
-       "name": "Extra Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "Corn",
-       "priceDelta": 0
-      },
-      {
-       "name": "Hard Egg",
-       "priceDelta": 0
-      },
-      {
-       "name": "Brazil Ricotta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Penne Pasta",
-       "priceDelta": 104
-      },
-      {
-       "name": "American Cheese / For Burger",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Brie Burger",
+      "displayName": "Brie Burger",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60",
+      "options": [
+        {
+          "groupName": "Meat Temp",
+          "rule": "Choose 1",
+          "choices": [
+            {
+              "name": "Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Well",
+              "priceDelta": 0
+            },
+            {
+              "name": "Well",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
     },
     {
-     "groupName": "Meat Temp",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Rare",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium",
-       "priceDelta": 0
-      },
-      {
-       "name": "Medium Well",
-       "priceDelta": 0
-      },
-      {
-       "name": "Well",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Sonny Burger",
+      "displayName": "Sonny Burger",
+      "include": true,
+      "priceCents": 1352,
+      "priceDisplay": "$13.52",
+      "options": [
+        {
+          "groupName": "Meat Temp",
+          "rule": "Choose 1",
+          "choices": [
+            {
+              "name": "Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Well",
+              "priceDelta": 0
+            },
+            {
+              "name": "Well",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
     },
     {
-     "groupName": "CYO Condiment",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Mayo",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Salt & pep",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oregano",
-       "priceDelta": 0
-      },
-      {
-       "name": "Red Vnegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Veggie Burger Beyond",
+      "displayName": "Veggie Burger Beyond",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60",
+      "options": [
+        {
+          "groupName": "Meat Temp",
+          "rule": "Choose 1",
+          "choices": [
+            {
+              "name": "Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Well",
+              "priceDelta": 0
+            },
+            {
+              "name": "Well",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bbq Bacon Burger",
+      "displayName": "BBQ Bacon Burger",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60",
+      "options": [
+        {
+          "groupName": "Meat Temp",
+          "rule": "Choose 1",
+          "choices": [
+            {
+              "name": "Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Well",
+              "priceDelta": 0
+            },
+            {
+              "name": "Well",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Jersey Burger",
+      "displayName": "Jersey Burger",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60",
+      "options": [
+        {
+          "groupName": "Meat Temp",
+          "rule": "Choose 1",
+          "choices": [
+            {
+              "name": "Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Well",
+              "priceDelta": 0
+            },
+            {
+              "name": "Well",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cheezy Wheezy",
+      "displayName": "Cheezy Wheezy",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60"
+    },
+    {
+      "name": "Chili Burger",
+      "displayName": "Chili Burger",
+      "include": true,
+      "priceCents": 1559,
+      "priceDisplay": "$15.59",
+      "options": [
+        {
+          "groupName": "Meat Temp",
+          "rule": "Choose 1",
+          "choices": [
+            {
+              "name": "Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Rare",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium",
+              "priceDelta": 0
+            },
+            {
+              "name": "Medium Well",
+              "priceDelta": 0
+            },
+            {
+              "name": "Well",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bussin Bussin BBQ Bacon Burger",
+      "displayName": "Bussin Bussin BBQ Bacon Burger",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60"
     }
-   ]
-  },
-  {
-   "name": "Bussin Bussin BBQ Bacon Burger",
-   "displayName": "Bussin Bussin BBQ Bacon Burger",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60"
-  }
- ]
+  ]
 }

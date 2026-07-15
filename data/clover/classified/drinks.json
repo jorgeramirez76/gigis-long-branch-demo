@@ -1,155 +1,148 @@
 {
- "category": "Drinks",
- "displayName": "Drinks",
- "verdict": "include",
- "reason": "Standard beverage lineup (sodas, juices, coffee, bottled drinks) — all real, orderable items.",
- "items": [
-  {
-   "name": "Water",
-   "displayName": "Water",
-   "include": true,
-   "priceCents": 203,
-   "priceDisplay": "$2.03"
-  },
-  {
-   "name": "Iced Coffee",
-   "displayName": "Iced Coffee",
-   "include": true,
-   "priceCents": 338,
-   "priceDisplay": "$3.38"
-  },
-  {
-   "name": "Juice Box",
-   "displayName": "Juice Box",
-   "include": true,
-   "priceCents": 104,
-   "priceDisplay": "$1.04"
-  },
-  {
-   "name": "Soda",
-   "displayName": "Soda",
-   "include": true,
-   "priceCents": 300,
-   "priceDisplay": "$3.00"
-  },
-  {
-   "name": "Fresh Squeezed Orange Juice",
-   "displayName": "Fresh Squeezed Orange Juice",
-   "include": true,
-   "priceCents": 623,
-   "priceDisplay": "$6.23"
-  },
-  {
-   "name": "Can Soda",
-   "displayName": "Can Soda",
-   "include": true,
-   "priceCents": 196,
-   "priceDisplay": "$1.96"
-  },
-  {
-   "name": "Boylan Coke",
-   "displayName": "Boylan Coke",
-   "include": true,
-   "priceCents": 338,
-   "priceDisplay": "$3.38"
-  },
-  {
-   "name": "Coffee",
-   "displayName": "Coffee",
-   "include": true,
-   "priceCents": 208,
-   "priceDisplay": "$2.08"
-  },
-  {
-   "name": "Apple Juice",
-   "displayName": "Apple Juice",
-   "include": true,
-   "priceCents": 312,
-   "priceDisplay": "$3.12"
-  },
-  {
-   "name": "Espresso",
-   "displayName": "Espresso",
-   "include": true,
-   "priceCents": 208,
-   "priceDisplay": "$2.08"
-  },
-  {
-   "name": "Double Espresso",
-   "displayName": "Double Espresso",
-   "include": true,
-   "priceCents": 416,
-   "priceDisplay": "$4.16"
-  },
-  {
-   "name": "Sunny Delight",
-   "displayName": "Sunny Delight",
-   "include": true,
-   "priceCents": 207,
-   "priceDisplay": "$2.07"
-  },
-  {
-   "name": "2liter Two Liter",
-   "displayName": "Two Liter Soda",
-   "include": true,
-   "priceCents": 415,
-   "priceDisplay": "$4.15",
-   "options": [
+  "category": "Drinks",
+  "displayName": "Drinks",
+  "verdict": "include",
+  "reason": "Standard beverage lineup (sodas, juices, coffee, bottled drinks) — all real, orderable items.",
+  "items": [
     {
-     "groupName": "Soda Choices",
-     "rule": "Choose 1",
-     "choices": [
-      {
-       "name": "Coke",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sprite",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepsi",
-       "priceDelta": 0
-      },
-      {
-       "name": "Diet Pepsi",
-       "priceDelta": 0
-      },
-      {
-       "name": "Starry",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Water",
+      "displayName": "Water",
+      "include": true,
+      "priceCents": 203,
+      "priceDisplay": "$2.03"
+    },
+    {
+      "name": "Iced Coffee",
+      "displayName": "Iced Coffee",
+      "include": true,
+      "priceCents": 338,
+      "priceDisplay": "$3.38"
+    },
+    {
+      "name": "Juice Box",
+      "displayName": "Juice Box",
+      "include": true,
+      "priceCents": 104,
+      "priceDisplay": "$1.04"
+    },
+    {
+      "name": "Soda",
+      "displayName": "Soda",
+      "include": true,
+      "priceCents": 300,
+      "priceDisplay": "$3.00"
+    },
+    {
+      "name": "Fresh Squeezed Orange Juice",
+      "displayName": "Fresh Squeezed Orange Juice",
+      "include": true,
+      "priceCents": 623,
+      "priceDisplay": "$6.23"
+    },
+    {
+      "name": "Can Soda",
+      "displayName": "Can Soda",
+      "include": true,
+      "priceCents": 196,
+      "priceDisplay": "$1.96"
+    },
+    {
+      "name": "Boylan Coke",
+      "displayName": "Boylan Coke",
+      "include": true,
+      "priceCents": 338,
+      "priceDisplay": "$3.38"
+    },
+    {
+      "name": "Coffee",
+      "displayName": "Coffee",
+      "include": true,
+      "priceCents": 208,
+      "priceDisplay": "$2.08"
+    },
+    {
+      "name": "Espresso",
+      "displayName": "Espresso",
+      "include": true,
+      "priceCents": 208,
+      "priceDisplay": "$2.08"
+    },
+    {
+      "name": "Double Espresso",
+      "displayName": "Double Espresso",
+      "include": true,
+      "priceCents": 416,
+      "priceDisplay": "$4.16"
+    },
+    {
+      "name": "Sunny Delight",
+      "displayName": "Sunny Delight",
+      "include": true,
+      "priceCents": 207,
+      "priceDisplay": "$2.07"
+    },
+    {
+      "name": "2liter Two Liter",
+      "displayName": "Two Liter Soda",
+      "include": true,
+      "priceCents": 415,
+      "priceDisplay": "$4.15",
+      "options": [
+        {
+          "groupName": "Soda Choices",
+          "rule": "Choose 1",
+          "choices": [
+            {
+              "name": "Coke",
+              "priceDelta": 0
+            },
+            {
+              "name": "Sprite",
+              "priceDelta": 0
+            },
+            {
+              "name": "Pepsi",
+              "priceDelta": 0
+            },
+            {
+              "name": "Diet Pepsi",
+              "priceDelta": 0
+            },
+            {
+              "name": "Starry",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Prime",
+      "displayName": "Prime",
+      "include": true,
+      "priceCents": 468,
+      "priceDisplay": "$4.68"
+    },
+    {
+      "name": "Joe Tea",
+      "displayName": "Joe Tea",
+      "include": true,
+      "priceCents": 352,
+      "priceDisplay": "$3.52"
+    },
+    {
+      "name": "Yoo-hoo Milk",
+      "displayName": "Yoo-hoo Milk",
+      "include": true,
+      "priceCents": 260,
+      "priceDisplay": "$2.60"
+    },
+    {
+      "name": "Gatorade",
+      "displayName": "Gatorade",
+      "include": true,
+      "priceCents": 312,
+      "priceDisplay": "$3.12"
     }
-   ]
-  },
-  {
-   "name": "Prime",
-   "displayName": "Prime",
-   "include": true,
-   "priceCents": 468,
-   "priceDisplay": "$4.68"
-  },
-  {
-   "name": "Joe Tea",
-   "displayName": "Joe Tea",
-   "include": true,
-   "priceCents": 352,
-   "priceDisplay": "$3.52"
-  },
-  {
-   "name": "Yoo-hoo Milk",
-   "displayName": "Yoo-hoo Milk",
-   "include": true,
-   "priceCents": 260,
-   "priceDisplay": "$2.60"
-  },
-  {
-   "name": "Gatorade",
-   "displayName": "Gatorade",
-   "include": true,
-   "priceCents": 312,
-   "priceDisplay": "$3.12"
-  }
- ]
+  ]
 }

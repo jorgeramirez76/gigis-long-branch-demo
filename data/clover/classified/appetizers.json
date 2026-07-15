@@ -1050,34 +1050,6 @@
       "priceDisplay": "$15.59"
     },
     {
-      "name": "Jumbo Crab Cake",
-      "displayName": "Jumbo Crab Cake",
-      "include": true,
-      "priceCents": 1663,
-      "priceDisplay": "$16.63"
-    },
-    {
-      "name": "Meatball Special",
-      "displayName": "Meatball Special",
-      "include": true,
-      "priceCents": 1559,
-      "priceDisplay": "$15.59"
-    },
-    {
-      "name": "Clams Appatizer Special",
-      "displayName": "Clams Appetizer Special",
-      "include": true,
-      "priceCents": 1559,
-      "priceDisplay": "$15.59"
-    },
-    {
-      "name": "Jumbo Sicilian Meatballs (Special)",
-      "displayName": "Jumbo Sicilian Meatballs (Special)",
-      "include": true,
-      "priceCents": 1351,
-      "priceDisplay": "$13.51"
-    },
-    {
       "name": "Caesar",
       "displayName": "Caesar Salad",
       "include": true,
@@ -1107,13 +1079,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "Fried Cod Balls Special",
-      "displayName": "Fried Cod Balls Special",
-      "include": true,
-      "priceCents": 1143,
-      "priceDisplay": "$11.43"
     },
     {
       "name": "Baked Clams And Shrimp",
@@ -1149,27 +1114,6 @@
       "include": true,
       "priceCents": 156,
       "priceDisplay": "$1.56"
-    },
-    {
-      "name": "Bacon Nuggets With Sweet And Salty Glaze",
-      "displayName": "Bacon Nuggets with Sweet and Salty Glaze",
-      "include": true,
-      "priceCents": 1243,
-      "priceDisplay": "$12.43"
-    },
-    {
-      "name": "Clams Oreganata Special",
-      "displayName": "Clams Oreganata Special",
-      "include": true,
-      "priceCents": 1559,
-      "priceDisplay": "$15.59"
-    },
-    {
-      "name": "Stuffed Peppers With Chop Meat",
-      "displayName": "Stuffed Peppers with Chop Meat",
-      "include": true,
-      "priceCents": 619,
-      "priceDisplay": "$6.19"
     },
     {
       "name": "Gigis Wings 50 Piece Catering",

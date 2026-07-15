@@ -1,929 +1,915 @@
 {
- "category": "Salads",
- "displayName": "Salads",
- "verdict": "include",
- "reason": "Real customer-facing salads category.",
- "items": [
-  {
-   "name": "Chopped Salad",
-   "displayName": "Chopped Salad",
-   "include": true,
-   "priceCents": 1144,
-   "priceDisplay": "$11.44",
-   "options": [
+  "category": "Salads",
+  "displayName": "Salads",
+  "verdict": "include",
+  "reason": "Real customer-facing salads category.",
+  "items": [
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Chopped Salad",
+      "displayName": "Chopped Salad",
+      "include": true,
+      "priceCents": 1144,
+      "priceDisplay": "$11.44",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
     },
     {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Side Salad",
-   "displayName": "Side Salad",
-   "include": true,
-   "priceCents": 728,
-   "priceDisplay": "$7.28",
-   "options": [
-    {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Side Salad",
+      "displayName": "Side Salad",
+      "include": true,
+      "priceCents": 728,
+      "priceDisplay": "$7.28",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
     },
     {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Gigi's Salad",
-   "displayName": "Gigi's Salad",
-   "include": true,
-   "priceCents": 1768,
-   "priceDisplay": "$17.68",
-   "options": [
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Chicken Milanese",
-   "displayName": "Chicken Milanese",
-   "include": true,
-   "priceCents": 2080,
-   "priceDisplay": "$20.80"
-  },
-  {
-   "name": "Antipasto Large",
-   "displayName": "Antipasto Large",
-   "include": true,
-   "priceCents": 2392,
-   "priceDisplay": "$23.92"
-  },
-  {
-   "name": "Caesar Salad",
-   "displayName": "Caesar Salad",
-   "include": true,
-   "priceCents": 1247,
-   "priceDisplay": "$12.47",
-   "options": [
-    {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Gigi's Salad",
+      "displayName": "Gigi's Salad",
+      "include": true,
+      "priceCents": 1768,
+      "priceDisplay": "$17.68",
+      "options": [
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
     },
     {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Cobb Salad",
-   "displayName": "Cobb Salad",
-   "include": true,
-   "priceCents": 1455,
-   "priceDisplay": "$14.55",
-   "options": [
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Sonny Salad",
-   "displayName": "Sonny Salad",
-   "include": true,
-   "priceCents": 1455,
-   "priceDisplay": "$14.55",
-   "options": [
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Cucumber Salad",
-   "displayName": "Cucumber Salad",
-   "include": true,
-   "priceCents": 1351,
-   "priceDisplay": "$13.51",
-   "options": [
-    {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Chicken Milanese",
+      "displayName": "Chicken Milanese",
+      "include": true,
+      "priceCents": 2080,
+      "priceDisplay": "$20.80"
     },
     {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
+      "name": "Antipasto Large",
+      "displayName": "Antipasto Large",
+      "include": true,
+      "priceCents": 2392,
+      "priceDisplay": "$23.92"
+    },
+    {
+      "name": "Caesar Salad",
+      "displayName": "Caesar Salad",
+      "include": true,
+      "priceCents": 1247,
+      "priceDisplay": "$12.47",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cobb Salad",
+      "displayName": "Cobb Salad",
+      "include": true,
+      "priceCents": 1455,
+      "priceDisplay": "$14.55",
+      "options": [
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sonny Salad",
+      "displayName": "Sonny Salad",
+      "include": true,
+      "priceCents": 1455,
+      "priceDisplay": "$14.55",
+      "options": [
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cucumber Salad",
+      "displayName": "Cucumber Salad",
+      "include": true,
+      "priceCents": 1351,
+      "priceDisplay": "$13.51",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Spinach Salad",
+      "displayName": "Spinach Salad",
+      "include": true,
+      "priceCents": 1455,
+      "priceDisplay": "$14.55",
+      "options": [
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kale Salad",
+      "displayName": "Kale Salad",
+      "include": true,
+      "priceCents": 1455,
+      "priceDisplay": "$14.55",
+      "options": [
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Antipasto Small",
+      "displayName": "Antipasto Small",
+      "include": true,
+      "priceCents": 1456,
+      "priceDisplay": "$14.56",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Wedge Salad",
+      "displayName": "Wedge Salad",
+      "include": true,
+      "priceCents": 1039,
+      "priceDisplay": "$10.39"
+    },
+    {
+      "name": "Salad With Chicken",
+      "displayName": "Salad with Chicken",
+      "include": true,
+      "priceCents": 1663,
+      "priceDisplay": "$16.63",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Caesar",
+      "displayName": "Caesar Salad",
+      "include": true,
+      "priceCents": 1247,
+      "priceDisplay": "$12.47",
+      "options": [
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Custom Item",
+      "displayName": "Custom Item",
+      "include": false,
+      "priceCents": 1366,
+      "priceDisplay": "$13.66",
+      "options": [
+        {
+          "groupName": "Sandwiches",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Lettuce",
+              "priceDelta": 0
+            },
+            {
+              "name": "Tomato",
+              "priceDelta": 0
+            },
+            {
+              "name": "Onion",
+              "priceDelta": 0
+            },
+            {
+              "name": "Mayo",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil",
+              "priceDelta": 0
+            },
+            {
+              "name": "Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Salt",
+              "priceDelta": 0
+            },
+            {
+              "name": "Pepper",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "Combo Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Chicken",
+              "priceDelta": 0
+            },
+            {
+              "name": "Meatball",
+              "priceDelta": 0
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 0
+            },
+            {
+              "name": "Eggplant",
+              "priceDelta": 0
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 312
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Bread Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Wrap",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Meat",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Ham",
+              "priceDelta": 0
+            },
+            {
+              "name": "Salami",
+              "priceDelta": 0
+            },
+            {
+              "name": "Pepperoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Procuitto",
+              "priceDelta": 0
+            },
+            {
+              "name": "Turkey",
+              "priceDelta": 0
+            },
+            {
+              "name": "Grill Chicken",
+              "priceDelta": 0
+            },
+            {
+              "name": "Chiccutlet",
+              "priceDelta": 0
+            },
+            {
+              "name": "Tna",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Cheese",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Provolone",
+              "priceDelta": 0
+            },
+            {
+              "name": "Mozzarella",
+              "priceDelta": 0
+            },
+            {
+              "name": "American Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "Pepperjack",
+              "priceDelta": 0
+            },
+            {
+              "name": "Cheddar",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Condiment",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Mayo",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Salt & pep",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oregano",
+              "priceDelta": 0
+            },
+            {
+              "name": "Red Vnegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            }
+          ]
+        },
+        {
+          "groupName": "CYO Veggie",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Lettuce",
+              "priceDelta": 0
+            },
+            {
+              "name": "Tomato",
+              "priceDelta": 0
+            },
+            {
+              "name": "Onion",
+              "priceDelta": 0
+            },
+            {
+              "name": "Avocado",
+              "priceDelta": 0
+            },
+            {
+              "name": "Roasted Pepper",
+              "priceDelta": 0
+            },
+            {
+              "name": "Jalapeno",
+              "priceDelta": 0
+            },
+            {
+              "name": "Hot Cherry Peps",
+              "priceDelta": 0
+            },
+            {
+              "name": "Vegan Cheese",
+              "priceDelta": 208
+            }
+          ]
+        },
+        {
+          "groupName": "Side FF",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Side FF",
+              "priceDelta": 234
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chicken Salad",
+      "displayName": "Chicken Salad",
+      "include": true,
+      "priceCents": 1663,
+      "priceDisplay": "$16.63"
     }
-   ]
-  },
-  {
-   "name": "Spinach Salad",
-   "displayName": "Spinach Salad",
-   "include": true,
-   "priceCents": 1455,
-   "priceDisplay": "$14.55",
-   "options": [
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Kale Salad",
-   "displayName": "Kale Salad",
-   "include": true,
-   "priceCents": 1455,
-   "priceDisplay": "$14.55",
-   "options": [
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Antipasto Small",
-   "displayName": "Antipasto Small",
-   "include": true,
-   "priceCents": 1456,
-   "priceDisplay": "$14.56",
-   "options": [
-    {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Wedge Salad",
-   "displayName": "Wedge Salad",
-   "include": true,
-   "priceCents": 1039,
-   "priceDisplay": "$10.39"
-  },
-  {
-   "name": "Salad With Chicken",
-   "displayName": "Salad with Chicken",
-   "include": true,
-   "priceCents": 1663,
-   "priceDisplay": "$16.63",
-   "options": [
-    {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Popeye Salad",
-   "displayName": "Popeye Salad",
-   "include": true,
-   "priceCents": 1871,
-   "priceDisplay": "$18.71"
-  },
-  {
-   "name": "Caesar",
-   "displayName": "Caesar Salad",
-   "include": true,
-   "priceCents": 1247,
-   "priceDisplay": "$12.47",
-   "options": [
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Chicken Murphy Special",
-   "displayName": "Chicken Murphy Special",
-   "include": false,
-   "priceCents": 2703,
-   "priceDisplay": "$27.03"
-  },
-  {
-   "name": "Custom Item",
-   "displayName": "Custom Item",
-   "include": false,
-   "priceCents": 1366,
-   "priceDisplay": "$13.66",
-   "options": [
-    {
-     "groupName": "Sandwiches",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Lettuce",
-       "priceDelta": 0
-      },
-      {
-       "name": "Tomato",
-       "priceDelta": 0
-      },
-      {
-       "name": "Onion",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mayo",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil",
-       "priceDelta": 0
-      },
-      {
-       "name": "Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Salt",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepper",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "Combo Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Chicken",
-       "priceDelta": 0
-      },
-      {
-       "name": "Meatball",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 0
-      },
-      {
-       "name": "Eggplant",
-       "priceDelta": 0
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 312
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Bread Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Wrap",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Meat",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Ham",
-       "priceDelta": 0
-      },
-      {
-       "name": "Salami",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepperoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Procuitto",
-       "priceDelta": 0
-      },
-      {
-       "name": "Turkey",
-       "priceDelta": 0
-      },
-      {
-       "name": "Grill Chicken",
-       "priceDelta": 0
-      },
-      {
-       "name": "Chiccutlet",
-       "priceDelta": 0
-      },
-      {
-       "name": "Tna",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Cheese",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Provolone",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mozzarella",
-       "priceDelta": 0
-      },
-      {
-       "name": "American Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "Pepperjack",
-       "priceDelta": 0
-      },
-      {
-       "name": "Cheddar",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Condiment",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Mayo",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Salt & pep",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oregano",
-       "priceDelta": 0
-      },
-      {
-       "name": "Red Vnegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      }
-     ]
-    },
-    {
-     "groupName": "CYO Veggie",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Lettuce",
-       "priceDelta": 0
-      },
-      {
-       "name": "Tomato",
-       "priceDelta": 0
-      },
-      {
-       "name": "Onion",
-       "priceDelta": 0
-      },
-      {
-       "name": "Avocado",
-       "priceDelta": 0
-      },
-      {
-       "name": "Roasted Pepper",
-       "priceDelta": 0
-      },
-      {
-       "name": "Jalapeno",
-       "priceDelta": 0
-      },
-      {
-       "name": "Hot Cherry Peps",
-       "priceDelta": 0
-      },
-      {
-       "name": "Vegan Cheese",
-       "priceDelta": 208
-      }
-     ]
-    },
-    {
-     "groupName": "Side FF",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Side FF",
-       "priceDelta": 234
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Chicken Salad",
-   "displayName": "Chicken Salad",
-   "include": true,
-   "priceCents": 1663,
-   "priceDisplay": "$16.63"
-  }
- ]
+  ]
 }

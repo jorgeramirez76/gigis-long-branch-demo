@@ -1,1294 +1,1051 @@
 {
- "category": "Pasta",
- "displayName": "Pasta",
- "verdict": "include",
- "reason": "Real customer-facing category of Italian pasta entrées and dinner specials.",
- "items": [
-  {
-   "name": "Linguini Aglio E Olio (Pasta Garlic)",
-   "displayName": "Linguini Aglio e Olio (Garlic & Oil)",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60",
-   "options": [
+  "category": "Pasta",
+  "displayName": "Pasta",
+  "verdict": "include",
+  "reason": "Real customer-facing category of Italian pasta entrées and dinner specials.",
+  "items": [
     {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Penne Vodka",
-   "displayName": "Penne Vodka",
-   "include": true,
-   "priceCents": 1664,
-   "priceDisplay": "$16.64",
-   "options": [
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Cavatelli & Broccoli",
-   "displayName": "Cavatelli & Broccoli",
-   "include": true,
-   "priceCents": 2080,
-   "priceDisplay": "$20.80"
-  },
-  {
-   "name": "Baked Ziti",
-   "displayName": "Baked Ziti",
-   "include": true,
-   "priceCents": 1768,
-   "priceDisplay": "$17.68"
-  },
-  {
-   "name": "Stuffed Shells",
-   "displayName": "Stuffed Shells",
-   "include": true,
-   "priceCents": 1871,
-   "priceDisplay": "$18.71"
-  },
-  {
-   "name": "Ravioli",
-   "displayName": "Ravioli",
-   "include": true,
-   "priceCents": 1663,
-   "priceDisplay": "$16.63"
-  },
-  {
-   "name": "Lasagna",
-   "displayName": "Lasagna",
-   "include": true,
-   "priceCents": 2184,
-   "priceDisplay": "$21.84"
-  },
-  {
-   "name": "Cavatelli Saus\\Broc Rabe",
-   "displayName": "Cavatelli with Sausage & Broccoli Rabe",
-   "include": true,
-   "priceCents": 2288,
-   "priceDisplay": "$22.88",
-   "options": [
-    {
-     "groupName": "Veggie Mod Dinner",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Brocoli",
-       "priceDelta": 0
-      },
-      {
-       "name": "Broc Rabe",
-       "priceDelta": 234
-      },
-      {
-       "name": "Mixed Veg",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sauteed Spinach",
-       "priceDelta": 234
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Rgatoni Maria",
-   "displayName": "Rigatoni Maria",
-   "include": true,
-   "priceCents": 2288,
-   "priceDisplay": "$22.88",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Penne Grace",
-   "displayName": "Penne Grace",
-   "include": true,
-   "priceCents": 2183,
-   "priceDisplay": "$21.83",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Osso Bucco Pork W/papadelli",
-   "displayName": "Osso Buco Pork with Pappardelle",
-   "include": true,
-   "priceCents": 2495,
-   "priceDisplay": "$24.95"
-  },
-  {
-   "name": "Sunday Sauce",
-   "displayName": "Sunday Sauce",
-   "include": true,
-   "priceCents": 2704,
-   "priceDisplay": "$27.04",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Filetto Di Pomodoro (Pasta Marinara)",
-   "displayName": "Filetto di Pomodoro (Pasta Marinara)",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Linguini & Meatballs Or Sausage",
-   "displayName": "Linguini & Meatballs or Sausage",
-   "include": true,
-   "priceCents": 1664,
-   "priceDisplay": "$16.64"
-  },
-  {
-   "name": "Shrimp Parmigiana",
-   "displayName": "Shrimp Parmigiana",
-   "include": true,
-   "priceCents": 2600,
-   "priceDisplay": "$26.00",
-   "options": [
-    {
-     "groupName": "Add Meat Salad",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Grilled Chicken",
-       "priceDelta": 727
-      },
-      {
-       "name": "Chicken Cutlet",
-       "priceDelta": 727
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 935
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 831
-      }
-     ]
+      "name": "Linguini Aglio E Olio (Pasta Garlic)",
+      "displayName": "Linguini Aglio e Olio (Garlic & Oil)",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
     },
     {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
+      "name": "Penne Vodka",
+      "displayName": "Penne Vodka",
+      "include": true,
+      "priceCents": 1664,
+      "priceDisplay": "$16.64",
+      "options": [
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        }
+      ]
     },
     {
-     "groupName": "Veggie Mod Dinner",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Brocoli",
-       "priceDelta": 0
-      },
-      {
-       "name": "Broc Rabe",
-       "priceDelta": 234
-      },
-      {
-       "name": "Mixed Veg",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sauteed Spinach",
-       "priceDelta": 234
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Chicken Alfredo",
-   "displayName": "Chicken Alfredo",
-   "include": true,
-   "priceCents": 2496,
-   "priceDisplay": "$24.96",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Clams With Pasta Special",
-   "displayName": "Clams with Pasta Special",
-   "include": true,
-   "priceCents": 1871,
-   "priceDisplay": "$18.71"
-  },
-  {
-   "name": "Laz-Alfredo",
-   "displayName": "Lasagna Alfredo",
-   "include": true,
-   "priceCents": 2391,
-   "priceDisplay": "$23.91"
-  },
-  {
-   "name": "Veggie Bolo",
-   "displayName": "Veggie Bolognese",
-   "include": true,
-   "priceCents": 2704,
-   "priceDisplay": "$27.04",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Penne Arrabiata",
-   "displayName": "Penne Arrabbiata",
-   "include": true,
-   "priceCents": 2391,
-   "priceDisplay": "$23.91",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Rollatini Special",
-   "displayName": "Rollatini Special",
-   "include": true,
-   "priceCents": 2495,
-   "priceDisplay": "$24.95"
-  },
-  {
-   "name": "Chicken Murphy Special",
-   "displayName": "Chicken Murphy Special",
-   "include": true,
-   "priceCents": 2703,
-   "priceDisplay": "$27.03"
-  },
-  {
-   "name": "Drunken Bolo",
-   "displayName": "Drunken Bolognese",
-   "include": true,
-   "priceCents": 2704,
-   "priceDisplay": "$27.04",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Pasta Marinara",
-   "displayName": "Pasta Marinara",
-   "include": true,
-   "priceCents": 1559,
-   "priceDisplay": "$15.59",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Lobster Mac And Cheese  Special",
-   "displayName": "Lobster Mac and Cheese Special",
-   "include": true,
-   "priceCents": 1867,
-   "priceDisplay": "$18.67"
-  },
-  {
-   "name": "Stuffed Chicken Special With Side Salad",
-   "displayName": "Stuffed Chicken Special with Side Salad",
-   "include": true,
-   "priceCents": 2647,
-   "priceDisplay": "$26.47",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Spaghetti",
-   "displayName": "Spaghetti",
-   "include": false,
-   "priceCents": 0,
-   "priceDisplay": null
-  },
-  {
-   "name": "Parmigiana Combo Dinner",
-   "displayName": "Parmigiana Combo Dinner",
-   "include": true,
-   "priceCents": 2287,
-   "priceDisplay": "$22.87",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
+      "name": "Cavatelli & Broccoli",
+      "displayName": "Cavatelli & Broccoli",
+      "include": true,
+      "priceCents": 2080,
+      "priceDisplay": "$20.80"
     },
     {
-     "groupName": "Veggie Mod Dinner",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Brocoli",
-       "priceDelta": 0
-      },
-      {
-       "name": "Broc Rabe",
-       "priceDelta": 234
-      },
-      {
-       "name": "Mixed Veg",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sauteed Spinach",
-       "priceDelta": 234
-      }
-     ]
+      "name": "Baked Ziti",
+      "displayName": "Baked Ziti",
+      "include": true,
+      "priceCents": 1768,
+      "priceDisplay": "$17.68"
     },
     {
-     "groupName": "Combo Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Chicken",
-       "priceDelta": 0
-      },
-      {
-       "name": "Meatball",
-       "priceDelta": 0
-      },
-      {
-       "name": "Sausage",
-       "priceDelta": 0
-      },
-      {
-       "name": "Eggplant",
-       "priceDelta": 0
-      },
-      {
-       "name": "Shrimp",
-       "priceDelta": 312
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Bolo Rigatoni",
-   "displayName": "Rigatoni Bolognese",
-   "include": true,
-   "priceCents": 2496,
-   "priceDisplay": "$24.96",
-   "options": [
-    {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Filet Mignon Braciole",
-   "displayName": "Filet Mignon Braciole",
-   "include": true,
-   "priceCents": 2912,
-   "priceDisplay": "$29.12"
-  },
-  {
-   "name": "Bogo Two (2) For Tuesday Pasta",
-   "displayName": "BOGO Two (2) for Tuesday Pasta",
-   "include": true,
-   "priceCents": 1767,
-   "priceDisplay": "$17.67",
-   "options": [
-    {
-     "groupName": "Bogo Pasta Tuesday",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Baked Ziti",
-       "priceDelta": 0
-      },
-      {
-       "name": "Spaghetti and Meatballs (2)",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Saturday Night Special",
-   "displayName": "Saturday Night Special",
-   "include": true,
-   "priceCents": 5199,
-   "priceDisplay": "$51.99",
-   "options": [
-    {
-     "groupName": "PIZZA STYLE",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Eveything Seed",
-       "priceDelta": 244
-      },
-      {
-       "name": "Sesame Seed",
-       "priceDelta": 244
-      },
-      {
-       "name": "Well Done",
-       "priceDelta": 0
-      },
-      {
-       "name": "Cut Into 16",
-       "priceDelta": 0
-      },
-      {
-       "name": "Cut Into 12",
-       "priceDelta": 0
-      },
-      {
-       "name": "Round",
-       "priceDelta": 0
-      },
-      {
-       "name": "Square",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Stuffed Shells",
+      "displayName": "Stuffed Shells",
+      "include": true,
+      "priceCents": 1871,
+      "priceDisplay": "$18.71"
     },
     {
-     "groupName": "Pasta Mod",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Penne",
-       "priceDelta": 0
-      },
-      {
-       "name": "Capellini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Rigatoni",
-       "priceDelta": 0
-      },
-      {
-       "name": "Linguini",
-       "priceDelta": 0
-      },
-      {
-       "name": "Gluten Free",
-       "priceDelta": 260
-      },
-      {
-       "name": "Cavatelli",
-       "priceDelta": 208
-      },
-      {
-       "name": "No Pasta",
-       "priceDelta": 0
-      },
-      {
-       "name": "Add Meatball (3)",
-       "priceDelta": 832
-      },
-      {
-       "name": "Add Chicken Cutlet",
-       "priceDelta": 624
-      },
-      {
-       "name": "Add Sausage (2)",
-       "priceDelta": 728
-      },
-      {
-       "name": "Add Shrimp",
-       "priceDelta": 936
-      },
-      {
-       "name": "Parpadelle",
-       "priceDelta": 208
-      }
-     ]
+      "name": "Ravioli",
+      "displayName": "Ravioli",
+      "include": true,
+      "priceCents": 1663,
+      "priceDisplay": "$16.63"
     },
     {
-     "groupName": "Chicken Murphy",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Sweet",
-       "priceDelta": 0
-      },
-      {
-       "name": "Spicy",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Lasagna",
+      "displayName": "Lasagna",
+      "include": true,
+      "priceCents": 2184,
+      "priceDisplay": "$21.84"
     },
     {
-     "groupName": "Can of Soda",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Pepsi",
-       "priceDelta": 0
-      },
-      {
-       "name": "Starry",
-       "priceDelta": 0
-      },
-      {
-       "name": "Diet Pepsi",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Cavatelli Saus\\Broc Rabe",
+      "displayName": "Cavatelli with Sausage & Broccoli Rabe",
+      "include": true,
+      "priceCents": 2288,
+      "priceDisplay": "$22.88",
+      "options": [
+        {
+          "groupName": "Veggie Mod Dinner",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Brocoli",
+              "priceDelta": 0
+            },
+            {
+              "name": "Broc Rabe",
+              "priceDelta": 234
+            },
+            {
+              "name": "Mixed Veg",
+              "priceDelta": 0
+            },
+            {
+              "name": "Sauteed Spinach",
+              "priceDelta": 234
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rgatoni Maria",
+      "displayName": "Rigatoni Maria",
+      "include": true,
+      "priceCents": 2288,
+      "priceDisplay": "$22.88",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Penne Grace",
+      "displayName": "Penne Grace",
+      "include": true,
+      "priceCents": 2183,
+      "priceDisplay": "$21.83",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Osso Bucco Pork W/papadelli",
+      "displayName": "Osso Buco Pork with Pappardelle",
+      "include": true,
+      "priceCents": 2495,
+      "priceDisplay": "$24.95"
+    },
+    {
+      "name": "Sunday Sauce",
+      "displayName": "Sunday Sauce",
+      "include": true,
+      "priceCents": 2704,
+      "priceDisplay": "$27.04",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Filetto Di Pomodoro (Pasta Marinara)",
+      "displayName": "Filetto di Pomodoro (Pasta Marinara)",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Linguini & Meatballs Or Sausage",
+      "displayName": "Linguini & Meatballs or Sausage",
+      "include": true,
+      "priceCents": 1664,
+      "priceDisplay": "$16.64"
+    },
+    {
+      "name": "Shrimp Parmigiana",
+      "displayName": "Shrimp Parmigiana",
+      "include": true,
+      "priceCents": 2600,
+      "priceDisplay": "$26.00",
+      "options": [
+        {
+          "groupName": "Add Meat Salad",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Grilled Chicken",
+              "priceDelta": 727
+            },
+            {
+              "name": "Chicken Cutlet",
+              "priceDelta": 727
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 935
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 831
+            }
+          ]
+        },
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        },
+        {
+          "groupName": "Veggie Mod Dinner",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Brocoli",
+              "priceDelta": 0
+            },
+            {
+              "name": "Broc Rabe",
+              "priceDelta": 234
+            },
+            {
+              "name": "Mixed Veg",
+              "priceDelta": 0
+            },
+            {
+              "name": "Sauteed Spinach",
+              "priceDelta": 234
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chicken Alfredo",
+      "displayName": "Chicken Alfredo",
+      "include": true,
+      "priceCents": 2496,
+      "priceDisplay": "$24.96",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Veggie Bolo",
+      "displayName": "Veggie Bolognese",
+      "include": true,
+      "priceCents": 2704,
+      "priceDisplay": "$27.04",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Penne Arrabiata",
+      "displayName": "Penne Arrabbiata",
+      "include": true,
+      "priceCents": 2391,
+      "priceDisplay": "$23.91",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Drunken Bolo",
+      "displayName": "Drunken Bolognese",
+      "include": true,
+      "priceCents": 2704,
+      "priceDisplay": "$27.04",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pasta Marinara",
+      "displayName": "Pasta Marinara",
+      "include": true,
+      "priceCents": 1559,
+      "priceDisplay": "$15.59",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lobster Mac And Cheese  Special",
+      "displayName": "Lobster Mac and Cheese Special",
+      "include": true,
+      "priceCents": 1867,
+      "priceDisplay": "$18.67"
+    },
+    {
+      "name": "Spaghetti",
+      "displayName": "Spaghetti",
+      "include": false,
+      "priceCents": 0,
+      "priceDisplay": null
+    },
+    {
+      "name": "Parmigiana Combo Dinner",
+      "displayName": "Parmigiana Combo Dinner",
+      "include": true,
+      "priceCents": 2287,
+      "priceDisplay": "$22.87",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        },
+        {
+          "groupName": "Veggie Mod Dinner",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Brocoli",
+              "priceDelta": 0
+            },
+            {
+              "name": "Broc Rabe",
+              "priceDelta": 234
+            },
+            {
+              "name": "Mixed Veg",
+              "priceDelta": 0
+            },
+            {
+              "name": "Sauteed Spinach",
+              "priceDelta": 234
+            }
+          ]
+        },
+        {
+          "groupName": "Combo Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Chicken",
+              "priceDelta": 0
+            },
+            {
+              "name": "Meatball",
+              "priceDelta": 0
+            },
+            {
+              "name": "Sausage",
+              "priceDelta": 0
+            },
+            {
+              "name": "Eggplant",
+              "priceDelta": 0
+            },
+            {
+              "name": "Shrimp",
+              "priceDelta": 312
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bolo Rigatoni",
+      "displayName": "Rigatoni Bolognese",
+      "include": true,
+      "priceCents": 2496,
+      "priceDisplay": "$24.96",
+      "options": [
+        {
+          "groupName": "Pasta Mod",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Penne",
+              "priceDelta": 0
+            },
+            {
+              "name": "Capellini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Rigatoni",
+              "priceDelta": 0
+            },
+            {
+              "name": "Linguini",
+              "priceDelta": 0
+            },
+            {
+              "name": "Gluten Free",
+              "priceDelta": 260
+            },
+            {
+              "name": "Cavatelli",
+              "priceDelta": 208
+            },
+            {
+              "name": "No Pasta",
+              "priceDelta": 0
+            },
+            {
+              "name": "Add Meatball (3)",
+              "priceDelta": 832
+            },
+            {
+              "name": "Add Chicken Cutlet",
+              "priceDelta": 624
+            },
+            {
+              "name": "Add Sausage (2)",
+              "priceDelta": 728
+            },
+            {
+              "name": "Add Shrimp",
+              "priceDelta": 936
+            },
+            {
+              "name": "Parpadelle",
+              "priceDelta": 208
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Filet Mignon Braciole",
+      "displayName": "Filet Mignon Braciole",
+      "include": true,
+      "priceCents": 2912,
+      "priceDisplay": "$29.12"
     }
-   ]
-  }
- ]
+  ]
 }

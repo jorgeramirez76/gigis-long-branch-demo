@@ -1,962 +1,962 @@
 {
- "category": "Catering",
- "displayName": "Catering",
- "verdict": "include",
- "reason": "Real catering trays, platters, and party packages — a legitimate customer-facing category the owner sees as a growth lever.",
- "items": [
-  {
-   "name": "Chic Marsala Tray",
-   "displayName": "Chicken Marsala Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Chic Francese Tray",
-   "displayName": "Chicken Francese Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Chic Santino Tray",
-   "displayName": "Chicken Santino Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Chic Italiano Tray",
-   "displayName": "Chicken Italiano Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Chic Parm Tray",
-   "displayName": "Chicken Parm Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Grill Chic Tray",
-   "displayName": "Grilled Chicken Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Chic Saltimbocca Tray",
-   "displayName": "Chicken Saltimbocca Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Shrimp Scampi Tray",
-   "displayName": "Shrimp Scampi Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Salmon Orgeanata Tray",
-   "displayName": "Salmon Oreganata Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Zuppa Clams Tray",
-   "displayName": "Zuppa Clams Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60",
-   "options": [
+  "category": "Catering",
+  "displayName": "Catering",
+  "verdict": "include",
+  "reason": "Real catering trays, platters, and party packages — a legitimate customer-facing category the owner sees as a growth lever.",
+  "items": [
     {
-     "groupName": "Red or White",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Red",
-       "priceDelta": 0
-      },
-      {
-       "name": "White",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Zuppa Mussles Tray",
-   "displayName": "Zuppa Mussels Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60",
-   "options": [
+      "name": "Chic Marsala Tray",
+      "displayName": "Chicken Marsala Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
     {
-     "groupName": "Red or White",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Red",
-       "priceDelta": 0
-      },
-      {
-       "name": "White",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Shrimp Oreganata",
-   "displayName": "Shrimp Oreganata",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Sole Oreganata Tray",
-   "displayName": "Sole Oreganata Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Sausage\\pep Tray",
-   "displayName": "Sausage & Peppers Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Meatball Parm Tray",
-   "displayName": "Meatball Parm Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Meatball/Sausage Combo Tray",
-   "displayName": "Meatball/Sausage Combo Tray",
-   "include": true,
-   "priceCents": 6240,
-   "priceDisplay": "$62.40"
-  },
-  {
-   "name": "Saus\\broc Rabe Tray",
-   "displayName": "Sausage & Broccoli Rabe Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Eggplant Rollatini Tray",
-   "displayName": "Eggplant Rollatini Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Roast Beef Tray",
-   "displayName": "Roast Beef Tray",
-   "include": true,
-   "priceCents": 6240,
-   "priceDisplay": "$62.40"
-  },
-  {
-   "name": "Penne Vodka Tray",
-   "displayName": "Penne Vodka Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Penne Vodka Chic Tray",
-   "displayName": "Penne Vodka with Chicken Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Penne Vodka Shrimp Tray",
-   "displayName": "Penne Vodka with Shrimp Tray",
-   "include": true,
-   "priceCents": 7280,
-   "priceDisplay": "$72.80"
-  },
-  {
-   "name": "Rig Bolo Trayb",
-   "displayName": "Rigatoni Bolognese Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Ravioli Parm Tray",
-   "displayName": "Ravioli Parm Tray",
-   "include": true,
-   "priceCents": 6240,
-   "priceDisplay": "$62.40"
-  },
-  {
-   "name": "Manicotti Parm",
-   "displayName": "Manicotti Parm",
-   "include": true,
-   "priceCents": 6240,
-   "priceDisplay": "$62.40"
-  },
-  {
-   "name": "Stuffed Shells Tray",
-   "displayName": "Stuffed Shells Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Baked Ziti Tray",
-   "displayName": "Baked Ziti Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Tortellini Carbonara Tray",
-   "displayName": "Tortellini Carbonara Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Cav\\broc Tray",
-   "displayName": "Cavatelli & Broccoli Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Lasagna Tray",
-   "displayName": "Lasagna Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Lob Ravioli Tray",
-   "displayName": "Lobster Ravioli Tray",
-   "include": true,
-   "priceCents": 8840,
-   "priceDisplay": "$88.40"
-  },
-  {
-   "name": "Casar Tray",
-   "displayName": "Caesar Salad Tray",
-   "include": true,
-   "priceCents": 4680,
-   "priceDisplay": "$46.80",
-   "options": [
+      "name": "Chic Francese Tray",
+      "displayName": "Chicken Francese Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Sonny Salad Tray",
-   "displayName": "Sonny Salad Tray",
-   "include": true,
-   "priceCents": 5200,
-   "priceDisplay": "$52.00",
-   "options": [
+      "name": "Chic Santino Tray",
+      "displayName": "Chicken Santino Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Spinach Salad Tray",
-   "displayName": "Spinach Salad Tray",
-   "include": true,
-   "priceCents": 6240,
-   "priceDisplay": "$62.40",
-   "options": [
+      "name": "Chic Italiano Tray",
+      "displayName": "Chicken Italiano Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Spring Salad Tray",
-   "displayName": "Spring Salad Tray",
-   "include": true,
-   "priceCents": 6240,
-   "priceDisplay": "$62.40",
-   "options": [
+      "name": "Chic Parm Tray",
+      "displayName": "Chicken Parm Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Gigi Salad Tray",
-   "displayName": "Gigi's Salad Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60",
-   "options": [
+      "name": "Grill Chic Tray",
+      "displayName": "Grilled Chicken Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Chic Milanese Tray",
-   "displayName": "Chicken Milanese Tray",
-   "include": true,
-   "priceCents": 7280,
-   "priceDisplay": "$72.80",
-   "options": [
+      "name": "Chic Saltimbocca Tray",
+      "displayName": "Chicken Saltimbocca Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Cobb Salad Tray",
-   "displayName": "Cobb Salad Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60",
-   "options": [
+      "name": "Shrimp Scampi Tray",
+      "displayName": "Shrimp Scampi Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Chopped Salad Tray",
-   "displayName": "Chopped Salad Tray",
-   "include": true,
-   "priceCents": 4680,
-   "priceDisplay": "$46.80",
-   "options": [
+      "name": "Salmon Orgeanata Tray",
+      "displayName": "Salmon Oreganata Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
     {
-     "groupName": "Dressing",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Balsamic Vinaigrette",
-       "priceDelta": 0
-      },
-      {
-       "name": "Ranch",
-       "priceDelta": 0
-      },
-      {
-       "name": "Italian",
-       "priceDelta": 0
-      },
-      {
-       "name": "Honey Mustard",
-       "priceDelta": 0
-      },
-      {
-       "name": "Oil & Vinegar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Blue Cheese",
-       "priceDelta": 0
-      },
-      {
-       "name": "No Dressing",
-       "priceDelta": 0
-      },
-      {
-       "name": "Glaze",
-       "priceDelta": 0
-      },
-      {
-       "name": "Asian Action",
-       "priceDelta": 0
-      },
-      {
-       "name": "Caesar",
-       "priceDelta": 0
-      },
-      {
-       "name": "Dressing on Side",
-       "priceDelta": 0
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Antipast Platter Small Tray",
-   "displayName": "Antipasto Platter (Small Tray)",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Antipast Platter Large Tray",
-   "displayName": "Antipasto Platter (Large Tray)",
-   "include": true,
-   "priceCents": 9360,
-   "priceDisplay": "$93.60"
-  },
-  {
-   "name": "Mini Chz Steak",
-   "displayName": "Mini Cheesesteak",
-   "include": true,
-   "priceCents": null,
-   "priceDisplay": null
-  },
-  {
-   "name": "Mini Grill Chz",
-   "displayName": "Mini Grilled Cheese",
-   "include": true,
-   "priceCents": null,
-   "priceDisplay": null
-  },
-  {
-   "name": "Sliders Catering",
-   "displayName": "Sliders",
-   "include": true,
-   "priceCents": null,
-   "priceDisplay": null
-  },
-  {
-   "name": "Crab Cakes Catering",
-   "displayName": "Crab Cakes",
-   "include": true,
-   "priceCents": null,
-   "priceDisplay": null
-  },
-  {
-   "name": "Potato Croquettes Catering",
-   "displayName": "Potato Croquettes",
-   "include": true,
-   "priceCents": null,
-   "priceDisplay": null
-  },
-  {
-   "name": "3 Foot Hero",
-   "displayName": "3-Foot Hero",
-   "include": true,
-   "priceCents": 5616,
-   "priceDisplay": "$56.16"
-  },
-  {
-   "name": "6 Foot Hero",
-   "displayName": "6-Foot Hero",
-   "include": true,
-   "priceCents": 11232,
-   "priceDisplay": "$112.32"
-  },
-  {
-   "name": "Proscuitto Balls Tray",
-   "displayName": "Prosciutto Balls Tray",
-   "include": true,
-   "priceCents": 7280,
-   "priceDisplay": "$72.80"
-  },
-  {
-   "name": "Rice Balls Tray",
-   "displayName": "Rice Balls Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Sautéed spinach Tray",
-   "displayName": "Sautéed Spinach Tray",
-   "include": true,
-   "priceCents": 5200,
-   "priceDisplay": "$52.00"
-  },
-  {
-   "name": "Sauteed Broccoli Tray",
-   "displayName": "Sautéed Broccoli Tray",
-   "include": true,
-   "priceCents": 5200,
-   "priceDisplay": "$52.00"
-  },
-  {
-   "name": "Mashed Potatoes Tray Or French Fry Tray",
-   "displayName": "Mashed Potatoes Tray or French Fry Tray",
-   "include": true,
-   "priceCents": 4680,
-   "priceDisplay": "$46.80"
-  },
-  {
-   "name": "Mix Veg Tray",
-   "displayName": "Mixed Vegetable Tray",
-   "include": true,
-   "priceCents": 6760,
-   "priceDisplay": "$67.60"
-  },
-  {
-   "name": "Red Rosemary Potato Tray",
-   "displayName": "Red Rosemary Potato Tray",
-   "include": true,
-   "priceCents": 4680,
-   "priceDisplay": "$46.80"
-  },
-  {
-   "name": "Mac & Chz Tray",
-   "displayName": "Mac & Cheese Tray",
-   "include": true,
-   "priceCents": 4680,
-   "priceDisplay": "$46.80"
-  },
-  {
-   "name": "Brussel Spr W Bacon Tray",
-   "displayName": "Brussels Sprouts with Bacon Tray",
-   "include": true,
-   "priceCents": 4680,
-   "priceDisplay": "$46.80"
-  },
-  {
-   "name": "Empenada Tray",
-   "displayName": "Empanada Tray",
-   "include": true,
-   "priceCents": 5200,
-   "priceDisplay": "$52.00",
-   "options": [
+      "name": "Zuppa Clams Tray",
+      "displayName": "Zuppa Clams Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60",
+      "options": [
+        {
+          "groupName": "Red or White",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Red",
+              "priceDelta": 0
+            },
+            {
+              "name": "White",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
     {
-     "groupName": "Filling",
-     "rule": "Optional",
-     "choices": [
-      {
-       "name": "Chicken",
-       "priceDelta": 0
-      },
-      {
-       "name": "Beef",
-       "priceDelta": 0
-      }
-     ]
+      "name": "Zuppa Mussles Tray",
+      "displayName": "Zuppa Mussels Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60",
+      "options": [
+        {
+          "groupName": "Red or White",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Red",
+              "priceDelta": 0
+            },
+            {
+              "name": "White",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shrimp Oreganata",
+      "displayName": "Shrimp Oreganata",
+      "include": true,
+      "priceCents": 2704,
+      "priceDisplay": "$27.04"
+    },
+    {
+      "name": "Sole Oreganata Tray",
+      "displayName": "Sole Oreganata Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
+    {
+      "name": "Sausage\\pep Tray",
+      "displayName": "Sausage & Peppers Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Meatball Parm Tray",
+      "displayName": "Meatball Parm Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
+    {
+      "name": "Meatball/Sausage Combo Tray",
+      "displayName": "Meatball/Sausage Combo Tray",
+      "include": true,
+      "priceCents": 6240,
+      "priceDisplay": "$62.40"
+    },
+    {
+      "name": "Saus\\broc Rabe Tray",
+      "displayName": "Sausage & Broccoli Rabe Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Eggplant Rollatini Tray",
+      "displayName": "Eggplant Rollatini Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Roast Beef Tray",
+      "displayName": "Roast Beef Tray",
+      "include": true,
+      "priceCents": 6240,
+      "priceDisplay": "$62.40"
+    },
+    {
+      "name": "Penne Vodka Tray",
+      "displayName": "Penne Vodka Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Penne Vodka Chic Tray",
+      "displayName": "Penne Vodka with Chicken Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
+    {
+      "name": "Penne Vodka Shrimp Tray",
+      "displayName": "Penne Vodka with Shrimp Tray",
+      "include": true,
+      "priceCents": 7280,
+      "priceDisplay": "$72.80"
+    },
+    {
+      "name": "Rig Bolo Trayb",
+      "displayName": "Rigatoni Bolognese Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
+    {
+      "name": "Ravioli Parm Tray",
+      "displayName": "Ravioli Parm Tray",
+      "include": true,
+      "priceCents": 6240,
+      "priceDisplay": "$62.40"
+    },
+    {
+      "name": "Manicotti Parm",
+      "displayName": "Manicotti Parm",
+      "include": true,
+      "priceCents": 6240,
+      "priceDisplay": "$62.40"
+    },
+    {
+      "name": "Stuffed Shells Tray",
+      "displayName": "Stuffed Shells Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Baked Ziti Tray",
+      "displayName": "Baked Ziti Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Tortellini Carbonara Tray",
+      "displayName": "Tortellini Carbonara Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
+    {
+      "name": "Cav\\broc Tray",
+      "displayName": "Cavatelli & Broccoli Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Lasagna Tray",
+      "displayName": "Lasagna Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Lob Ravioli Tray",
+      "displayName": "Lobster Ravioli Tray",
+      "include": true,
+      "priceCents": 8840,
+      "priceDisplay": "$88.40"
+    },
+    {
+      "name": "Casar Tray",
+      "displayName": "Caesar Salad Tray",
+      "include": true,
+      "priceCents": 4680,
+      "priceDisplay": "$46.80",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sonny Salad Tray",
+      "displayName": "Sonny Salad Tray",
+      "include": true,
+      "priceCents": 5200,
+      "priceDisplay": "$52.00",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Spinach Salad Tray",
+      "displayName": "Spinach Salad Tray",
+      "include": true,
+      "priceCents": 6240,
+      "priceDisplay": "$62.40",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Spring Salad Tray",
+      "displayName": "Spring Salad Tray",
+      "include": true,
+      "priceCents": 6240,
+      "priceDisplay": "$62.40",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gigi Salad Tray",
+      "displayName": "Gigi's Salad Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chic Milanese Tray",
+      "displayName": "Chicken Milanese Tray",
+      "include": true,
+      "priceCents": 7280,
+      "priceDisplay": "$72.80",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cobb Salad Tray",
+      "displayName": "Cobb Salad Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chopped Salad Tray",
+      "displayName": "Chopped Salad Tray",
+      "include": true,
+      "priceCents": 4680,
+      "priceDisplay": "$46.80",
+      "options": [
+        {
+          "groupName": "Dressing",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Balsamic Vinaigrette",
+              "priceDelta": 0
+            },
+            {
+              "name": "Ranch",
+              "priceDelta": 0
+            },
+            {
+              "name": "Italian",
+              "priceDelta": 0
+            },
+            {
+              "name": "Honey Mustard",
+              "priceDelta": 0
+            },
+            {
+              "name": "Oil & Vinegar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Blue Cheese",
+              "priceDelta": 0
+            },
+            {
+              "name": "No Dressing",
+              "priceDelta": 0
+            },
+            {
+              "name": "Glaze",
+              "priceDelta": 0
+            },
+            {
+              "name": "Asian Action",
+              "priceDelta": 0
+            },
+            {
+              "name": "Caesar",
+              "priceDelta": 0
+            },
+            {
+              "name": "Dressing on Side",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Antipast Platter Small Tray",
+      "displayName": "Antipasto Platter (Small Tray)",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
+    {
+      "name": "Antipast Platter Large Tray",
+      "displayName": "Antipasto Platter (Large Tray)",
+      "include": true,
+      "priceCents": 9360,
+      "priceDisplay": "$93.60"
+    },
+    {
+      "name": "Mini Chz Steak",
+      "displayName": "Mini Cheesesteak",
+      "include": true,
+      "priceCents": null,
+      "priceDisplay": null
+    },
+    {
+      "name": "Mini Grill Chz",
+      "displayName": "Mini Grilled Cheese",
+      "include": true,
+      "priceCents": null,
+      "priceDisplay": null
+    },
+    {
+      "name": "Sliders Catering",
+      "displayName": "Sliders",
+      "include": true,
+      "priceCents": null,
+      "priceDisplay": null
+    },
+    {
+      "name": "Crab Cakes Catering",
+      "displayName": "Crab Cakes",
+      "include": true,
+      "priceCents": null,
+      "priceDisplay": null
+    },
+    {
+      "name": "Potato Croquettes Catering",
+      "displayName": "Potato Croquettes",
+      "include": true,
+      "priceCents": null,
+      "priceDisplay": null
+    },
+    {
+      "name": "3 Foot Hero",
+      "displayName": "3-Foot Hero",
+      "include": true,
+      "priceCents": 5616,
+      "priceDisplay": "$56.16"
+    },
+    {
+      "name": "6 Foot Hero",
+      "displayName": "6-Foot Hero",
+      "include": true,
+      "priceCents": 11232,
+      "priceDisplay": "$112.32"
+    },
+    {
+      "name": "Proscuitto Balls Tray",
+      "displayName": "Prosciutto Balls Tray",
+      "include": true,
+      "priceCents": 7280,
+      "priceDisplay": "$72.80"
+    },
+    {
+      "name": "Rice Balls Tray",
+      "displayName": "Rice Balls Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
+    {
+      "name": "Sautéed spinach Tray",
+      "displayName": "Sautéed Spinach Tray",
+      "include": true,
+      "priceCents": 5200,
+      "priceDisplay": "$52.00"
+    },
+    {
+      "name": "Sauteed Broccoli Tray",
+      "displayName": "Sautéed Broccoli Tray",
+      "include": true,
+      "priceCents": 5200,
+      "priceDisplay": "$52.00"
+    },
+    {
+      "name": "Mashed Potatoes Tray Or French Fry Tray",
+      "displayName": "Mashed Potatoes Tray or French Fry Tray",
+      "include": true,
+      "priceCents": 4680,
+      "priceDisplay": "$46.80"
+    },
+    {
+      "name": "Mix Veg Tray",
+      "displayName": "Mixed Vegetable Tray",
+      "include": true,
+      "priceCents": 6760,
+      "priceDisplay": "$67.60"
+    },
+    {
+      "name": "Red Rosemary Potato Tray",
+      "displayName": "Red Rosemary Potato Tray",
+      "include": true,
+      "priceCents": 4680,
+      "priceDisplay": "$46.80"
+    },
+    {
+      "name": "Mac & Chz Tray",
+      "displayName": "Mac & Cheese Tray",
+      "include": true,
+      "priceCents": 4680,
+      "priceDisplay": "$46.80"
+    },
+    {
+      "name": "Brussel Spr W Bacon Tray",
+      "displayName": "Brussels Sprouts with Bacon Tray",
+      "include": true,
+      "priceCents": 4680,
+      "priceDisplay": "$46.80"
+    },
+    {
+      "name": "Empenada Tray",
+      "displayName": "Empanada Tray",
+      "include": true,
+      "priceCents": 5200,
+      "priceDisplay": "$52.00",
+      "options": [
+        {
+          "groupName": "Filling",
+          "rule": "Optional",
+          "choices": [
+            {
+              "name": "Chicken",
+              "priceDelta": 0
+            },
+            {
+              "name": "Beef",
+              "priceDelta": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Meatballs Tray",
+      "displayName": "Meatballs Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Italian Saus Tray",
+      "displayName": "Italian Sausage Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Fried Ravioli Tray",
+      "displayName": "Fried Ravioli Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
+    },
+    {
+      "name": "Small Tray.  Cold Cut Platter",
+      "displayName": "Cold Cut Platter (Small Tray)",
+      "include": true,
+      "priceCents": 7800,
+      "priceDisplay": "$78.00"
+    },
+    {
+      "name": "Small Container Tuna Salad",
+      "displayName": "Tuna Salad (Small Container)",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60"
+    },
+    {
+      "name": "Small Container Chicken Salad",
+      "displayName": "Chicken Salad (Small Container)",
+      "include": true,
+      "priceCents": 1560,
+      "priceDisplay": "$15.60"
+    },
+    {
+      "name": "12 Grilled Shrimp 9\"",
+      "displayName": "12 Grilled Shrimp 9\"",
+      "include": true,
+      "priceCents": 2600,
+      "priceDisplay": "$26.00"
+    },
+    {
+      "name": "Calamari Tray",
+      "displayName": "Calamari Tray",
+      "include": true,
+      "priceCents": 6240,
+      "priceDisplay": "$62.40"
+    },
+    {
+      "name": "Sausage Long Hots Tray",
+      "displayName": "Sausage & Long Hots Tray",
+      "include": true,
+      "priceCents": 7800,
+      "priceDisplay": "$78.00"
+    },
+    {
+      "name": "Gigis Wings 50 Piece Catering",
+      "displayName": "Gigi's Wings (50 Piece)",
+      "include": true,
+      "priceCents": 5200,
+      "priceDisplay": "$52.00"
+    },
+    {
+      "name": "Spaghetti Marinara Tray",
+      "displayName": "Spaghetti Marinara Tray",
+      "include": true,
+      "priceCents": 5200,
+      "priceDisplay": "$52.00"
+    },
+    {
+      "name": "Manicotti Tray",
+      "displayName": "Manicotti Tray",
+      "include": true,
+      "priceCents": 5720,
+      "priceDisplay": "$57.20"
     }
-   ]
-  },
-  {
-   "name": "Meatballs Tray",
-   "displayName": "Meatballs Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Italian Saus Tray",
-   "displayName": "Italian Sausage Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Fried Ravioli Tray",
-   "displayName": "Fried Ravioli Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  },
-  {
-   "name": "Small Tray.  Cold Cut Platter",
-   "displayName": "Cold Cut Platter (Small Tray)",
-   "include": true,
-   "priceCents": 7800,
-   "priceDisplay": "$78.00"
-  },
-  {
-   "name": "Small Container Tuna Salad",
-   "displayName": "Tuna Salad (Small Container)",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60"
-  },
-  {
-   "name": "Small Container Chicken Salad",
-   "displayName": "Chicken Salad (Small Container)",
-   "include": true,
-   "priceCents": 1560,
-   "priceDisplay": "$15.60"
-  },
-  {
-   "name": "12 Grilled Shrimp 9\"",
-   "displayName": "12 Grilled Shrimp 9\"",
-   "include": true,
-   "priceCents": 2600,
-   "priceDisplay": "$26.00"
-  },
-  {
-   "name": "Calamari Tray",
-   "displayName": "Calamari Tray",
-   "include": true,
-   "priceCents": 6240,
-   "priceDisplay": "$62.40"
-  },
-  {
-   "name": "Sausage Long Hots Tray",
-   "displayName": "Sausage & Long Hots Tray",
-   "include": true,
-   "priceCents": 7800,
-   "priceDisplay": "$78.00"
-  },
-  {
-   "name": "Gigis Wings 50 Piece Catering",
-   "displayName": "Gigi's Wings (50 Piece)",
-   "include": true,
-   "priceCents": 5200,
-   "priceDisplay": "$52.00"
-  },
-  {
-   "name": "Spaghetti Marinara Tray",
-   "displayName": "Spaghetti Marinara Tray",
-   "include": true,
-   "priceCents": 5200,
-   "priceDisplay": "$52.00"
-  },
-  {
-   "name": "Manicotti Tray",
-   "displayName": "Manicotti Tray",
-   "include": true,
-   "priceCents": 5720,
-   "priceDisplay": "$57.20"
-  }
- ]
+  ]
 }

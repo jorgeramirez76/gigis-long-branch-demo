@@ -873,8 +873,8 @@
       "name": "French Toast (2)",
       "displayName": "French Toast (2)",
       "include": true,
-      "priceCents": 936,
-      "priceDisplay": "$9.36",
+      "priceCents": 600,
+      "priceDisplay": "$6.00",
       "options": [
         {
           "groupName": "Add Meat",
@@ -938,8 +938,8 @@
       "name": "Short Stack Pancakes (2)",
       "displayName": "Short Stack Pancakes (2)",
       "include": true,
-      "priceCents": 832,
-      "priceDisplay": "$8.32",
+      "priceCents": 600,
+      "priceDisplay": "$6.00",
       "options": [
         {
           "groupName": "Add Meat",

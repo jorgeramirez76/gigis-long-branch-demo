@@ -673,7 +673,7 @@
   },
   {
    "name": "French Toast (2)",
-   "price": 936,
+   "price": 600,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -751,7 +751,7 @@
   },
   {
    "name": "Short Stack Pancakes (2)",
-   "price": 832,
+   "price": 600,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,

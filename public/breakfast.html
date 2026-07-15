@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breakfast Menu — Served All Day | Gigi's NY Style Pizza, Long Branch</title>
+    <meta
+      name="description"
+      content="Gigi's all-day breakfast menu in Long Branch, NJ — pancakes, French toast, omelettes, breakfast sandwiches, burritos, the Gigi Skillet, and breakfast pizza. 140 Brighton Ave."
+    />
+    <meta name="theme-color" content="#f5eddc" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --red: #b0281f;
+        --red-dark: #8f1e17;
+        --green: #1f5136;
+        --green-bright: #2c6b48;
+        --cream: #f5eddc;
+        --cream-2: #efe4cd;
+        --ink: #2a211b;
+        --ink-soft: #5a4d42;
+        --gold: #c8941f;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--cream);
+        color: var(--ink);
+        line-height: 1.4;
+        -webkit-font-smoothing: antialiased;
+      }
+      .check {
+        height: 18px;
+        background-image:
+          linear-gradient(45deg, var(--ink) 25%, transparent 25%),
+          linear-gradient(-45deg, var(--ink) 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, var(--ink) 75%),
+          linear-gradient(-45deg, transparent 75%, var(--ink) 75%);
+        background-size: 18px 18px;
+        background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+      }
+      .wrap { max-width: 720px; margin: 0 auto; padding: 0 18px; }
+
+      header.hero { text-align: center; padding: 26px 18px 14px; }
+      .hero .g { font-family: "Anton", sans-serif; color: var(--red); font-size: clamp(48px, 15vw, 96px); line-height: 0.86; letter-spacing: 0.02em; }
+      .hero .b { font-family: "Anton", sans-serif; color: var(--green); font-size: clamp(40px, 12.5vw, 82px); line-height: 0.9; letter-spacing: 0.01em; margin-top: 2px; }
+      .served { display: inline-block; margin-top: 12px; background: var(--red); color: #fff; font-family: "Bebas Neue", sans-serif; letter-spacing: 0.22em; font-size: 15px; padding: 6px 20px; border-radius: 3px; }
+      .tagline { margin-top: 14px; color: var(--ink-soft); font-size: 13.5px; }
+
+      section.menu { padding: 8px 0 26px; }
+      .cat { margin-top: 26px; }
+      .cat-h {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 27px; letter-spacing: 0.05em; line-height: 1;
+        display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+      }
+      .cat-h.red { color: var(--red); }
+      .cat-h.green { color: var(--green); }
+      .cat-h::after { content: ""; flex: 1; height: 2px; border-radius: 2px; background: currentColor; opacity: 0.28; }
+      .cat-note { font-size: 12.5px; color: var(--ink-soft); font-style: italic; margin-bottom: 12px; }
+      .cat-note b { font-style: normal; color: var(--red); font-weight: 700; }
+
+      .item { display: flex; align-items: baseline; gap: 8px; padding: 7px 0; border-bottom: 1px dashed rgba(42,33,27,0.14); }
+      .item:last-child { border-bottom: 0; }
+      .item .n { font-weight: 700; font-size: 15px; }
+      .item .d { display: block; font-weight: 400; font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+      .item .dots { flex: 1; border-bottom: 1.5px dotted rgba(42,33,27,0.28); transform: translateY(-4px); min-width: 14px; }
+      .item .p { font-family: "Bebas Neue", sans-serif; font-size: 20px; color: var(--red); letter-spacing: 0.03em; white-space: nowrap; }
+
+      /* Featured cards (skillet + pizza) */
+      .feature { background: #fff; border: 1px solid rgba(42,33,27,0.1); border-radius: 14px; padding: 16px 18px; margin-top: 14px; box-shadow: 0 6px 20px rgba(42,33,27,0.06); }
+      .feature h3 { font-family: "Bebas Neue", sans-serif; font-size: 24px; letter-spacing: 0.04em; color: var(--green); }
+      .feature .price-big { font-family: "Anton", sans-serif; color: var(--red); font-size: 30px; line-height: 1; margin: 4px 0 6px; }
+      .feature p { font-size: 13.5px; color: var(--ink-soft); }
+      .feature .meats { color: var(--red); font-weight: 700; }
+      .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      @media (max-width: 460px) { .two { grid-template-columns: 1fr; } }
+      .pizza-card { text-align: center; }
+      .pizza-card h4 { font-family: "Bebas Neue", sans-serif; font-size: 21px; letter-spacing: 0.05em; color: var(--green-bright); }
+      .pizza-card .pc-price { font-family: "Anton", sans-serif; color: var(--red); font-size: 26px; line-height: 1; margin: 2px 0 6px; }
+
+      footer { background: var(--ink); color: var(--cream); text-align: center; padding: 22px 18px; }
+      footer .fl { font-family: "Bebas Neue", sans-serif; font-size: 22px; letter-spacing: 0.06em; }
+      footer .fa { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+      footer a { color: var(--gold); text-decoration: none; font-weight: 700; }
+      footer .cta { display: inline-block; margin-top: 14px; background: var(--red); color: #fff; font-weight: 700; text-decoration: none; padding: 11px 22px; border-radius: 999px; font-size: 14px; }
+      .add-line { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <div class="check" aria-hidden="true"></div>
+
+    <header class="hero">
+      <div class="g">GIGI'S</div>
+      <div class="b">BREAKFAST</div>
+      <div class="served">SERVED ALL DAY</div>
+      <p class="tagline">Dine in at 140 Brighton Ave · ask your server to order</p>
+    </header>
+
+    <section class="menu wrap">
+      <!-- Pancakes, French Toast & Platters -->
+      <div class="cat">
+        <div class="cat-h red">Pancakes, French Toast &amp; Platters</div>
+        <div class="cat-note">Buttermilk, Chocolate Chip, or Nutella. Add your favorite meat — <b>pork roll, bacon, or sausage +$3</b></div>
+        <div class="item"><span class="n">Full Stack (3)</span><span class="dots"></span><span class="p">$8</span></div>
+        <div class="item"><span class="n">Short Stack (2)</span><span class="dots"></span><span class="p">$6</span></div>
+        <div class="item"><span class="n">French Toast (2)</span><span class="dots"></span><span class="p">$6</span></div>
+        <div class="item"><span class="n">The #1<span class="d">3 eggs any style, served with home-fries &amp; toast</span></span><span class="dots"></span><span class="p">$11</span></div>
+        <div class="item"><span class="n">The #2<span class="d">3 eggs any style with choice of meat, served with home-fries &amp; toast</span></span><span class="dots"></span><span class="p">$13</span></div>
+        <div class="item"><span class="n">The #3<span class="d">3 eggs any style with choice of meat &amp; pancakes or French toast</span></span><span class="dots"></span><span class="p">$15</span></div>
+        <div class="item"><span class="n">The Nicky Brunch<span class="d">4 eggs any style, choice of meat, pancakes or French toast, home-fries &amp; toast</span></span><span class="dots"></span><span class="p">$17</span></div>
+      </div>
+
+      <!-- The Gigi Skillet -->
+      <div class="cat">
+        <div class="cat-h green">The Gigi Skillet</div>
+        <div class="feature">
+          <div class="price-big">$11</div>
+          <p>Tater-tots smothered in our homemade cheese sauce, with your choice of breakfast meat: <span class="meats">bacon, sausage, or pork roll</span>.</p>
+        </div>
+      </div>
+
+      <!-- Sandwiches -->
+      <div class="cat">
+        <div class="cat-h green">Sandwiches</div>
+        <div class="cat-note">Served on a Kaiser roll, wrap, bagel, white, or wheat.</div>
+        <div class="item"><span class="n">Egg Sandwich</span><span class="dots"></span><span class="p">$6</span></div>
+        <div class="item"><span class="n">Egg &amp; Cheese Sandwich</span><span class="dots"></span><span class="p">$7</span></div>
+        <div class="item"><span class="n">Bacon, Egg &amp; Cheese</span><span class="dots"></span><span class="p">$8</span></div>
+        <div class="item"><span class="n">Sausage, Egg &amp; Cheese</span><span class="dots"></span><span class="p">$8</span></div>
+        <div class="item"><span class="n">Pork Roll, Egg &amp; Cheese</span><span class="dots"></span><span class="p">$8</span></div>
+        <div class="item"><span class="n">Turkey Bacon, Egg &amp; Cheese</span><span class="dots"></span><span class="p">$8</span></div>
+        <div class="item"><span class="n">The 'Katie'<span class="d">2 fried eggs on French toast w/ choice of meat, served with a side of syrup</span></span><span class="dots"></span><span class="p">$10</span></div>
+      </div>
+
+      <!-- Toasty-Tasty Burritos -->
+      <div class="cat">
+        <div class="cat-h green">Gigi's Toasty-Tasty Burritos</div>
+        <div class="cat-note">3 fluffy scrambled eggs, choice of ham, bacon, pork roll, or sausage, with crispy tater tots &amp; melted cheese inside a huge tortilla.</div>
+        <div class="item"><span class="n">Chico Burrito<span class="d">Chorizo, home-fries, mozzarella cheese &amp; avocado</span></span><span class="dots"></span><span class="p">$10</span></div>
+        <div class="item"><span class="n">Burrito Bomber<span class="d">Pork roll, sausage, American cheese &amp; home-fries</span></span><span class="dots"></span><span class="p">$10</span></div>
+        <div class="item"><span class="n">Veggie Burrito<span class="d">Spinach, peppers, mushrooms &amp; onions</span></span><span class="dots"></span><span class="p">$10</span></div>
+      </div>
+
+      <!-- Omelettes -->
+      <div class="cat">
+        <div class="cat-h red">Omelettes</div>
+        <div class="cat-note">Served with Gigi's famous home-fries &amp; toast. Add breakfast meat — <b>pork roll, bacon, or sausage +$3</b></div>
+        <div class="item"><span class="n">Cheese<span class="d">American cheese</span></span><span class="dots"></span><span class="p">$13</span></div>
+        <div class="item"><span class="n">Meat &amp; Cheese<span class="d">American cheese, choice of sausage, bacon or pork roll</span></span><span class="dots"></span><span class="p">$13</span></div>
+        <div class="item"><span class="n">Veggie<span class="d">Spinach, peppers, mushrooms, onions &amp; tomato</span></span><span class="dots"></span><span class="p">$13</span></div>
+        <div class="item"><span class="n">Egg White<span class="d">3 fresh egg whites w/ cheese</span></span><span class="dots"></span><span class="p">$13</span></div>
+        <div class="item"><span class="n">B-Fit<span class="d">Egg whites, turkey bacon, pepper jack &amp; spinach</span></span><span class="dots"></span><span class="p">$14</span></div>
+        <div class="item"><span class="n">Western<span class="d">Ham, diced onions &amp; peppers</span></span><span class="dots"></span><span class="p">$13</span></div>
+        <div class="item"><span class="n">Mediterranea<span class="d">Goat cheese, mushrooms &amp; spinach</span></span><span class="dots"></span><span class="p">$13</span></div>
+        <div class="item"><span class="n">Chorizo Con Huevos<span class="d">Chorizo, onions, tomatoes, cheddar cheese, sour cream, salsa &amp; avocado</span></span><span class="dots"></span><span class="p">$13</span></div>
+      </div>
+
+      <!-- Breakfast Pizza -->
+      <div class="cat">
+        <div class="cat-h red">Breakfast Pizza</div>
+        <div class="two">
+          <div class="feature pizza-card">
+            <h4>Meat Lovers</h4>
+            <div class="pc-price">$17</div>
+            <p>Your choice of eggs, bacon, sausage, ham, Canadian bacon, tater-tots &amp; American cheese.</p>
+          </div>
+          <div class="feature pizza-card">
+            <h4>Veggie</h4>
+            <div class="pc-price">$17</div>
+            <p>Your choice of eggs, spinach, broccoli, peppers, mushrooms, onions, tomatoes, tater-tots &amp; American cheese.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Breakfast Sides -->
+      <div class="cat">
+        <div class="cat-h green">Breakfast Sides</div>
+        <div class="item"><span class="n">Bagels<span class="d">1 for $2 · 6 for $11 · 13 for $20</span></span><span class="dots"></span><span class="p">$2</span></div>
+        <div class="item"><span class="n">Bacon (3)</span><span class="dots"></span><span class="p">$3</span></div>
+        <div class="item"><span class="n">Sausage — Patty (2) or Links (3)</span><span class="dots"></span><span class="p">$5</span></div>
+        <div class="item"><span class="n">Pork Roll (2)</span><span class="dots"></span><span class="p">$5</span></div>
+        <div class="item"><span class="n">Boar's Head Ham (3)</span><span class="dots"></span><span class="p">$5</span></div>
+        <div class="item"><span class="n">Turkey Bacon (3)</span><span class="dots"></span><span class="p">$5</span></div>
+        <div class="item"><span class="n">Home-Fries</span><span class="dots"></span><span class="p">$4</span></div>
+        <div class="item"><span class="n">Tater-Tots</span><span class="dots"></span><span class="p">$4</span></div>
+        <div class="item"><span class="n">Toast — White, Wheat or Rye</span><span class="dots"></span><span class="p">$2</span></div>
+      </div>
+
+      <p class="add-line">Prices &amp; availability may vary — please ask your server. Breakfast served all day, dine-in.</p>
+    </section>
+
+    <footer>
+      <div class="fl">Gigi's NY Style Pizza &amp; Restaurant</div>
+      <div class="fa">140 Brighton Avenue · Long Branch, NJ 07740</div>
+      <div class="fa"><a href="tel:+17323772468">(732) 377-2468</a></div>
+      <a class="cta" href="https://gigislongbranch.com/">See our full menu &amp; order online →</a>
+    </footer>
+
+    <div class="check" aria-hidden="true"></div>
+  </body>
+</html>

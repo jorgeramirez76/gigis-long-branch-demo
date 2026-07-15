@@ -555,42 +555,6 @@
    ]
   },
   {
-   "name": "Kale Salad",
-   "price": 1455,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": [
-    {
-     "name": "Add Meat Salad",
-     "minRequired": null,
-     "maxAllowed": null,
-     "modifiers": [
-      {
-       "name": "Gr Chic",
-       "price": 727,
-       "available": true
-      },
-      {
-       "name": "Chic Cutlet",
-       "price": 727,
-       "available": true
-      },
-      {
-       "name": "Shrimp",
-       "price": 935,
-       "available": true
-      },
-      {
-       "name": "Sausage",
-       "price": 831,
-       "available": true
-      }
-     ]
-    }
-   ]
-  },
-  {
    "name": "Antipasto Small",
    "price": 1456,
    "priceType": "FIXED",
@@ -766,58 +730,6 @@
      ]
     }
    ]
-  },
-  {
-   "name": "Popeye Salad",
-   "price": 1871,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Caesar",
-   "price": 1247,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": [
-    {
-     "name": "Add Meat Salad",
-     "minRequired": null,
-     "maxAllowed": null,
-     "modifiers": [
-      {
-       "name": "Gr Chic",
-       "price": 727,
-       "available": true
-      },
-      {
-       "name": "Chic Cutlet",
-       "price": 727,
-       "available": true
-      },
-      {
-       "name": "Shrimp",
-       "price": 935,
-       "available": true
-      },
-      {
-       "name": "Sausage",
-       "price": 831,
-       "available": true
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Chicken Murphy Special",
-   "price": 2703,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
   },
   {
    "name": "Custom Item",

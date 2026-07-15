@@ -18,12 +18,16 @@ SRC = ROOT / "data" / "clover" / "classified"
 OUT = ROOT / "src" / "data" / "menuGenerated.ts"
 
 # Dining-order for included categories; slugs not listed here are excluded.
-# Built from Gigi's Long Branch Clover categories (pulled 2026-07-12).
-# Removed per owner (2026-07-13): breakfast, wine, jar-sauce (Take-Home Sauce),
-# acai (Açaí Bowls), brazilian, mexican, chubbzie-wubbzies. Their classified/*.json
-# still exist but are intentionally excluded here so a future re-pull won't re-add them.
+# Built from Gigi's Long Branch Clover categories (pulled 2026-07-12; breakfast re-pulled 2026-07-15).
+# Breakfast RE-ADDED per owner 2026-07-15 (owner is now serving breakfast) — mirrors the
+# live Clover "Breakfast" category (36 items). Items the owner pulled OUT of that Clover
+# category are marked include=false in classified/breakfast.json, so they stay off the menu.
+# Still excluded per owner (2026-07-13): wine, jar-sauce (Take-Home Sauce), acai
+# (Açaí Bowls), brazilian, mexican, chubbzie-wubbzies. Their classified/*.json still
+# exist but are intentionally excluded here so a future re-pull won't re-add them.
 CATEGORY_ORDER = [
     "pizza",
+    "breakfast",
     "slices",
     "appetizers",
     "french-fries",

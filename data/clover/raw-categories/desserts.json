@@ -64,121 +64,12 @@
    "modifierGroups": []
   },
   {
-   "name": "Oreo Balls",
-   "price": 935,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
    "name": "Dessert Pizza",
    "price": 1872,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
    "modifierGroups": []
-  },
-  {
-   "name": "Sara Lee Cheesecake Special",
-   "price": 1039,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Monkey Cake",
-   "price": 993,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Choclate Peanut Butter Cake",
-   "price": 519,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Dessert Special Cannoli Choc Chip Pop",
-   "price": 1399,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Snickers Pie",
-   "price": 519,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Fruit Cup",
-   "price": 519,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Large Muffin",
-   "price": 520,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Chocolate Covered Strawberries( 2 )",
-   "price": 624,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Churros (1)",
-   "price": 312,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Churros (2)",
-   "price": 520,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Churros (4)",
-   "price": 936,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": [
-    {
-     "name": "Add Nutella",
-     "minRequired": null,
-     "maxAllowed": null,
-     "modifiers": [
-      {
-       "name": "Add Nutella",
-       "price": 208,
-       "available": true
-      }
-     ]
-    }
-   ]
   },
   {
    "name": "Pancake Or French Toast Combo",
@@ -307,71 +198,6 @@
       },
       {
        "name": "Pancakes",
-       "price": 0,
-       "available": true
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Bogo Dessert Two (2)  For Tuesday",
-   "price": 623,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": [
-    {
-     "name": "Add Nutella",
-     "minRequired": null,
-     "maxAllowed": null,
-     "modifiers": [
-      {
-       "name": "Add Nutella",
-       "price": 208,
-       "available": true
-      }
-     ]
-    },
-    {
-     "name": "Extra Nutella",
-     "minRequired": null,
-     "maxAllowed": null,
-     "modifiers": [
-      {
-       "name": "Extra Nutella",
-       "price": 100,
-       "available": true
-      }
-     ]
-    },
-    {
-     "name": "Bogo Dessert",
-     "minRequired": null,
-     "maxAllowed": null,
-     "modifiers": [
-      {
-       "name": "Cheesecake",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Red Velvet",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Triple Chocolate Cake",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Cannoli",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Carrot Cake",
        "price": 0,
        "available": true
       }

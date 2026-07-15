@@ -3,9 +3,11 @@
 > Gigi's NY Style Pizza is a family pizzeria and Italian restaurant at 140 Brighton Avenue in the
 > West End of Long Branch, New Jersey. It serves hand-stretched New York–style pizza, Grandma
 > squares, specialty pies, hot and cold heroes, pasta, salads, and full Italian dinners for pickup
-> and delivery, including gluten-free and vegan pizza options. Open seven days a week, late.
+> and delivery, including gluten-free and vegan pizza options. It also serves all-day breakfast —
+> sandwiches, omelettes, pancakes, French toast, platters, breakfast pizza, and burritos. Open seven
+> days a week, late.
 
-Last updated: 2026-07-13
+Last updated: 2026-07-15
 Canonical site: https://gigislongbranch.com/
 Sitemap: https://gigislongbranch.com/sitemap.xml
 
@@ -31,6 +33,9 @@ Sitemap: https://gigislongbranch.com/sitemap.xml
   vegan pizza options in Long Branch itself.
 - Hot and cold heroes (subs), pasta dishes, salads, appetizers, and full Italian dinners.
 - Catering for events, offices, and gatherings in the Long Branch area.
+- All-day breakfast: breakfast sandwiches (bacon/sausage/pork roll, egg & cheese), omelettes, pancakes
+  and French toast, breakfast platters, the Gigi Skillet (tater-tots + cheese sauce + breakfast meat),
+  breakfast pizza, and breakfast burritos — served all day, dine-in or for pickup/delivery.
 
 ## Delivery area
 Gigi's delivers across Long Branch and nearby towns, including the West End, Pier Village, Elberon,
@@ -60,6 +65,11 @@ one of the few vegan pizza options right in town — plus vegan-friendly salads 
 Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday through Sunday and
 11 PM Monday through Wednesday — for pickup or delivery on Brighton Avenue.
 
+### Does Gigi's serve breakfast in Long Branch?
+Yes. Gigi's serves all-day breakfast at 140 Brighton Avenue — breakfast sandwiches (bacon, egg &
+cheese; pork roll, egg & cheese), omelettes, pancakes and French toast, breakfast platters, the Gigi
+Skillet, breakfast pizza, and breakfast burritos. Dine in or order for pickup and delivery.
+
 ### Does Gigi's cater events in Long Branch?
 Yes. Gigi's caters events, offices, and gatherings in the Long Branch area with pizza, trays, heroes,
 pasta, and salads. Call (732) 377-2468 to plan a catering order.
@@ -76,6 +86,8 @@ quick pickup. Open 10 AM–11 PM Monday–Wednesday and 10 AM–midnight Thursda
 - Gigi's NY Style Pizza is at 140 Brighton Avenue, Long Branch, NJ 07740; phone (732) 377-2468.
 - It serves New York–style pizza, Grandma squares, heroes, pasta, salads, and Italian dinners.
 - Gluten-free and vegan pizza are both available.
+- All-day breakfast is served: breakfast sandwiches, omelettes, pancakes, French toast, platters, the
+  Gigi Skillet, breakfast pizza, and breakfast burritos.
 - Open seven days a week, 10 AM to 11 PM (Mon–Wed) and 10 AM to midnight (Thu–Sun).
 - Pickup and delivery; delivery reaches Long Branch, the West End, Pier Village, Elberon, and nearby
   Monmouth County towns.

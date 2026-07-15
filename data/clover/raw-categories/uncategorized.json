@@ -3,6 +3,14 @@
  "sortOrder": 1000000000,
  "items": [
   {
+   "name": "Delivery Fee",
+   "price": 0,
+   "priceType": "VARIABLE",
+   "hidden": true,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
    "name": "Ice Cream (3)",
    "price": 1560,
    "priceType": "FIXED",
@@ -21,14 +29,6 @@
   {
    "name": "Chicken Caesar w/chicken tray",
    "price": 6760,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Bilky 11\\08",
-   "price": 11681,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -67,12 +67,92 @@
    "modifierGroups": []
   },
   {
-   "name": "Billy 11\\08",
-   "price": 11648,
+   "name": "Thursday Pizza & Knots",
+   "price": 2079,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
-   "modifierGroups": []
+   "modifierGroups": [
+    {
+     "name": "$ TOPPING $",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "1st Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "2nd Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "1st Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "2nd Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "Full Max",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Full Topping",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "PIZZA STYLE",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Eveything Seed",
+       "price": 244,
+       "available": true
+      },
+      {
+       "name": "Sesame Seed",
+       "price": 244,
+       "available": true
+      },
+      {
+       "name": "Well Done",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cut Into 16",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cut Into 12",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Round",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Square",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Pizza Miercoles",
@@ -131,14 +211,6 @@
    "modifierGroups": []
   },
   {
-   "name": "Billy Hospital",
-   "price": 26495,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
    "name": "Hospital Bilky 5-8",
    "price": 23816,
    "priceType": "FIXED",
@@ -149,6 +221,216 @@
   {
    "name": "Stuffed Mushrooms",
    "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Filet Mignon Braciole",
+   "price": 2912,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lobster Pie",
+   "price": 2912,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sicilian Pan Pie",
+   "price": 2912,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Italian Stallion Pie",
+   "price": 2808,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Stuffed Margherita Pie",
+   "price": 2912,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Stuffed Baked Ziti Pie",
+   "price": 2912,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Stuffed Pep Pie",
+   "price": 3037,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Stuffed Hangover Pie",
+   "price": 2912,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Stuffed Meat Pie",
+   "price": 2912,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Stuffed Veggie",
+   "price": 2808,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Gigis Fire Roasted Wings (12)",
+   "price": 1872,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "The Rooney Pie",
+   "price": 2288,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Takis Pie",
+   "price": 2600,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "French Onion Soup Pie",
+   "price": 2496,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Di Fara Style Pie",
+   "price": 2184,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Yoo-hoo Milk",
+   "price": 260,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Famous Crunch Quesadilla",
+   "price": 1451,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Sunday Sauce Pie",
+   "price": 2808,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -219,6 +501,14 @@
    "modifierGroups": []
   },
   {
+   "name": "Prime",
+   "price": 468,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
    "name": "MYOP PIZZA  PARTY ( Kids Price)",
    "price": 2079,
    "priceType": "FIXED",
@@ -259,12 +549,639 @@
    "modifierGroups": []
   },
   {
+   "name": "Large Muffin",
+   "price": 520,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Mini Italian Hero",
+   "price": 338,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pizza Bagel",
+   "price": 260,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Fruit Cup",
+   "price": 519,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
    "name": "Cheese Steak Fries",
    "price": 1247,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
    "modifierGroups": []
+  },
+  {
+   "name": "Ham & Cheese Breakfast Platter",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Pupusa Breakfast Platter",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Pupusa",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach & Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pork Black Bean & Cheese",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Empanada Breakfast Platter",
+   "price": 1248,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Eggs",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Scrambled",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Fried",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Over Easy",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Egg Whites",
+       "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Taco- Bacon & Homefries With Queso Fresco",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco - Breakfast Sausage Chipotle Sour Cream & Hash Browns",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco - Chorizo Cheddar Cheese & Scallion",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco Black Beans Jalapeno & Avocado",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Taco Bacon Avacado & Tomato",
+   "price": 1143,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Mid Night Run Omlette",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Greek Omlette",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Toast",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Rye Bread",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Double Espresso",
+   "price": 416,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Espresso",
+   "price": 208,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Coffee",
+   "price": 208,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lox N Loaded",
+   "price": 1247,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Served On",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Kaiser Roll",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "English Muffin",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach Wrap",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel Plain",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bagel \\ Everything",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Wheat Bread",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gluten-Free",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gigis Avacado Toast",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Condiment",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Salt",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepper",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "S/P/K",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Popeye Benedict",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Irishman Benedict",
+   "price": 1664,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Classic Benedict",
+   "price": 1664,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Sausage",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Pork Roll",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Canadian Bacon",
+       "price": 312,
+       "available": true
+      },
+      {
+       "name": "Turkey Bacon",
+       "price": 312,
+       "available": true
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Tuna BLT Wrap",
@@ -277,14 +1194,6 @@
   {
    "name": "Caesar Salad Tray",
    "price": 4680,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Bacon Stick",
-   "price": 312,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -307,6 +1216,14 @@
    "modifierGroups": []
   },
   {
+   "name": "Snickers Pie",
+   "price": 519,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
    "name": "Chicken Fingers Catering",
    "price": 6240,
    "priceType": "FIXED",
@@ -317,6 +1234,14 @@
   {
    "name": "Cavatelli Broc With Sausage",
    "price": 2079,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Hangover Slice",
+   "price": 520,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -347,8 +1272,149 @@
    "modifierGroups": []
   },
   {
+   "name": "Pepsi",
+   "price": 0,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "BEAST MOD",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "ADD",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "NO",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Caramelized Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bacon (2)",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Lettuce",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Amer Chz",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ketchup",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spicy Mustard",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mayo",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "White Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chop Beef Patty",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepsi Can",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Diet Pepsi Can",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sierra Mist",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Water",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Double",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Triple",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "SIDE BEAST STYLE FF",
+   "price": 0,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "SIDE FF Plain",
+   "price": 0,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Triple",
+   "price": 0,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Seasoned",
+   "price": 0,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
    "name": "Resses",
    "price": 260,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Lobster Mac And Cheese  Special",
+   "price": 1867,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -387,16 +1453,16 @@
    "modifierGroups": []
   },
   {
-   "name": "Antipasto Spevial Hot Cold",
-   "price": 1409,
+   "name": "Eggplant Napoleon Special",
+   "price": 2495,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
    "modifierGroups": []
   },
   {
-   "name": "Eggplant Napoleon Special",
-   "price": 2495,
+   "name": "Meatball Bread Bowl",
+   "price": 1559,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -413,6 +1479,56 @@
   {
    "name": "Pork Special",
    "price": 2495,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Frango No Palito",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Empanada (3) Dinner",
+   "price": 1351,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Empenada",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chicken",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Beef",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Milano",
+   "price": 2599,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Amoda",
+   "price": 2704,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -625,8 +1741,8 @@
    ]
   },
   {
-   "name": "Chicken On Stick",
-   "price": 416,
+   "name": "Oreo Balls",
+   "price": 935,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -858,6 +1974,199 @@
    ]
   },
   {
+   "name": "Tuscany Pizza",
+   "price": 2704,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Portugesa Pizza",
+   "price": 2600,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "$ TOPPING $",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "1st Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "2nd Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "1st Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "2nd Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "Full Max",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Full Topping",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Wine Charger Red",
+   "price": 2496,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Wine Vintners Red",
+   "price": 2392,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Wine Traminette",
+   "price": 2392,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Wine Painted White",
+   "price": 2288,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Wine Rosé",
+   "price": 2288,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Ham\\chz Roll",
+   "price": 312,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Empenada (1)",
+   "price": 260,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Emp Mod",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Chic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Beef",
+       "price": 0,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
    "name": "Truf Santana FF",
    "price": 1143,
    "priceType": "FIXED",
@@ -874,20 +2183,327 @@
    "modifierGroups": []
   },
   {
-   "name": "Chili Chz Fries",
-   "price": 1039,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
    "name": "Chz Fries",
    "price": 727,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
    "modifierGroups": []
+  },
+  {
+   "name": "Italian Beef",
+   "price": 1414,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "FF",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Fries",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "No Chips Add FF",
+       "price": 208,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Fair Haven Pie",
+   "price": 2807,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "TOPPING",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Pepperoni",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Meatball",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ham",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Eggplant",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Bacn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Mushroom",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Onion",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Broccoli",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Peppers",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Spinach",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Tomatoes",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Anchovies",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Olives",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pineapple",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Gr Chix",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Garlic",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Pepi",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Extra Cheese",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Corn",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Hard Egg",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Brazil Ricotta",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Penne Pasta",
+       "price": 104,
+       "available": true
+      },
+      {
+       "name": "American Cheese / For Burger",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "$ TOPPING $",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "1st Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "2nd Half",
+       "price": 208,
+       "available": true
+      },
+      {
+       "name": "1st Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "2nd Half Max",
+       "price": 416,
+       "available": true
+      },
+      {
+       "name": "Full Max",
+       "price": 624,
+       "available": true
+      },
+      {
+       "name": "Full Topping",
+       "price": 312,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "PIZZA STYLE",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Eveything Seed",
+       "price": 244,
+       "available": true
+      },
+      {
+       "name": "Sesame Seed",
+       "price": 244,
+       "available": true
+      },
+      {
+       "name": "Well Done",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cut Into 16",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Cut Into 12",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Round",
+       "price": 0,
+       "available": true
+      },
+      {
+       "name": "Square",
+       "price": 0,
+       "available": true
+      }
+     ]
+    },
+    {
+     "name": "Add Sidesauce",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Add Blue Cheese",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Ranch",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Balsamic",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Buff",
+       "price": 100,
+       "available": true
+      },
+      {
+       "name": "Add Marinara",
+       "price": 100,
+       "available": true
+      }
+     ]
+    }
+   ]
   },
   {
    "name": "Cold",
@@ -900,6 +2516,14 @@
   {
    "name": "Rigatoni A La Maria",
    "price": 2252,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": []
+  },
+  {
+   "name": "Tacos (3)",
+   "price": 1248,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -925,6 +2549,42 @@
       {
        "name": "No Chips Add FF",
        "price": 208,
+       "available": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Kale Salad",
+   "price": 1455,
+   "priceType": "FIXED",
+   "hidden": false,
+   "available": true,
+   "modifierGroups": [
+    {
+     "name": "Add Meat Salad",
+     "minRequired": null,
+     "maxAllowed": null,
+     "modifiers": [
+      {
+       "name": "Gr Chic",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Chic Cutlet",
+       "price": 727,
+       "available": true
+      },
+      {
+       "name": "Shrimp",
+       "price": 935,
+       "available": true
+      },
+      {
+       "name": "Sausage",
+       "price": 831,
        "available": true
       }
      ]

@@ -1254,46 +1254,6 @@
    ]
   },
   {
-   "name": "Meatball Bread Bowl",
-   "price": 1559,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Jumbo Crab Cake",
-   "price": 1663,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Meatball Special",
-   "price": 1559,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Clams Appatizer Special",
-   "price": 1559,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Jumbo Sicilian Meatballs (Special)",
-   "price": 1351,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
    "name": "Caesar",
    "price": 1247,
    "priceType": "FIXED",
@@ -1330,14 +1290,6 @@
    ]
   },
   {
-   "name": "Fried Cod Balls Special",
-   "price": 1143,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
    "name": "Baked Clams And Shrimp",
    "price": 1872,
    "priceType": "FIXED",
@@ -1348,14 +1300,6 @@
   {
    "name": "Clams Casino",
    "price": 1399,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Lobster Mac And Cheese  Special",
-   "price": 1867,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -1378,24 +1322,8 @@
    "modifierGroups": []
   },
   {
-   "name": "Bacon Nuggets With Sweet And Salty Glaze",
-   "price": 1243,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Clams Oreganata Special",
+   "name": "Clams Oreganata",
    "price": 1559,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Stuffed Peppers With Chop Meat",
-   "price": 619,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -1420,14 +1348,6 @@
   {
    "name": "Sauteed Broccoli",
    "price": 1040,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Gigis Fire Roasted Wings (12)",
-   "price": 1872,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,

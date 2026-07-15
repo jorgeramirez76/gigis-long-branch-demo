@@ -59,38 +59,6 @@
    "modifierGroups": []
   },
   {
-   "name": "Coffee",
-   "price": 208,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Apple Juice",
-   "price": 312,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Espresso",
-   "price": 208,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Double Espresso",
-   "price": 416,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
    "name": "Sunny Delight",
    "price": 207,
    "priceType": "FIXED",
@@ -140,24 +108,8 @@
    ]
   },
   {
-   "name": "Prime",
-   "price": 468,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
    "name": "Joe Tea",
    "price": 352,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Yoo-hoo Milk",
-   "price": 260,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,

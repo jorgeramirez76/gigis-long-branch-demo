@@ -106,8 +106,8 @@ export function Menu() {
           <h2 className="mt-3 text-4xl md:text-6xl">Our full Long Branch menu</h2>
           <p className="mt-4 text-base text-[var(--color-ink-soft)] md:text-lg">
             NY pies, Grandma squares, specialty pizzas, heroes, pasta, and Italian
-            dinners — plus gluten-free &amp; vegan pizza. Straight from our kitchen,
-            updated July 2026.
+            dinners — plus all-day breakfast and gluten-free &amp; vegan pizza. Straight
+            from our kitchen, updated July 2026.
           </p>
         </div>
 

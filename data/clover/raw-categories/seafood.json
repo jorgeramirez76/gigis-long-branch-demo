@@ -840,143 +840,8 @@
    ]
   },
   {
-   "name": "Clams With Pasta Special",
-   "price": 1871,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Pesto Zuppa Di Mare",
-   "price": 2911,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": [
-    {
-     "name": "Pasta Mod",
-     "minRequired": null,
-     "maxAllowed": null,
-     "modifiers": [
-      {
-       "name": "Penne",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Capellini",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Rigatoni",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Linguini",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Gluten Free",
-       "price": 260,
-       "available": true
-      },
-      {
-       "name": "Cavatelli",
-       "price": 208,
-       "available": true
-      },
-      {
-       "name": "No Pasta",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Add Meatball (3)",
-       "price": 832,
-       "available": true
-      },
-      {
-       "name": "Add Chic Cutlet",
-       "price": 624,
-       "available": true
-      },
-      {
-       "name": "Add Sausage (2)",
-       "price": 728,
-       "available": true
-      },
-      {
-       "name": "Add Shrimp",
-       "price": 936,
-       "available": true
-      },
-      {
-       "name": "Parpadelle",
-       "price": 208,
-       "available": true
-      }
-     ]
-    },
-    {
-     "name": "Veggie Mod Dinner",
-     "minRequired": null,
-     "maxAllowed": null,
-     "modifiers": [
-      {
-       "name": "Brocoli",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Broc Rabe",
-       "price": 234,
-       "available": true
-      },
-      {
-       "name": "Mixed Veg",
-       "price": 0,
-       "available": true
-      },
-      {
-       "name": "Sauteed Spinach",
-       "price": 234,
-       "available": true
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "name": "Flounde alla Funghi Tartufo",
-   "price": 2703,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "The Big O Seafood Platterd  Comes With Soup Or Salad",
-   "price": 3015,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
    "name": "Clams Casino",
    "price": 1399,
-   "priceType": "FIXED",
-   "hidden": false,
-   "available": true,
-   "modifierGroups": []
-  },
-  {
-   "name": "Lobster Mac And Cheese  Special",
-   "price": 1867,
    "priceType": "FIXED",
    "hidden": false,
    "available": true,
@@ -1118,7 +983,7 @@
    ]
   },
   {
-   "name": "Clams Oreganata Special",
+   "name": "Clams Oreganata",
    "price": 1559,
    "priceType": "FIXED",
    "hidden": false,

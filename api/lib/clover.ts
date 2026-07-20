@@ -252,7 +252,7 @@ export function buildOrderNote(opts: {
     opts.payment === "card"
       ? `PAID ONLINE ${money(opts.totals.total)}${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
       : opts.payment === "cash"
-        ? `💵 COLLECT CASH ${money(opts.totals.total)} (3.99% cash discount applied)`
+        ? `** COLLECT CASH ${money(opts.totals.total)} ** (3.99% cash discount applied)`
         : "PAY ON PICKUP/DELIVERY";
   const addr = opts.fulfillment === "delivery" ? ` → ${opts.customer.address ?? "(no address)"}` : "";
   const items = opts.lines

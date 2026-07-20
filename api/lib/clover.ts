@@ -43,6 +43,11 @@ export type CartLineInput = {
 function token(): string | null {
   return process.env.CLOVER_API_TOKEN || null;
 }
+/** Ecommerce charges use the dedicated private token from the merchant's
+ * "Clover eComm Iframe" API token pair; falls back to the merchant token. */
+function ecommToken(): string | null {
+  return process.env.CLOVER_ECOMM_PRIVATE_TOKEN || token();
+}
 function merchantId(): string | null {
   return process.env.CLOVER_MERCHANT_ID || null;
 }
@@ -90,7 +95,7 @@ export async function createCharge(opts: {
   description?: string;
   email?: string;
 }): Promise<{ id: string; amount: number }> {
-  const t = token();
+  const t = ecommToken();
   if (!t) throw new CloverError("clover_not_configured", 503);
 
   const res = await fetch(`${ECOMMERCE_BASE}/v1/charges`, {

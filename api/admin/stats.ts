@@ -41,6 +41,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       sends: sends.rows[0],
       broadcasts: broadcasts.rows[0],
       channels: { sms: smsConfigured(), email: emailConfigured() },
+      // Env sanity for ops (admin-gated): the base URL baked into email unsub links,
+      // and whether staff lost-order alerts are armed.
+      config: {
+        publicBaseUrl: process.env.PUBLIC_BASE_URL || null,
+        staffAlertPhone: !!process.env.STAFF_ALERT_PHONE,
+      },
     });
   } catch (err) {
     console.error("[admin/stats] error", err);

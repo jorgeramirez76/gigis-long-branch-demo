@@ -425,7 +425,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={4}
-          placeholder={"The offer, in plain words. Example:\nGame day special — 2 large cheese pies + 12 garlic knots for $30, Sat & Sun only. Show this text at the counter or order at gigisnystylepizza.com."}
+          placeholder={"The offer, in plain words. Example:\nGame day special — 2 large cheese pies + 12 garlic knots for $30, Sat & Sun only. Show this text at the counter or order at gigislongbranch.com."}
           className="mt-3 w-full rounded-xl border border-[var(--color-cream-darker)] px-4 py-3 text-sm"
         />
         {smsOn && (

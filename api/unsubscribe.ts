@@ -27,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         VALUES (${row.id}, 'email', 'opt_out', 'email_unsubscribe')
       `;
     }
-    res.status(200).setHeader("Content-Type", "text/html").send(page("You're unsubscribed.", "No more emails from the Gigi's VIP Club. Changed your mind? Rejoin anytime at gigisnystylepizza.com."));
+    res.status(200).setHeader("Content-Type", "text/html").send(page("You're unsubscribed.", "No more emails from the Gigi's VIP Club. Changed your mind? Rejoin anytime at gigislongbranch.com."));
   } catch (err) {
     console.error("[unsubscribe] error", err);
     res.status(500).setHeader("Content-Type", "text/html").send(page("Something went wrong.", "Try the link again in a minute, or call (732) 377-2468 and we'll take you off by hand."));

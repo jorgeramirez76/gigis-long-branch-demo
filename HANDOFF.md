@@ -48,13 +48,20 @@ delivery), all routed to the Clover POS automatically.
 
 ## What remains — the arming checklist (none are code)
 
-### 1) Card payments — OWNER, 5 min
-Server charge path is live-tested; only the **public** PAKMS key is missing
-(not retrievable via API token — dashboard only; local `VITE_CLOVER_PAKMS_KEY` is empty).
-Owner: clover.com → merchant `2J9HNTSEXBHG1` → Account & Setup → **Ecommerce
-API Tokens** → copy the **public apiAccessKey** → send to Jorge.
-Then: `printf '<KEY>' | npx vercel env add VITE_CLOVER_PAKMS_KEY production`,
-empty-commit push, supervised $1 card test, refund.
+### 1) Card payments — ✅ ARMED 2026-07-20 (one $1 test left)
+No ecommerce token existed at all (why the public key was never found).
+Created the merchant's first pair in the dashboard: **"Clover eComm Iframe"**
+(Hosted iFrame + API/SDK). Public key → `VITE_CLOVER_PAKMS_KEY`; private
+(UUID) → `CLOVER_ECOMM_PRIVATE_TOKEN` (charges prefer it; v3 orders keep the
+merchant token). Private token verified via `/pakms/apikey` (200, active).
+Also fixed a mount bug (SDK requires ids on the field divs). Verified live:
+all 4 hosted card-field iframes render at checkout, no error state.
+Token page: Account & Setup → "Ecommerce API tokens"
+(`/setupapp/m/2J9HNTSEXBHG1/ecomm-api-tokens`). reCAPTCHA toggle left OFF
+(we use Turnstile).
+**Remaining: supervised $1 live card test** — Jorge places a real card
+pickup order, confirms the charge + POS ticket says PAID, then refunds it
+from the Clover dashboard. Do this before announcing card payment.
 
 ### 2) Auto-SMS — JORGE (Twilio)
 HARD rule: LB gets its **own** number + A2P — never Sea Bright's.

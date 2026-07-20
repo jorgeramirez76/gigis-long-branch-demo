@@ -30,6 +30,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [openStatus, setOpenStatus] = useState<OpenStatus | null>(null);
   useEffect(() => setOpenStatus(getOpenStatus()), []);
   const [status, setStatus] = useState<"form" | "submitting" | "error">("form");
+  // Cash orders require an explicit acknowledgment (discount received + will
+  // pay cash). Re-checked every time the payment method changes.
+  const [cashAgreed, setCashAgreed] = useState(false);
+  useEffect(() => setCashAgreed(false), [payment]);
   const [errorMsg, setErrorMsg] = useState("");
   const [cardInitFailed, setCardInitFailed] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -367,11 +371,26 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="border-t border-[var(--color-ink)]/10 bg-white p-5">
+        {payment === "cash" && (
+          <label className="mb-3 flex items-start gap-2.5 rounded-xl bg-[var(--color-cream)] px-3.5 py-3 text-sm text-[var(--color-ink)]">
+            <input
+              type="checkbox"
+              checked={cashAgreed}
+              onChange={(e) => setCashAgreed(e.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-brand-red)]"
+            />
+            <span>
+              I'm paying <strong>{money(grandTotal)} in cash</strong>{" "}
+              {fulfillment === "delivery" ? "when my order is delivered" : "when I pick up my order"}, and I
+              understand this total already includes my <strong>3.99% cash discount</strong>.
+            </span>
+          </label>
+        )}
         {TURNSTILE_ON && <Turnstile onToken={setTurnstileToken} resetSignal={turnstileReset} />}
         <button
           type="button"
           onClick={placeOrder}
-          disabled={!contactOk || !deliveryOk || submitting || cart.lines.length === 0 || (payment === "card" && !cardReady) || (TURNSTILE_ON && !turnstileToken)}
+          disabled={!contactOk || !deliveryOk || submitting || cart.lines.length === 0 || (payment === "card" && !cardReady) || (payment === "cash" && !cashAgreed) || (TURNSTILE_ON && !turnstileToken)}
           className="flex w-full items-center justify-between rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span>{submitting ? "Placing order…" : payment === "card" ? "Pay & place order" : "Place order"}</span>

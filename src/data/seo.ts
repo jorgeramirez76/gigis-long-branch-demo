@@ -85,6 +85,10 @@ export const FAQS = [
     q: "Is there late-night pizza in Long Branch?",
     a: "Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday through Sunday, and 11 PM Monday through Wednesday — for pickup or delivery on Brighton Avenue in Long Branch. It's a go-to for a late slice after the beach, a night out, or the game.",
   },
+  {
+    q: "Does Gigi's offer a cash discount?",
+    a: "Yes. Listed prices on the menu and website are card prices. Pay with cash in store and you'll get a 3.99% discount off listed prices at the register — that's the card processing fee we don't have to pay, passed back to you.",
+  },
 ] as const;
 
 /** Display-friendly comma-separated string of service areas. */

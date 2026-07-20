@@ -251,6 +251,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   </button>
                 ))}
               </div>
+              <p className="mt-2 text-xs text-[var(--color-ink)]/55">
+                Listed prices are card prices. Paying cash in store? You'll get a 3.99%
+                discount off listed prices at the register.
+              </p>
               {payment === "card" && (
                 <div className="mt-3 space-y-2.5 rounded-2xl bg-white p-4 shadow-[var(--shadow-sm)]">
                   <CardField label="Card number" innerRef={numRef} />
@@ -278,6 +282,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           ) : (
             <div className="rounded-2xl bg-white p-4 text-sm text-[var(--color-ink-soft)] shadow-[var(--shadow-sm)]">
               Pay when you {fulfillment === "delivery" ? "receive your delivery" : "pick up"}. We'll have it ready.
+              Listed prices are card prices — pay cash and get a 3.99% discount at the register.
             </div>
           )}
         </div>

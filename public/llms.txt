@@ -17,7 +17,8 @@ Sitemap: https://gigislongbranch.com/sitemap.xml
 - Phone: (732) 377-2468 — the only contact number for this location.
 - Category: New York–style pizzeria and Italian restaurant.
 - Service: pickup and delivery. Delivery covers Long Branch and nearby towns.
-- Payment: pay at pickup; online card payment via Clover.
+- Payment: online card payment via Clover, or pay at pickup/delivery.
+- Pricing: listed prices are card prices. Cash payers get a 3.99% discount off listed prices in store.
 - This site represents the Long Branch location only. Any other Gigi's is a separate business.
 
 ## Hours (owner-confirmed)
@@ -65,6 +66,10 @@ one of the few vegan pizza options right in town — plus vegan-friendly salads 
 Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday through Sunday and
 11 PM Monday through Wednesday — for pickup or delivery on Brighton Avenue.
 
+### Does Gigi's offer a cash discount?
+Yes. Listed prices are card prices; pay cash in store and get a 3.99% discount off listed prices at
+the register.
+
 ### Does Gigi's serve breakfast in Long Branch?
 Yes. Gigi's serves all-day breakfast at 140 Brighton Avenue — breakfast sandwiches (bacon, egg &
 cheese; pork roll, egg & cheese), omelettes, pancakes and French toast, breakfast platters, the Gigi
@@ -92,3 +97,4 @@ quick pickup. Open 10 AM–11 PM Monday–Wednesday and 10 AM–midnight Thursda
 - Pickup and delivery; delivery reaches Long Branch, the West End, Pier Village, Elberon, and nearby
   Monmouth County towns.
 - Order online or by phone at (732) 377-2468.
+- Listed prices are card prices; cash payers receive a 3.99% discount in store.

@@ -69,10 +69,17 @@ export async function initCloverCard(): Promise<CloverCard> {
 
   return {
     mount: (m) => {
-      number.mount(m.number);
-      date.mount(m.date);
-      cvv.mount(m.cvv);
-      postal.mount(m.postal);
+      // Clover's SDK binds each field iframe by element id ("Please set an id on
+      // the node div" + silent mount failure otherwise) — assign ids and mount
+      // by selector, which is the form the SDK documents.
+      const bySelector = (el: HTMLElement, id: string) => {
+        if (!el.id) el.id = id;
+        return `#${el.id}`;
+      };
+      number.mount(bySelector(m.number, "clv-card-number"));
+      date.mount(bySelector(m.date, "clv-card-date"));
+      cvv.mount(bySelector(m.cvv, "clv-card-cvv"));
+      postal.mount(bySelector(m.postal, "clv-card-postal"));
     },
     tokenize: async () => {
       const result = await clover.createToken();

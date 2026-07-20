@@ -87,7 +87,7 @@ export const FAQS = [
   },
   {
     q: "Does Gigi's offer a cash discount?",
-    a: "Yes. Listed prices on the menu and website are card prices. Pay with cash in store and you'll get a 3.99% discount off listed prices at the register — that's the card processing fee we don't have to pay, passed back to you.",
+    a: "Yes. Listed prices on the menu and website are card prices. Choose Cash at online checkout — or pay cash in store — and you'll get a 3.99% discount off listed prices. That's the card processing fee we don't have to pay, passed back to you.",
   },
 ] as const;
 

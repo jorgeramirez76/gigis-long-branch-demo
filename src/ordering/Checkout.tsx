@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { lineUnitPrice, money, useCart } from "./CartContext";
+import { lineUnitPrice, money, useCart, TAX_RATE } from "./CartContext";
 import { LOCATION } from "../data/location";
 import { cardPaymentEnabled, initCloverCard, type CloverCard } from "./cloverPayment";
 import { Turnstile } from "../components/Turnstile";
@@ -7,12 +7,15 @@ import { turnstileEnabled } from "../lib/turnstile";
 import { getOpenStatus, type OpenStatus } from "../lib/openStatus";
 
 type Fulfillment = "pickup" | "delivery";
-type PaymentMethod = "pickup" | "card";
+type PaymentMethod = "pickup" | "card" | "cash";
 const TIP_PCTS = [0, 10, 15, 20];
 const CARD_ENABLED = cardPaymentEnabled();
 const TURNSTILE_ON = turnstileEnabled();
+// Mirrors the server's CASH_DISCOUNT_RATE (api/lib/clover.ts) — listed prices
+// are card prices; cash orders take 3.99% off the item subtotal.
+const CASH_DISCOUNT_RATE = 0.0399;
 
-type Confirmation = { orderId?: string; paid: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean };
+type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean };
 
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
@@ -33,8 +36,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [turnstileReset, setTurnstileReset] = useState(0);
   const [confirmed, setConfirmed] = useState<Confirmation | null>(null);
 
-  const tip = Math.round(cart.subtotal * (tipPct / 100));
-  const grandTotal = cart.total + tip;
+  // Cash orders: 3.99% off the item subtotal, tax on the discounted amount —
+  // the same math the register (and the server) uses. Card/pickup: listed prices.
+  const cashDiscount = payment === "cash" ? Math.round(cart.subtotal * CASH_DISCOUNT_RATE) : 0;
+  const taxableSubtotal = cart.subtotal - cashDiscount;
+  const tax = payment === "cash" ? Math.round(taxableSubtotal * TAX_RATE) : cart.tax;
+  const tip = Math.round(taxableSubtotal * (tipPct / 100));
+  const grandTotal = taxableSubtotal + tax + tip;
 
   // One idempotency key per unique order (amount/params). Stable across pure
   // retries so a lost response can't double-charge; regenerated if the order
@@ -130,6 +138,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       setConfirmed({
         orderId: data.orderId,
         paid: !!data.paid,
+        cash: payment === "cash",
         total: grandTotal,
         fulfillment,
         routingIssue: data.routingIssue,
@@ -160,6 +169,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             <p className="mt-2 text-[var(--color-ink-soft)]">
               Your {confirmed.fulfillment} order is in{confirmed.paid ? " and paid" : ""}. We're firing it up now.
             </p>
+            {confirmed.cash && (
+              <p className="mt-2 text-sm font-semibold text-[var(--color-ink)]">
+                💵 Please have {money(confirmed.total)} in cash ready{" "}
+                {confirmed.fulfillment === "delivery" ? "for your delivery driver" : "at pickup"} — your 3.99%
+                cash discount is already included.
+              </p>
+            )}
           </div>
           <div className="rounded-2xl bg-white p-4 text-sm shadow-[var(--shadow-sm)]">
             <div className="flex justify-between"><span className="text-[var(--color-ink-soft)]">Total</span><span className="font-bold">{money(confirmed.total)}</span></div>
@@ -237,23 +253,24 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           <p className="mb-2 text-sm font-bold text-[var(--color-ink)]">Payment</p>
           {CARD_ENABLED ? (
             <>
-              <div className="grid grid-cols-2 gap-2 rounded-full bg-white p-1 shadow-[var(--shadow-sm)]">
-                {(["card", "pickup"] as PaymentMethod[]).map((m) => (
+              <div className="grid grid-cols-3 gap-1 rounded-full bg-white p-1 shadow-[var(--shadow-sm)]">
+                {(["card", "pickup", "cash"] as PaymentMethod[]).map((m) => (
                   <button
                     key={m}
                     type="button"
                     onClick={() => setPayment(m)}
-                    className={`rounded-full py-2.5 text-sm font-bold transition ${
+                    className={`rounded-full px-1 py-2.5 text-[13px] font-bold transition ${
                       payment === m ? "bg-[var(--color-brand-red)] text-white" : "text-[var(--color-ink)]"
                     }`}
                   >
-                    {m === "card" ? "Pay online" : `Pay at ${fulfillment}`}
+                    {m === "card" ? "Pay online" : m === "cash" ? "Cash · 3.99% off" : `Card at ${fulfillment}`}
                   </button>
                 ))}
               </div>
               <p className="mt-2 text-xs text-[var(--color-ink)]/55">
-                Listed prices are card prices. Paying cash in store? You'll get a 3.99%
-                discount off listed prices at the register.
+                {payment === "cash"
+                  ? `Your 3.99% cash discount is applied below — have the exact total ready ${fulfillment === "delivery" ? "for the driver" : "at pickup"}.`
+                  : "Listed prices are card prices. Choose Cash to get 3.99% off your total — pay when you get your order."}
               </p>
               {payment === "card" && (
                 <div className="mt-3 space-y-2.5 rounded-2xl bg-white p-4 shadow-[var(--shadow-sm)]">
@@ -281,8 +298,24 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             </>
           ) : (
             <div className="rounded-2xl bg-white p-4 text-sm text-[var(--color-ink-soft)] shadow-[var(--shadow-sm)]">
+              <div className="mb-2 grid grid-cols-2 gap-1 rounded-full bg-[var(--color-cream)] p-1">
+                {(["pickup", "cash"] as PaymentMethod[]).map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => setPayment(m)}
+                    className={`rounded-full px-1 py-2.5 text-[13px] font-bold transition ${
+                      payment === m ? "bg-[var(--color-brand-red)] text-white" : "text-[var(--color-ink)]"
+                    }`}
+                  >
+                    {m === "cash" ? "Cash · 3.99% off" : `Card at ${fulfillment}`}
+                  </button>
+                ))}
+              </div>
               Pay when you {fulfillment === "delivery" ? "receive your delivery" : "pick up"}. We'll have it ready.
-              Listed prices are card prices — pay cash and get a 3.99% discount at the register.
+              {payment === "cash"
+                ? " Your 3.99% cash discount is applied to the total below."
+                : " Listed prices are card prices — choose Cash to get 3.99% off."}
             </div>
           )}
         </div>
@@ -317,7 +350,8 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           </ul>
           <dl className="mt-3 space-y-1 border-t border-[var(--color-ink)]/8 pt-3 text-sm">
             <Row label="Subtotal" value={money(cart.subtotal)} />
-            <Row label="NJ tax (6.625%)" value={money(cart.tax)} />
+            {cashDiscount > 0 && <Row label="Cash discount (3.99%)" value={`−${money(cashDiscount)}`} />}
+            <Row label="NJ tax (6.625%)" value={money(tax)} />
             {tip > 0 && <Row label={`Tip (${tipPct}%)`} value={money(tip)} />}
             <div className="flex justify-between pt-1 text-base font-bold text-[var(--color-ink)]">
               <dt>Total</dt><dd>{money(grandTotal)}</dd>
@@ -346,7 +380,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         <p className="mt-2 text-center text-[11px] text-[var(--color-ink)]/40">
           {payment === "card"
             ? "Your card is charged securely. Order goes straight to Gigi's kitchen."
-            : "Order goes straight to Gigi's kitchen. Pay when you get it."}
+            : payment === "cash"
+              ? `Order goes straight to Gigi's kitchen. Have ${money(grandTotal)} cash ready — your 3.99% discount is included.`
+              : "Order goes straight to Gigi's kitchen. Pay when you get it."}
         </p>
       </div>
     </Shell>

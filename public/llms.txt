@@ -18,7 +18,8 @@ Sitemap: https://gigislongbranch.com/sitemap.xml
 - Category: New York–style pizzeria and Italian restaurant.
 - Service: pickup and delivery. Delivery covers Long Branch and nearby towns.
 - Payment: online card payment via Clover, or pay at pickup/delivery.
-- Pricing: listed prices are card prices. Cash payers get a 3.99% discount off listed prices in store.
+- Pricing: listed prices are card prices. Choose Cash at online checkout (or pay cash in store) for a
+  3.99% discount off listed prices.
 - This site represents the Long Branch location only. Any other Gigi's is a separate business.
 
 ## Hours (owner-confirmed)
@@ -67,8 +68,8 @@ Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday
 11 PM Monday through Wednesday — for pickup or delivery on Brighton Avenue.
 
 ### Does Gigi's offer a cash discount?
-Yes. Listed prices are card prices; pay cash in store and get a 3.99% discount off listed prices at
-the register.
+Yes. Listed prices are card prices. Choose Cash at online checkout — the discount is applied to your
+total before you pay the driver or counter — or pay cash in store for the same 3.99% off.
 
 ### Does Gigi's serve breakfast in Long Branch?
 Yes. Gigi's serves all-day breakfast at 140 Brighton Avenue — breakfast sandwiches (bacon, egg &

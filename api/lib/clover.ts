@@ -62,16 +62,23 @@ export function unitPrice(line: Pick<CartLineInput, "basePrice" | "options">): n
   return Math.round(line.basePrice + line.options.reduce((s, o) => s + Math.round(o.delta || 0), 0));
 }
 
-export type Totals = { subtotal: number; tax: number; tip: number; total: number };
+export type Totals = { subtotal: number; discount: number; tax: number; tip: number; total: number };
+
+/** Cash orders get the store's dual-pricing discount: listed prices are card
+ * prices, so paying cash takes 3.99% off the item subtotal (tax on the
+ * discounted amount — same math the register uses). */
+export const CASH_DISCOUNT_RATE = 0.0399;
 
 /** Authoritative server-side totals. Lines must already be catalog-priced.
  * Tip is clamped to [0, max($20, subtotal)] so a client bug (dollars-vs-cents)
  * or tampering can't drive the captured charge to an absurd amount. */
-export function computeTotals(lines: CartLineInput[], tipCents: number): Totals {
+export function computeTotals(lines: CartLineInput[], tipCents: number, cashDiscount = false): Totals {
   const subtotal = lines.reduce((s, l) => s + unitPrice(l) * l.quantity, 0);
-  const tax = Math.round(subtotal * TAX_RATE);
-  const tip = Math.min(Math.max(0, Math.round(tipCents || 0)), Math.max(2000, subtotal));
-  return { subtotal, tax, tip, total: subtotal + tax + tip };
+  const discount = cashDiscount ? Math.round(subtotal * CASH_DISCOUNT_RATE) : 0;
+  const taxable = subtotal - discount;
+  const tax = Math.round(taxable * TAX_RATE);
+  const tip = Math.min(Math.max(0, Math.round(tipCents || 0)), Math.max(2000, taxable));
+  return { subtotal, discount, tax, tip, total: taxable + tax + tip };
 }
 
 export class CloverError extends Error {
@@ -164,6 +171,9 @@ export async function createPosOrder(opts: {
   fulfillment: Fulfillment;
   note: string;
   paid: boolean;
+  /** Cash orders: exact cents taken off at the register (order-level Clover
+   * discount), so the POS total equals what the driver collects. */
+  discountCents?: number;
 }): Promise<{ id: string; href: string }> {
   const mid = merchantId()!;
   const title = `WEBSITE • ${opts.fulfillment === "delivery" ? "DELIVERY" : "PICKUP"}`;
@@ -198,6 +208,15 @@ export async function createPosOrder(opts: {
       body: JSON.stringify({ items }),
     });
 
+    // 2b) Cash orders: attach the exact-cents cash discount so the register
+    // total matches the collected amount (staff must not re-apply it manually).
+    if (opts.discountCents && opts.discountCents > 0) {
+      await rest(`/orders/${orderId}/discounts`, {
+        method: "POST",
+        body: JSON.stringify({ name: "Cash discount 3.99% (website)", amount: -opts.discountCents }),
+      });
+    }
+
     // 3) Fire it (and mark paid for card orders) in a single update.
     await rest(`/orders/${orderId}`, {
       method: "POST",
@@ -223,7 +242,7 @@ export function buildOrderNote(opts: {
   customer: { name: string; phone: string; email?: string; address?: string };
   lines: CartLineInput[];
   totals: Totals;
-  payment: "card" | "pickup";
+  payment: "card" | "pickup" | "cash";
   chargeId?: string;
   orderNote?: string;
 }): string {
@@ -232,7 +251,9 @@ export function buildOrderNote(opts: {
   const pay =
     opts.payment === "card"
       ? `PAID ONLINE ${money(opts.totals.total)}${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
-      : "PAY ON PICKUP/DELIVERY";
+      : opts.payment === "cash"
+        ? `💵 COLLECT CASH ${money(opts.totals.total)} (3.99% cash discount applied)`
+        : "PAY ON PICKUP/DELIVERY";
   const addr = opts.fulfillment === "delivery" ? ` → ${opts.customer.address ?? "(no address)"}` : "";
   const items = opts.lines
     .map((l) => {
@@ -249,7 +270,7 @@ export function buildOrderNote(opts: {
     opts.orderNote ? `⚠ NOTE: ${opts.orderNote}` : "",
     `${opts.customer.name} ${opts.customer.phone}${addr}`,
     items,
-    `Sub ${money(opts.totals.subtotal)} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
+    `Sub ${money(opts.totals.subtotal)}${opts.totals.discount ? ` Cash disc -${money(opts.totals.discount)}` : ""} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
   ].filter(Boolean);
   return parts.join(" | ");
 }

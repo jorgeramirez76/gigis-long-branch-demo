@@ -68,7 +68,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const body = (req.body ?? {}) as Record<string, unknown>;
   const fulfillment = body.fulfillment as Fulfillment;
   const customer = (body.customer ?? {}) as { name?: string; phone?: string; email?: string; address?: string };
-  const paymentMethod = body.paymentMethod === "card" ? "card" : "pickup";
+  const paymentMethod =
+    body.paymentMethod === "card" ? "card" : body.paymentMethod === "cash" ? "cash" : "pickup";
   const cardToken = typeof body.cardToken === "string" ? body.cardToken : undefined;
   const idempotencyKey = typeof body.idempotencyKey === "string" ? body.idempotencyKey : "";
   const turnstileToken = typeof body.turnstileToken === "string" ? body.turnstileToken : undefined;
@@ -147,7 +148,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   const lines: CartLineInput[] = priced.lines;
-  const totals = computeTotals(lines, tipCents);
+  const totals = computeTotals(lines, tipCents, paymentMethod === "cash");
   if (totals.total <= 0) {
     res.status(400).json({ error: "empty_order" });
     return;
@@ -241,7 +242,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // ---- drop the order into the POS / kitchen (atomic) ----
   const note = buildOrderNote({ fulfillment, customer: cust, lines, totals, payment: paymentMethod, chargeId, orderNote });
   try {
-    const order = await createPosOrder({ lines, fulfillment, note, paid: paymentMethod === "card" });
+    const order = await createPosOrder({
+      lines,
+      fulfillment,
+      note,
+      paid: paymentMethod === "card",
+      discountCents: totals.discount,
+    });
     if (reservedId != null) await updateOrder(reservedId, { status: paymentMethod === "card" ? "paid" : "placed", cloverOrderId: order.id, note });
     res.status(200).json({ ok: true, orderId: order.id, paid: paymentMethod === "card", chargeId, totals });
   } catch (err) {

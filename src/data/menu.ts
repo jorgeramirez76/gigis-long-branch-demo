@@ -23,4 +23,4 @@ export const MENU: MenuCategory[] = MENU_GENERATED;
 export const MENU_VERIFIED = true;
 
 export const PRICING_DISCLAIMER =
-  "This menu mirrors our in-store menu. Listed prices are card prices — pay cash in store and get a 3.99% discount off listed prices. Prices and availability can change — your final total is confirmed when you order. Questions? Call 732-377-2468.";
+  "This menu mirrors our in-store menu. Listed prices are card prices — choose Cash at checkout (or pay cash in store) and get a 3.99% discount. Prices and availability can change — your final total is confirmed when you order. Questions? Call 732-377-2468.";

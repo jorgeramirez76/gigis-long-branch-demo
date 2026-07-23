@@ -4,7 +4,12 @@ import {
   cloverConfigured,
   computeTotals,
   createCharge,
+  createDraftOrder,
   createPosOrder,
+  deleteDraftOrder,
+  fireOrder,
+  getEcommOrderAmount,
+  payForOrder,
   CloverError,
   MAX_UNITS,
   unitPrice,
@@ -255,8 +260,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   // reservation.reserved === null → DB unavailable; proceed fail-open without a stored row.
 
-  // ---- charge card first (fails closed: no charge → no order) ----
+  // ---- card payment ----
+  // Preferred: SINGLE-ORDER flow — build the itemized draft first, verify
+  // Clover's computed amount equals ours, charge the card AGAINST that order
+  // (payment + line items on one record; no "Item 1" ghost order), then fire.
+  // Tip orders and any amount disagreement fall back to the legacy two-order
+  // flow (standalone charge first) — the charged amount always matches what
+  // the customer was shown; dashboard tidiness never wins over correctness.
   let chargeId: string | undefined;
+  let paidOrderId: string | undefined; // set when the single-order flow holds the payment
   if (paymentMethod === "card") {
     if (!cardToken || !cardToken.startsWith("clv_")) {
       res.status(400).json({ error: "card_token_required" });
@@ -266,25 +278,92 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       res.status(400).json({ error: "order_too_small", message: "Minimum for card payment is $1.00 — or pay at pickup." });
       return;
     }
-    try {
-      const charge = await createCharge({
-        amount: totals.total,
-        source: cardToken,
-        taxAmount: totals.tax,
-        idempotencyKey,
-        clientIp: ip,
-        email: cust.email,
-        description: `Gigi's Long Branch web order — ${cust.name}`,
-      });
-      chargeId = charge.id;
-      // Persist the capture BEFORE the POS step so a mid-flight kill can't lose it.
-      if (reservedId != null) await updateOrder(reservedId, { status: "charged", chargeId });
-    } catch (err) {
-      const status = err instanceof CloverError ? err.status : 500;
-      console.error("[order/create] charge failed", status, err instanceof Error ? err.message : err);
-      res.status(status === 503 ? 503 : 402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
-      return;
+
+    if (totals.tip === 0) {
+      let draftId: string | undefined;
+      try {
+        const draft = await createDraftOrder({
+          lines,
+          fulfillment,
+          note: buildOrderNote({ fulfillment, customer: cust, lines, totals, payment: "card", orderNote }),
+        });
+        draftId = draft.id;
+        const cloverAmount = await getEcommOrderAmount(draftId);
+        if (cloverAmount === totals.total) {
+          try {
+            const charge = await payForOrder({
+              orderId: draftId,
+              source: cardToken,
+              idempotencyKey,
+              clientIp: ip,
+              email: cust.email,
+            });
+            chargeId = charge.id;
+            paidOrderId = draftId;
+            // Persist the capture BEFORE the fire step so a mid-flight kill can't lose it.
+            if (reservedId != null) await updateOrder(reservedId, { status: "charged", chargeId, cloverOrderId: draftId });
+          } catch (err) {
+            // Declined (or gateway error): nothing was charged — remove the
+            // draft and fail closed exactly like the legacy flow.
+            await deleteDraftOrder(draftId).catch(() => {});
+            const status = err instanceof CloverError ? err.status : 500;
+            console.error("[order/create] pay-for-order failed", status, err instanceof Error ? err.message : err);
+            res.status(status === 503 ? 503 : 402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
+            return;
+          }
+        } else {
+          console.error(`[order/create] clover amount ${cloverAmount} != ours ${totals.total} — two-order fallback`);
+          await deleteDraftOrder(draftId).catch(() => {});
+        }
+      } catch (err) {
+        // Draft creation / amount lookup failed pre-charge — fall back to the
+        // proven two-order flow rather than losing the sale.
+        console.error("[order/create] single-order setup failed — two-order fallback", err instanceof Error ? err.message : err);
+        if (draftId && !chargeId) await deleteDraftOrder(draftId).catch(() => {});
+      }
     }
+
+    if (!chargeId) {
+      // Legacy two-order flow (fails closed: no charge → no order).
+      try {
+        const charge = await createCharge({
+          amount: totals.total,
+          source: cardToken,
+          taxAmount: totals.tax,
+          idempotencyKey,
+          clientIp: ip,
+          email: cust.email,
+          description: `Gigi's Long Branch web order — ${cust.name}`,
+        });
+        chargeId = charge.id;
+        // Persist the capture BEFORE the POS step so a mid-flight kill can't lose it.
+        if (reservedId != null) await updateOrder(reservedId, { status: "charged", chargeId });
+      } catch (err) {
+        const status = err instanceof CloverError ? err.status : 500;
+        console.error("[order/create] charge failed", status, err instanceof Error ? err.message : err);
+        res.status(status === 503 ? 503 : 402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
+        return;
+      }
+    }
+  }
+
+  // ---- single-order flow: payment already on the itemized order — fire it ----
+  if (paidOrderId) {
+    const note = buildOrderNote({ fulfillment, customer: cust, lines, totals, payment: "card", chargeId, orderNote });
+    try {
+      await fireOrder(paidOrderId, { paid: true, note });
+      if (reservedId != null) await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
+      await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: paidOrderId });
+      res.status(200).json({ ok: true, orderId: paidOrderId, paid: true, chargeId, totals });
+    } catch (err) {
+      // Paid but not fired: the payment and items live on the SAME order, so
+      // staff recovery is just opening that order in the POS. Never delete it.
+      console.error("[order/create] fire failed after payment", err);
+      if (reservedId != null) await updateOrder(reservedId, { status: "paid_unrouted", note });
+      await alertStaff(`PAID WEB ORDER NOT FIRED — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — Clover order ${paidOrderId} holds the payment but didn't fire; open it in the POS.`);
+      res.status(200).json({ ok: true, paid: true, chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
+    }
+    return;
   }
 
   // ---- drop the order into the POS / kitchen (atomic) ----

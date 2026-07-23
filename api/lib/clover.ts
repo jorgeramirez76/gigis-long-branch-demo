@@ -157,20 +157,16 @@ async function rest(path: string, init: RequestInit): Promise<any> {
 }
 
 /**
- * Create an itemized order in the merchant's POS, atomically.
- *
- * Sequence: create a DRAFT order (no state → not fired) → add ALL line items in
- * one bulk call → flip state to "open" so it fires to the kitchen only once it's
- * complete. If anything fails before firing, the partial draft is deleted so a
- * half-built ticket never reaches the make-line. Custom line items (name+price)
- * price correctly regardless of Clover modifier config; a full human-readable
- * ticket (safety notes front-loaded) is written to the order note.
+ * Create a DRAFT itemized order in the merchant's POS (no state → does not fire
+ * to the kitchen). Custom line items (name+price) price correctly regardless of
+ * Clover modifier config; a full human-readable ticket (safety notes
+ * front-loaded) is written to the order note. If item/discount attachment
+ * fails, the partial draft is deleted so a half-built ticket can never fire.
  */
-export async function createPosOrder(opts: {
+export async function createDraftOrder(opts: {
   lines: CartLineInput[];
   fulfillment: Fulfillment;
   note: string;
-  paid: boolean;
   /** Cash orders: exact cents taken off at the register (order-level Clover
    * discount), so the POS total equals what the driver collects. */
   discountCents?: number;
@@ -178,7 +174,6 @@ export async function createPosOrder(opts: {
   const mid = merchantId()!;
   const title = `WEBSITE • ${opts.fulfillment === "delivery" ? "DELIVERY" : "PICKUP"}`;
 
-  // 1) Draft order (NO state → does not fire yet).
   const order = await rest(`/orders`, {
     method: "POST",
     body: JSON.stringify({
@@ -190,7 +185,7 @@ export async function createPosOrder(opts: {
   const orderId = order.id as string;
 
   try {
-    // 2) Build every unit as a line item, then add them all in ONE bulk call.
+    // Build every unit as a line item, then add them all in ONE bulk call.
     const items: { name: string; price: number; note?: string }[] = [];
     for (const line of opts.lines) {
       const price = unitPrice(line);
@@ -208,7 +203,7 @@ export async function createPosOrder(opts: {
       body: JSON.stringify({ items }),
     });
 
-    // 2b) Cash orders: attach the exact-cents cash discount so the register
+    // Cash orders: attach the exact-cents cash discount so the register
     // total matches the collected amount (staff must not re-apply it manually).
     if (opts.discountCents && opts.discountCents > 0) {
       await rest(`/orders/${orderId}/discounts`, {
@@ -216,19 +211,112 @@ export async function createPosOrder(opts: {
         body: JSON.stringify({ name: "Cash discount 3.99% (website)", amount: -opts.discountCents }),
       });
     }
-
-    // 3) Fire it (and mark paid for card orders) in a single update.
-    await rest(`/orders/${orderId}`, {
-      method: "POST",
-      body: JSON.stringify({ state: "open", ...(opts.paid ? { paymentState: "PAID" } : {}) }),
-    });
   } catch (err) {
-    // Roll back the partial draft so nothing half-built reaches the kitchen.
     await rest(`/orders/${orderId}`, { method: "DELETE" }).catch(() => {});
     throw err;
   }
 
   return { id: orderId, href: `https://www.clover.com/v3/merchants/${mid}/orders/${orderId}` };
+}
+
+/** Fire a draft order to the kitchen (flip to "open"), optionally marking it
+ * paid and refreshing the ticket note (e.g. to add the charge id). */
+export async function fireOrder(
+  orderId: string,
+  opts: { paid: boolean; note?: string },
+): Promise<void> {
+  await rest(`/orders/${orderId}`, {
+    method: "POST",
+    body: JSON.stringify({
+      state: "open",
+      ...(opts.paid ? { paymentState: "PAID" } : {}),
+      ...(opts.note ? { note: opts.note.slice(0, 490) } : {}),
+    }),
+  });
+}
+
+/** Delete a draft order (rollback path — never call on a fired/paid order). */
+export async function deleteDraftOrder(orderId: string): Promise<void> {
+  await rest(`/orders/${orderId}`, { method: "DELETE" });
+}
+
+/**
+ * Create an itemized order in the merchant's POS and fire it, atomically.
+ * (Cash/pickup path — card orders use createDraftOrder → payForOrder →
+ * fireOrder so the payment lands on the itemized order itself.)
+ */
+export async function createPosOrder(opts: {
+  lines: CartLineInput[];
+  fulfillment: Fulfillment;
+  note: string;
+  paid: boolean;
+  discountCents?: number;
+}): Promise<{ id: string; href: string }> {
+  const draft = await createDraftOrder(opts);
+  try {
+    await fireOrder(draft.id, { paid: opts.paid });
+  } catch (err) {
+    await deleteDraftOrder(draft.id).catch(() => {});
+    throw err;
+  }
+  return draft;
+}
+
+/** Ecommerce view of a POS order — returns Clover's computed charge amount
+ * (line items + tax) so we can verify it equals our own total BEFORE charging. */
+export async function getEcommOrderAmount(orderId: string): Promise<number> {
+  const t = ecommToken();
+  if (!t) throw new CloverError("clover_not_configured", 503);
+  const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
+    headers: { Authorization: `Bearer ${t}` },
+  });
+  const data = (await res.json().catch(() => ({}))) as { amount?: number; message?: string };
+  if (!res.ok || typeof data.amount !== "number") {
+    throw new CloverError(data.message || "ecomm order lookup failed", res.status, data);
+  }
+  return data.amount;
+}
+
+/**
+ * Charge a card FOR an existing POS order (single-order flow: the payment
+ * attaches to the itemized order itself — no separate "Item 1" ghost order).
+ * Amount is derived by Clover from the order's line items + tax.
+ */
+export async function payForOrder(opts: {
+  orderId: string;
+  source: string;
+  idempotencyKey: string;
+  clientIp?: string;
+  email?: string;
+}): Promise<{ id: string; amount: number }> {
+  const t = ecommToken();
+  if (!t) throw new CloverError("clover_not_configured", 503);
+
+  const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${opts.orderId}/pay`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${t}`,
+      "Content-Type": "application/json",
+      "idempotency-key": opts.idempotencyKey,
+      ...(opts.clientIp ? { "X-Forwarded-For": opts.clientIp } : {}),
+    },
+    body: JSON.stringify({
+      source: opts.source,
+      ...(opts.email ? { email: opts.email } : {}),
+    }),
+  });
+
+  const data = (await res.json().catch(() => ({}))) as {
+    id?: string;
+    amount?: number;
+    error?: { message?: string };
+    message?: string;
+  };
+  if (!res.ok || !data.id) {
+    const msg = data.error?.message || data.message || "Card was declined";
+    throw new CloverError(msg, res.status, data);
+  }
+  return { id: data.id, amount: data.amount ?? 0 };
 }
 
 /**

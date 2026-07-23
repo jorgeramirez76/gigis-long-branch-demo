@@ -28,11 +28,15 @@ function twiml(message?: string): string {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const expected = process.env.SMS_WEBHOOK_TOKEN;
   const got = req.query.token;
+  // Compare byte lengths (not UTF-16 lengths) — a multibyte token would make
+  // timingSafeEqual throw on mismatched buffer sizes instead of returning false.
+  const gotBuf = typeof got === "string" ? Buffer.from(got) : null;
+  const expectedBuf = expected ? Buffer.from(expected) : null;
   if (
-    !expected ||
-    typeof got !== "string" ||
-    got.length !== expected.length ||
-    !timingSafeEqual(Buffer.from(got), Buffer.from(expected))
+    !expectedBuf ||
+    !gotBuf ||
+    gotBuf.length !== expectedBuf.length ||
+    !timingSafeEqual(gotBuf, expectedBuf)
   ) {
     res.status(401).send("unauthorized");
     return;

@@ -110,6 +110,13 @@ export function priceLines(clientLines: ClientLine[]): PriceResult {
       options.push({ group: o.group ?? "", name: o.name, delta });
     }
 
+    // Quote-by-call items (e.g. market-price catering) carry no price and would
+    // otherwise enter the order at $0 — they must be ordered by phone.
+    const unitPrice = item.basePrice + options.reduce((sum, o) => sum + o.delta, 0);
+    if (unitPrice <= 0) {
+      return { ok: false, reason: `"${line.itemName}" is priced by quote — call (732) 377-2468 to order it` };
+    }
+
     out.push({
       itemName: line.itemName,
       categoryId: line.categoryId ?? "",

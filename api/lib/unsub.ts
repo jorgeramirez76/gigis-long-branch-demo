@@ -1,8 +1,8 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 /**
- * HMAC-signed one-click unsubscribe links. Secret is UNSUB_SECRET (falls back
- * to ADMIN_TOKEN so email can work with one less env var, but set both).
+ * HMAC-signed one-click unsubscribe links. Secret is UNSUB_SECRET (required —
+ * no fallback; a missing secret throws and the caller skips the email send).
  */
 function secret(): string {
   // Dedicated secret only — do NOT fall back to ADMIN_TOKEN (that would reuse the

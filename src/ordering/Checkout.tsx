@@ -143,7 +143,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         orderId: data.orderId,
         paid: !!data.paid,
         cash: payment === "cash",
-        total: grandTotal,
+        // Prefer the server's authoritative total (what was actually charged /
+        // sent to the POS); the client figure is only a fallback.
+        total: typeof data.totals?.total === "number" ? data.totals.total : grandTotal,
         fulfillment,
         routingIssue: data.routingIssue,
       });

@@ -39,9 +39,11 @@ export function emailConfigured(): boolean {
   return !!process.env.RESEND_API_KEY && !!process.env.EMAIL_FROM;
 }
 
-/** Every promotional SMS must carry an opt-out notice. Appends one when missing. */
+/** Every promotional SMS must carry an opt-out notice. Appends one when missing.
+ * Matches an actual opt-out instruction ("reply/text/txt STOP"), not the bare
+ * word "stop" — "Stop by for a slice!" must still get the notice. */
 export function withStopNotice(message: string): string {
-  return /\bstop\b/i.test(message) ? message : `${message} Txt STOP to opt out.`;
+  return /\b(?:reply|text|txt)\s+stop\b/i.test(message) ? message : `${message} Txt STOP to opt out.`;
 }
 
 export async function sendSms(toE164: string, message: string): Promise<SendResult> {
@@ -94,31 +96,35 @@ export async function sendEmail(
     console.error("[vip-club] cannot build unsubscribe URL — email skipped", e);
     return { sent: false, error: "unsub_not_configured" };
   }
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: EMAIL_FROM,
-      to: [toEmail],
-      subject,
-      html: emailHtml({ bodyText, unsubUrl, promoCode: opts?.promoCode, promoDescription: opts?.promoDescription }),
-      text: `${bodyText}\n\nUnsubscribe: ${unsubUrl}`,
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
       headers: {
-        "List-Unsubscribe": `<${unsubUrl}>`,
-        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
       },
-    }),
-  });
+      body: JSON.stringify({
+        from: EMAIL_FROM,
+        to: [toEmail],
+        subject,
+        html: emailHtml({ bodyText, unsubUrl, promoCode: opts?.promoCode, promoDescription: opts?.promoDescription }),
+        text: `${bodyText}\n\nUnsubscribe: ${unsubUrl}`,
+        headers: {
+          "List-Unsubscribe": `<${unsubUrl}>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
+      }),
+    });
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    return { sent: false, error: errorText.slice(0, 500) };
+    if (!res.ok) {
+      const errorText = await res.text();
+      return { sent: false, error: errorText.slice(0, 500) };
+    }
+    const data = (await res.json()) as { id: string };
+    return { sent: true, providerId: data.id };
+  } catch (e) {
+    return { sent: false, error: e instanceof Error ? e.message : "send_failed" };
   }
-  const data = (await res.json()) as { id: string };
-  return { sent: true, providerId: data.id };
 }
 
 /**
@@ -153,10 +159,12 @@ export async function sendReceiptEmail(toEmail: string, subject: string, html: s
 export async function alertStaff(message: string): Promise<void> {
   const phone = process.env.STAFF_ALERT_PHONE;
   try {
-    if (phone) await sendSms(phone, message.slice(0, 320));
-    else console.error("[alertStaff] (set STAFF_ALERT_PHONE to receive these) —", message);
+    if (phone) {
+      const result = await sendSms(phone, message.slice(0, 320));
+      if (!result.sent) console.error("[alertStaff] SMS failed:", result.error, "—", message);
+    } else console.error("[alertStaff] (set STAFF_ALERT_PHONE to receive these) —", message);
   } catch (e) {
-    console.error("[alertStaff] failed", e);
+    console.error("[alertStaff] failed", e, "—", message);
   }
 }
 

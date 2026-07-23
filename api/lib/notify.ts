@@ -122,6 +122,30 @@ export async function sendEmail(
 }
 
 /**
+ * Transactional order-confirmation email (receipt). No unsubscribe link —
+ * CAN-SPAM exempts transactional mail — so this works even if UNSUB_SECRET is
+ * unset. Env-gated like everything else; never throws.
+ */
+export async function sendReceiptEmail(toEmail: string, subject: string, html: string): Promise<SendResult> {
+  const { RESEND_API_KEY, EMAIL_FROM } = process.env;
+  if (!RESEND_API_KEY || !EMAIL_FROM) {
+    return { sent: false, error: "email_not_configured" };
+  }
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ from: EMAIL_FROM, to: [toEmail], subject, html }),
+    });
+    if (!res.ok) return { sent: false, error: (await res.text()).slice(0, 500) };
+    const data = (await res.json()) as { id: string };
+    return { sent: true, providerId: data.id };
+  } catch (e) {
+    return { sent: false, error: e instanceof Error ? e.message : "send_failed" };
+  }
+}
+
+/**
  * Fire-and-forget internal alert to store staff. Used when a paid order fails to
  * reach the POS so a human can recover it before the customer shows up. Env-gated
  * on STAFF_ALERT_PHONE — a no-op (loud log only) until that's set. Never throws.

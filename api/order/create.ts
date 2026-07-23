@@ -7,14 +7,62 @@ import {
   createPosOrder,
   CloverError,
   MAX_UNITS,
+  unitPrice,
   type CartLineInput,
   type Fulfillment,
+  type Totals,
 } from "../lib/clover.js";
 import { priceLines, type ClientLine } from "../lib/menuCatalog.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, reserveOrder, updateOrder } from "../lib/orderStore.js";
-import { alertStaff } from "../lib/notify.js";
+import { alertStaff, sendReceiptEmail } from "../lib/notify.js";
+import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
+
+/** Best-effort branded receipt email — env-gated, never blocks or fails the order. */
+async function sendOrderReceipt(o: {
+  email?: string;
+  name: string;
+  fulfillment: Fulfillment;
+  address?: string;
+  lines: CartLineInput[];
+  totals: Totals;
+  paymentMethod: "card" | "pickup" | "cash";
+  orderId: string;
+}): Promise<void> {
+  if (!o.email) return;
+  const money = (c: number) => `$${(c / 100).toFixed(2)}`;
+  const paymentLine =
+    o.paymentMethod === "card"
+      ? `Paid online — ${money(o.totals.total)} charged to your card.`
+      : o.paymentMethod === "cash"
+        ? `Paying cash: please have ${money(o.totals.total)} ready ${o.fulfillment === "delivery" ? "for your delivery driver" : "at pickup"} — your 3.99% cash discount is already included.`
+        : `${money(o.totals.total)} due when you ${o.fulfillment === "delivery" ? "receive your delivery" : "pick up"}.`;
+  try {
+    const html = receiptHtml({
+      customerName: o.name,
+      fulfillment: o.fulfillment,
+      orderRef: o.orderId.slice(-8).toUpperCase(),
+      address: o.address,
+      lines: o.lines.map((l) => ({
+        quantity: l.quantity,
+        name: l.itemName,
+        options: l.options.map((x) => x.name).join(", ") || undefined,
+        lineTotal: money(unitPrice(l) * l.quantity),
+      })),
+      subtotal: money(o.totals.subtotal),
+      discount: o.totals.discount ? money(o.totals.discount) : undefined,
+      tax: money(o.totals.tax),
+      tip: o.totals.tip ? money(o.totals.tip) : undefined,
+      total: money(o.totals.total),
+      paymentLine,
+    });
+    const r = await sendReceiptEmail(o.email, `Order received — Gigi's NY Style Pizza (${money(o.totals.total)})`, html);
+    if (!r.sent && r.error !== "email_not_configured") console.error("[order/create] receipt email failed:", r.error);
+  } catch (e) {
+    console.error("[order/create] receipt email error", e);
+  }
+}
 
 const US_PHONE_RE = /^\+?1?[\s.-]?\(?(\d{3})\)?[\s.-]?(\d{3})[\s.-]?(\d{4})$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -250,6 +298,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       discountCents: totals.discount,
     });
     if (reservedId != null) await updateOrder(reservedId, { status: paymentMethod === "card" ? "paid" : "placed", cloverOrderId: order.id, note });
+    await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: order.id });
     res.status(200).json({ ok: true, orderId: order.id, paid: paymentMethod === "card", chargeId, totals });
   } catch (err) {
     console.error("[order/create] POS order failed", err);

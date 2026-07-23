@@ -3,8 +3,10 @@ import { LOCATION } from "../data/location";
 import { Turnstile } from "./Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
 
+// Quoted VERBATIM in the A2P 10DLC campaign registration (message_flow) — if this
+// text changes, the registered campaign description must be updated to match.
 const CONSENT_TEXT =
-  "By joining, you agree to receive promotional texts and/or emails from Gigi's NY Style Pizza (Long Branch, NJ). Message/data rates may apply. Message frequency varies. Reply STOP to unsubscribe from texts, or use the unsubscribe link in any email. No purchase necessary.";
+  "By checking \"Text me deals,\" I agree to receive recurring promotional texts (weekly specials and promo codes) from Gigi's NY Style Pizza, 140 Brighton Ave, Long Branch, NJ, sent by automated technology to the number I provided. Consent is not a condition of any purchase. Message frequency varies, typically up to 4 per month. Message & data rates may apply. Reply STOP to opt out, HELP for help. By checking \"Email me deals,\" I agree to receive promotional emails; unsubscribe anytime via the link in any email.";
 
 const TURNSTILE_ON = turnstileEnabled();
 
@@ -153,6 +155,11 @@ export function VipClub() {
           </div>
 
           <p className="text-xs leading-relaxed text-white/85">{CONSENT_TEXT}</p>
+          <p className="text-xs text-white/85">
+            <a href="/privacy-policy/" className="underline">Privacy Policy</a>
+            {" · "}
+            <a href="/sms-terms/" className="underline">SMS Terms</a>
+          </p>
 
           {status === "error" && (
             <p className="rounded-lg bg-black/25 px-4 py-2.5 text-sm text-white">{errorMsg}</p>

@@ -101,6 +101,11 @@ export function Footer() {
             Long Branch location only. Menu items, pricing, hours, and availability
             are subject to change.
           </p>
+          <p className="mt-2">
+            <a href="/privacy-policy/" className="hover:text-white">Privacy Policy</a>
+            {" · "}
+            <a href="/sms-terms/" className="hover:text-white">SMS Terms</a>
+          </p>
         </div>
       </div>
     </footer>

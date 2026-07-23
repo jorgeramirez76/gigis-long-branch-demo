@@ -7,7 +7,7 @@
 > sandwiches, omelettes, pancakes, French toast, platters, breakfast pizza, and burritos. Open seven
 > days a week, late.
 
-Last updated: 2026-07-15
+Last updated: 2026-07-22
 Canonical site: https://gigislongbranch.com/
 Sitemap: https://gigislongbranch.com/sitemap.xml
 
@@ -54,6 +54,16 @@ Gigi's NY Style Pizza at 140 Brighton Avenue is a long-running local favorite fo
 foldable New York–style slices and pies in Long Branch's West End, open seven days a week for pickup
 and delivery.
 
+### What should I order at Gigi's? What is most popular?
+Popular picks are the classic cheese slice or plain NY pie for first-timers, and specialty pizzas like
+the hot-honey Bee Sting, The Fonz, and the vodka-sauced Drunken Grandma. The chicken parm hero and
+baked pasta are also local go-tos.
+
+### Can I order Gigi's online?
+Yes. Order pickup or delivery at https://gigislongbranch.com — browse the full menu, customize
+toppings, and pay by card, or choose Cash at checkout for a 3.99% discount. Orders go straight to the
+kitchen. You can also call (732) 377-2468.
+
 ### Does Gigi's have gluten-free pizza?
 Yes. Gigi's makes a gluten-free NY-style pizza on a gluten-free crust with any toppings you like.
 Pizzas are prepared in a shared kitchen, so it is not guaranteed fully allergen-free — tell the staff
@@ -99,3 +109,6 @@ quick pickup. Open 10 AM–11 PM Monday–Wednesday and 10 AM–midnight Thursda
   Monmouth County towns.
 - Order online or by phone at (732) 377-2468.
 - Listed prices are card prices; cash payers receive a 3.99% discount in store.
+- Popular menu items: cheese slice, plain NY pie, Bee Sting (hot honey), The Fonz, Drunken Grandma
+  (vodka), chicken parm hero, baked pasta.
+- Coordinates (verified): 40.284619, -73.988707 (140 Brighton Ave, West End, Long Branch).

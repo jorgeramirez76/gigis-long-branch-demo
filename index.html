@@ -25,12 +25,12 @@
     <link rel="canonical" href="https://gigislongbranch.com/" />
 
     <!-- Geo (legacy but supported by some search engines + map services).
-         NOTE: coordinates are approximate — confirm the exact pin from the
-         Google Business Profile and keep this in sync with src/data/location.ts. -->
+         Rooftop coordinates verified 2026-07-22 against the US Census geocoder
+         and OpenStreetMap; keep in sync with src/data/location.ts. -->
     <meta name="geo.region" content="US-NJ" />
     <meta name="geo.placename" content="Long Branch, New Jersey" />
-    <meta name="geo.position" content="40.3010;-73.9990" />
-    <meta name="ICBM" content="40.3010, -73.9990" />
+    <meta name="geo.position" content="40.284619;-73.988707" />
+    <meta name="ICBM" content="40.284619, -73.988707" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="restaurant.restaurant" />
@@ -53,8 +53,8 @@
     <meta property="restaurant:contact_info:postal_code" content="07740" />
     <meta property="restaurant:contact_info:country_name" content="United States" />
     <meta property="restaurant:contact_info:phone_number" content="+1-732-377-2468" />
-    <meta property="place:location:latitude" content="40.3010" />
-    <meta property="place:location:longitude" content="-73.9990" />
+    <meta property="place:location:latitude" content="40.284619" />
+    <meta property="place:location:longitude" content="-73.988707" />
     <meta property="business:contact_data:street_address" content="140 Brighton Ave" />
     <meta property="business:contact_data:locality" content="Long Branch" />
     <meta property="business:contact_data:region" content="NJ" />
@@ -127,8 +127,8 @@
             },
             "geo": {
               "@type": "GeoCoordinates",
-              "latitude": 40.3010,
-              "longitude": -73.9990
+              "latitude": 40.284619,
+              "longitude": -73.988707
             },
             "hasMap": "https://www.google.com/maps?q=Gigi's+NY+Style+Pizza+140+Brighton+Ave+Long+Branch+NJ+07740",
             "acceptsReservations": true,
@@ -267,6 +267,14 @@
               },
               {
                 "@type": "Question",
+                "name": "What should I order at Gigi's? What's most popular?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "First-timers can't go wrong with a classic cheese slice or a plain NY pie. Among specialty pizzas, the hot-honey Bee Sting, The Fonz, and the vodka Drunken Grandma get the most repeat orders. Still hungry? The chicken parm hero and baked pasta are local go-tos. Order a whole pie, or mix a few slices to sample."
+                }
+              },
+              {
+                "@type": "Question",
                 "name": "Does Gigi's have gluten-free pizza?",
                 "acceptedAnswer": {
                   "@type": "Answer",
@@ -323,6 +331,14 @@
               },
               {
                 "@type": "Question",
+                "name": "Can I order Gigi's pizza online?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. You can order Gigi's for pickup or delivery right on gigislongbranch.com — browse the full menu, customize toppings, and pay by card, or choose Cash at checkout for a 3.99% discount. Orders go straight to the kitchen. Prefer to call? Reach us at (732) 377-2468. Online ordering is open seven days a week during regular hours."
+                }
+              },
+              {
+                "@type": "Question",
                 "name": "Where is Gigi's and what are the hours?",
                 "acceptedAnswer": {
                   "@type": "Answer",
@@ -372,8 +388,12 @@
             "about": { "@id": "https://gigislongbranch.com/#restaurant" },
             "primaryImageOfPage": "https://gigislongbranch.com/og-image.jpg",
             "datePublished": "2026-04-24",
-            "dateModified": "2026-07-15",
-            "inLanguage": "en-US"
+            "dateModified": "2026-07-22",
+            "inLanguage": "en-US",
+            "speakable": {
+              "@type": "SpeakableSpecification",
+              "cssSelector": ["h1", "#faq"]
+            }
           }
         ]
       }

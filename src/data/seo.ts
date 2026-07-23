@@ -54,6 +54,10 @@ export const FAQS = [
     a: "New York–style pizza is a large, thin, hand-tossed round with a crust crisp enough to hold its shape but flexible enough to fold. It's topped with tomato sauce and whole-milk mozzarella and sold as whole pies and by the slice. Gigi's makes its NY-style pies with hand-stretched dough baked to order.",
   },
   {
+    q: "What should I order at Gigi's? What's most popular?",
+    a: "First-timers can't go wrong with a classic cheese slice or a plain NY pie. Among specialty pizzas, the hot-honey Bee Sting, The Fonz, and the vodka Drunken Grandma get the most repeat orders. Still hungry? The chicken parm hero and baked pasta are local go-tos. Order a whole pie, or mix a few slices to sample.",
+  },
+  {
     q: "Does Gigi's have gluten-free pizza?",
     a: "Yes. Gigi's makes a gluten-free NY-style pizza on a gluten-free crust, and you can add any toppings you like. Please note our pizzas are prepared and baked in a shared kitchen, so we can't guarantee a fully allergen-free pie. If you have celiac disease, tell our staff and we'll take extra care.",
   },
@@ -74,8 +78,16 @@ export const FAQS = [
     a: "Yes. Beyond pizza, Gigi's is a full Italian-American restaurant. The menu includes heroes and subs, pasta dinners, chicken and seafood entrées, wraps, burgers, wings, salads, and a kids' menu. One order can feed a whole family or a mixed-craving group — a solid choice for beach-house rentals and group dinners.",
   },
   {
+    q: "Does Gigi's serve breakfast in Long Branch?",
+    a: "Yes. Gigi's serves all-day breakfast at 140 Brighton Avenue in Long Branch — breakfast sandwiches like bacon, egg & cheese and pork roll, egg & cheese; omelettes; pancakes and French toast; breakfast platters; the Gigi Skillet; breakfast pizza; and breakfast burritos. Dine in or order for pickup and delivery. Call (732) 377-2468.",
+  },
+  {
     q: "Does Gigi's deliver, and where?",
     a: "Yes. Gigi's delivers across Long Branch and nearby towns, including the West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. You can order pizza, heroes, pasta, salads, and full dinners for delivery, or call (732) 377-2468 to place an order for pickup.",
+  },
+  {
+    q: "Can I order Gigi's pizza online?",
+    a: "Yes. You can order Gigi's for pickup or delivery right on gigislongbranch.com — browse the full menu, customize toppings, and pay by card, or choose Cash at checkout for a 3.99% discount. Orders go straight to the kitchen. Prefer to call? Reach us at (732) 377-2468. Online ordering is open seven days a week during regular hours.",
   },
   {
     q: "Where is Gigi's and what are the hours?",

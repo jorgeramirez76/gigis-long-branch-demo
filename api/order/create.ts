@@ -291,12 +291,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const cloverAmount = await getEcommOrderAmount(draftId);
         if (cloverAmount === totals.total) {
           try {
+            // No email passed: Clover would send its own bare payment receipt
+            // on top of our branded order confirmation — one receipt is enough.
             const charge = await payForOrder({
               orderId: draftId,
               source: cardToken,
               idempotencyKey,
               clientIp: ip,
-              email: cust.email,
             });
             chargeId = charge.id;
             paidOrderId = draftId;
@@ -326,13 +327,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!chargeId) {
       // Legacy two-order flow (fails closed: no charge → no order).
       try {
+        // No email passed — suppresses Clover's duplicate payment receipt;
+        // our branded order confirmation is the single receipt.
         const charge = await createCharge({
           amount: totals.total,
           source: cardToken,
           taxAmount: totals.tax,
           idempotencyKey,
           clientIp: ip,
-          email: cust.email,
           description: `Gigi's Long Branch web order — ${cust.name}`,
         });
         chargeId = charge.id;

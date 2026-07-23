@@ -89,7 +89,7 @@ approval: add `TWILIO_FROM_NUMBER=+18482753977` to Vercel prod → redeploy →
 `/api/admin/stats` `channels.sms` flips true. Until then, skipped sends are
 logged in `vip_sends` — nothing silently lost.
 
-### 3) Auto-email — DONE 2026-07-23 pending DKIM auto-verify
+### 3) Auto-email — ✅ FULLY LIVE 2026-07-22 (SPF+DKIM+MX all verified; test delivered)
 Resend acct "gigispizzalb": domain `gigislongbranch.com` added, 3 DNS records
 at GoDaddy (Jorge added manually — GoDaddy breaks under the CDP debugger).
 SPF + MX verified; **DKIM record confirmed correct + propagated on public

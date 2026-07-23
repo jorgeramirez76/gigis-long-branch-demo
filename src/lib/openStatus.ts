@@ -33,6 +33,26 @@ function nowInNY(): { day: number; hour: number; minute: number } {
   return { day: dayMap[get("weekday")] ?? 0, hour, minute: parseInt(get("minute"), 10) || 0 };
 }
 
+/**
+ * Whether online ordering should be ACCEPTED right now. Shared by the checkout
+ * UI and the order API (tsconfig.api.json includes this file) so both gate from
+ * the same hours. `graceMinutes` lets the server accept an in-flight checkout
+ * that crosses the closing boundary rather than failing it mid-payment.
+ */
+export function isOrderingOpen(graceMinutes = 0): boolean {
+  const { day, hour, minute } = nowInNY();
+  const m = hour * 60 + minute;
+  const close = (CLOSE_HOUR[day] ?? 23) * 60;
+  if (m >= OPEN_HOUR * 60 && m < close + graceMinutes) return true;
+  // Just past a midnight close the day index has flipped — the store was open
+  // `graceMinutes` ago only if YESTERDAY closed at midnight.
+  if (m < graceMinutes) {
+    const prevDay = (day + 6) % 7;
+    if ((CLOSE_HOUR[prevDay] ?? 23) === 24) return true;
+  }
+  return false;
+}
+
 export function getOpenStatus(): OpenStatus {
   const { day, hour } = nowInNY();
   const close = CLOSE_HOUR[day] ?? 23;

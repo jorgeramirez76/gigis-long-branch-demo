@@ -28,7 +28,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [tipPct, setTipPct] = useState(15);
   const [orderNote, setOrderNote] = useState("");
   const [openStatus, setOpenStatus] = useState<OpenStatus | null>(null);
-  useEffect(() => setOpenStatus(getOpenStatus()), []);
+  useEffect(() => {
+    const tick = () => setOpenStatus(getOpenStatus());
+    tick();
+    const t = setInterval(tick, 60_000); // flips the gate live at open/close
+    return () => clearInterval(t);
+  }, []);
+  const storeClosed = openStatus != null && !openStatus.open;
   const [status, setStatus] = useState<"form" | "submitting" | "error">("form");
   // Cash orders require an explicit acknowledgment (discount received + will
   // pay cash). Re-checked every time the payment method changes.
@@ -107,6 +113,14 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   }, [payment]);
 
   async function placeOrder() {
+    // Fresh check at click time (the interval only ticks each minute); the
+    // server enforces the same gate authoritatively.
+    if (!getOpenStatus().open) {
+      setOpenStatus(getOpenStatus());
+      setStatus("error");
+      setErrorMsg("We're closed right now — online ordering reopens at 10 AM.");
+      return;
+    }
     setStatus("submitting");
     setErrorMsg("");
     try {
@@ -211,10 +225,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   return (
     <Shell onClose={onClose} title="Checkout">
       <div className="flex-1 space-y-5 overflow-y-auto p-5">
-        {openStatus && !openStatus.open && (
+        {storeClosed && (
           <div className="rounded-2xl border border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
-            <span className="font-bold">We're closed right now.</span> Ordering opens at 10 AM — you can still place this
-            order and we'll start it as soon as we open.
+            <span className="font-bold">We're closed right now.</span> Online ordering is open daily from 10 AM until
+            close (11 PM Mon–Wed, midnight Thu–Sun). Your cart will be saved — see you when we open!
           </div>
         )}
 
@@ -392,10 +406,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         <button
           type="button"
           onClick={placeOrder}
-          disabled={!contactOk || !deliveryOk || submitting || cart.lines.length === 0 || (payment === "card" && !cardReady) || (payment === "cash" && !cashAgreed) || (TURNSTILE_ON && !turnstileToken)}
+          disabled={storeClosed || !contactOk || !deliveryOk || submitting || cart.lines.length === 0 || (payment === "card" && !cardReady) || (payment === "cash" && !cashAgreed) || (TURNSTILE_ON && !turnstileToken)}
           className="flex w-full items-center justify-between rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)] disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <span>{submitting ? "Placing order…" : payment === "card" ? "Pay & place order" : "Place order"}</span>
+          <span>{storeClosed ? "Closed — ordering opens 10 AM" : submitting ? "Placing order…" : payment === "card" ? "Pay & place order" : "Place order"}</span>
           <span>{money(grandTotal)}</span>
         </button>
         <p className="mt-2 text-center text-[11px] text-[var(--color-ink)]/40">

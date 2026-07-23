@@ -6,5 +6,5 @@
     "types": ["node"],
     "noUnusedLocals": false
   },
-  "include": ["api", "src/data/menuGenerated.ts", "src/data/menuTypes.ts"]
+  "include": ["api", "src/data/menuGenerated.ts", "src/data/menuTypes.ts", "src/lib/openStatus.ts"]
 }

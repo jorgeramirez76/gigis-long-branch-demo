@@ -18,6 +18,7 @@ import {
   type Totals,
 } from "../lib/clover.js";
 import { priceLines, type ClientLine } from "../lib/menuCatalog.js";
+import { isOrderingOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, reserveOrder, updateOrder } from "../lib/orderStore.js";
 import { alertStaff, sendReceiptEmail } from "../lib/notify.js";
@@ -115,6 +116,16 @@ function clientIp(req: VercelRequest): string | undefined {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "method_not_allowed" });
+    return;
+  }
+
+  // ---- store hours gate (authoritative; the checkout UI mirrors it) ----
+  // 5-minute grace so a checkout in flight at closing time isn't failed mid-payment.
+  if (!isOrderingOpen(5)) {
+    res.status(409).json({
+      error: "store_closed",
+      message: "Gigi's is closed right now — online ordering is open daily from 10 AM until close (11 PM Mon–Wed, midnight Thu–Sun). See you when we open!",
+    });
     return;
   }
 

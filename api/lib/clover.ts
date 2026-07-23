@@ -263,18 +263,25 @@ export async function createPosOrder(opts: {
 }
 
 /** Ecommerce view of a POS order — returns Clover's computed charge amount
- * (line items + tax) so we can verify it equals our own total BEFORE charging. */
+ * (line items + tax) so we can verify it equals our own total BEFORE charging.
+ * A just-created v3 order takes a beat to appear on the ecommerce side
+ * (separate systems, eventual consistency), so 404s are retried briefly. */
 export async function getEcommOrderAmount(orderId: string): Promise<number> {
   const t = ecommToken();
   if (!t) throw new CloverError("clover_not_configured", 503);
-  const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
-    headers: { Authorization: `Bearer ${t}` },
-  });
-  const data = (await res.json().catch(() => ({}))) as { amount?: number; message?: string };
-  if (!res.ok || typeof data.amount !== "number") {
-    throw new CloverError(data.message || "ecomm order lookup failed", res.status, data);
+  const delays = [0, 400, 900, 1600]; // ~3s worst case — invisible next to card auth time
+  let last: CloverError | null = null;
+  for (const ms of delays) {
+    if (ms) await new Promise((r) => setTimeout(r, ms));
+    const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
+      headers: { Authorization: `Bearer ${t}` },
+    });
+    const data = (await res.json().catch(() => ({}))) as { amount?: number; message?: string };
+    if (res.ok && typeof data.amount === "number") return data.amount;
+    last = new CloverError(data.message || "ecomm order lookup failed", res.status, data);
+    if (res.status !== 404 && res.status < 500) break; // real error — don't spin on it
   }
-  return data.amount;
+  throw last ?? new CloverError("ecomm order lookup failed", 500);
 }
 
 /**

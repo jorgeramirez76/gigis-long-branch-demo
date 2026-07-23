@@ -102,6 +102,8 @@ export function Footer() {
             are subject to change.
           </p>
           <p className="mt-2">
+            Operated by GIGIS NY STYLE PIZZA LONG BRANCH LLC
+            {" · "}
             <a href="/privacy-policy/" className="hover:text-white">Privacy Policy</a>
             {" · "}
             <a href="/sms-terms/" className="hover:text-white">SMS Terms</a>

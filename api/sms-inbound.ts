@@ -103,7 +103,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Anything else: acknowledge quietly, point at the shop.
     res.status(200).send(
-      twiml("Thanks for texting Gigi's! This line sends VIP deals only — to order, call (732) 377-2468 or visit gigislongbranch.com."),
+      // No URL here — the campaign is registered link-free (HasEmbeddedLinks=false).
+      twiml("Thanks for texting Gigi's! This line sends VIP deals only — to order, call (732) 377-2468."),
     );
   } catch (err) {
     console.error("[sms-inbound] error", err);

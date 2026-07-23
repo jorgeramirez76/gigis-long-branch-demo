@@ -30,6 +30,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const { business, name, phone, email, smsConsent, emailConsent, consentText, turnstileToken } = req.body ?? {};
 
+  // Canonical consent language — MUST stay in sync with CONSENT_TEXT in
+  // src/components/VipClub.tsx and the registered A2P campaign message_flow.
+  // Stored server-side so the audit trail can't be forged by a crafted POST.
+  const CANONICAL_CONSENT_TEXT =
+    "By checking \"Text me deals,\" I agree to receive recurring promotional texts (weekly specials and promo codes) from Gigi's NY Style Pizza, 140 Brighton Ave, Long Branch, NJ, sent by automated technology to the number I provided. Consent is not a condition of any purchase. Message frequency varies, typically up to 4 per month. Message & data rates may apply. Reply STOP to opt out, HELP for help. By checking \"Email me deals,\" I agree to receive promotional emails; unsubscribe anytime via the link in any email.";
+
   if (!isVipBusiness(business)) {
     res.status(400).json({ error: "invalid_business" });
     return;
@@ -95,7 +101,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const inserted = await sql`
       INSERT INTO vip_members (business, name, phone, email, sms_consent, email_consent, consent_text, source)
-      VALUES (${business}, ${name.trim()}, ${normalizedPhone}, ${normalizedEmail}, ${!!smsConsent}, ${!!emailConsent}, ${consentText}, 'website')
+      VALUES (${business}, ${name.trim()}, ${normalizedPhone}, ${normalizedEmail}, ${!!smsConsent}, ${!!emailConsent}, ${CANONICAL_CONSENT_TEXT}, 'website')
       ON CONFLICT DO NOTHING
       RETURNING id
     `;
@@ -108,7 +114,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const memberId = inserted.rows[0].id as number;
     const { id: promoCodeId, code, description } = await ensureWelcomeCode(business);
-    const welcomeMessage = `Welcome to the VIP Club! Your code ${code} gets you ${description}. Reply STOP to opt out.`;
+    // Registered as the campaign's OptInMessage — keep the shape in sync with
+    // the A2P filing if this wording changes.
+    const welcomeMessage = `Gigi's NY Style Pizza VIP Club: you're in! Code ${code} gets you ${description}. Up to 4 msgs/mo. Msg&data rates may apply. Reply HELP for help, STOP to opt out.`;
 
     const results: Record<string, unknown> = {};
     if (normalizedPhone) {

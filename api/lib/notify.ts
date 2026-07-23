@@ -55,6 +55,12 @@ export async function sendSms(toE164: string, message: string): Promise<SendResu
   }
 
   const basic = Buffer.from(`${auth.user}:${auth.pass}`).toString("base64");
+  // Prefer the registered Messaging Service so service-level A2P features
+  // (advanced opt-out, sticky sender) govern every send; From is the fallback.
+  const mss = process.env.TWILIO_MESSAGING_SERVICE_SID;
+  const params: Record<string, string> = mss
+    ? { To: toE164, MessagingServiceSid: mss, Body: message }
+    : { To: toE164, From: from, Body: message };
   const res = await fetch(
     `https://api.twilio.com/2010-04-01/Accounts/${auth.accountSid}/Messages.json`,
     {
@@ -63,7 +69,7 @@ export async function sendSms(toE164: string, message: string): Promise<SendResu
         Authorization: `Basic ${basic}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: new URLSearchParams({ To: toE164, From: from, Body: message }),
+      body: new URLSearchParams(params),
     },
   );
 

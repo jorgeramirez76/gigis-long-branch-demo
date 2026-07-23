@@ -48,6 +48,12 @@ delivery), all routed to the Clover POS automatically.
 
 ## What remains — the arming checklist (none are code)
 
+_2026-07-23: 26-agent adversarial audit of the whole build found zero
+blockers/high issues; the 7 confirmed code nits (STOP-notice false-negative,
+alertStaff/sendEmail error swallowing, webhook multibyte token compare, $0
+quote-item rejection, confirmation total, stale docs) were all fixed and
+deployed the same day. Remaining items below are operational, not code._
+
 ### 1) Card payments — ✅ ARMED 2026-07-20 (one $1 test left)
 No ecommerce token existed at all (why the public key was never found).
 Created the merchant's first pair in the dashboard: **"Clover eComm Iframe"**
@@ -63,20 +69,36 @@ Token page: Account & Setup → "Ecommerce API tokens"
 pickup order, confirms the charge + POS ticket says PAID, then refunds it
 from the Clover dashboard. Do this before announcing card payment.
 
-### 2) Auto-SMS — JORGE (Twilio)
-HARD rule: LB gets its **own** number + A2P — never Sea Bright's.
-Buy a 732 number → A2P brand/campaign for the LB business → point the number's
-inbound-SMS webhook at
-`https://gigislongbranch.com/api/sms-inbound?token=<SMS_WEBHOOK_TOKEN>`
-(value in `.env.crm.local`) → add `TWILIO_ACCOUNT_SID`,
-`TWILIO_AUTH_TOKEN` (or API key pair), `TWILIO_FROM_NUMBER` to Vercel prod →
-redeploy. `/api/admin/stats` `channels.sms` flips true. Until then, skipped
-sends are logged in `vip_sends` — nothing silently lost.
+### 2) Auto-SMS — mostly DONE 2026-07-23; blocked on A2P (Tommy's EIN info)
+HARD rule: LB gets its **own** number + A2P — never Sea Bright's, never Jorge's
+sole-prop brand.
+DONE: number **+1 848-275-3977** bought ("Gigi's Long Branch VIP SMS",
+`PN4ffb92c11ea3170494c5102ec38a33da`; 848 = local Monmouth overlay). Inbound
+webhook live → STOP/START/HELP works now. Own messaging service
+**MG37a0acb3df5668838640690a15c064bd** with the 848 attached. Restricted API
+key "Gigis Long Branch site SMS" (`SK09f4e5f2…`, Messaging>messages
+read/list/create only — verified working against the v2010 Messages API);
+`TWILIO_ACCOUNT_SID` + `TWILIO_API_KEY_SID` + `TWILIO_API_KEY_SECRET` set in
+Vercel prod, mirrored in `.env.crm.local`.
+REMAINING: **A2P 10DLC brand + campaign** — must be a **Standard business
+brand under Gigi's EIN** (the account's one sole-prop slot is already used by
+Jorge's brand; console warns "Limit of one sole proprietor Brand reached").
+Needs Tommy's legal business name, EIN, address, website, authorized contact +
+Jorge's OK on registration fees (balance was $13.18 — top up first). After
+approval: add `TWILIO_FROM_NUMBER=+18482753977` to Vercel prod → redeploy →
+`/api/admin/stats` `channels.sms` flips true. Until then, skipped sends are
+logged in `vip_sends` — nothing silently lost.
 
-### 3) Auto-email — JORGE (Resend, ~20 min + DNS)
-Resend → add domain `gigislongbranch.com` → SPF/DKIM at GoDaddy → verified →
-add `RESEND_API_KEY` + `EMAIL_FROM` (`Gigi's VIP Club <vip@gigislongbranch.com>`)
-to Vercel prod → redeploy. Unsub links verified pointing at gigislongbranch.com.
+### 3) Auto-email — DONE 2026-07-23 pending DKIM auto-verify
+Resend acct "gigispizzalb": domain `gigislongbranch.com` added, 3 DNS records
+at GoDaddy (Jorge added manually — GoDaddy breaks under the CDP debugger).
+SPF + MX verified; **DKIM record confirmed correct + propagated on public
+DNS, waiting only on Resend's re-check** (watcher running). `RESEND_API_KEY` +
+`EMAIL_FROM` (`Gigi's NY Style Pizza <vip@gigislongbranch.com>`) set in Vercel
+prod. Order-receipt emails (`receiptHtml`/`sendReceiptEmail`) wired for every
+order with an email. Once the Resend dashboard shows Verified: send a test
+blast to yourself from the admin composer. Resend dashboard also breaks under
+the debugger — use the REST API (`curl`, key in `.env.crm.local`).
 
 ### 4) Staff lost-order alerts — 1 min once SMS is armed
 `printf '+1<store manager cell>' | npx vercel env add STAFF_ALERT_PHONE production`

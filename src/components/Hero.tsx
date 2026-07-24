@@ -44,15 +44,15 @@ export function Hero() {
       {/* Free-pie VIP CTA — floats toward the top-right of the hero */}
       <a
         href="#vip-club"
-        className="hero-in hero-in-2 group absolute right-4 top-[5.5rem] z-20 flex items-center gap-2.5 rounded-2xl border border-[var(--color-gold-bright)]/70 bg-[var(--color-brand-red)]/90 px-4 py-2.5 text-white shadow-[var(--shadow-red)] ring-1 ring-black/20 backdrop-blur transition hover:-translate-y-0.5 hover:bg-[var(--color-brand-red-bright)] active:scale-[0.98] md:right-8 md:top-32 md:px-5 md:py-3"
-        aria-label="Join the Gigi's VIP Club and get a free plain cheese pizza"
+        className="hero-in hero-in-2 group absolute right-4 top-[5.25rem] z-20 flex items-center gap-3 rounded-2xl border-2 border-[var(--color-gold-bright)]/80 bg-[var(--color-brand-red)]/90 px-5 py-3.5 text-white shadow-[var(--shadow-red)] ring-1 ring-black/20 backdrop-blur transition hover:-translate-y-0.5 hover:bg-[var(--color-brand-red-bright)] active:scale-[0.98] md:right-8 md:top-32 md:px-7 md:py-5"
+        aria-label="Join the Gigi's VIP Club and get a free plain cheese pizza pie"
       >
-        <span className="text-xl md:text-2xl" aria-hidden="true">🍕</span>
+        <span className="text-2xl md:text-4xl" aria-hidden="true">🍕</span>
         <span className="leading-tight">
-          <span className="block text-[10px] font-extrabold uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
-            Free Pizza
+          <span className="block text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--color-gold-bright)] md:text-base">
+            Free Pizza Pie
           </span>
-          <span className="block text-xs font-bold md:text-sm">
+          <span className="block text-sm font-bold md:text-lg">
             Join the VIP Club →
           </span>
         </span>

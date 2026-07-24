@@ -16,10 +16,13 @@ export function VipClub() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [apt, setApt] = useState("");
   const [smsConsent, setSmsConsent] = useState(false);
   const [emailConsent, setEmailConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [result, setResult] = useState<{ code?: string; alreadyMember?: boolean; message?: string }>({});
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileReset, setTurnstileReset] = useState(0);
 
@@ -32,9 +35,14 @@ export function VipClub() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!phone.trim() || !email.trim() || address.trim().length < 4) {
+      setStatus("error");
+      setErrorMsg("Please fill in your name, phone, email, and street address for your free pie.");
+      return;
+    }
     if (!smsConsent && !emailConsent) {
       setStatus("error");
-      setErrorMsg("Pick at least one way to hear from us (text or email).");
+      setErrorMsg("Pick at least one way to get your code and deals (text or email).");
       return;
     }
     if (TURNSTILE_ON && !turnstileToken) {
@@ -51,8 +59,10 @@ export function VipClub() {
         body: JSON.stringify({
           business: "gigis_long_branch",
           name,
-          phone: smsConsent ? phone : undefined,
-          email: emailConsent ? email : undefined,
+          phone,
+          email,
+          address,
+          apt,
           smsConsent,
           emailConsent,
           consentText: CONSENT_TEXT,
@@ -62,10 +72,18 @@ export function VipClub() {
       const data = await res.json();
       if (!res.ok) {
         setStatus("error");
-        setErrorMsg(data.error === "invalid_phone" ? "That phone number doesn't look right." : data.error === "invalid_email" ? "That email doesn't look right." : data.error === "verification_failed" ? "Verification failed — please try again." : data.error === "rate_limited" ? "Too many attempts — please wait a bit." : "Something went wrong — try again or call us.");
+        setErrorMsg(
+          data.error === "invalid_phone" ? "That phone number doesn't look right."
+          : data.error === "invalid_email" ? "That email doesn't look right."
+          : data.error === "address_required" ? "Please enter your street address."
+          : data.error === "verification_failed" ? "Verification failed — please try again."
+          : data.error === "rate_limited" ? "Too many attempts — please wait a bit."
+          : "Something went wrong — try again or call us.",
+        );
         bumpTurnstile();
         return;
       }
+      setResult({ code: data.code, alreadyMember: data.alreadyMember, message: data.message });
       setStatus("success");
     } catch {
       setStatus("error");
@@ -78,10 +96,31 @@ export function VipClub() {
     return (
       <section id="vip-club" className="scroll-mt-20 bg-[var(--color-brand-red)] py-20 text-white md:py-28">
         <div className="container-x mx-auto max-w-xl text-center" data-reveal>
-          <h2 className="text-4xl md:text-5xl">You're in!</h2>
-          <p className="mt-4 text-base md:text-lg">
-            Check your phone/email for your welcome offer. Talk soon.
-          </p>
+          {result.alreadyMember ? (
+            <>
+              <h2 className="text-4xl md:text-5xl">Already a VIP!</h2>
+              <p className="mt-4 text-base md:text-lg text-white/90">
+                {result.message ?? "You're already in the club — the free welcome pie is one per new member. Watch for our deals!"}
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-4xl md:text-5xl">You're in! 🍕</h2>
+              <p className="mt-4 text-base md:text-lg text-white/90">
+                Here's your welcome code — show it at Gigi's for your <strong>free plain cheese pie</strong>:
+              </p>
+              {result.code && (
+                <div className="mx-auto mt-6 inline-block rounded-2xl border-2 border-dashed border-[var(--color-gold-bright)] bg-black/20 px-8 py-5">
+                  <div className="text-3xl font-extrabold tracking-[0.15em] text-[var(--color-gold-bright)] md:text-4xl">
+                    {result.code}
+                  </div>
+                </div>
+              )}
+              <p className="mt-6 text-sm text-white/80">
+                We also sent it to your phone and email. One pie per new member. See you soon!
+              </p>
+            </>
+          )}
         </div>
       </section>
     );
@@ -92,9 +131,13 @@ export function VipClub() {
       <div className="container-x">
         <div className="mx-auto max-w-xl text-center" data-reveal>
           <span className="eyebrow text-[var(--color-gold-bright)]">Join the club</span>
-          <h2 className="mt-3 text-4xl md:text-5xl">The VIP Club</h2>
+          <h2 className="mt-3 text-4xl md:text-5xl">
+            Get a <span className="text-[var(--color-gold-bright)]">FREE Plain Pie</span>
+          </h2>
           <p className="mt-4 text-base leading-relaxed text-white/85 md:text-lg">
-            Sign up for text or email deals — first one's on us. No spam, cancel anytime.
+            Join the Gigi's VIP Club and we'll text or email you a code for a
+            complimentary plain cheese pie — plus first dibs on weekly deals.
+            New members only, one per household. No spam, cancel anytime.
           </p>
         </div>
 
@@ -117,11 +160,12 @@ export function VipClub() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="vip-phone" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-white/70">
-                Phone (for texts)
+                Phone
               </label>
               <input
                 id="vip-phone"
                 type="tel"
+                required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
@@ -135,6 +179,7 @@ export function VipClub() {
               <input
                 id="vip-email"
                 type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
@@ -143,14 +188,45 @@ export function VipClub() {
             </div>
           </div>
 
+          <div className="grid gap-4 sm:grid-cols-[1fr_140px]">
+            <div>
+              <label htmlFor="vip-address" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-white/70">
+                Street address
+              </label>
+              <input
+                id="vip-address"
+                type="text"
+                required
+                autoComplete="street-address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                placeholder="140 Brighton Ave"
+              />
+            </div>
+            <div>
+              <label htmlFor="vip-apt" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-white/70">
+                Apt/Unit <span className="font-normal normal-case text-white/45">(optional)</span>
+              </label>
+              <input
+                id="vip-apt"
+                type="text"
+                value={apt}
+                onChange={(e) => setApt(e.target.value)}
+                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                placeholder="3B"
+              />
+            </div>
+          </div>
+
           <div className="space-y-2.5 rounded-xl bg-black/15 p-4">
             <label className="flex items-start gap-2.5 text-sm">
               <input type="checkbox" checked={smsConsent} onChange={(e) => setSmsConsent(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>Text me deals ({phone ? phone : "phone number required above"})</span>
+              <span>Text me deals</span>
             </label>
             <label className="flex items-start gap-2.5 text-sm">
               <input type="checkbox" checked={emailConsent} onChange={(e) => setEmailConsent(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>Email me deals ({email ? email : "email required above"})</span>
+              <span>Email me deals</span>
             </label>
           </div>
 
@@ -172,7 +248,7 @@ export function VipClub() {
             disabled={status === "submitting" || (TURNSTILE_ON && !turnstileToken)}
             className="w-full rounded-full bg-[var(--color-gold-bright)] px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)] transition hover:brightness-95 disabled:opacity-60"
           >
-            {status === "submitting" ? "Joining…" : "Join the VIP Club"}
+            {status === "submitting" ? "Joining…" : "Get My Free Pie"}
           </button>
 
           <p className="text-center text-xs text-white/80">

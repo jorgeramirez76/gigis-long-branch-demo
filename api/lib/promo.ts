@@ -1,20 +1,40 @@
+import { randomInt } from "node:crypto";
 import { sql, type VipBusiness } from "./db.js";
 
-const WELCOME_CODES: Record<VipBusiness, { code: string; description: string }> = {
-  gigis_long_branch: { code: "GIGIVIP10", description: "10% off welcome offer — Gigi's NY Style Pizza, Long Branch" },
+const PIE_DESCRIPTION: Record<VipBusiness, string> = {
+  gigis_long_branch: "a FREE plain cheese pie (new members only)",
 };
 
-/** Ensures the shared welcome promo code exists for a business, returns it.
- * A single shared code per business (not per-member) — simplest thing that
- * works for redemption at Clover checkout; can move to per-member codes
- * later without a schema change (vip_promo_codes.member_id already supports it). */
-export async function ensureWelcomeCode(business: VipBusiness) {
-  const { code, description } = WELCOME_CODES[business];
-  await sql`
-    INSERT INTO vip_promo_codes (business, code, description)
-    VALUES (${business}, ${code}, ${description})
-    ON CONFLICT (code) DO NOTHING
-  `;
-  const existing = await sql`SELECT id FROM vip_promo_codes WHERE code = ${code}`;
-  return { id: existing.rows[0].id as number, code, description };
+// No ambiguous 0/O/1/I so the code is easy to read off a phone at the counter.
+const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+function randomCode(len: number): string {
+  let out = "";
+  for (let i = 0; i < len; i++) out += ALPHABET[randomInt(ALPHABET.length)];
+  return out;
+}
+
+/**
+ * Issue the welcome free-pie promo to a brand-new member. A UNIQUE per-member
+ * code (not one shared code) so it can't be screenshot-shared for unlimited
+ * free pies, and so redemption can be tracked per member later. Called ONLY
+ * after a successful insert, so it can never be handed to an existing member.
+ */
+export async function issueWelcomePie(business: VipBusiness, memberId: number) {
+  const description = PIE_DESCRIPTION[business];
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const code = `PIE-${randomCode(6)}`;
+    try {
+      const r = await sql`
+        INSERT INTO vip_promo_codes (business, code, description, member_id, expires_at)
+        VALUES (${business}, ${code}, ${description}, ${memberId}, now() + interval '90 days')
+        RETURNING id
+      `;
+      return { id: r.rows[0].id as number, code, description };
+    } catch (err) {
+      // Astronomically rare code collision (UNIQUE(code)) — retry with a new one.
+      if (attempt === 5) throw err;
+    }
+  }
+  throw new Error("could not generate a unique promo code");
 }

@@ -21,6 +21,16 @@ CREATE UNIQUE INDEX IF NOT EXISTS vip_members_business_phone_uq
 CREATE UNIQUE INDEX IF NOT EXISTS vip_members_business_email_uq
   ON vip_members (business, email) WHERE email IS NOT NULL;
 
+-- === Free-pie anti-abuse (2026-07-24) ===
+-- Capture the signup address so the welcome pie can't be re-claimed from the
+-- same household. addr_key = normalized street+unit (see api/lib/address.ts):
+-- same street AND same apartment ⇒ same key ⇒ blocked; different apt ⇒ allowed.
+ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS address  TEXT;
+ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS apt      TEXT;
+ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS addr_key TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS vip_members_business_addr_uq
+  ON vip_members (business, addr_key) WHERE addr_key IS NOT NULL AND addr_key <> '';
+
 CREATE TABLE IF NOT EXISTS vip_promo_codes (
   id            BIGSERIAL PRIMARY KEY,
   business      TEXT NOT NULL CHECK (business IN ('gigis_long_branch')),

@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql, isVipBusiness } from "./lib/db.js";
-import { ensureWelcomeCode } from "./lib/promo.js";
+import { issueWelcomePie } from "./lib/promo.js";
+import { addressDedupeKey } from "./lib/address.js";
 import { sendWelcomeSms, sendWelcomeEmail } from "./lib/notify.js";
 import { rateLimitAll } from "./lib/rateLimit.js";
 import { verifyTurnstile } from "./lib/turnstile.js";
@@ -28,7 +29,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { business, name, phone, email, smsConsent, emailConsent, consentText, turnstileToken } = req.body ?? {};
+  const { business, name, phone, email, address, apt, smsConsent, emailConsent, consentText, turnstileToken } = req.body ?? {};
 
   // Canonical consent language — MUST stay in sync with CONSENT_TEXT in
   // src/components/VipClub.tsx and the registered A2P campaign message_flow.
@@ -53,26 +54,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  let normalizedPhone: string | null = null;
-  if (smsConsent) {
-    if (typeof phone !== "string") {
-      res.status(400).json({ error: "phone_required_for_sms_consent" });
-      return;
-    }
-    normalizedPhone = normalizePhone(phone);
-    if (!normalizedPhone) {
-      res.status(400).json({ error: "invalid_phone" });
-      return;
-    }
+  // Free-pie signup requires all three abuse-control vectors (phone, email,
+  // address) so one person can't cycle any single field to re-claim the pie.
+  // Consent checkboxes still control which channels we actually SEND to.
+  const normalizedPhone = typeof phone === "string" ? normalizePhone(phone) : null;
+  if (!normalizedPhone) {
+    res.status(400).json({ error: "invalid_phone" });
+    return;
   }
+  if (typeof email !== "string" || !EMAIL_RE.test(email.trim())) {
+    res.status(400).json({ error: "invalid_email" });
+    return;
+  }
+  const normalizedEmail = email.trim().toLowerCase();
 
-  let normalizedEmail: string | null = null;
-  if (emailConsent) {
-    if (typeof email !== "string" || !EMAIL_RE.test(email.trim())) {
-      res.status(400).json({ error: "invalid_email" });
-      return;
-    }
-    normalizedEmail = email.trim().toLowerCase();
+  const streetRaw = typeof address === "string" ? address.trim().slice(0, 160) : "";
+  const aptRaw = typeof apt === "string" ? apt.trim().slice(0, 40) : "";
+  if (streetRaw.length < 4) {
+    res.status(400).json({ error: "address_required" });
+    return;
+  }
+  const addrKey = addressDedupeKey(streetRaw, aptRaw);
+  if (!addrKey) {
+    res.status(400).json({ error: "address_required" });
+    return;
   }
 
   // Rate limit BEFORE any DB write or (costly, spammable) SMS/email send. Guards
@@ -99,36 +104,46 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    // ON CONFLICT DO NOTHING covers ALL three unique indexes (phone, email,
+    // address+apt): a match on ANY one means this person/household already
+    // claimed the welcome pie, so no row is inserted and no new pie is issued.
     const inserted = await sql`
-      INSERT INTO vip_members (business, name, phone, email, sms_consent, email_consent, consent_text, source)
-      VALUES (${business}, ${name.trim()}, ${normalizedPhone}, ${normalizedEmail}, ${!!smsConsent}, ${!!emailConsent}, ${CANONICAL_CONSENT_TEXT}, 'website')
+      INSERT INTO vip_members (business, name, phone, email, address, apt, addr_key, sms_consent, email_consent, consent_text, source)
+      VALUES (${business}, ${name.trim()}, ${normalizedPhone}, ${normalizedEmail}, ${streetRaw}, ${aptRaw || null}, ${addrKey}, ${!!smsConsent}, ${!!emailConsent}, ${CANONICAL_CONSENT_TEXT}, 'website')
       ON CONFLICT DO NOTHING
       RETURNING id
     `;
 
     if (inserted.rowCount === 0) {
-      // Already a member (unique phone/email per business) — treat as idempotent success.
-      res.status(200).json({ ok: true, alreadyMember: true });
+      // Existing member / phone / email / address — the free pie is one per new
+      // member, so we don't issue another. Generic message (no field echoed) to
+      // avoid leaking which detail is already on file.
+      res.status(200).json({
+        ok: true,
+        alreadyMember: true,
+        message: "You're already in the VIP Club — the free welcome pie is one per new member. Watch for our deals!",
+      });
       return;
     }
 
     const memberId = inserted.rows[0].id as number;
-    const { id: promoCodeId, code, description } = await ensureWelcomeCode(business);
+    const { id: promoCodeId, code, description } = await issueWelcomePie(business, memberId);
     // Registered as the campaign's OptInMessage — keep the shape in sync with
     // the A2P filing if this wording changes.
     const welcomeMessage = `Gigi's NY Style Pizza VIP Club: you're in! Code ${code} gets you ${description}. Up to 4 msgs/mo. Msg&data rates may apply. Reply HELP for help, STOP to opt out.`;
 
-    const results: Record<string, unknown> = {};
-    if (normalizedPhone) {
+    // Send ONLY to the channels the member consented to (both fields are stored
+    // for dedup regardless). On-screen code (below) is the fallback if a channel
+    // isn't armed yet.
+    if (smsConsent) {
       const sms = await sendWelcomeSms(normalizedPhone, welcomeMessage);
       await sql`
         INSERT INTO vip_sends (business, channel, member_id, promo_code_id, status, provider_id, error)
         VALUES (${business}, 'sms', ${memberId}, ${promoCodeId}, ${sms.sent ? "sent" : "failed"}, ${sms.providerId ?? null}, ${sms.error ?? null})
       `;
-      results.sms = sms;
     }
-    if (normalizedEmail) {
-      const mail = await sendWelcomeEmail(normalizedEmail, "Welcome to the Gigi's VIP Club", welcomeMessage, {
+    if (emailConsent) {
+      const mail = await sendWelcomeEmail(normalizedEmail, "Welcome to the Gigi's VIP Club 🍕", welcomeMessage, {
         promoCode: code,
         promoDescription: description,
       });
@@ -136,13 +151,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         INSERT INTO vip_sends (business, channel, member_id, promo_code_id, status, provider_id, error)
         VALUES (${business}, 'email', ${memberId}, ${promoCodeId}, ${mail.sent ? "sent" : "failed"}, ${mail.providerId ?? null}, ${mail.error ?? null})
       `;
-      results.email = mail;
     }
 
-    // Do NOT echo provider send results to the public caller — that leaks
-    // Twilio/Resend error detail. Delivery status is recorded in vip_sends.
-    void results;
-    res.status(200).json({ ok: true, code });
+    // Return the code so the success screen can show it immediately — robust
+    // even before SMS is armed. Never echo provider send results (leaks detail).
+    res.status(200).json({ ok: true, code, description });
   } catch (err) {
     console.error("[vip-signup] error", err);
     res.status(500).json({ error: "internal_error" });

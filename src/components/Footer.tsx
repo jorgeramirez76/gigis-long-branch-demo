@@ -107,6 +107,8 @@ export function Footer() {
             <a href="/privacy-policy/" className="hover:text-white">Privacy Policy</a>
             {" · "}
             <a href="/sms-terms/" className="hover:text-white">SMS Terms</a>
+            {" · "}
+            Website by <a href="https://clickmingo.com" target="_blank" rel="noopener" className="hover:text-white">ClickMingo</a>
           </p>
         </div>
       </div>

@@ -8,7 +8,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-20 md:pt-28"
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-28 md:pt-36"
     >
       {/* Background — portrait on mobile, wide on md+; slow Ken-Burns for life */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -44,7 +44,7 @@ export function Hero() {
       {/* Free-pie VIP CTA — floats toward the top-right of the hero */}
       <a
         href="#vip-club"
-        className="hero-in hero-in-2 group absolute right-4 top-[5.25rem] z-20 flex items-center gap-3 rounded-2xl border-2 border-[var(--color-gold-bright)]/80 bg-[var(--color-brand-red)]/90 px-5 py-3.5 text-white shadow-[var(--shadow-red)] ring-1 ring-black/20 backdrop-blur transition hover:-translate-y-0.5 hover:bg-[var(--color-brand-red-bright)] active:scale-[0.98] md:right-8 md:top-32 md:px-7 md:py-5"
+        className="hero-in hero-in-2 group absolute right-4 top-[7.25rem] z-20 flex items-center gap-3 rounded-2xl border-2 border-[var(--color-gold-bright)]/80 bg-[var(--color-brand-red)]/90 px-5 py-3.5 text-white shadow-[var(--shadow-red)] ring-1 ring-black/20 backdrop-blur transition hover:-translate-y-0.5 hover:bg-[var(--color-brand-red-bright)] active:scale-[0.98] md:right-8 md:top-40 md:px-7 md:py-5"
         aria-label="Join the Gigi's VIP Club and get a free plain cheese pizza pie"
       >
         <span className="text-2xl md:text-4xl" aria-hidden="true">🍕</span>

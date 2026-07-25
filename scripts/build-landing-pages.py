@@ -135,6 +135,7 @@ def body(page, others):
     # internal links to sibling landing pages (crawl + authority), max 5
     sib = "".join(f'<a href="/{o["slug"]}/">{E(o["linklabel"])}</a>' for o in others[:5])
     return f"""<body>
+<a href="https://gigis-sea-bright-site.vercel.app" style="display:block;background:var(--ink);color:rgba(255,255,255,.9);text-align:center;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:6px 16px">Closer to Sea Bright? Order from our Sea Bright location &rarr;</a>
 <header class="site"><div class="row">
 <img src="/logo.png" alt="{E(BIZ['name'])} logo">
 <div class="name">GIGI'S<small>NY STYLE PIZZA · LONG BRANCH</small></div>

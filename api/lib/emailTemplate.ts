@@ -72,6 +72,8 @@ export function receiptHtml(opts: {
   tip?: string;
   total: string;
   paymentLine: string;
+  /** e.g. "Your order will be ready for pickup in about 15 minutes." */
+  readyLine?: string;
 }): string {
   const rows = opts.lines
     .map(
@@ -96,6 +98,7 @@ export function receiptHtml(opts: {
       <p style="margin:0 0 14px;font-size:16px;line-height:1.6;color:#1a1210;">Thanks, ${escapeHtml(opts.customerName)}! Your ${opts.fulfillment} order is in — we're firing it up now.</p>
       ${opts.orderRef ? `<p style="margin:0 0 6px;font-size:13px;color:#6a5a52;">Order&nbsp;#&nbsp;<span style="font-family:monospace;">${escapeHtml(opts.orderRef)}</span></p>` : ""}
       ${opts.fulfillment === "delivery" && opts.address ? `<p style="margin:0 0 14px;font-size:13px;color:#6a5a52;">Delivering to: ${escapeHtml(opts.address)}</p>` : ""}
+      ${opts.readyLine ? `<div style="margin:14px 0;padding:14px 16px;background:#faf2e1;border:2px solid #c89441;border-radius:12px;text-align:center;font-size:16px;font-weight:700;color:#1a1210;">&#9201; ${escapeHtml(opts.readyLine)}</div>` : ""}
       <table style="width:100%;border-collapse:collapse;border-top:1px solid #eee2cd;border-bottom:1px solid #eee2cd;margin:12px 0;">${rows}</table>
       <table style="width:100%;border-collapse:collapse;">
         ${totalRow("Subtotal", opts.subtotal)}

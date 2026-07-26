@@ -26,6 +26,7 @@ import { peekOrder, reserveOrder, updateOrder } from "../lib/orderStore.js";
 import { alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
+import { countUnits, readyMessage } from "../../src/lib/readyTime.js";
 
 /** Best-effort branded receipt email — env-gated, never blocks or fails the order. */
 async function sendOrderReceipt(o: {
@@ -64,6 +65,7 @@ async function sendOrderReceipt(o: {
       tip: o.totals.tip ? money(o.totals.tip) : undefined,
       total: money(o.totals.total),
       paymentLine,
+      readyLine: readyMessage(countUnits(o.lines), o.fulfillment),
     });
     const r = await sendReceiptEmail(o.email, `Order received — Gigi's NY Style Pizza (${money(o.totals.total)})`, html);
     if (!r.sent && r.error !== "email_not_configured") console.error("[order/create] receipt email failed:", r.error);

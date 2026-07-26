@@ -5,6 +5,7 @@ import { cardPaymentEnabled, initCloverCard, type CloverCard } from "./cloverPay
 import { Turnstile } from "../components/Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
 import { getOpenStatus, type OpenStatus } from "../lib/openStatus";
+import { countUnits, readyMessage } from "../lib/readyTime";
 
 type Fulfillment = "pickup" | "delivery";
 type PaymentMethod = "pickup" | "card" | "cash";
@@ -15,7 +16,7 @@ const TURNSTILE_ON = turnstileEnabled();
 // are card prices; cash orders take 3.99% off the item subtotal.
 const CASH_DISCOUNT_RATE = 0.0399;
 
-type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean };
+type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number };
 
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
@@ -155,7 +156,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || data.error || "Order failed");
+      const orderedUnits = countUnits(cart.lines);
       setConfirmed({
+        units: orderedUnits,
         orderId: data.orderId,
         paid: !!data.paid,
         cash: payment === "cash",
@@ -198,6 +201,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 cash discount is already included.
               </p>
             )}
+          </div>
+          <div className="rounded-2xl border-2 border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3.5">
+            <p className="text-base font-bold text-[var(--color-ink)]">
+              ⏱ {readyMessage(confirmed.units, confirmed.fulfillment)}
+            </p>
           </div>
           <div className="rounded-2xl bg-white p-4 text-sm shadow-[var(--shadow-sm)]">
             <div className="flex justify-between"><span className="text-[var(--color-ink-soft)]">Total</span><span className="font-bold">{money(confirmed.total)}</span></div>

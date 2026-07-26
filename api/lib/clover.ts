@@ -367,6 +367,10 @@ export async function payForOrder(opts: {
   idempotencyKey: string;
   clientIp?: string;
   email?: string;
+  /** Gratuity in cents, charged ON TOP of the order amount (items + tax).
+   * Clover: "tips are not adjustable and can only be included in the initial
+   * request" — this is what keeps a tipped order on ONE Clover order. */
+  tipAmount?: number;
 }): Promise<{ id: string; amount: number }> {
   const t = ecommToken();
   if (!t) throw new CloverError("clover_not_configured", 503);
@@ -381,6 +385,8 @@ export async function payForOrder(opts: {
     },
     body: JSON.stringify({
       source: opts.source,
+      ecomind: "ecom", // customer-entered card (not merchant/MOTO)
+      ...(opts.tipAmount ? { tip_amount: opts.tipAmount } : {}),
       ...(opts.email ? { email: opts.email } : {}),
     }),
   });

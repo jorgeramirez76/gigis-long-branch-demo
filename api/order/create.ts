@@ -155,6 +155,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(400).json({ error: "valid_phone_required" });
     return;
   }
+  // Email is REQUIRED so every website order gets an emailed receipt.
+  if (typeof customer.email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email.trim())) {
+    res.status(400).json({ error: "valid_email_required", message: "Please enter a valid email so we can send your receipt." });
+    return;
+  }
   if (fulfillment === "delivery" && (typeof customer.address !== "string" || customer.address.trim().length < 5)) {
     res.status(400).json({ error: "delivery_address_required" });
     return;
@@ -292,7 +297,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return;
     }
 
-    if (totals.tip === 0) {
+    {
+      // ONE Clover order per website order: create the itemized order, then pay
+      // THAT order (tip rides along via tip_amount, so a tipped order no longer
+      // falls back to the old two-order flow). The order therefore carries both
+      // the items and the payment, and shows as PAID on the POS screen.
+      const orderAmount = totals.total - totals.tip; // what Clover computes: items + tax
       let draftId: string | undefined;
       try {
         const draft = await createDraftOrder({
@@ -302,7 +312,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
         draftId = draft.id;
         const cloverAmount = await getEcommOrderAmount(draftId);
-        if (cloverAmount === totals.total) {
+        if (cloverAmount === orderAmount) {
           try {
             // No email passed: Clover would send its own bare payment receipt
             // on top of our branded order confirmation — one receipt is enough.
@@ -311,6 +321,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               source: cardToken,
               idempotencyKey,
               clientIp: ip,
+              tipAmount: totals.tip || undefined,
             });
             chargeId = charge.id;
             paidOrderId = draftId;
@@ -326,7 +337,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return;
           }
         } else {
-          console.error(`[order/create] clover amount ${cloverAmount} != ours ${totals.total} — two-order fallback`);
+          console.error(`[order/create] clover order amount ${cloverAmount} != items+tax ${orderAmount} — two-order fallback`);
           await deleteDraftOrder(draftId).catch(() => {});
         }
       } catch (err) {

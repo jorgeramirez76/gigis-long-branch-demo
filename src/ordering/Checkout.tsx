@@ -65,7 +65,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [JSON.stringify(cart.lines), tip, fulfillment, payment],
   );
-  const contactOk = name.trim() && phone.replace(/\D/g, "").length >= 10;
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  // Email is REQUIRED: every website order must get an emailed receipt.
+  const contactOk = name.trim() && phone.replace(/\D/g, "").length >= 10 && emailOk;
   const deliveryOk = fulfillment === "pickup" || address.trim().length > 4;
 
   // Clover hosted card fields — mount only when paying by card.
@@ -243,7 +245,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         <div className="space-y-3">
           <Field label="Name" value={name} onChange={setName} placeholder="Your name" required />
           <Field label="Mobile phone" value={phone} onChange={setPhone} placeholder="(732) 555-0100" type="tel" required />
-          <Field label="Email (for your receipt)" value={email} onChange={setEmail} placeholder="you@email.com" type="email" />
+          <Field label="Email (for your receipt)" value={email} onChange={setEmail} placeholder="you@email.com" type="email" required />
           {fulfillment === "delivery" && (
             <Field label="Delivery address" value={address} onChange={setAddress} placeholder="Street, apt, town" required />
           )}

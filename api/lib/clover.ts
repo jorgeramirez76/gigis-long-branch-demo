@@ -241,6 +241,60 @@ export async function deleteDraftOrder(orderId: string): Promise<void> {
 }
 
 /**
+ * Push an order to the merchant's order printer (the kitchen ticket).
+ *
+ * Firing an order (state → "open") makes it appear in the POS but does NOT
+ * guarantee paper: auto-print is a device-side setting. This explicit
+ * print_event is what actually drives the printer, so the kitchen sees a ticket
+ * the moment an order lands. Clover routes the job to the firing device's order
+ * printer (the "Kitchen" printer here) or its onboard printer — the API gives no
+ * way to target a printer by id.
+ *
+ * Print jobs are short-lived and are discarded once printed, so a failure must
+ * be retried promptly (see printOrderTicket) — it cannot be replayed later.
+ */
+async function requestPrint(orderId: string): Promise<{ id?: string; state?: string; device?: string }> {
+  const data = await rest(`/print_event`, {
+    method: "POST",
+    body: JSON.stringify({ orderRef: { id: orderId } }),
+  });
+  return { id: data?.id, state: data?.state, device: data?.deviceRef?.id };
+}
+
+/** Read a print job's state ("CREATED" | "PRINTING" | "PRINTED" | "FAILED"). */
+export async function getPrintEventState(eventId: string): Promise<string | undefined> {
+  const data = await rest(`/print_event/${eventId}`, { method: "GET" });
+  return data?.state;
+}
+
+/**
+ * Print the kitchen ticket, with one retry (a device can be briefly offline or
+ * busy). NEVER throws: a printer problem must not fail an order that is already
+ * paid and fired — it's logged loudly instead so it can be recovered.
+ */
+export async function printOrderTicket(orderId: string): Promise<{ printed: boolean; eventId?: string; state?: string; error?: string }> {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const ev = await requestPrint(orderId);
+      if (ev.state && ev.state.toUpperCase() === "FAILED") {
+        if (attempt === 2) return { printed: false, eventId: ev.id, state: ev.state, error: "printer reported FAILED" };
+      } else {
+        console.log(`[print] kitchen ticket queued for order ${orderId} — event ${ev.id} state ${ev.state} device ${ev.device ?? "default"}`);
+        return { printed: true, eventId: ev.id, state: ev.state };
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "print request failed";
+      if (attempt === 2) {
+        console.error(`[print] FAILED to print kitchen ticket for order ${orderId}: ${msg}`);
+        return { printed: false, error: msg };
+      }
+    }
+    await new Promise((r) => setTimeout(r, 900));
+  }
+  return { printed: false, error: "unreachable" };
+}
+
+/**
  * Create an itemized order in the merchant's POS and fire it, atomically.
  * (Cash/pickup path — card orders use createDraftOrder → payForOrder →
  * fireOrder so the payment lands on the itemized order itself.)

@@ -10,6 +10,7 @@ import {
   fireOrder,
   getEcommOrderAmount,
   payForOrder,
+  printOrderTicket,
   CloverError,
   MAX_UNITS,
   unitPrice,
@@ -366,6 +367,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       await fireOrder(paidOrderId, { paid: true, note });
       if (reservedId != null) await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
+      // Kitchen ticket: firing only makes the order visible in the POS — this is
+      // what drives the printer. Awaited (not fire-and-forget) so it isn't killed
+      // by the serverless function freezing after the response; never throws.
+      await printOrderTicket(paidOrderId);
       await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: paidOrderId });
       res.status(200).json({ ok: true, orderId: paidOrderId, paid: true, chargeId, totals });
     } catch (err) {
@@ -390,6 +395,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       discountCents: totals.discount,
     });
     if (reservedId != null) await updateOrder(reservedId, { status: paymentMethod === "card" ? "paid" : "placed", cloverOrderId: order.id, note });
+    // Kitchen ticket — same for cash/pay-at-pickup orders: the kitchen still has
+    // to make the food, and the ticket header states COLLECT vs PAID ONLINE.
+    await printOrderTicket(order.id);
     await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: order.id });
     res.status(200).json({ ok: true, orderId: order.id, paid: paymentMethod === "card", chargeId, totals });
   } catch (err) {

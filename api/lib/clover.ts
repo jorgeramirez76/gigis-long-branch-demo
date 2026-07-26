@@ -157,6 +157,21 @@ async function rest(path: string, init: RequestInit): Promise<any> {
 }
 
 /**
+ * Header printed at the top of the kitchen ticket. Always carries all three
+ * facts the kitchen and register need at a glance — where it came from, how it
+ * leaves the store, and whether money was already taken:
+ *   WEBSITE ORDER • CUSTOMER PICKUP • NOT PAID
+ *   WEBSITE ORDER • CUSTOMER PICKUP • PAID w/ CC
+ *   WEBSITE ORDER • FOR DELIVERY • PAID w/ CC
+ * `paid` is omitted while the order is still a draft (payment not yet taken).
+ */
+export function ticketTitle(fulfillment: Fulfillment, paid?: boolean): string {
+  const kind = fulfillment === "delivery" ? "FOR DELIVERY" : "CUSTOMER PICKUP";
+  const pay = paid === undefined ? "" : paid ? " • PAID w/ CC" : " • NOT PAID";
+  return `WEBSITE ORDER • ${kind}${pay}`;
+}
+
+/**
  * Create a DRAFT itemized order in the merchant's POS (no state → does not fire
  * to the kitchen). Custom line items (name+price) price correctly regardless of
  * Clover modifier config; a full human-readable ticket (safety notes
@@ -172,7 +187,7 @@ export async function createDraftOrder(opts: {
   discountCents?: number;
 }): Promise<{ id: string; href: string }> {
   const mid = merchantId()!;
-  const title = `WEBSITE • ${opts.fulfillment === "delivery" ? "DELIVERY" : "PICKUP"}`;
+  const title = ticketTitle(opts.fulfillment);
 
   const order = await rest(`/orders`, {
     method: "POST",
@@ -223,7 +238,7 @@ export async function createDraftOrder(opts: {
  * paid and refreshing the ticket note (e.g. to add the charge id). */
 export async function fireOrder(
   orderId: string,
-  opts: { paid: boolean; note?: string },
+  opts: { paid: boolean; note?: string; title?: string },
 ): Promise<void> {
   await rest(`/orders/${orderId}`, {
     method: "POST",
@@ -231,6 +246,9 @@ export async function fireOrder(
       state: "open",
       ...(opts.paid ? { paymentState: "PAID" } : {}),
       ...(opts.note ? { note: opts.note.slice(0, 490) } : {}),
+      // Re-titled at fire time so the printed header carries the final payment
+      // state (a draft is created before the card is charged).
+      ...(opts.title ? { title: opts.title } : {}),
     }),
   });
 }
@@ -308,7 +326,7 @@ export async function createPosOrder(opts: {
 }): Promise<{ id: string; href: string }> {
   const draft = await createDraftOrder(opts);
   try {
-    await fireOrder(draft.id, { paid: opts.paid });
+    await fireOrder(draft.id, { paid: opts.paid, title: ticketTitle(opts.fulfillment, opts.paid) });
   } catch (err) {
     await deleteDraftOrder(draft.id).catch(() => {});
     throw err;
@@ -396,13 +414,15 @@ export function buildOrderNote(opts: {
   orderNote?: string;
 }): string {
   const money = (c: number) => `$${(c / 100).toFixed(2)}`;
-  const kind = opts.fulfillment === "delivery" ? "DELIVERY (in-house driver)" : "PICKUP";
+  const kind = opts.fulfillment === "delivery" ? "FOR DELIVERY (in-house driver)" : "CUSTOMER PICKUP";
+  // Who collects, and how much — the driver (delivery) or the counter (pickup).
+  const collector = opts.fulfillment === "delivery" ? "DRIVER COLLECTS" : "COLLECT AT COUNTER";
   const pay =
     opts.payment === "card"
-      ? `PAID ONLINE ${money(opts.totals.total)}${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
+      ? `** PAID w/ CC ${money(opts.totals.total)} **${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
       : opts.payment === "cash"
-        ? `** COLLECT CASH ${money(opts.totals.total)} ** (3.99% cash discount applied)`
-        : "PAY ON PICKUP/DELIVERY";
+        ? `** NOT PAID — ${collector} CASH ${money(opts.totals.total)} ** (3.99% cash discount applied)`
+        : `** NOT PAID — ${collector} ${money(opts.totals.total)} **`;
   const addr = opts.fulfillment === "delivery" ? ` → ${opts.customer.address ?? "(no address)"}` : "";
   const items = opts.lines
     .map((l) => {

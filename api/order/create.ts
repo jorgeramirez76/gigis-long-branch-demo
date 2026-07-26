@@ -11,6 +11,7 @@ import {
   getEcommOrderAmount,
   payForOrder,
   printOrderTicket,
+  ticketTitle,
   CloverError,
   MAX_UNITS,
   unitPrice,
@@ -365,7 +366,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (paidOrderId) {
     const note = buildOrderNote({ fulfillment, customer: cust, lines, totals, payment: "card", chargeId, orderNote });
     try {
-      await fireOrder(paidOrderId, { paid: true, note });
+      await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, true) });
       if (reservedId != null) await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
       // Kitchen ticket: firing only makes the order visible in the POS — this is
       // what drives the printer. Awaited (not fire-and-forget) so it isn't killed

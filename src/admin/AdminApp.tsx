@@ -9,10 +9,11 @@ import {
   type Business,
   type BroadcastRow,
   type Member,
+  type PromoLookup,
   type Stats,
 } from "./api";
 
-type Tab = "overview" | "members" | "blast" | "history";
+type Tab = "overview" | "redeem" | "members" | "blast" | "history";
 
 export function AdminApp() {
   const [authed, setAuthed] = useState<boolean | null>(null);
@@ -66,6 +67,7 @@ export function AdminApp() {
         {(
           [
             ["overview", "Overview"],
+            ["redeem", "Redeem a Code"],
             ["members", "Members"],
             ["blast", "Send a Blast"],
             ["history", "History"],
@@ -86,6 +88,7 @@ export function AdminApp() {
       </nav>
 
       {tab === "overview" && <Overview stats={stats} business={business} onRefresh={loadStats} />}
+      {tab === "redeem" && <Redeem business={business} />}
       {tab === "members" && <Members business={business} />}
       {tab === "blast" && <Blast business={business} stats={stats} onSent={loadStats} />}
       {tab === "history" && <History business={business} />}
@@ -538,5 +541,113 @@ function History({ business }: { business: Business }) {
         </p>
       )}
     </div>
+  );
+}
+
+/** Counter tool: look up a free-pie code, then mark it used so it can't be
+ *  reused. Big type + one obvious button — it gets used mid-rush. */
+function Redeem({ business }: { business: Business }) {
+  const [code, setCode] = useState("");
+  const [result, setResult] = useState<PromoLookup | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function check(e?: React.FormEvent) {
+    e?.preventDefault();
+    if (!code.trim()) return;
+    setBusy(true);
+    setError("");
+    setResult(null);
+    try {
+      setResult(await api<PromoLookup>(`/api/admin/promo?business=${business}&code=${encodeURIComponent(code.trim())}`));
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Lookup failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function redeem() {
+    setBusy(true);
+    setError("");
+    try {
+      setResult(await api<PromoLookup>(`/api/admin/promo`, {
+        method: "POST",
+        body: JSON.stringify({ business, code: result?.code ?? code.trim() }),
+      }));
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setError(err.message);
+        const p = err.payload as Partial<PromoLookup>;
+        if (p && p.code) setResult(p as PromoLookup);
+      } else setError("Could not redeem.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <section className="space-y-4">
+      <div className="rounded-2xl bg-white p-5 shadow-[var(--shadow-sm)]">
+        <h2 className="font-display text-2xl text-[var(--color-ink)]">Free-pie code</h2>
+        <p className="mt-1 text-sm text-[var(--color-ink-mute)]">
+          Type the code the customer shows you (e.g. PIE-JSYX2H), then hit Check.
+        </p>
+        <form onSubmit={check} className="mt-4 flex flex-col gap-2 sm:flex-row">
+          <input
+            value={code}
+            onChange={(e) => { setCode(e.target.value); setResult(null); setError(""); }}
+            placeholder="PIE-XXXXXX"
+            autoCapitalize="characters"
+            className="w-full rounded-xl border border-[var(--color-ink)]/15 px-4 py-3 font-mono text-lg uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]"
+          />
+          <button
+            type="submit"
+            disabled={busy || !code.trim()}
+            className="shrink-0 rounded-xl bg-[var(--color-ink)] px-6 py-3 text-sm font-bold uppercase tracking-wide text-white disabled:opacity-50"
+          >
+            {busy ? "…" : "Check"}
+          </button>
+        </form>
+        {error && !result && (
+          <p className="mt-3 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm font-semibold text-[var(--color-brand-red)]">{error}</p>
+        )}
+      </div>
+
+      {result && (
+        <div className={`rounded-2xl p-5 shadow-[var(--shadow-sm)] ${result.valid ? "bg-emerald-50" : "bg-[var(--color-brand-red)]/8"}`}>
+          <p className={`font-display text-3xl ${result.valid ? "text-emerald-700" : "text-[var(--color-brand-red)]"}`}>
+            {result.justRedeemed ? "✓ Redeemed — give the pie" : result.valid ? "✓ Valid — good for a free pie" : result.redeemed ? "✕ Already used" : "✕ Expired"}
+          </p>
+          {error && <p className="mt-1 text-sm font-semibold text-[var(--color-brand-red)]">{error}</p>}
+          <dl className="mt-3 space-y-1 text-sm text-[var(--color-ink-soft)]">
+            <div><span className="font-semibold">Code:</span> <span className="font-mono">{result.code}</span></div>
+            <div><span className="font-semibold">Offer:</span> {result.description}</div>
+            {result.member && (
+              <>
+                <div><span className="font-semibold">Member:</span> {result.member.name}</div>
+                <div><span className="font-semibold">Phone:</span> {result.member.phone ?? "—"}</div>
+              </>
+            )}
+            {result.redeemedAt && (
+              <div><span className="font-semibold">Used:</span> {new Date(result.redeemedAt).toLocaleString("en-US")}</div>
+            )}
+            {result.expiresAt && !result.redeemed && (
+              <div><span className="font-semibold">Expires:</span> {new Date(result.expiresAt).toLocaleDateString("en-US")}</div>
+            )}
+          </dl>
+          {result.valid && (
+            <button
+              type="button"
+              onClick={redeem}
+              disabled={busy}
+              className="mt-4 w-full rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] disabled:opacity-50"
+            >
+              {busy ? "Marking…" : "Mark as used"}
+            </button>
+          )}
+        </div>
+      )}
+    </section>
   );
 }

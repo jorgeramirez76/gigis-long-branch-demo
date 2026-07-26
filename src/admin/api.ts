@@ -51,11 +51,27 @@ export function clearToken() {
 
 export class ApiError extends Error {
   status: number;
-  constructor(status: number, message: string) {
+  /** Full JSON body, so callers can read a friendly `message` / extra fields. */
+  payload: Record<string, unknown>;
+  constructor(status: number, message: string, payload: Record<string, unknown> = {}) {
     super(message);
     this.status = status;
+    this.payload = payload;
   }
 }
+
+/** Free-pie welcome code, as returned by /api/admin/promo. */
+export type PromoLookup = {
+  code: string;
+  description: string;
+  member: { name: string; phone: string | null; email: string | null } | null;
+  redeemed: boolean;
+  redeemedAt: string | null;
+  expired: boolean;
+  expiresAt: string | null;
+  valid: boolean;
+  justRedeemed?: boolean;
+};
 
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, {
@@ -67,6 +83,9 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     },
   });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new ApiError(res.status, (data as { error?: string }).error ?? "request_failed");
+  if (!res.ok) {
+    const d = data as { error?: string; message?: string };
+    throw new ApiError(res.status, d.message ?? d.error ?? "request_failed", data as Record<string, unknown>);
+  }
   return data as T;
 }

@@ -427,7 +427,9 @@ export function buildOrderNote(opts: {
     opts.payment === "card"
       ? `** PAID w/ CC ${money(opts.totals.total)} **${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
       : opts.payment === "cash"
-        ? `** NOT PAID — ${collector} CASH ${money(opts.totals.total)} ** (3.99% cash discount applied)`
+        ? opts.fulfillment === "delivery"
+          ? `** NOT PAID — DRIVER COLLECTS CASH ${money(opts.totals.total)} ** (3.99% cash discount applied)`
+          : `** NOT PAID — COLLECT CASH AT COUNTER ${money(opts.totals.total)} ** (3.99% cash discount applied)`
         : `** NOT PAID — ${collector} ${money(opts.totals.total)} **`;
   const addr = opts.fulfillment === "delivery" ? ` → ${opts.customer.address ?? "(no address)"}` : "";
   const items = opts.lines

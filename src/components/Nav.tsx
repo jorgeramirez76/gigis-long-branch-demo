@@ -41,14 +41,6 @@ export function Nav() {
           : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
     >
-      {/* Cross-location strip: this site is Long Branch only; send Sea Bright
-          locals to their own shop's site instead of losing the order. */}
-      <a
-        href="https://gigisnystylepizza.com"
-        className="block bg-[var(--color-ink)] px-4 py-1.5 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-white/90 transition hover:text-white md:text-xs"
-      >
-        Closer to Sea Bright? Order from our Sea Bright location →
-      </a>
       <div className="container-x flex h-20 items-center justify-between md:h-28">
         <a href="#top" className="flex items-center gap-2" aria-label="Gigi's NY Style Pizza — Long Branch home">
           <img

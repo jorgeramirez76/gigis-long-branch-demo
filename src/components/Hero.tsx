@@ -8,7 +8,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-28 md:pt-36"
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-20 md:pt-28"
     >
       {/* Background — portrait on mobile, wide on md+; slow Ken-Burns for life */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -44,7 +44,7 @@ export function Hero() {
       {/* Free-pie VIP CTA — floats toward the top-right of the hero */}
       <a
         href="#vip-club"
-        className="hero-in hero-in-2 group absolute right-4 top-[7.25rem] z-20 flex items-center gap-3 rounded-2xl border-2 border-[var(--color-gold-bright)]/80 bg-[var(--color-brand-red)]/90 px-5 py-3.5 text-white shadow-[var(--shadow-red)] ring-1 ring-black/20 backdrop-blur transition hover:-translate-y-0.5 hover:bg-[var(--color-brand-red-bright)] active:scale-[0.98] md:right-8 md:top-40 md:px-7 md:py-5"
+        className="hero-in hero-in-2 group z-20 mx-4 mt-4 flex items-center gap-3 self-start rounded-2xl border-2 border-[var(--color-gold-bright)]/80 bg-[var(--color-brand-red)]/90 px-5 py-3.5 text-white shadow-[var(--shadow-red)] ring-1 ring-black/20 backdrop-blur transition hover:-translate-y-0.5 hover:bg-[var(--color-brand-red-bright)] active:scale-[0.98] md:absolute md:right-8 md:top-32 md:mx-0 md:mt-0 md:px-7 md:py-5"
         aria-label="Join the Gigi's VIP Club and get a free plain cheese pizza pie"
       >
         <span className="text-2xl md:text-4xl" aria-hidden="true">🍕</span>
@@ -61,10 +61,21 @@ export function Hero() {
       {/* Content */}
       <div className="container-x flex flex-1 flex-col justify-end pb-14 pt-8 md:justify-center md:pb-24 md:pt-24">
         <div className="max-w-3xl text-cream">
-          <span className="hero-in hero-in-1 inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--color-gold-bright)]/60 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-gold-bright)] backdrop-blur sm:tracking-[0.22em] md:text-xs">
-            <StarIcon className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate sm:whitespace-normal">A West End neighborhood favorite · Brighton Ave</span>
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="hero-in hero-in-1 inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--color-gold-bright)]/60 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-gold-bright)] backdrop-blur sm:tracking-[0.22em] md:text-xs">
+              <StarIcon className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate sm:whitespace-normal">A West End neighborhood favorite · Brighton Ave</span>
+            </span>
+
+            {/* Sends Sea Bright locals to their own shop rather than losing the order. */}
+            <a
+              href="https://gigisnystylepizza.com"
+              className="hero-in hero-in-1 inline-flex items-center gap-2 rounded-full bg-[var(--color-gold-bright)] px-4 py-2.5 text-[11px] font-bold text-[var(--color-ink)] shadow-[var(--shadow-gold)] transition hover:-translate-y-0.5 hover:bg-[var(--color-gold)] active:scale-[0.97] md:px-5 md:text-sm"
+            >
+              Closer to Sea Bright? Order from our Sea Bright location
+              <ArrowIcon className="h-3.5 w-3.5 shrink-0" />
+            </a>
+          </div>
 
           <h1 className="hero-in hero-in-2 mt-5 text-[2.6rem] leading-[0.95] text-white sm:text-[3.25rem] md:text-[4.25rem] lg:text-[5.5rem] xl:text-[6.5rem]">
             Real NY Style Pizza

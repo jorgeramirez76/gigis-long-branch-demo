@@ -69,7 +69,7 @@ export function Hero() {
 
             {/* Sends Sea Bright locals to their own shop rather than losing the order. */}
             <a
-              href="https://gigisnystylepizza.com"
+              href="https://gigisnystylepizza.com/sea-bright"
               className="hero-in hero-in-1 inline-flex items-center gap-2 rounded-full bg-[var(--color-gold-bright)] px-4 py-2.5 text-[11px] font-bold text-[var(--color-ink)] shadow-[var(--shadow-gold)] transition hover:-translate-y-0.5 hover:bg-[var(--color-gold)] active:scale-[0.97] md:px-5 md:text-sm"
             >
               Closer to Sea Bright? Order from our Sea Bright location

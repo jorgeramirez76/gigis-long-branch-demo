@@ -42,11 +42,9 @@ export function Nav() {
       }`}
     >
       {/* Cross-location strip: this site is Long Branch only; send Sea Bright
-          locals to their own shop's site instead of losing the order.
-          NOTE: swap to https://gigisnewyorkstylepizza.com after that domain's
-          DNS cutover — it still serves the old Slice page today. */}
+          locals to their own shop's site instead of losing the order. */}
       <a
-        href="https://gigis-sea-bright-site.vercel.app"
+        href="https://gigisnystylepizza.com"
         className="block bg-[var(--color-ink)] px-4 py-1.5 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-white/90 transition hover:text-white md:text-xs"
       >
         Closer to Sea Bright? Order from our Sea Bright location →

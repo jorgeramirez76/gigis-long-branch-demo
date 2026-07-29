@@ -29,6 +29,11 @@ export const ORDER_TYPES = {
   delivery: "H3TYJ5NC01662", // "Delivery"
 } as const;
 
+/** The merchant's NJ Sales Tax rate (verified via /v3 tax_rates — isDefault).
+ * Attached to every website line item so Clover computes tax ON TOP of the
+ * price; rate is in Clover's 1e-7 units (662500 = 6.625%), matching TAX_RATE. */
+const NJ_TAX_RATE = { id: "GJFQ1TP7F648J", name: "NJ Sales Tax", rate: 662500 } as const;
+
 export type Fulfillment = keyof typeof ORDER_TYPES;
 
 export type CartOptionInput = { group: string; name: string; delta: number };
@@ -200,7 +205,7 @@ export async function createDraftOrder(opts: {
   const orderId = order.id as string;
 
   try {
-    // Build every unit as a line item, then add them all in ONE bulk call.
+    // Build every unit as a line item.
     const items: { name: string; price: number; note?: string }[] = [];
     for (const line of opts.lines) {
       const price = unitPrice(line);
@@ -213,10 +218,23 @@ export async function createDraftOrder(opts: {
         items.push({ name, price, note: lineNote });
       }
     }
-    await rest(`/orders/${orderId}/bulk_line_items`, {
-      method: "POST",
-      body: JSON.stringify({ items }),
-    });
+    // Line items are created ONE BY ONE (small parallel chunks), not via
+    // bulk_line_items: only the single POST accepts inline taxRates, and the
+    // attached NJ rate is what makes Clover compute tax ON TOP of the price.
+    // Without it, custom items read "Taxes (included)" — the order totals to
+    // the pre-tax figure, /v1/orders/{id}/pay would undercharge, and website
+    // orders under-report sales tax in the merchant's Clover reports.
+    const CHUNK = 6;
+    for (let i = 0; i < items.length; i += CHUNK) {
+      await Promise.all(
+        items.slice(i, i + CHUNK).map((it) =>
+          rest(`/orders/${orderId}/line_items`, {
+            method: "POST",
+            body: JSON.stringify({ ...it, taxRates: [NJ_TAX_RATE] }),
+          }),
+        ),
+      );
+    }
 
     // Cash orders: attach the exact-cents cash discount so the register
     // total matches the collected amount (staff must not re-apply it manually).
@@ -348,8 +366,18 @@ export async function getEcommOrderAmount(orderId: string): Promise<number> {
     const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
       headers: { Authorization: `Bearer ${t}` },
     });
-    const data = (await res.json().catch(() => ({}))) as { amount?: number; message?: string };
-    if (res.ok && typeof data.amount === "number") return data.amount;
+    // There is NO top-level amount on this endpoint (learned the hard way — the
+    // old `data.amount` read threw on every order and silently forced the
+    // two-order fallback). The order is a list of items; with NJ_TAX_RATE on
+    // each line item Clover adds a `{type:"tax", amount}` entry, so the sum of
+    // item amounts IS the charge total (items + tax).
+    const data = (await res.json().catch(() => ({}))) as {
+      items?: { amount?: number }[];
+      message?: string;
+    };
+    if (res.ok && Array.isArray(data.items) && data.items.length > 0) {
+      return data.items.reduce((s, it) => s + (typeof it.amount === "number" ? it.amount : 0), 0);
+    }
     last = new CloverError(data.message || "ecomm order lookup failed", res.status, data);
     if (res.status !== 404 && res.status < 500) break; // real error — don't spin on it
   }

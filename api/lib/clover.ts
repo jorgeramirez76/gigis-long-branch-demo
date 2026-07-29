@@ -297,6 +297,17 @@ async function requestPrint(orderId: string): Promise<{ id?: string; state?: str
   return { id: data?.id, state: data?.state, device: data?.deviceRef?.id };
 }
 
+/** The real payment/tender id on an order. The /v1/orders/{id}/pay response's
+ * `id` mirrors the ORDER id (observed live), so refunds need this lookup. */
+export async function getOrderPaymentId(orderId: string): Promise<string | undefined> {
+  try {
+    const d = await rest(`/orders/${orderId}?expand=payments`, { method: "GET" });
+    return d?.payments?.elements?.[0]?.id;
+  } catch {
+    return undefined;
+  }
+}
+
 /** Read a print job's state ("CREATED" | "PRINTING" | "PRINTED" | "FAILED"). */
 export async function getPrintEventState(eventId: string): Promise<string | undefined> {
   const data = await rest(`/print_event/${eventId}`, { method: "GET" });

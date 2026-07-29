@@ -9,6 +9,7 @@ import {
   deleteDraftOrder,
   fireOrder,
   getEcommOrderAmount,
+  getOrderPaymentId,
   payForOrder,
   printOrderTicket,
   ticketTitle,
@@ -325,7 +326,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               clientIp: ip,
               tipAmount: totals.tip || undefined,
             });
-            chargeId = charge.id;
+            // /pay's response id mirrors the ORDER id — resolve the real
+            // payment/tender id so refund records point at the actual tender.
+            chargeId = (await getOrderPaymentId(draftId)) ?? charge.id;
             paidOrderId = draftId;
             // Persist the capture BEFORE the fire step so a mid-flight kill can't lose it.
             if (reservedId != null) await updateOrder(reservedId, { status: "charged", chargeId, cloverOrderId: draftId });

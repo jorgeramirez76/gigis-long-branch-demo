@@ -25,7 +25,7 @@
 --font-sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;font-family:var(--font-sans);background:var(--cream);color:var(--ink);line-height:1.6;font-size:17px}
-a{color:var(--red)}img{max-width:100%;display:block}
+a{color:var(--red)}img{max-width:100%;height:auto;display:block}
 .wrap{max-width:820px;margin:0 auto;padding:0 20px}
 header.site{background:var(--red);color:#fff;position:sticky;top:0;z-index:20}
 header.site .row{display:flex;align-items:center;gap:12px;padding:10px 20px;max-width:900px;margin:0 auto}
@@ -88,9 +88,10 @@ color:#fff;text-decoration:none;line-height:1;margin-bottom:14px}
 .price-card .amt{font-family:var(--font-display);font-size:3rem;color:var(--red);line-height:1}
 .gal{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0 0}
 .gal img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.14)}
-.gal .wide{grid-column:1/-1;aspect-ratio:16/10}
+.gal .wide{grid-column:1/-1;aspect-ratio:auto;height:auto;max-width:520px;margin:0 auto;object-fit:contain}
 @media(min-width:640px){.gal{grid-template-columns:repeat(3,1fr)}}
-.shot{border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.18);margin:14px 0 0}
+.photo-wide{width:100%;height:auto;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.18);margin:16px 0 0}
+.shot{border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.18);margin:16px auto 0;max-width:520px;width:100%;height:auto}
 figure{margin:0}figcaption{font-size:.85rem;color:var(--ink-mute);margin-top:6px;text-align:center}
 .price-card .per{color:var(--ink-mute);font-size:.95rem}
 </style>
@@ -181,10 +182,8 @@ figure{margin:0}figcaption{font-size:.85rem;color:var(--ink-mute);margin-top:6px
 <section class="wrap"><h2>Where the Party Happens</h2>
 <p>Gigi's NY Style Pizza, <strong>140 Brighton Avenue</strong> in the West End of Long Branch, NJ 07740 — easy parking, right in the neighborhood.</p>
 <p>Open seven days a week: Monday through Wednesday 10 AM to 11 PM, Thursday through Sunday 10 AM to midnight. Weekend party slots go quickly, so call ahead to lock in your date.</p>
-<div class="gal">
-<img class="wide" src="/img/party/party-eat.jpg" width="1080" height="1080" loading="lazy" alt="Party guests seated at a long table eating the personal pizzas they made at Gigi's">
-<img class="wide" src="/img/party/party-group.jpg" width="1200" height="900" loading="lazy" alt="A birthday group in chef hats in front of the Gigi's pizza-wings mural in Long Branch">
-</div>
+<img class="shot" src="/img/party/party-eat.jpg" width="1080" height="1080" loading="lazy" alt="Party guests seated at a long table eating the personal pizzas they made at Gigi's">
+<img class="photo-wide" src="/img/party/party-group.jpg" width="1200" height="900" loading="lazy" alt="A birthday group in chef hats in front of the Gigi's pizza-wings mural in Long Branch">
 </section>
 
 <section class="wrap faq"><h2>Good to know</h2>

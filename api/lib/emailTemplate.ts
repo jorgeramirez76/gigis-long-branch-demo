@@ -74,6 +74,8 @@ export function receiptHtml(opts: {
   paymentLine: string;
   /** e.g. "Your order will be ready for pickup in about 15 minutes." */
   readyLine?: string;
+  /** Invite the customer to the free-pie VIP club (non-members only). */
+  vipPitch?: boolean;
 }): string {
   const rows = opts.lines
     .map(
@@ -108,6 +110,11 @@ export function receiptHtml(opts: {
         ${totalRow("Total", opts.total, true)}
       </table>
       <div style="margin-top:16px;padding:14px 16px;background:#faf2e1;border-radius:12px;font-size:14px;color:#1a1210;">${escapeHtml(opts.paymentLine)}</div>
+      ${opts.vipPitch ? `<div style="margin:20px 0 0;padding:18px;background:#9b121a;border-radius:12px;text-align:center;">
+        <div style="font-size:20px;font-weight:800;color:#ffffff;">&#127829; Get a FREE plain pie</div>
+        <div style="font-size:14px;color:#f3d9be;margin-top:6px;line-height:1.5;">Join Gigi's VIP Club and we'll send you a code for a free cheese pie &mdash; plus first dibs on weekly deals. New members only.</div>
+        <a href="https://gigislongbranch.com/#vip-club" style="display:inline-block;margin-top:12px;background:#e6b45e;color:#1a1210;font-weight:800;text-decoration:none;padding:11px 26px;border-radius:999px;font-size:14px;">Join &amp; claim my free pie</a>
+      </div>` : ""}
       <p style="margin:18px 0 0;font-size:13px;color:#6a5a52;">Questions about your order? Call us at (732) 377-2468.</p>
     </div>
     <div style="background:#2b1a14;border-radius:0 0 16px 16px;padding:18px 24px;text-align:center;">

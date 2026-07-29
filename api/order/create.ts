@@ -27,6 +27,7 @@ import { peekOrder, reserveOrder, updateOrder } from "../lib/orderStore.js";
 import { alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
+import { isVipMember } from "../lib/vipLookup.js";
 import { countUnits, readyMessage } from "../../src/lib/readyTime.js";
 
 /** Best-effort branded receipt email — env-gated, never blocks or fails the order. */
@@ -39,6 +40,8 @@ async function sendOrderReceipt(o: {
   totals: Totals;
   paymentMethod: "card" | "pickup" | "cash";
   orderId: string;
+  /** Show the free-pie VIP invite (only for non-members). */
+  vipPitch?: boolean;
 }): Promise<void> {
   if (!o.email) return;
   const money = (c: number) => `$${(c / 100).toFixed(2)}`;
@@ -67,6 +70,7 @@ async function sendOrderReceipt(o: {
       total: money(o.totals.total),
       paymentLine,
       readyLine: readyMessage(countUnits(o.lines), o.fulfillment),
+      vipPitch: o.vipPitch,
     });
     const r = await sendReceiptEmail(o.email, `Order received — Gigi's NY Style Pizza (${money(o.totals.total)})`, html);
     if (!r.sent && r.error !== "email_not_configured") console.error("[order/create] receipt email failed:", r.error);
@@ -388,8 +392,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // what drives the printer. Awaited (not fire-and-forget) so it isn't killed
       // by the serverless function freezing after the response; never throws.
       await printOrderTicket(paidOrderId);
-      await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: paidOrderId });
-      res.status(200).json({ ok: true, orderId: paidOrderId, paid: true, chargeId, totals });
+      // Invite non-members to the free-pie club — on the confirmation popup
+      // and in the receipt. Existing members are skipped.
+      const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
+      await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
+      res.status(200).json({ ok: true, orderId: paidOrderId, paid: true, chargeId, totals, vipEligible });
     } catch (err) {
       // Paid but not fired: the payment and items live on the SAME order, so
       // staff recovery is just opening that order in the POS. Never delete it.
@@ -415,8 +422,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Kitchen ticket — same for cash/pay-at-pickup orders: the kitchen still has
     // to make the food, and the ticket header states COLLECT vs PAID ONLINE.
     await printOrderTicket(order.id);
-    await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: order.id });
-    res.status(200).json({ ok: true, orderId: order.id, paid: paymentMethod === "card", chargeId, totals });
+    const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
+    await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: order.id, vipPitch: vipEligible });
+    res.status(200).json({ ok: true, orderId: order.id, paid: paymentMethod === "card", chargeId, totals, vipEligible });
   } catch (err) {
     console.error("[order/create] POS order failed", err);
     if (chargeId) {

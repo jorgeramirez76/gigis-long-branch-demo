@@ -16,7 +16,7 @@ const TURNSTILE_ON = turnstileEnabled();
 // are card prices; cash orders take 3.99% off the item subtotal.
 const CASH_DISCOUNT_RATE = 0.0399;
 
-type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number };
+type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean };
 
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
@@ -167,6 +167,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         total: typeof data.totals?.total === "number" ? data.totals.total : grandTotal,
         fulfillment,
         routingIssue: data.routingIssue,
+        vipEligible: data.vipEligible !== false,
       });
       cart.clear();
     } catch (e) {
@@ -215,6 +216,21 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             <p className="rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
               Your payment went through. Please call <a className="font-semibold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a> to confirm we received it.
             </p>
+          )}
+          {confirmed.vipEligible && (
+            <a
+              href="#vip-club"
+              onClick={onClose}
+              className="block rounded-2xl bg-[var(--color-brand-red)] p-5 text-center text-white transition hover:bg-[var(--color-brand-red-bright)]"
+            >
+              <span className="block text-lg font-extrabold">🍕 Get a FREE plain pie</span>
+              <span className="mt-1 block text-sm text-white/85">
+                Join Gigi's VIP Club — we'll send a code for a free cheese pie, plus first dibs on weekly deals.
+              </span>
+              <span className="mt-3 inline-block rounded-full bg-[var(--color-gold-bright)] px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--color-ink)]">
+                Join &amp; claim my free pie
+              </span>
+            </a>
           )}
           <p className="text-xs text-[var(--color-ink)]/50">
             Questions? Call the shop at{" "}

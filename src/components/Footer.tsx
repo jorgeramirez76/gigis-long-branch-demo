@@ -85,6 +85,7 @@ export function Footer() {
         <nav className="mt-10 border-t border-white/10 pt-6" aria-label="Popular pages">
           <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-gold-bright)]">Explore</p>
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-cream/75">
+            <a href="/pizza-party-long-branch/" className="hover:text-white">Kids’ Pizza Parties</a>
             <a href="/late-night-pizza-long-branch/" className="hover:text-white">Late-Night Pizza</a>
             <a href="/gluten-free-pizza-long-branch/" className="hover:text-white">Gluten-Free Pizza</a>
             <a href="/vegan-pizza-long-branch/" className="hover:text-white">Vegan Pizza</a>

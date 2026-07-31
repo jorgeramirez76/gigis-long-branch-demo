@@ -52,5 +52,16 @@ export const REVIEW_THEMES: ReviewTheme[] = [
  * Displayed as attributed tiles with links — never summed into one AggregateRating. */
 export const RATING_SNAPSHOT = {
   restaurantji: { score: 4.6, count: 86, url: "https://www.restaurantji.com/nj/long-branch/gigis-ny-style-pizza-and-restaurant-lb-/" },
-  restaurantGuru: { score: 4.3, count: 130, url: "https://restaurantguru.com/Gigis-NY-Style-Pizza-and-Restaurant-Long-Branch" },
+  /* Restaurant Guru tile REMOVED 2026-07-29. It displayed "4.3 · 130 reviews · on Restaurant Guru",
+   * but 4.3 is GOOGLE's rating that Restaurant Guru republishes — its own aggregateRating JSON-LD
+   * declares 2.9/5 with those 130 reviews, and its visible page reads "Google (4.3/5)" with
+   * "120 Visitors' reviews". So the tile paired Google's score with Restaurant Guru's count and
+   * credited both to Restaurant Guru. Re-verified against the live page on 2026-07-29.
+   *
+   * Restaurantji still checks out exactly (ratingValue 4.6, ratingCount 86, verified same day).
+   *
+   * To show Google's rating instead, read BOTH the score and the review count off the Google
+   * Business Profile dashboard and add them here as `google: { score, count, url }` — do not reuse
+   * Restaurant Guru's count with Google's score. Google's rating is 4.3 as of 2026-07-29 (read
+   * first-hand from the Maps listing); the count was not exposed there. */
 };

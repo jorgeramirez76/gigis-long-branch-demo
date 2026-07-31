@@ -2,11 +2,9 @@ import { useState } from "react";
 import { LOCATION } from "../data/location";
 import { Turnstile } from "./Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
-
-// Quoted VERBATIM in the A2P 10DLC campaign registration (message_flow) — if this
-// text changes, the registered campaign description must be updated to match.
-const CONSENT_TEXT =
-  "By checking \"Text me deals,\" I agree to receive recurring promotional texts (weekly specials and promo codes) from Gigi's NY Style Pizza, 140 Brighton Ave, Long Branch, NJ, sent by automated technology to the number I provided. Consent is not a condition of any purchase. Message frequency varies, typically up to 4 per month. Message & data rates may apply. Reply STOP to opt out, HELP for help. By checking \"Email me deals,\" I agree to receive promotional emails; unsubscribe anytime via the link in any email.";
+// Quoted VERBATIM in the A2P 10DLC campaign registration (message_flow) — see
+// lib/vipConsent.ts, the single canonical copy for the app.
+import { CONSENT_TEXT } from "../lib/vipConsent";
 
 const TURNSTILE_ON = turnstileEnabled();
 

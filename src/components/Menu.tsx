@@ -70,9 +70,27 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
 }
 
 export function Menu() {
+  // Static menuGenerated.ts renders instantly; the live menu from /api/menu
+  // (reconciled against Clover nightly, so items the shop pulled off the POS
+  // are gone) swaps in when available. If the fetch fails, the static baseline
+  // stays — the menu never goes blank.
+  const [menu, setMenu] = useState(MENU);
+  useEffect(() => {
+    let alive = true;
+    fetch("/api/menu")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (alive && d?.categories?.length) setMenu(d.categories as typeof MENU);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   const [activeId, setActiveId] = useState<string>(MENU[0]?.id ?? "pizza");
   const [query, setQuery] = useState("");
-  const active = MENU.find((c) => c.id === activeId) ?? MENU[0];
+  const active = menu.find((c) => c.id === activeId) ?? menu[0];
   const panelRef = useRef<HTMLDivElement>(null);
   const cart = useCart();
 
@@ -82,7 +100,7 @@ export function Menu() {
   // Flattened cross-category matches on item name or category name.
   const results = useMemo(() => {
     if (!searching) return [];
-    return MENU.flatMap((c) =>
+    return menu.flatMap((c) =>
       c.items
         .filter((it) => it.name.toLowerCase().includes(q) || c.name.toLowerCase().includes(q))
         .map((it) => ({ item: it, category: c.name, categoryId: c.id })),
@@ -142,7 +160,7 @@ export function Menu() {
             aria-label="Menu categories"
             data-reveal
           >
-            {MENU.map((c) => {
+            {menu.map((c) => {
               const on = c.id === activeId;
               return (
                 <button

@@ -39,8 +39,15 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    /* Prevent horizontal scrolling globally */
-    overflow-x: hidden;
+    /* Prevent horizontal scrolling globally.
+       MUST be `clip`, not `hidden`. `overflow-x: hidden` on the root element makes html a scroll
+       container and stops overflow propagating to the viewport, which silently breaks native
+       fragment navigation: every in-page #anchor updated location.hash but scrolled nowhere.
+       Measured on production before this fix — all 25 hash links dead, including the whole nav
+       (Menu / Breakfast / About / Reviews / Visit) and the "Get a FREE plain pie" button on the
+       order-confirmation screen. `clip` blocks the same horizontal scroll without creating a
+       scroll container, so anchors work again. */
+    overflow-x: clip;
     width: 100%;
   }
 
@@ -51,7 +58,9 @@
     color: var(--color-ink);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    /* Same reason as html above: `hidden` here also creates a scroll container and breaks
+       in-page anchors. `clip` gives the identical no-horizontal-scroll result without it. */
+    overflow-x: clip;
     width: 100%;
   }
 

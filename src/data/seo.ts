@@ -59,11 +59,11 @@ export const FAQS = [
   },
   {
     q: "Does Gigi's have gluten-free pizza?",
-    a: "Yes. Gigi's makes a gluten-free NY-style pizza on a gluten-free crust, and you can add any toppings you like. Please note our pizzas are prepared and baked in a shared kitchen, so we can't guarantee a fully allergen-free pie. If you have celiac disease, tell our staff and we'll take extra care.",
+    a: "Yes. Gigi's makes a gluten-free NY-style pizza on a gluten-free crust. Toppings are charged separately and are not selectable online yet, so call and we'll build it. Please note our pizzas are prepared and baked in a shared kitchen, so we can't guarantee a fully allergen-free pie. If you have celiac disease, tell our staff and we'll take extra care.",
   },
   {
     q: "Is there vegan pizza in Long Branch, NJ?",
-    a: "Yes. Gigi's makes a vegan pizza on our NY-style crust with dairy-free cheese and your choice of vegetable toppings. It's one of the few vegan pizza options right in town, so you don't have to drive out of Long Branch to find one. Vegan-friendly salads and marinara pies are also available.",
+    a: "Yes. Gigi's makes a vegan pizza on our NY-style crust with dairy-free cheese and your choice of vegetable toppings. It is on the menu as its own item rather than a regular pie with the cheese left off.",
   },
   {
     q: "What are Gigi's signature specialty pizzas?",

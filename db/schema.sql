@@ -80,3 +80,13 @@ CREATE TABLE IF NOT EXISTS consent_events (
   source     TEXT NOT NULL,           -- 'sms_stop' | 'sms_start' | 'email_unsubscribe' | 'admin'
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- === Nightly Clover menu reconciliation (2026-07-31) ===
+-- The menu after removals are applied, written by api/cron/refresh-menu and
+-- served by /api/menu. The static menuGenerated.ts is the build-time fallback.
+CREATE TABLE IF NOT EXISTS menu_snapshot (
+  business    TEXT PRIMARY KEY,
+  data        JSONB NOT NULL,
+  item_count  INT NOT NULL,
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);

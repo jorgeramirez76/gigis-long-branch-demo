@@ -1,13 +1,22 @@
 /**
- * clover.js hosted card fields (PCI SAQ-A). The card number / expiry / CVV live
- * inside Clover-served iframes, so raw card data never touches our JS or server.
- * We only ever receive a `clv_…` single-use token, which the backend charges.
+ * clover.js hosted card fields (PCI SAQ-A) and the Clover-hosted Apple Pay button.
+ * Card number / expiry / CVV live inside Clover-served iframes, and the Apple Pay
+ * sheet is driven entirely by Clover's frame, so raw card data never touches our
+ * JS or server. Both paths hand us the same single-use `clv_…` source token, which
+ * the backend charges through the one already-proven order flow.
  *
  * Card payment stays completely inert until VITE_CLOVER_PAKMS_KEY (the merchant's
  * public Ecommerce apiAccessKey) is set — until then checkout runs as pay-at-pickup.
  */
 
 const PUBLIC_KEY = import.meta.env.VITE_CLOVER_PAKMS_KEY as string | undefined;
+const MERCHANT_ID = import.meta.env.VITE_CLOVER_MERCHANT_ID as string | undefined;
+// Apple Pay only works once the merchant's domain is verified with Apple through
+// the Clover dashboard ("Only Clover merchants with a validated ecommerce website
+// domain and subdomain can use the Apple Pay button"). Clover doesn't document how
+// the button behaves before then, so it stays behind an explicit opt-in flag rather
+// than risk a dead control sitting above the card fields.
+const APPLE_PAY_ON = (import.meta.env.VITE_CLOVER_APPLE_PAY as string | undefined) === "1";
 // Production hosted-SDK. Overridable via env for sandbox testing.
 const SDK_URL =
   (import.meta.env.VITE_CLOVER_SDK_URL as string | undefined) || "https://checkout.clover.com/sdk.js";
@@ -37,6 +46,32 @@ function loadSdk(): Promise<any> {
   return sdkPromise;
 }
 
+/**
+ * Clover's element factory is a process-wide singleton: `Element.getInstance`
+ * caches the FIRST instance and silently ignores the apiKey/merchantId passed by
+ * every later call. So the page must share ONE Clover instance — otherwise
+ * whichever payment method mounts first decides the merchant id for the other,
+ * and Apple Pay ends up without one. Each `elements()` call also appends its own
+ * hidden message frame to the body, so calling it once avoids that leak too.
+ */
+let cloverPromise: Promise<{ clover: any; elements: any }> | null = null;
+
+function getClover(): Promise<{ clover: any; elements: any }> {
+  if (cloverPromise) return cloverPromise;
+  cloverPromise = loadSdk()
+    .then((Clover) => {
+      const clover = MERCHANT_ID
+        ? new Clover(PUBLIC_KEY, { merchantId: MERCHANT_ID })
+        : new Clover(PUBLIC_KEY);
+      return { clover, elements: clover.elements() };
+    })
+    .catch((e) => {
+      cloverPromise = null;
+      throw e;
+    });
+  return cloverPromise;
+}
+
 export type CardMounts = {
   number: HTMLElement;
   date: HTMLElement;
@@ -59,9 +94,7 @@ const FIELD_STYLE = {
 
 export async function initCloverCard(): Promise<CloverCard> {
   if (!cardPaymentEnabled()) throw new Error("Card payment is not enabled.");
-  const Clover = await loadSdk();
-  const clover = new Clover(PUBLIC_KEY);
-  const elements = clover.elements();
+  const { clover, elements } = await getClover();
   const number = elements.create("CARD_NUMBER", FIELD_STYLE);
   const date = elements.create("CARD_DATE", FIELD_STYLE);
   const cvv = elements.create("CARD_CVV", FIELD_STYLE);
@@ -97,6 +130,122 @@ export async function initCloverCard(): Promise<CloverCard> {
         } catch {
           /* ignore */
         }
+      }
+    },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Apple Pay — same token, same server flow, one tap instead of typing a card.
+// ---------------------------------------------------------------------------
+
+/**
+ * Whether to offer Apple Pay at all. Safari on an Apple-Pay-capable device is the
+ * only place the button can work, so everywhere else this is false and checkout
+ * renders exactly as it always has.
+ */
+export function applePayAvailable(): boolean {
+  if (!APPLE_PAY_ON || !cardPaymentEnabled() || !MERCHANT_ID) return false;
+  const session = (window as any).ApplePaySession;
+  try {
+    return !!session && typeof session.canMakePayments === "function" && session.canMakePayments();
+  } catch {
+    return false;
+  }
+}
+
+export type ApplePayHandle = {
+  /** Mounts the Clover-hosted Apple Pay button into `el`. */
+  mount: (el: HTMLElement) => void;
+  /** Re-prices the sheet after the cart or tip changes. */
+  updateAmount: (amountCents: number) => void;
+  /** Closes out the Apple Pay sheet. Clover allows ~30s after the token. */
+  finish: (ok: boolean) => void;
+  destroy: () => void;
+};
+
+export type ApplePayCallbacks = {
+  /** Fires with a `clv_…` source token once the shopper authorizes the sheet. */
+  onToken: (token: string) => void;
+  /** Fires when the sheet is dismissed without a usable token. */
+  onCancel: () => void;
+};
+
+/** The SDK hands the token back as either a bare id or an object carrying one. */
+function tokenId(received: unknown): string | undefined {
+  if (typeof received === "string") return received;
+  const id = (received as { id?: unknown } | null)?.id;
+  return typeof id === "string" ? id : undefined;
+}
+
+export async function initApplePay(
+  amountCents: number,
+  cb: ApplePayCallbacks,
+): Promise<ApplePayHandle> {
+  if (!applePayAvailable()) throw new Error("Apple Pay is not available.");
+  const { clover, elements } = await getClover();
+
+  const buildRequest = (cents: number) =>
+    clover.createApplePaymentRequest({
+      // Clover stringifies this as (cents / 100).toFixed(2), so it must be cents.
+      amount: cents,
+      countryCode: "US",
+      currencyCode: "USD",
+    });
+
+  const button = elements.create("PAYMENT_REQUEST_BUTTON_APPLE_PAY", {
+    applePaymentRequest: buildRequest(amountCents),
+    sessionIdentifier: MERCHANT_ID,
+  });
+
+  // Clover raises both of these on `window`, not on the element.
+  const onPaymentMethod = (e: Event) => {
+    const detail = (e as CustomEvent).detail ?? {};
+    const token = tokenId(detail.tokenRecieved ?? detail.tokenReceived);
+    if (!token) {
+      cb.onCancel();
+      return;
+    }
+    // The server only accepts `clv_…` sources. Clover documents that prefix for the
+    // token its API mints, but never for the one this iframe emits — so if they ever
+    // differ, say so on the first tap instead of leaving a bare 400 to diagnose.
+    if (!token.startsWith("clv_")) console.error("[apple-pay] unexpected token prefix:", token.slice(0, 6));
+    cb.onToken(token);
+  };
+  // Only a real dismissal cancels — this event also fires for other wallet
+  // windows closing, and treating those as a cancel would unwind a live order.
+  const onPaymentMethodEnd = (e: Event) => {
+    if ((e as CustomEvent).detail?.status === "session_cancelled") cb.onCancel();
+  };
+  window.addEventListener("paymentMethod", onPaymentMethod);
+  window.addEventListener("paymentMethodEnd", onPaymentMethodEnd);
+
+  return {
+    mount: (el) => {
+      if (!el.id) el.id = "clv-apple-pay";
+      button.mount(`#${el.id}`);
+    },
+    updateAmount: (cents) => {
+      try {
+        clover.updateApplePaymentRequest(buildRequest(cents));
+      } catch {
+        /* a stale sheet price beats a thrown render; the button is remounted on failure */
+      }
+    },
+    finish: (ok) => {
+      try {
+        clover.updateApplePaymentStatus(ok ? "success" : "failed");
+      } catch {
+        /* the charge already stands or already failed — the sheet state is cosmetic */
+      }
+    },
+    destroy: () => {
+      window.removeEventListener("paymentMethod", onPaymentMethod);
+      window.removeEventListener("paymentMethodEnd", onPaymentMethodEnd);
+      try {
+        button.destroy?.();
+      } catch {
+        /* ignore */
       }
     },
   };

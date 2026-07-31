@@ -19,9 +19,8 @@ export function Reviews() {
         </div>
 
         {/* Rating tiles — real, single-source ratings with attribution + links */}
-        <div className="mx-auto mt-10 grid max-w-md grid-cols-2 gap-3 text-center" data-reveal>
+        <div className="mx-auto mt-10 grid max-w-xs grid-cols-1 gap-3 text-center" data-reveal>
           <RatingTile score={RATING_SNAPSHOT.restaurantji.score} count={`${RATING_SNAPSHOT.restaurantji.count} reviews`} label="on Restaurantji" href={RATING_SNAPSHOT.restaurantji.url} />
-          <RatingTile score={RATING_SNAPSHOT.restaurantGuru.score} count={`${RATING_SNAPSHOT.restaurantGuru.count} reviews`} label="on Restaurant Guru" href={RATING_SNAPSHOT.restaurantGuru.url} />
         </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">

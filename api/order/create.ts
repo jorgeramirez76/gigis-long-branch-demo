@@ -21,6 +21,7 @@ import {
   type Totals,
 } from "../lib/clover.js";
 import { priceLines, type ClientLine } from "../lib/menuCatalog.js";
+import { liveItemNames } from "../lib/menuLive.js";
 import { isOrderingOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, reserveOrder, updateOrder } from "../lib/orderStore.js";
@@ -220,7 +221,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // ---- authoritative pricing from the server catalog (NEVER trust client prices) ----
-  const priced = priceLines(clientLines);
+  // Items pulled off Clover since this build are rejected here too, so a page
+  // cached before the nightly refresh can't order something the kitchen dropped.
+  const priced = priceLines(clientLines, await liveItemNames());
   if (!priced.ok) {
     res.status(400).json({ error: "invalid_item", message: priced.reason });
     return;

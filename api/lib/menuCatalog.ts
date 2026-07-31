@@ -87,11 +87,18 @@ export type PriceResult = { ok: true; lines: PricedLine[] } | { ok: false; reaso
  * Re-price client lines against the trusted catalog. Returns authoritative
  * lines, or a rejection if any item/option is unknown. Client-sent prices are
  * never used.
+ *
+ * `available` (from the nightly Clover snapshot — see menuLive.ts) additionally
+ * rejects items the shop has taken off Clover since this build's catalog was
+ * generated. Omit it, or pass null, to skip that check.
  */
-export function priceLines(clientLines: ClientLine[]): PriceResult {
+export function priceLines(clientLines: ClientLine[], available?: Set<string> | null): PriceResult {
   const { byCatItem, byItemName } = catalog();
   const out: PricedLine[] = [];
   for (const line of clientLines) {
+    if (available && !available.has(line.itemName)) {
+      return { ok: false, reason: `"${line.itemName}" is no longer on the menu — please remove it from your order` };
+    }
     const item =
       (line.categoryId != null ? byCatItem.get(line.categoryId + SEP + line.itemName) : undefined) ||
       byItemName.get(line.itemName) ||

@@ -56,6 +56,52 @@ live-ready today.
 2. `vercel env add VITE_CLOVER_PAKMS_KEY production` (paste the public key), redeploy.
 3. The "Pay online" option appears automatically with secure card fields.
 
+## Apple Pay
+
+Built and shipped **off**. Set `VITE_CLOVER_APPLE_PAY=1` only after steps 1–3 below
+report **Verified** in Clover. The button renders inside the "Pay online" panel,
+above the card fields, and is only reachable on Safari 17.5+ on an Apple-Pay-capable
+device — every other browser sees the checkout exactly as it is today.
+
+The Apple Pay sheet returns the same single-use Clover source token as a typed card,
+so **the server path is completely unchanged** (`api/order/create.ts` was not touched).
+
+| Var | Scope | Set? | Purpose |
+|---|---|---|---|
+| `VITE_CLOVER_MERCHANT_ID` | Production | ❌ **needed** | `2J9HNTSEXBHG1` — passed as both the Clover `merchantId` and the Apple Pay `sessionIdentifier` |
+| `VITE_CLOVER_APPLE_PAY` | Production | ❌ off | `"1"` enables the button; anything else keeps it hidden |
+
+### Owner-side steps (nobody can do these from code)
+
+1. Clover Merchant Dashboard → **Settings → View all settings → Ecommerce →
+   Ecommerce Payments → Apple Pay → iFrame integration** → *Enable Apple Pay* →
+   enter `gigislongbranch.com` → **Download verification file**.
+2. Commit that file to `public/.well-known/apple-developer-merchantid-domain-association`
+   — **no file extension** — and deploy. It must return HTTP 200 with no redirect.
+3. Back in the dashboard, click **Verify**. Clover says the process can take a few days.
+4. Register the **apex domain only**. `www.gigislongbranch.com` 308-redirects to the apex
+   (`vercel.json`), and Apple rejects domains behind a redirect. The button never renders
+   on `www` because the redirect happens before the page loads.
+
+### Two traps
+
+- **Never add `payment=(self)` to the `Permissions-Policy` header.** The header currently
+  omits `payment`, which lets Clover's own `allow="payment"` iframe attribute delegate
+  normally. Narrowing it to `self` silently kills Apple Pay inside the Clover frame while
+  the page still looks healthy — a nasty thing to debug. Leaving `payment` unnamed is
+  deliberate, not an oversight.
+- **Clover allows ~30 seconds** between the shopper authorizing the sheet and
+  `updateApplePaymentStatus`. Our server call (draft → verify → pay → fire → print →
+  receipt) normally runs in single-digit seconds, but don't add slow work to that path.
+
+### First live test
+
+Apple Pay can't be rehearsed in sandbox or headlessly — it needs a real device, a real
+card, and a real charge. Do it off-peak, warn the kitchen, then refund. The one thing to
+watch: Clover documents the `clv_` token prefix for the token its *API* mints but never
+for the one this *iframe* emits, and the server rejects anything else. If the order fails,
+check the browser console for `[apple-pay] unexpected token prefix`.
+
 ## Go-live checklist (before pushing to the live domain)
 
 1. ✅ Build passes (`npm run build`), checkout UI verified in preview.

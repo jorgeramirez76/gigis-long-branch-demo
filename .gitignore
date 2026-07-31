@@ -16,3 +16,4 @@ yarn-error.log*
 .env*
 .env.crm.local
 .vite-react-ssg-temp
+.indexnow-key

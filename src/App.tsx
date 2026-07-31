@@ -13,10 +13,12 @@ import { Location } from "./components/Location";
 import { Footer } from "./components/Footer";
 import { StickyBar } from "./components/StickyBar";
 import { useReveal } from "./hooks/useReveal";
+import { useHashScroll } from "./hooks/useHashScroll";
 import { OrderingProvider } from "./ordering/OrderingProvider";
 
 export default function App() {
   useReveal();
+  useHashScroll();
   return (
     <OrderingProvider>
       <a

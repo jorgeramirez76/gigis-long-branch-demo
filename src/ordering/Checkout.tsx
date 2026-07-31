@@ -1,11 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { lineUnitPrice, money, useCart, TAX_RATE } from "./CartContext";
 import { LOCATION } from "../data/location";
-import { cardPaymentEnabled, initCloverCard, type CloverCard } from "./cloverPayment";
+import {
+  applePayAvailable,
+  cardPaymentEnabled,
+  initApplePay,
+  initCloverCard,
+  type ApplePayHandle,
+  type CloverCard,
+} from "./cloverPayment";
 import { Turnstile } from "../components/Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
 import { getOpenStatus, type OpenStatus } from "../lib/openStatus";
 import { countUnits, readyMessage } from "../lib/readyTime";
+import { VipJoinInline } from "./VipJoinInline";
 
 type Fulfillment = "pickup" | "delivery";
 type PaymentMethod = "pickup" | "card" | "cash";
@@ -115,23 +123,59 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     };
   }, [payment]);
 
-  async function placeOrder() {
-    // Fresh check at click time (the interval only ticks each minute); the
-    // server enforces the same gate authoritatively.
-    if (!getOpenStatus().open) {
-      setOpenStatus(getOpenStatus());
-      setStatus("error");
-      setErrorMsg("We're closed right now — online ordering reopens at 10 AM.");
-      return;
-    }
-    setStatus("submitting");
-    setErrorMsg("");
-    try {
-      let cardToken: string | undefined;
-      if (payment === "card") {
-        if (!cardRef.current) throw new Error("Payment fields aren't ready yet — one moment.");
-        cardToken = await cardRef.current.tokenize();
-      }
+  // ---- Apple Pay ----
+  // Capability is probed in an effect, never at module scope or during render:
+  // the homepage is prerendered by vite-react-ssg, where `window` doesn't exist.
+  const [applePayOk, setApplePayOk] = useState(false);
+  useEffect(() => setApplePayOk(applePayAvailable()), []);
+  const applePayRef = useRef<ApplePayHandle | null>(null);
+  const applePayMountRef = useRef<HTMLDivElement>(null);
+  const applePayBusy = useRef(false);
+  // The SDK registers its window listener once, so it would otherwise call a
+  // handler frozen against the first render's cart and contact details.
+  const payWithAppleRef = useRef<(token: string) => void>(() => {});
+
+  useEffect(() => {
+    if (!applePayOk || payment !== "card") return;
+    let cancelled = false;
+    initApplePay(grandTotal, {
+      onToken: (t) => void payWithAppleRef.current(t),
+      // Dismissing the sheet must not leave the form stuck on "Placing order…".
+      onCancel: () => {
+        if (!applePayBusy.current) setStatus("form");
+      },
+    })
+      .then((handle) => {
+        if (cancelled || !applePayMountRef.current) {
+          handle.destroy();
+          return;
+        }
+        applePayRef.current = handle;
+        handle.mount(applePayMountRef.current);
+      })
+      // Domain not verified, SDK blocked, anything else — drop the button
+      // entirely rather than leave a dead box above the card fields.
+      .catch(() => {
+        if (!cancelled) setApplePayOk(false);
+      });
+    return () => {
+      cancelled = true;
+      applePayRef.current?.destroy();
+      applePayRef.current = null;
+    };
+    // grandTotal is deliberately not a dep — re-pricing the live sheet below
+    // beats tearing the button down and rebuilding it on every tip tap.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [applePayOk, payment]);
+
+  useEffect(() => {
+    applePayRef.current?.updateAmount(grandTotal);
+  }, [grandTotal]);
+
+  /** Shared by the typed card and Apple Pay — both hand over a `clv_…` token and
+   *  take the identical server path. Throws so either caller reports the same way. */
+  async function sendOrder(cardToken?: string) {
+    {
       const res = await fetch("/api/order/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -170,17 +214,66 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         vipEligible: data.vipEligible !== false,
       });
       cart.clear();
-    } catch (e) {
-      setStatus("error");
-      setErrorMsg(e instanceof Error ? e.message : "Something went wrong. Please call to order.");
-      // The Turnstile token was consumed by this attempt — force a fresh one so a
-      // retry isn't rejected for reusing a spent token.
-      if (TURNSTILE_ON) {
-        setTurnstileToken(null);
-        setTurnstileReset((n) => n + 1);
-      }
     }
   }
+
+  function failOrder(e: unknown) {
+    setStatus("error");
+    setErrorMsg(e instanceof Error ? e.message : "Something went wrong. Please call to order.");
+    // The Turnstile token was consumed by this attempt — force a fresh one so a
+    // retry isn't rejected for reusing a spent token.
+    if (TURNSTILE_ON) {
+      setTurnstileToken(null);
+      setTurnstileReset((n) => n + 1);
+    }
+  }
+
+  async function placeOrder() {
+    // Fresh check at click time (the interval only ticks each minute); the
+    // server enforces the same gate authoritatively.
+    if (!getOpenStatus().open) {
+      setOpenStatus(getOpenStatus());
+      setStatus("error");
+      setErrorMsg("We're closed right now — online ordering reopens at 10 AM.");
+      return;
+    }
+    setStatus("submitting");
+    setErrorMsg("");
+    try {
+      let cardToken: string | undefined;
+      if (payment === "card") {
+        if (!cardRef.current) throw new Error("Payment fields aren't ready yet — one moment.");
+        cardToken = await cardRef.current.tokenize();
+      }
+      await sendOrder(cardToken);
+    } catch (e) {
+      failOrder(e);
+    }
+  }
+
+  /** Apple Pay authorized: charge it exactly like a typed card, then release the
+   *  sheet. Clover only honours the success/failure signal for ~30s after the
+   *  token, so nothing slow may sit between here and `finish`. */
+  async function payWithApple(token: string) {
+    if (applePayBusy.current) return; // the sheet can fire more than once
+    applePayBusy.current = true;
+    try {
+      if (!getOpenStatus().open) {
+        setOpenStatus(getOpenStatus());
+        throw new Error("We're closed right now — online ordering reopens at 10 AM.");
+      }
+      setStatus("submitting");
+      setErrorMsg("");
+      await sendOrder(token);
+      applePayRef.current?.finish(true);
+    } catch (e) {
+      applePayRef.current?.finish(false);
+      failOrder(e);
+    } finally {
+      applePayBusy.current = false;
+    }
+  }
+  payWithAppleRef.current = payWithApple;
 
   // ---- Confirmation screen ----
   if (confirmed) {
@@ -218,19 +311,14 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             </p>
           )}
           {confirmed.vipEligible && (
-            <a
-              href="#vip-club"
-              onClick={onClose}
-              className="block rounded-2xl bg-[var(--color-brand-red)] p-5 text-center text-white transition hover:bg-[var(--color-brand-red-bright)]"
-            >
-              <span className="block text-lg font-extrabold">🍕 Get a FREE plain pie</span>
-              <span className="mt-1 block text-sm text-white/85">
-                Join Gigi's VIP Club — we'll send a code for a free cheese pie, plus first dibs on weekly deals.
-              </span>
-              <span className="mt-3 inline-block rounded-full bg-[var(--color-gold-bright)] px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--color-ink)]">
-                Join &amp; claim my free pie
-              </span>
-            </a>
+            /* Inline signup, prefilled from the order the customer just placed — replaces the old
+               #vip-club link that navigated away (and, until 7/30, didn't even scroll). */
+            <VipJoinInline
+              name={name}
+              phone={phone}
+              email={email}
+              address={confirmed.fulfillment === "delivery" ? address : ""}
+            />
           )}
           <p className="text-xs text-[var(--color-ink)]/50">
             Questions? Call the shop at{" "}
@@ -247,6 +335,16 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   }
 
   const submitting = status === "submitting";
+  // Apple Pay skips the card fields but still needs everything else the main
+  // submit button requires — the sheet charges immediately, with no second chance
+  // to catch a missing phone number or delivery address.
+  const applePayBlocked =
+    storeClosed ||
+    !contactOk ||
+    !deliveryOk ||
+    submitting ||
+    cart.lines.length === 0 ||
+    (TURNSTILE_ON && !turnstileToken);
 
   return (
     <Shell onClose={onClose} title="Checkout">
@@ -320,6 +418,27 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               </p>
               {payment === "card" && (
                 <div className="mt-3 space-y-2.5 rounded-2xl bg-white p-4 shadow-[var(--shadow-sm)]">
+                  {applePayOk && (
+                    <div className="space-y-2">
+                      {/* The button is a Clover-hosted iframe, so it can't be
+                          disabled — block taps until the order is actually placeable. */}
+                      <div className={applePayBlocked ? "pointer-events-none opacity-40" : ""}>
+                        <div ref={applePayMountRef} className="h-[46px] w-full overflow-hidden rounded-xl" />
+                      </div>
+                      <p className="text-center text-[11px] text-[var(--color-ink)]/45">
+                        {applePayBlocked
+                          ? "Fill in your details above to use Apple Pay."
+                          : "One tap — no card typing."}
+                      </p>
+                      <div className="flex items-center gap-3 pt-1">
+                        <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-ink)]/40">
+                          or pay by card
+                        </span>
+                        <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
+                      </div>
+                    </div>
+                  )}
                   <CardField label="Card number" innerRef={numRef} />
                   <div className="grid grid-cols-2 gap-2.5">
                     <CardField label="Expiry" innerRef={dateRef} />

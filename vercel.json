@@ -1,27 +1,77 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [{ "path": "/api/cron/refresh-menu", "schedule": "0 8 * * *" }],
   "redirects": [
     {
+      "source": "/vip",
+      "destination": "/#vip-club",
+      "permanent": false
+    },
+    {
+      "source": "/vip/",
+      "destination": "/#vip-club",
+      "permanent": false
+    },
+    {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.gigislongbranch.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.gigislongbranch.com"
+        }
+      ],
       "destination": "https://gigislongbranch.com/$1",
       "permanent": true
     }
   ],
-  "rewrites": [{ "source": "/breakfast", "destination": "/breakfast.html" }],
+  "rewrites": [
+    {
+      "source": "/breakfast",
+      "destination": "/breakfast.html"
+    }
+  ],
   "headers": [
     {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
       "source": "/assets/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), browsing-topics=()" },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+        },
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self' https://checkout.clover.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com; frame-src https://checkout.clover.com https://scl.clover.com https://www.google.com https://challenges.cloudflare.com; connect-src 'self' https://api.clover.com https://scl.clover.com https://checkout.clover.com https://challenges.cloudflare.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
@@ -30,7 +80,12 @@
     },
     {
       "source": "/admin.html",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ]
 }

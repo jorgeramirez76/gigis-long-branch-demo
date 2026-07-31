@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { findCatalogItem, optionDelta } from "../lib/menuPricing";
 
 /** NJ Sales Tax pulled from the merchant's Clover config (6.625%). Applied to
  * the taxable subtotal; the final authoritative total is re-computed by Clover
@@ -49,13 +50,7 @@ export function money(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
-/** Parse a display price like "$17.68" or "+$1.04" to integer cents. */
-export function parsePrice(display?: string | null): number {
-  if (!display) return 0;
-  const m = display.replace(/[^0-9.]/g, "");
-  if (!m) return 0;
-  return Math.round(parseFloat(m) * 100);
-}
+export { parsePrice } from "../lib/menuPricing";
 
 /** Per-line quantity cap (mirrors the server's per-line bound). */
 export const MAX_LINE_QTY = 50;
@@ -80,6 +75,28 @@ function isValidLine(l: unknown): l is CartLine {
   );
 }
 
+/**
+ * Re-price a line restored from localStorage against the current menu, or drop it.
+ *
+ * A saved cart keeps whatever the item cost when it was added, which can be weeks
+ * old. The server always charges from its own catalog, so a stale line would show
+ * the customer one total and charge another — quietly, because the confirmation
+ * screen displays the server's figure. Anything no longer on the menu (or now
+ * priced by quote) is removed here rather than failing at checkout.
+ */
+function repriceStoredLine(l: CartLine): CartLine | null {
+  const item = findCatalogItem(l.itemName, l.categoryId);
+  if (!item) return null;
+  const options: CartOption[] = [];
+  for (const o of l.options) {
+    const delta = optionDelta(item, o);
+    if (delta == null) return null;
+    options.push({ ...o, delta });
+  }
+  if (item.basePrice + options.reduce((s, o) => s + o.delta, 0) <= 0) return null;
+  return { ...l, basePrice: item.basePrice, options };
+}
+
 let lineCounter = 0;
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -89,7 +106,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (!raw) return [];
       const parsed = JSON.parse(raw);
       if (!Array.isArray(parsed)) return [];
-      return parsed.filter(isValidLine).map((l) => ({ ...l, quantity: clampQty(l.quantity) }));
+      return parsed
+        .filter(isValidLine)
+        .map((l) => repriceStoredLine({ ...l, quantity: clampQty(l.quantity) }))
+        .filter((l): l is CartLine => l !== null);
     } catch {
       return [];
     }

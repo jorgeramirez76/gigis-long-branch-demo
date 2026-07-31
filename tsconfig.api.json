@@ -3,8 +3,18 @@
   "compilerOptions": {
     "noEmit": true,
     "moduleResolution": "bundler",
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "noUnusedLocals": false
   },
-  "include": ["api", "src/data/menuGenerated.ts", "src/data/menuIndex.ts", "src/data/menuTypes.ts", "src/lib/openStatus.ts", "src/lib/readyTime.ts"]
+  "include": [
+    "api",
+    "src/data/menuGenerated.ts",
+    "src/data/menuIndex.ts",
+    "src/data/menuTypes.ts",
+    "src/lib/menuPricing.ts",
+    "src/lib/openStatus.ts",
+    "src/lib/readyTime.ts"
+  ]
 }

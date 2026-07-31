@@ -69,6 +69,7 @@ export function VipJoinInline({
           smsConsent,
           emailConsent,
           consentText: CONSENT_TEXT,
+          source: "checkout",
           turnstileToken,
         }),
       });

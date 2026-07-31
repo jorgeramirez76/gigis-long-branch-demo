@@ -42,7 +42,7 @@ import { countUnits, readyMessage } from "../../src/lib/readyTime.js";
  */
 function vipJoinUrl(o: { name: string; phone?: string; email?: string; fulfillment: Fulfillment; address?: string }): string {
   const base = process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com";
-  const q = new URLSearchParams({ name: o.name });
+  const q = new URLSearchParams({ name: o.name, src: "receipt" });
   if (o.phone) q.set("phone", o.phone);
   if (o.email) q.set("email", o.email);
   // Pickup orders carry no address, and the welcome pie is one per household.

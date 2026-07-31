@@ -36,8 +36,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const broadcasts = await sql`
       SELECT COUNT(*)::int AS total FROM broadcasts WHERE business = ${business}
     `;
+    // Which entry point actually grows the club: the homepage form, the post-order
+    // join on the confirmation screen, the receipt email's button, or the printed
+    // menu's QR code.
+    const bySource = await sql`
+      SELECT source, COUNT(*)::int AS n
+      FROM vip_members WHERE business = ${business}
+      GROUP BY source ORDER BY n DESC
+    `;
     res.status(200).json({
       members: members.rows[0],
+      membersBySource: Object.fromEntries(bySource.rows.map((r) => [r.source, r.n])),
       sends: sends.rows[0],
       broadcasts: broadcasts.rows[0],
       channels: { sms: smsConfigured(), email: emailConfigured() },

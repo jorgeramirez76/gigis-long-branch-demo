@@ -27,6 +27,7 @@
   var tsBox = document.getElementById("turnstile");
   var tsToken = null;
   var tsWidgetId = null;
+  var SIGNUP_SOURCE = "menu-qr";
 
   document.getElementById("legal").textContent = CONSENT_TEXT;
 
@@ -40,6 +41,9 @@
   (function prefill() {
     try {
       var q = new URLSearchParams(window.location.search);
+      // One page, two audiences: a bare URL is the printed-menu QR code, `?src=receipt`
+      // is the button in an order receipt. Tracked separately so we can tell which works.
+      if (q.get("src") === "receipt") SIGNUP_SOURCE = "receipt";
       var filled = 0;
       ["name", "phone", "email", "address", "apt"].forEach(function (id) {
         var v = (q.get(id) || "").trim();
@@ -159,6 +163,7 @@
         smsConsent: sms,
         emailConsent: em,
         consentText: CONSENT_TEXT,
+        source: SIGNUP_SOURCE,
         turnstileToken: tsToken || undefined
       })
     })

@@ -64,6 +64,7 @@ export function VipClub() {
           smsConsent,
           emailConsent,
           consentText: CONSENT_TEXT,
+          source: "website",
           turnstileToken,
         }),
       });

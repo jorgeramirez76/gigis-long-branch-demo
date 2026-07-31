@@ -24,7 +24,7 @@ import { priceLines, type ClientLine } from "../lib/menuCatalog.js";
 import { liveItemNames } from "../lib/menuLive.js";
 import { isOrderingOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
-import { peekOrder, reserveOrder, updateOrder } from "../lib/orderStore.js";
+import { peekOrder, releaseOrder, reserveOrder, updateOrder } from "../lib/orderStore.js";
 import { alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
@@ -191,6 +191,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   //      response (esp. one already charged) must get the reassuring result,
   //      not a 429. Unknown keys fall through to the normal throttled path. ----
   const prior = await peekOrder(idempotencyKey);
+  // 'charged' means the card was taken but the order had not fired yet — it is
+  // still a draft, so it is in no POS and no ticket printed. Reporting that as a
+  // finished order hands the customer a confirmation for food nobody is making,
+  // so it takes the routing-issue path and pages staff instead.
+  if (prior?.status === "charged") {
+    await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${prior.cloverOrderId ?? "?"} charge ${prior.chargeId ?? "?"}; open it in the POS.`);
+    res.status(200).json({ ok: true, orderId: prior.cloverOrderId, paid: true, chargeId: prior.chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
+    return;
+  }
   if (prior?.cloverOrderId) {
     res.status(200).json({ ok: true, orderId: prior.cloverOrderId, paid: prior.status === "paid", duplicate: true });
     return;
@@ -265,6 +274,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     reservedId = reservation.id;
   } else if (reservation.reserved === false) {
     const ex = reservation.existing;
+    if (ex.status === "charged") {
+      await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${ex.cloverOrderId ?? "?"} charge ${ex.chargeId ?? "?"}; open it in the POS.`);
+      res.status(200).json({ ok: true, orderId: ex.cloverOrderId, paid: true, chargeId: ex.chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
+      return;
+    }
     if (ex.cloverOrderId) {
       res.status(200).json({ ok: true, orderId: ex.cloverOrderId, paid: ex.status === "paid", duplicate: true, totals });
       return;
@@ -344,6 +358,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             // draft and fail closed exactly like the legacy flow.
             await deleteDraftOrder(draftId).catch(() => {});
             const status = err instanceof CloverError ? err.status : 500;
+            // Nothing captured, so hand the key back — otherwise the customer we
+            // just told to "try a different card" cannot, because the reservation
+            // they made on the first attempt blocks every retry of this cart.
+            if (reservedId != null) await releaseOrder(reservedId);
             console.error("[order/create] pay-for-order failed", status, err instanceof Error ? err.message : err);
             res.status(status === 503 ? 503 : 402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
             return;
@@ -378,6 +396,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (reservedId != null) await updateOrder(reservedId, { status: "charged", chargeId });
       } catch (err) {
         const status = err instanceof CloverError ? err.status : 500;
+        // Same as the single-order path: nothing captured, so release the key.
+        if (reservedId != null) await releaseOrder(reservedId);
         console.error("[order/create] charge failed", status, err instanceof Error ? err.message : err);
         res.status(status === 503 ? 503 : 402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
         return;

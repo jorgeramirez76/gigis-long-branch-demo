@@ -67,7 +67,7 @@ export const FAQS = [
   },
   {
     q: "What are Gigi's signature specialty pizzas?",
-    a: "Gigi's is known for creative pies you won't find everywhere. Favorites include the Bee Sting with hot honey, the vodka-sauced Drunken Grandma on a square crust, The Fonz, the upside-down Bobby Boombotz Vodka Pepi, and premium pies like White Truffle and Lobster. There's also a full lineup of stuffed pizzas.",
+    a: "Gigi's is known for creative pies you won't find everywhere. Favorites include the Bee Sting with hot honey, the vodka-sauced Drunken Grandma on a square crust, The Fonz, the upside-down Bobby Boombotz Vodka Pepi, and the premium White Truffle. Ask about the day's specials when you call.",
   },
   {
     q: "Does Gigi's cater events in Long Branch?",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LOCATION } from "../data/location";
 import { MenuIcon, PhoneIcon } from "./Icons";
 import { CartButton } from "../ordering/CartButton";
@@ -18,6 +18,16 @@ const LINKS = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  // The closed drawer stays in the DOM for its slide animation. pointer-events
+  // hides it from the mouse but not from the keyboard, so its links stayed in the
+  // tab order — 21 invisible stops before the page content, and focusable nodes
+  // inside aria-hidden. `inert` removes them from focus and the a11y tree without
+  // touching the transform the animation needs.
+  useEffect(() => {
+    const el = drawerRef.current;
+    if (el) el.inert = !mobileOpen;
+  }, [mobileOpen]);
   const cart = useCart();
 
   useEffect(() => {
@@ -101,6 +111,7 @@ export function Nav() {
 
       {/* Mobile drawer */}
       <div
+        ref={drawerRef}
         className={`fixed inset-0 z-50 md:hidden ${mobileOpen ? "pointer-events-auto" : "pointer-events-none"}`}
         aria-hidden={!mobileOpen}
       >

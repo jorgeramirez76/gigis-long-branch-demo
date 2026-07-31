@@ -9,11 +9,13 @@ export function requireAdmin(req: VercelRequest, res: VercelResponse): boolean {
     return false;
   }
   const got = req.headers["x-admin-token"];
-  if (
-    typeof got !== "string" ||
-    got.length !== expected.length ||
-    !timingSafeEqual(Buffer.from(got), Buffer.from(expected))
-  ) {
+  // Compare BYTE lengths, not string lengths: a multibyte token can match on
+  // UTF-16 code units while producing shorter buffers, and timingSafeEqual throws
+  // a RangeError on a length mismatch — turning a wrong token into a 500 crash
+  // instead of a clean 401.
+  const a = typeof got === "string" ? Buffer.from(got) : null;
+  const b = Buffer.from(expected);
+  if (!a || a.length !== b.length || !timingSafeEqual(a, b)) {
     res.status(401).json({ error: "unauthorized" });
     return false;
   }

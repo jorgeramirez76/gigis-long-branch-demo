@@ -19,7 +19,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   try {
     // Probing specific ids skips the full inventory pull — Clover rate-limits it.
-    const ids = typeof req.query.id === "string" ? req.query.id.split(",").filter(Boolean) : [];
+    // Clover ids are 13 alphanumeric chars. Anything else is dropped rather than
+    // interpolated into the REST path, so a crafted ?id= can't steer the
+    // authenticated request at another Clover endpoint.
+    const ids = (typeof req.query.id === "string" ? req.query.id.split(",") : [])
+      .filter((id) => /^[A-Za-z0-9]{6,32}$/.test(id))
+      .slice(0, 20);
     if (ids.length) {
       const probe = [];
       for (const id of ids) {

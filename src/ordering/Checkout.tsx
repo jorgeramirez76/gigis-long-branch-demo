@@ -450,14 +450,14 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                       <div className={applePayBlocked ? "pointer-events-none opacity-40" : ""}>
                         <div ref={applePayMountRef} className="h-[46px] w-full overflow-hidden rounded-xl" />
                       </div>
-                      <p className="text-center text-[11px] text-[var(--color-ink)]/45">
+                      <p className="text-center text-[11px] text-[var(--color-ink)]/60">
                         {applePayBlocked
                           ? "Fill in your details above to use Apple Pay."
                           : "One tap — no card typing."}
                       </p>
                       <div className="flex items-center gap-3 pt-1">
                         <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-ink)]/40">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
                           or pay by card
                         </span>
                         <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
@@ -470,7 +470,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                     <CardField label="CVV" innerRef={cvvRef} />
                   </div>
                   <CardField label="ZIP" innerRef={postalRef} />
-                  {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-ink)]/45">Loading secure card fields…</p>}
+                  {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-ink)]/60">Loading secure card fields…</p>}
                   {cardInitFailed && (
                     <div className="rounded-xl bg-[var(--color-brand-red)]/8 px-3 py-2.5 text-xs text-[var(--color-ink)]">
                       Card payment isn't available right now.{" "}
@@ -479,7 +479,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                       </button>
                     </div>
                   )}
-                  <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-ink)]/40">
+                  <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-ink)]/60">
                     <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                     Encrypted & processed securely. We never see your card number.
                   </p>
@@ -532,7 +532,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               <li key={l.lineId} className="flex justify-between gap-3 text-[var(--color-ink-soft)]">
                 <span className="min-w-0">
                   {l.quantity}× {l.itemName}
-                  {l.options.length > 0 && <span className="text-[var(--color-ink)]/45"> — {l.options.map((o) => o.name).join(", ")}</span>}
+                  {l.options.length > 0 && <span className="text-[var(--color-ink)]/60"> — {l.options.map((o) => o.name).join(", ")}</span>}
                 </span>
                 <span className="shrink-0">{money(lineUnitPrice(l) * l.quantity)}</span>
               </li>
@@ -582,7 +582,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           <span>{storeClosed ? "Closed — ordering opens 10 AM" : submitting ? "Placing order…" : payment === "card" ? "Pay & place order" : "Place order"}</span>
           <span>{money(grandTotal)}</span>
         </button>
-        <p className="mt-2 text-center text-[11px] text-[var(--color-ink)]/40">
+        <p className="mt-2 text-center text-[11px] text-[var(--color-ink)]/60">
           {payment === "card"
             ? "Your card is charged securely. Order goes straight to Gigi's kitchen."
             : payment === "cash"
@@ -595,17 +595,61 @@ export function Checkout({ onClose }: { onClose: () => void }) {
 }
 
 function Shell({ onClose, title, children }: { onClose: () => void; title: string; children: React.ReactNode }) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  // aria-modal only tells a screen reader this is modal; it doesn't make it one.
+  // Move focus in, keep Tab inside, close on Escape, and stop the page behind
+  // from scrolling — otherwise the dialog is a trap for sighted mouse users only.
+  useEffect(() => {
+    const panel = panelRef.current;
+    const restoreTo = document.activeElement as HTMLElement | null;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    panel?.querySelector<HTMLElement>("input,button,select,textarea,[tabindex]:not([tabindex='-1'])")?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !panel) return;
+      const items = Array.from(
+        panel.querySelectorAll<HTMLElement>("a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex='-1'])"),
+      ).filter((el) => el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      restoreTo?.focus?.();
+    };
+  }, [onClose]);
+
   return (
     <div
       className="fixed inset-0 z-[70] flex items-end justify-center bg-black/55 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      onClick={onClose}
+      // Close on a genuine backdrop click only. Using onClick meant a drag that
+      // STARTED inside the form and ended on the backdrop — ordinary text
+      // selection — counted as a click out here and wiped everything typed.
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div
+        ref={panelRef}
         className="flex max-h-[94vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bg-[var(--color-cream)] shadow-[var(--shadow-lg)] sm:rounded-3xl"
-        onClick={(e) => e.stopPropagation()}
       >
         <header className="flex items-center justify-between border-b border-[var(--color-ink)]/10 bg-white px-5 py-4">
           <h2 className="font-display text-2xl text-[var(--color-ink)]">{title}</h2>

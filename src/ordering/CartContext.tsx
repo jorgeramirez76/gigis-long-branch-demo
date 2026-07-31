@@ -38,6 +38,8 @@ type CartState = {
   tax: number;
   total: number;
   isOpen: boolean;
+  /** How many saved lines were dropped on load because they left the menu. */
+  droppedOnLoad: number;
   openCart: () => void;
   closeCart: () => void;
 };
@@ -98,6 +100,8 @@ function repriceStoredLine(l: CartLine): CartLine | null {
 }
 
 let lineCounter = 0;
+/** Lines removed during hydration because they left the menu (see repriceStoredLine). */
+let droppedOnLoad = 0;
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>(() => {
@@ -106,14 +110,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (!raw) return [];
       const parsed = JSON.parse(raw);
       if (!Array.isArray(parsed)) return [];
-      return parsed
-        .filter(isValidLine)
+      const valid = parsed.filter(isValidLine);
+      const kept = valid
         .map((l) => repriceStoredLine({ ...l, quantity: clampQty(l.quantity) }))
         .filter((l): l is CartLine => l !== null);
+      // Remember what the menu no longer sells so the cart can say so, rather
+      // than quietly handing back a shorter order than the customer left.
+      droppedOnLoad = valid.length - kept.length;
+      return kept;
     } catch {
       return [];
     }
   });
+  // Read the hydration tally captured by the initializer above. Cleared as soon
+  // as the customer changes the cart, so the notice doesn't linger.
+  const [dropped, setDropped] = useState(() => droppedOnLoad);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -144,6 +155,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           return [...prev, { ...line, quantity: clampQty(line.quantity), lineId: `l${Date.now()}_${lineCounter}` }];
         });
         setIsOpen(true);
+        setDropped(0);
       },
       updateQty: (lineId, quantity) =>
         setLines((prev) =>
@@ -152,16 +164,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
             : prev.map((l) => (l.lineId === lineId ? { ...l, quantity: clampQty(quantity) } : l)),
         ),
       removeLine: (lineId) => setLines((prev) => prev.filter((l) => l.lineId !== lineId)),
-      clear: () => setLines([]),
+      clear: () => {
+        setLines([]);
+        setDropped(0);
+      },
       count: lines.reduce((s, l) => s + l.quantity, 0),
       subtotal,
       tax,
       total: subtotal + tax,
       isOpen,
+      droppedOnLoad: dropped,
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),
     };
-  }, [lines, isOpen]);
+  }, [lines, isOpen, dropped]);
 
   return <CartCtx.Provider value={value}>{children}</CartCtx.Provider>;
 }

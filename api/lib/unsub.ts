@@ -17,9 +17,12 @@ export function unsubToken(email: string): string {
 }
 
 export function verifyUnsubToken(email: string, token: string): boolean {
-  const expected = unsubToken(email);
-  if (token.length !== expected.length) return false;
-  return timingSafeEqual(Buffer.from(token), Buffer.from(expected));
+  // Byte lengths, not string lengths — a multibyte token in a tampered link can
+  // pass the code-unit check and then make timingSafeEqual throw, which turns an
+  // invalid unsubscribe link into a 500 instead of the friendly failure page.
+  const a = Buffer.from(token);
+  const b = Buffer.from(unsubToken(email));
+  return a.length === b.length && timingSafeEqual(a, b);
 }
 
 export function unsubscribeUrl(email: string): string {

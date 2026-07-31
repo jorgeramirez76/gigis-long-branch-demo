@@ -2,11 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
     "types": [
       "node"
     ],
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "module": "nodenext"
   },
   "include": [
     "api",

@@ -21,8 +21,16 @@ import { fetchLiveInventory, pruneMenu, REMOVAL_GUARD_SHARE } from "../lib/menuS
 export const config = { maxDuration: 60 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Fail CLOSED. Gating on `secret &&` meant that losing the env var silently
+  // opened the endpoint to the internet, and this one rewrites the menu the whole
+  // site and the order API price from.
   const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.authorization !== `Bearer ${secret}`) {
+  if (!secret) {
+    console.error("[cron/refresh-menu] CRON_SECRET not set — refusing to run");
+    res.status(503).json({ error: "cron_not_configured" });
+    return;
+  }
+  if (req.headers.authorization !== `Bearer ${secret}`) {
     res.status(401).json({ error: "unauthorized" });
     return;
   }

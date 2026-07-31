@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { MenuItem, OptionGroup } from "../data/menu";
 import { money, parsePrice, useCart, type CartOption } from "./CartContext";
 
@@ -31,7 +31,7 @@ function GroupField({
     <fieldset className="border-t border-[var(--color-ink)]/8 pt-4">
       <legend className="flex items-baseline gap-2 pb-2">
         <span className="text-sm font-bold text-[var(--color-ink)]">{group.group}</span>
-        <span className="text-xs text-[var(--color-ink)]/45">
+        <span className="text-xs text-[var(--color-ink)]/60">
           {group.rule ?? "Optional"}
           {required && <span className="ml-1 font-semibold text-[var(--color-brand-red)]">*</span>}
         </span>
@@ -74,6 +74,25 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
   const [selected, setSelected] = useState<Record<number, Set<string>>>({});
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
+  const panelRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  // Same modal contract as the checkout Shell: focus in, Escape out, no scrolling
+  // the menu behind, and focus restored to whatever opened it.
+  useEffect(() => {
+    const restoreTo = document.activeElement as HTMLElement | null;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    panelRef.current?.querySelector<HTMLElement>("input,button,select,textarea")?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      restoreTo?.focus?.();
+    };
+  }, [onClose]);
 
   const deltaCents = useMemo(() => {
     let d = 0;
@@ -124,15 +143,20 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
 
   return (
     <div
+      ref={backdropRef}
       className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-label={`Add ${item.name}`}
-      onClick={onClose}
+      // Backdrop mousedown only — an onClick here closed the modal when a drag
+      // that began on the option list happened to end outside it.
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div
+        ref={panelRef}
         className="flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bg-white shadow-[var(--shadow-lg)] sm:rounded-3xl"
-        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 border-b border-[var(--color-ink)]/8 p-5">
           <div>

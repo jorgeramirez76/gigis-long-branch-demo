@@ -37,6 +37,13 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
           </button>
         </header>
 
+        {cart.droppedOnLoad > 0 && (
+          <p role="status" className="mx-5 mt-4 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
+            {cart.droppedOnLoad === 1 ? "An item" : `${cart.droppedOnLoad} items`} from your saved order{" "}
+            {cart.droppedOnLoad === 1 ? "is" : "are"} no longer on the menu, so {cart.droppedOnLoad === 1 ? "it was" : "they were"} removed.
+          </p>
+        )}
+
         {cart.lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
             <div className="text-5xl">🍕</div>

@@ -1,7 +1,7 @@
 // GENERATED FILE — do not hand-edit.
 // Source: data/clover/classified/*.json (Clover POS inventory, classified + verified).
 // Regenerate: python3 scripts/build-menu.py
-import type { MenuCategory } from "./menuTypes";
+import type { MenuCategory } from "./menuTypes.js";
 
 export const MENU_GENERATED: MenuCategory[] = [
   {

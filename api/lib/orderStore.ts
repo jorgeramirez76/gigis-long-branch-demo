@@ -135,6 +135,25 @@ export async function peekOrder(key: string): Promise<Existing | null> {
   }
 }
 
+/**
+ * Give the idempotency key back after an attempt that moved no money.
+ *
+ * The reservation is what stops a retry from double-charging, but it is claimed
+ * before the card is. A decline therefore leaves a row that no later attempt can
+ * re-reserve (ON CONFLICT DO NOTHING), so the customer's second try is answered
+ * with "call the store to check before re-ordering" for an order that never
+ * existed — and staff are paged about it. Only ever called when nothing was
+ * captured; Clover keeps its own record of the decline.
+ */
+export async function releaseOrder(id: number): Promise<void> {
+  try {
+    await ensure();
+    await sql`DELETE FROM web_orders WHERE id = ${id} AND charge_id IS NULL AND clover_order_id IS NULL`;
+  } catch (e) {
+    console.error("[orderStore] releaseOrder failed", id, e);
+  }
+}
+
 /** Patch a reserved order (best-effort). Never throws. */
 export async function updateOrder(
   id: number,

@@ -31,10 +31,30 @@ import { verifyTurnstile } from "../lib/turnstile.js";
 import { isVipMember } from "../lib/vipLookup.js";
 import { countUnits, readyMessage } from "../../src/lib/readyTime.js";
 
+/**
+ * The receipt's "join the VIP Club" button, pointed at the standalone signup page
+ * with the order's own details in the query string.
+ *
+ * The customer just typed all of this to order; sending them to an empty form is
+ * what the old #vip-club link cost us. The page only writes these into its inputs
+ * (still editable) — the server re-validates everything and the consent boxes stay
+ * unchecked, so a forwarded receipt can't opt anybody in.
+ */
+function vipJoinUrl(o: { name: string; phone?: string; email?: string; fulfillment: Fulfillment; address?: string }): string {
+  const base = process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com";
+  const q = new URLSearchParams({ name: o.name });
+  if (o.phone) q.set("phone", o.phone);
+  if (o.email) q.set("email", o.email);
+  // Pickup orders carry no address, and the welcome pie is one per household.
+  if (o.fulfillment === "delivery" && o.address) q.set("address", o.address);
+  return `${base}/vip-club/?${q.toString()}`;
+}
+
 /** Best-effort branded receipt email — env-gated, never blocks or fails the order. */
 async function sendOrderReceipt(o: {
   email?: string;
   name: string;
+  phone?: string;
   fulfillment: Fulfillment;
   address?: string;
   lines: CartLineInput[];
@@ -72,6 +92,7 @@ async function sendOrderReceipt(o: {
       paymentLine,
       readyLine: readyMessage(countUnits(o.lines), o.fulfillment),
       vipPitch: o.vipPitch,
+      vipJoinUrl: o.vipPitch ? vipJoinUrl(o) : undefined,
     });
     const r = await sendReceiptEmail(o.email, `Order received — Gigi's NY Style Pizza (${money(o.totals.total)})`, html);
     if (!r.sent && r.error !== "email_not_configured") console.error("[order/create] receipt email failed:", r.error);
@@ -418,7 +439,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // Invite non-members to the free-pie club — on the confirmation popup
       // and in the receipt. Existing members are skipped.
       const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
-      await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
+      await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
       res.status(200).json({ ok: true, orderId: paidOrderId, paid: true, chargeId, totals, vipEligible });
     } catch (err) {
       // Paid but not fired: the payment and items live on the SAME order, so
@@ -446,7 +467,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // to make the food, and the ticket header states COLLECT vs PAID ONLINE.
     await printOrderTicket(order.id);
     const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
-    await sendOrderReceipt({ email: cust.email, name: cust.name, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: order.id, vipPitch: vipEligible });
+    await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: order.id, vipPitch: vipEligible });
     res.status(200).json({ ok: true, orderId: order.id, paid: paymentMethod === "card", chargeId, totals, vipEligible });
   } catch (err) {
     console.error("[order/create] POS order failed", err);

@@ -33,6 +33,25 @@
   function $(id) { return document.getElementById(id); }
   function val(id) { return ($(id).value || "").trim(); }
 
+  // Prefill from an order-receipt link (/vip-club/?name=…&phone=…&email=…). The customer typed all
+  // of this to place the order minutes ago; a blank form is what the old receipt link cost us.
+  // Values only land in the inputs and stay editable — the server re-validates them and re-checks
+  // the phone/email/address dedupe, and the consent boxes are deliberately left unticked.
+  (function prefill() {
+    try {
+      var q = new URLSearchParams(window.location.search);
+      var filled = 0;
+      ["name", "phone", "email", "address", "apt"].forEach(function (id) {
+        var v = (q.get(id) || "").trim();
+        if (!v) return;
+        $(id).value = v.slice(0, 160);
+        filled++;
+      });
+      // Pickup orders arrive without an address — put the cursor on the one field left to fill.
+      if (filled && !val("address")) $("address").focus({ preventScroll: true });
+    } catch (e) { /* no URLSearchParams — the form still works, just empty */ }
+  })();
+
   function showErr(msg, focusId) {
     errEl.textContent = msg;
     errEl.hidden = false;

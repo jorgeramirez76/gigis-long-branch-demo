@@ -9,7 +9,10 @@
  * shown equal to the total they are charged. Both sides read one implementation so
  * they cannot drift apart.
  */
-import { MENU_GENERATED } from "../data/menuGenerated";
+// Explicit .js specifier: this module is imported by the serverless functions too,
+// where @vercel/node compiles each file to ESM and Node's loader will not resolve an
+// extensionless path. Vite maps it back to the .ts source for the browser build.
+import { MENU_GENERATED } from "../data/menuGenerated.js";
 
 const SEP = "\u0000"; // NUL separator — collision-free (ids/names never contain it)
 

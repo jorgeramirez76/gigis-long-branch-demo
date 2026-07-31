@@ -23,6 +23,8 @@ const TURNSTILE_ON = turnstileEnabled();
 // Mirrors the server's CASH_DISCOUNT_RATE (api/lib/clover.ts) — listed prices
 // are card prices; cash orders take 3.99% off the item subtotal.
 const CASH_DISCOUNT_RATE = 0.0399;
+// Clover's Apple Pay session stops accepting a result at ~30s; leave headroom.
+const APPLE_PAY_SHEET_MS = 20_000;
 
 type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean };
 
@@ -62,6 +64,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const tax = payment === "cash" ? Math.round(taxableSubtotal * TAX_RATE) : cart.tax;
   const tip = Math.round(taxableSubtotal * (tipPct / 100));
   const grandTotal = taxableSubtotal + tax + tip;
+  // Apple Pay's button is built asynchronously and priced by message, so it needs
+  // the live total rather than whatever it was on the render that started the load.
+  const grandTotalRef = useRef(grandTotal);
+  grandTotalRef.current = grandTotal;
 
   // One idempotency key per unique order (amount/params). Stable across pure
   // retries so a lost response can't double-charge; regenerated if the order
@@ -138,11 +144,12 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     if (!applePayOk || payment !== "card") return;
     let cancelled = false;
-    initApplePay(grandTotal, {
+    initApplePay(() => grandTotalRef.current, {
       onToken: (t) => void payWithAppleRef.current(t),
-      // Dismissing the sheet must not leave the form stuck on "Placing order…".
+      // Dismissing the sheet must not leave the form stuck on "Placing order…" —
+      // but it must not wipe a decline message the shopper still needs to read.
       onCancel: () => {
-        if (!applePayBusy.current) setStatus("form");
+        if (!applePayBusy.current) setStatus((s) => (s === "submitting" ? "form" : s));
       },
     })
       .then((handle) => {
@@ -251,25 +258,43 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     }
   }
 
-  /** Apple Pay authorized: charge it exactly like a typed card, then release the
-   *  sheet. Clover only honours the success/failure signal for ~30s after the
-   *  token, so nothing slow may sit between here and `finish`. */
+  /** Apple Pay authorized: charge it exactly like a typed card, then release the sheet. */
   async function payWithApple(token: string) {
     if (applePayBusy.current) return; // the sheet can fire more than once
     applePayBusy.current = true;
+    // Clover stops honouring the sheet's success/failure signal about 30s after the
+    // token. The card is charged early in the server call, but the kitchen print and
+    // receipt email are awaited after it — so on a slow tail, release the sheet
+    // before that deadline rather than let a captured payment read as "Payment Not
+    // Completed" on the customer's phone and get re-ordered. `finish` only closes
+    // the sheet; it moves no money in either direction.
+    let settled = false;
+    const release = (ok: boolean) => {
+      if (settled) return;
+      settled = true;
+      applePayRef.current?.finish(ok);
+    };
+    const deadline = setTimeout(() => release(true), APPLE_PAY_SHEET_MS);
     try {
       if (!getOpenStatus().open) {
         setOpenStatus(getOpenStatus());
         throw new Error("We're closed right now — online ordering reopens at 10 AM.");
       }
+      // Never charge a total the shopper didn't see. Face ID approved whatever the
+      // sheet last displayed; if the cart has moved since, make them approve again.
+      const approved = applePayRef.current?.requestedAmount();
+      if (approved !== grandTotal) {
+        throw new Error("Your total changed just now — please tap Apple Pay again to confirm it.");
+      }
       setStatus("submitting");
       setErrorMsg("");
       await sendOrder(token);
-      applePayRef.current?.finish(true);
+      release(true);
     } catch (e) {
-      applePayRef.current?.finish(false);
+      release(false);
       failOrder(e);
     } finally {
+      clearTimeout(deadline);
       applePayBusy.current = false;
     }
   }

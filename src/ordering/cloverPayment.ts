@@ -60,9 +60,14 @@ function getClover(): Promise<{ clover: any; elements: any }> {
   if (cloverPromise) return cloverPromise;
   cloverPromise = loadSdk()
     .then((Clover) => {
-      const clover = MERCHANT_ID
-        ? new Clover(PUBLIC_KEY, { merchantId: MERCHANT_ID })
-        : new Clover(PUBLIC_KEY);
+      // merchantId is only passed when Apple Pay is on: it changes what the
+      // tokenization frame does (it fetches the merchant's ecomm_payment_configs
+      // and can switch on Clover's own reCAPTCHA), and the proven card path must
+      // keep behaving exactly as it does today while Apple Pay is switched off.
+      const clover =
+        APPLE_PAY_ON && MERCHANT_ID
+          ? new Clover(PUBLIC_KEY, { merchantId: MERCHANT_ID })
+          : new Clover(PUBLIC_KEY);
       return { clover, elements: clover.elements() };
     })
     .catch((e) => {
@@ -159,6 +164,8 @@ export type ApplePayHandle = {
   mount: (el: HTMLElement) => void;
   /** Re-prices the sheet after the cart or tip changes. */
   updateAmount: (amountCents: number) => void;
+  /** The amount the sheet was last told to show — i.e. what the shopper approves. */
+  requestedAmount: () => number;
   /** Closes out the Apple Pay sheet. Clover allows ~30s after the token. */
   finish: (ok: boolean) => void;
   destroy: () => void;
@@ -178,14 +185,20 @@ function tokenId(received: unknown): string | undefined {
   return typeof id === "string" ? id : undefined;
 }
 
+/**
+ * `liveAmount` is read, not captured: loading the SDK takes a network round trip,
+ * and a shopper adjusting the tip during it must not end up approving a sheet
+ * priced before their change. `requestedAmount()` then lets the caller prove the
+ * approved figure still matches the cart before any money moves.
+ */
 export async function initApplePay(
-  amountCents: number,
+  liveAmount: () => number,
   cb: ApplePayCallbacks,
 ): Promise<ApplePayHandle> {
   if (!applePayAvailable()) throw new Error("Apple Pay is not available.");
   const { clover, elements } = await getClover();
 
-  const buildRequest = (cents: number) =>
+  const makeRequest = (cents: number) =>
     clover.createApplePaymentRequest({
       // Clover stringifies this as (cents / 100).toFixed(2), so it must be cents.
       amount: cents,
@@ -193,10 +206,16 @@ export async function initApplePay(
       currencyCode: "USD",
     });
 
+  // What the sheet is actually priced at. -1 means "unknown" — only ever set to a
+  // real figure once Clover has accepted it, so a failed re-price reads as unknown
+  // rather than as agreement, and the caller's check fails closed.
+  let requested = -1;
+  const initial = liveAmount();
   const button = elements.create("PAYMENT_REQUEST_BUTTON_APPLE_PAY", {
-    applePaymentRequest: buildRequest(amountCents),
+    applePaymentRequest: makeRequest(initial),
     sessionIdentifier: MERCHANT_ID,
   });
+  requested = initial;
 
   // Clover raises both of these on `window`, not on the element.
   const onPaymentMethod = (e: Event) => {
@@ -226,12 +245,18 @@ export async function initApplePay(
       button.mount(`#${el.id}`);
     },
     updateAmount: (cents) => {
+      if (cents === requested) return; // already priced; -1 always retries
       try {
-        clover.updateApplePaymentRequest(buildRequest(cents));
+        clover.updateApplePaymentRequest(makeRequest(cents));
+        requested = cents;
       } catch {
-        /* a stale sheet price beats a thrown render; the button is remounted on failure */
+        // The sheet may still be showing the old total. Record that we no longer
+        // know what it says, so the caller refuses to charge rather than trusting
+        // a price the shopper was never shown.
+        requested = -1;
       }
     },
+    requestedAmount: () => requested,
     finish: (ok) => {
       try {
         clover.updateApplePaymentStatus(ok ? "success" : "failed");

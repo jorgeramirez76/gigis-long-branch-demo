@@ -83,6 +83,22 @@ so **the server path is completely unchanged** (`api/order/create.ts` was not to
    (`vercel.json`), and Apple rejects domains behind a redirect. The button never renders
    on `www` because the redirect happens before the page loads.
 
+### Turning the flag on also changes the typed-card path
+
+Apple Pay needs the Clover instance built with `{ merchantId }`, and that makes Clover's
+widget fetch the merchant's `ecomm_payment_configs` and inject **its own reCAPTCHA** into
+card tokenization. Verified locally by A/B — same page, same cart, only the flag differs:
+
+| `VITE_CLOVER_APPLE_PAY` | card field iframes | reCAPTCHA iframe |
+|---|---|---|
+| `0` | 4 | no |
+| `1` | 4 | **yes** |
+
+So `merchantId` is passed **only when Apple Pay is on** (`cloverPayment.ts` `getClover`),
+which keeps today's proven card path byte-identical. When the flag flips, expect a reCAPTCHA
+in the card flow on top of our Turnstile — check the Clover dashboard's Ecommerce reCAPTCHA
+setting and re-test a typed-card order, not just Apple Pay.
+
 ### Two traps
 
 - **Never add `payment=(self)` to the `Permissions-Policy` header.** The header currently

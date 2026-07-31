@@ -3,9 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Gigi's NY Style Pizza — Long Branch location website",
+  "description": "Gigi's NY Style Pizza \u2014 Long Branch location website",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/prune-static-menu.mjs",
+    "prune-menu": "node scripts/prune-static-menu.mjs",
     "build": "tsc -b && vite-react-ssg build",
     "preview": "vite preview --host",
     "lint": "eslint ."

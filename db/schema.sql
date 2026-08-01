@@ -90,3 +90,23 @@ CREATE TABLE IF NOT EXISTS menu_snapshot (
   item_count  INT NOT NULL,
   updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- === Email suppression (2026-07-31) ===
+-- Every address that has opted out, member or not. The VIP consent flags stay the
+-- source of truth for members; this also covers people emailed as past customers,
+-- whose opt-out has no member row to flip.
+CREATE TABLE IF NOT EXISTS email_suppressions (
+  email      TEXT PRIMARY KEY,
+  source     TEXT NOT NULL,           -- 'unsubscribe_link' | 'admin'
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- One row per address per one-off outreach campaign, so a re-run can't email
+-- anyone twice.
+CREATE TABLE IF NOT EXISTS outreach_sends (
+  campaign    TEXT NOT NULL,
+  email       TEXT NOT NULL,
+  provider_id TEXT,
+  sent_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (campaign, email)
+);

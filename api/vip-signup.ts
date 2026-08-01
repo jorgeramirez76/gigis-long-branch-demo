@@ -34,7 +34,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Where the signup came from, so the club's growth can be attributed to the
   // thing that caused it. Allowlisted: it is written to the members table, and a
   // free-text field from the browser would be both spoofable and unqueryable.
-  const SIGNUP_SOURCES = ["website", "checkout", "receipt", "menu-qr"] as const;
+  const SIGNUP_SOURCES = ["website", "checkout", "receipt", "menu-qr", "winback"] as const;
   const signupSource = SIGNUP_SOURCES.includes(source) ? (source as string) : "website";
 
   // Canonical consent language — MUST stay in sync with CONSENT_TEXT in

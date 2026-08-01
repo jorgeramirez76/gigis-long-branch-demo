@@ -18,6 +18,9 @@ export function emailHtml(opts: {
   unsubUrl: string;
   promoCode?: string;
   promoDescription?: string;
+  /** Button under the message. Defaults to the menu — set both to point it elsewhere. */
+  ctaText?: string;
+  ctaUrl?: string;
 }): string {
   const paragraphs = opts.bodyText
     .split(/\n{2,}/)
@@ -44,7 +47,7 @@ export function emailHtml(opts: {
       ${paragraphs}
       ${promoBlock}
       <div style="text-align:center;margin-top:24px;">
-        <a href="https://gigislongbranch.com/#menu" style="display:inline-block;background:#e6b45e;color:#1a1210;font-weight:700;text-decoration:none;padding:13px 32px;border-radius:999px;font-size:15px;">See the menu</a>
+        <a href="${escapeHtml(opts.ctaUrl || "https://gigislongbranch.com/#menu")}" style="display:inline-block;background:#e6b45e;color:#1a1210;font-weight:700;text-decoration:none;padding:13px 32px;border-radius:999px;font-size:15px;">${escapeHtml(opts.ctaText || "See the menu")}</a>
       </div>
     </div>
     <div style="background:#2b1a14;border-radius:0 0 16px 16px;padding:18px 24px;text-align:center;">

@@ -16,6 +16,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    // Suppression first, and keyed by ADDRESS not member id: a one-time campaign to
+    // past customers reaches people who were never members, and for them flipping
+    // email_consent below matches zero rows — their opt-out would be forgotten.
+    await sql`
+      CREATE TABLE IF NOT EXISTS email_suppressions (
+        email      TEXT PRIMARY KEY,
+        source     TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      )
+    `;
+    await sql`
+      INSERT INTO email_suppressions (email, source) VALUES (${email}, 'unsubscribe_link')
+      ON CONFLICT (email) DO NOTHING
+    `;
     const updated = await sql`
       UPDATE vip_members SET email_consent = FALSE
       WHERE email = ${email} AND email_consent

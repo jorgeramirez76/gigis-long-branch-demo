@@ -41,9 +41,11 @@
   (function prefill() {
     try {
       var q = new URLSearchParams(window.location.search);
-      // One page, two audiences: a bare URL is the printed-menu QR code, `?src=receipt`
-      // is the button in an order receipt. Tracked separately so we can tell which works.
-      if (q.get("src") === "receipt") SIGNUP_SOURCE = "receipt";
+      // One page, several audiences: a bare URL is the printed-menu QR code, `?src=receipt`
+      // is the button in an order receipt, `?src=winback` the past-customer invite.
+      // Tracked separately so we can tell which one actually works.
+      var src = q.get("src");
+      if (src === "receipt" || src === "winback") SIGNUP_SOURCE = src;
       var filled = 0;
       ["name", "phone", "email", "address", "apt"].forEach(function (id) {
         var v = (q.get(id) || "").trim();

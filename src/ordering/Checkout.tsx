@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { lineUnitPrice, money, useCart } from "./CartContext";
 import { LOCATION } from "../data/location";
+import { placementSuffix } from "../data/menuToppings";
 import {
   applePayAvailable,
   cardPaymentEnabled,
@@ -193,7 +194,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           lines: cart.lines.map((l) => ({
             itemName: l.itemName,
             categoryId: l.categoryId,
-            options: l.options.map((o) => ({ group: o.group, name: o.name })),
+            options: l.options.map((o) => ({ group: o.group, name: o.name, placement: o.placement })),
             quantity: l.quantity,
             notes: l.notes,
           })),
@@ -522,7 +523,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               <li key={l.lineId} className="flex justify-between gap-3 text-[var(--color-ink-soft)]">
                 <span className="min-w-0">
                   {l.quantity}× {l.itemName}
-                  {l.options.length > 0 && <span className="text-[var(--color-ink)]/60"> — {l.options.map((o) => o.name).join(", ")}</span>}
+                  {l.options.length > 0 && <span className="text-[var(--color-ink)]/60"> — {l.options.map((o) => o.name + placementSuffix(o.placement)).join(", ")}</span>}
                 </span>
                 <span className="shrink-0">{money(lineUnitPrice(l) * l.quantity)}</span>
               </li>

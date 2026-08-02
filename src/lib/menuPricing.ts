@@ -13,6 +13,7 @@
 // where @vercel/node compiles each file to ESM and Node's loader will not resolve an
 // extensionless path. Vite maps it back to the .ts source for the browser build.
 import { MENU_PRICED } from "../data/menuPriced.js";
+import { TOPPING_CHARGE_CENTS, isToppingsGroup, placementDelta } from "../data/menuToppings.js";
 
 const SEP = "\u0000"; // NUL separator — collision-free (ids/names never contain it)
 
@@ -30,6 +31,14 @@ export type CatalogItem = {
   optByGroupName: Map<string, number>;
   /** "name" → delta cents, or NaN when the same name maps to different deltas across groups (ambiguous) */
   optByName: Map<string, number>;
+  /** "name" → its group, or null when the name appears in several groups. Lets the
+   * server put a group-less (or group-spoofed) option back where the menu says it
+   * lives, so a crafted request can't move Pepperoni out of the Toppings bucket
+   * on the kitchen ticket. */
+  groupByName: Map<string, string | null>;
+  /** Item carries at least one charge-priced topping → its whole Toppings group
+   * prints with placement on the ticket (Penne included, locked to whole pie). */
+  hasPlaceableToppings: boolean;
 };
 
 let byCatItem: Map<string, CatalogItem> | null = null; // "categoryId\0itemName"
@@ -42,6 +51,8 @@ function build() {
     for (const it of cat.items) {
       const optByGroupName = new Map<string, number>();
       const optByName = new Map<string, number>();
+      const groupByName = new Map<string, string | null>();
+      let hasPlaceableToppings = false;
       for (const g of it.options ?? []) {
         for (const c of g.choices) {
           const delta = parsePrice(c.delta);
@@ -51,9 +62,11 @@ function build() {
           } else {
             optByName.set(c.name, delta);
           }
+          groupByName.set(c.name, groupByName.has(c.name) && groupByName.get(c.name) !== g.group ? null : g.group);
+          if (isToppingsGroup(g.group) && delta === TOPPING_CHARGE_CENTS) hasPlaceableToppings = true;
         }
       }
-      const entry: CatalogItem = { basePrice: parsePrice(it.price), optByGroupName, optByName };
+      const entry: CatalogItem = { basePrice: parsePrice(it.price), optByGroupName, optByName, groupByName, hasPlaceableToppings };
       byCatItem.set(cat.id + SEP + it.name, entry);
       byItemName.set(it.name, byItemName.has(it.name) ? null : entry);
     }
@@ -70,13 +83,33 @@ export function findCatalogItem(itemName: string, categoryId?: string): CatalogI
   );
 }
 
-/** Authoritative upcharge for one chosen option, or undefined if it isn't on the item. */
-export function optionDelta(item: CatalogItem, opt: { group?: string; name: string }): number | undefined {
-  let delta: number | undefined;
-  if (opt.group) delta = item.optByGroupName.get(opt.group + SEP + opt.name);
+/** The group this option actually belongs to on the menu. The client's group is
+ * trusted only when the menu confirms it; otherwise the option's own (unique)
+ * group wins. A spoofed or omitted group can therefore never move an option
+ * between ticket sections or dodge topping pricing rules. */
+export function resolveOptionGroup(item: CatalogItem, opt: { group?: string; name: string }): string {
+  if (opt.group && item.optByGroupName.has(opt.group + SEP + opt.name)) return opt.group;
+  return item.groupByName.get(opt.name) ?? opt.group ?? "";
+}
+
+/** Authoritative upcharge for one chosen option, or undefined if it isn't on the item.
+ * A half-pie topping (placement "left"/"right" on a charge-priced topping in the
+ * Toppings group) costs the half rate; placement on anything else is ignored. */
+export function optionDelta(item: CatalogItem, opt: { group?: string; name: string; placement?: string }): number | undefined {
+  const group = resolveOptionGroup(item, opt);
+  let delta = item.optByGroupName.get(group + SEP + opt.name);
   if (delta == null) {
     const byName = item.optByName.get(opt.name);
     delta = byName != null && !Number.isNaN(byName) ? byName : undefined;
   }
-  return delta;
+  if (delta == null) return undefined;
+  return isToppingsGroup(group) ? placementDelta(delta, opt.placement) : delta;
+}
+
+/** Whether this option can be placed on half the pie (drives the modal's selector
+ * and the server's placement sanitizing — one definition, no drift). */
+export function placementEligible(item: CatalogItem, opt: { group?: string; name: string }): boolean {
+  const group = resolveOptionGroup(item, opt);
+  if (!isToppingsGroup(group)) return false;
+  return item.optByGroupName.get(group + SEP + opt.name) === TOPPING_CHARGE_CENTS;
 }

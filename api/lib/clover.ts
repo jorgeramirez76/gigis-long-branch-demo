@@ -36,7 +36,7 @@ const NJ_TAX_RATE = { id: "GJFQ1TP7F648J", name: "NJ Sales Tax", rate: 662500 } 
 
 export type Fulfillment = keyof typeof ORDER_TYPES;
 
-export type CartOptionInput = { group: string; name: string; delta: number };
+export type CartOptionInput = { group: string; name: string; delta: number; placement?: "whole" | "left" | "right" };
 export type CartLineInput = {
   itemName: string;
   basePrice: number; // authoritative cents (from menuCatalog)
@@ -60,6 +60,44 @@ function merchantId(): string | null {
 /** Order-to-POS is possible (kitchen ticket). */
 export function cloverConfigured(): boolean {
   return !!token() && !!merchantId();
+}
+
+/**
+ * Option summary as the KITCHEN reads it. Owner's spec: when a pie has toppings,
+ * the ticket must say for each one whether it's the full pie or a half — and when
+ * the halves differ, show each half's toppings together:
+ *
+ *   TOPPINGS FULL PIE: Pepperoni, Sausage
+ *   FULL PIE: Pepperoni / LEFT HALF: Sausage, Onion / RIGHT HALF: Mushroom
+ *
+ * Non-topping options (styles, sauces) follow after. Plain ASCII — thermal
+ * printers can garble "½".
+ */
+export function ticketOptionSummary(options: CartOptionInput[]): string {
+  // Placement is the signal, not the group name: the server stamps it on every
+  // topping of a pie-style item (halves chosen or whole by default) and on
+  // nothing else — so a BLT's "Toppings" (lettuce, mayo) print as plain options,
+  // not pie language. Separator is " | ": a real topping is named
+  // "American Cheese / For Burger", so "/" can't delimit sections.
+  const placed = options.filter((o) => o.placement != null);
+  const rest = options.filter((o) => o.placement == null).map((o) => o.name);
+  if (placed.length === 0) return rest.join(", ");
+  const whole: string[] = [];
+  const left: string[] = [];
+  const right: string[] = [];
+  for (const t of placed) {
+    (t.placement === "left" ? left : t.placement === "right" ? right : whole).push(t.name);
+  }
+  const parts: string[] = [];
+  if (left.length === 0 && right.length === 0) {
+    parts.push(`TOPPINGS FULL PIE: ${whole.join(", ")}`);
+  } else {
+    if (whole.length) parts.push(`FULL PIE: ${whole.join(", ")}`);
+    if (left.length) parts.push(`LEFT HALF: ${left.join(", ")}`);
+    if (right.length) parts.push(`RIGHT HALF: ${right.join(", ")}`);
+  }
+  if (rest.length) parts.push(rest.join(", "));
+  return parts.join(" | ");
 }
 
 /** Unit price (base + option deltas), whole cents. */
@@ -201,7 +239,7 @@ export async function createDraftOrder(opts: {
     const items: { name: string; price: number; note?: string }[] = [];
     for (const line of opts.lines) {
       const price = unitPrice(line);
-      const optionSummary = line.options.map((o) => o.name).join(", ");
+      const optionSummary = ticketOptionSummary(line.options);
       const name = line.itemName.slice(0, 120);
       // "WEB • " prefix makes each kitchen chit self-identifying regardless of print profile.
       const lineNote = ("WEB • " + [optionSummary, line.notes].filter(Boolean).join(" · ")).slice(0, 220);
@@ -456,7 +494,12 @@ export function buildOrderNote(opts: {
   const addr = opts.fulfillment === "delivery" ? ` → ${opts.customer.address ?? "(no address)"}` : "";
   const items = opts.lines
     .map((l) => {
-      const opt = l.options.map((o) => o.name).join(", ");
+      // Compact here — (F)/(L)/(R) per topping — because this note covers the
+      // whole order and gets cut at 490 chars; each line item's own note carries
+      // the spelled-out FULL PIE / LEFT HALF / RIGHT HALF wording.
+      const opt = l.options
+        .map((o) => o.name + (o.placement === "left" ? "(L)" : o.placement === "right" ? "(R)" : o.placement === "whole" ? "(F)" : ""))
+        .join(", ");
       return `${l.quantity}x ${l.itemName}${opt ? ` [${opt}]` : ""}${l.notes ? ` (${l.notes})` : ""}`;
     })
     .join("; ");

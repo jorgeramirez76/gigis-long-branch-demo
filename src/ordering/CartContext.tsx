@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { findCatalogItem, optionDelta } from "../lib/menuPricing";
+import { findCatalogItem, optionDelta, placementEligible } from "../lib/menuPricing";
+import { isToppingPlacement } from "../data/menuToppings";
 
 /** NJ Sales Tax pulled from the merchant's Clover config (6.625%). Applied to
  * the taxable subtotal; the final authoritative total is re-computed by Clover
  * at charge time, this is for the on-page display. */
 export const TAX_RATE = 0.06625;
 
-export type CartOption = { group: string; name: string; delta: number };
+export type CartOption = { group: string; name: string; delta: number; placement?: "whole" | "left" | "right" };
 
 export type CartLine = {
   /** unique per cart line (same item + different options = different lines) */
@@ -72,7 +73,12 @@ function isValidLine(l: unknown): l is CartLine {
     x.quantity > 0 &&
     Array.isArray(x.options) &&
     x.options.every(
-      (o) => o && typeof o.name === "string" && typeof o.delta === "number" && Number.isFinite(o.delta),
+      (o) =>
+        o &&
+        typeof o.name === "string" &&
+        typeof o.delta === "number" &&
+        Number.isFinite(o.delta) &&
+        (o.placement == null || o.placement === "whole" || o.placement === "left" || o.placement === "right"),
     )
   );
 }
@@ -91,9 +97,14 @@ function repriceStoredLine(l: CartLine): CartLine | null {
   if (!item) return null;
   const options: CartOption[] = [];
   for (const o of l.options) {
-    const delta = optionDelta(item, o);
+    // Carts saved before placement existed carry topping options without one —
+    // normalize to "whole" so they price, print, and merge exactly like new lines.
+    const placement = placementEligible(item, o)
+      ? isToppingPlacement(o.placement) ? o.placement : "whole"
+      : undefined;
+    const delta = optionDelta(item, { ...o, placement });
     if (delta == null) return null;
-    options.push({ ...o, delta });
+    options.push({ ...o, placement, delta });
   }
   if (item.basePrice + options.reduce((s, o) => s + o.delta, 0) <= 0) return null;
   return { ...l, basePrice: item.basePrice, options };
@@ -153,7 +164,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       addLine: (line) => {
         // merge identical lines (same item + same options + no notes)
         const key = (l: Pick<CartLine, "itemName" | "options" | "notes">) =>
-          l.itemName + "|" + l.options.map((o) => o.group + ":" + o.name).sort().join(",") + "|" + (l.notes ?? "");
+          l.itemName + "|" + l.options.map((o) => o.group + ":" + o.name + ":" + (o.placement ?? "")).sort().join(",") + "|" + (l.notes ?? "");
         setLines((prev) => {
           const idx = prev.findIndex((l) => key(l) === key(line));
           if (idx >= 0) {

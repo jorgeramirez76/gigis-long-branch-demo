@@ -30,6 +30,7 @@ import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
 import { isVipMember } from "../lib/vipLookup.js";
 import { countUnits, readyMessage } from "../../src/lib/readyTime.js";
+import { placementSuffix } from "../../src/data/menuToppings.js";
 
 /**
  * The receipt's "join the VIP Club" button, pointed at the standalone signup page
@@ -81,7 +82,7 @@ async function sendOrderReceipt(o: {
       lines: o.lines.map((l) => ({
         quantity: l.quantity,
         name: l.itemName,
-        options: l.options.map((x) => x.name).join(", ") || undefined,
+        options: l.options.map((x) => x.name + placementSuffix(x.placement)).join(", ") || undefined,
         lineTotal: money(unitPrice(l) * l.quantity),
       })),
       subtotal: money(o.totals.subtotal),
@@ -129,8 +130,13 @@ function validShape(input: unknown): input is ClientLine[] {
         (Array.isArray(l.options) &&
           l.options.length <= MAX_OPTS_PER_LINE &&
           l.options.every((o: unknown) => {
-            const opt = o as { name?: unknown; group?: unknown };
-            return opt && typeof opt.name === "string" && (opt.group == null || typeof opt.group === "string");
+            const opt = o as { name?: unknown; group?: unknown; placement?: unknown };
+            return (
+              opt &&
+              typeof opt.name === "string" &&
+              (opt.group == null || typeof opt.group === "string") &&
+              (opt.placement == null || opt.placement === "whole" || opt.placement === "left" || opt.placement === "right")
+            );
           }))),
   );
 }

@@ -1,4 +1,5 @@
 import { lineUnitPrice, money, useCart } from "./CartContext";
+import { placementSuffix } from "../data/menuToppings";
 import { Upsell } from "./Upsell";
 
 export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
@@ -69,7 +70,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                       <p className="font-serif text-base font-semibold text-[var(--color-ink)]">{l.itemName}</p>
                       {l.options.length > 0 && (
                         <p className="mt-0.5 text-xs leading-relaxed text-[var(--color-ink-soft)]">
-                          {l.options.map((o) => o.name).join(", ")}
+                          {l.options.map((o) => o.name + placementSuffix(o.placement)).join(", ")}
                         </p>
                       )}
                       {l.notes && <p className="mt-0.5 text-xs italic text-[var(--color-ink)]/50">“{l.notes}”</p>}

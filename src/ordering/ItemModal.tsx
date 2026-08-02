@@ -1,6 +1,24 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MenuItem, OptionGroup } from "../data/menu";
 import { money, parsePrice, useCart, type CartOption } from "./CartContext";
+import {
+  HALF_TOPPING_CHARGE_CENTS,
+  TOPPING_CHARGE_CENTS,
+  isToppingsGroup,
+  placementDelta,
+  type ToppingPlacement,
+} from "../data/menuToppings";
+
+/** Charge-priced toppings can go on half the pie; everything else is whole-only. */
+function canPlace(group: OptionGroup, choiceDelta?: string): boolean {
+  return isToppingsGroup(group.group) && parsePrice(choiceDelta) === TOPPING_CHARGE_CENTS;
+}
+
+const PLACEMENTS: { value: ToppingPlacement; label: string; price: number }[] = [
+  { value: "whole", label: "Whole pie", price: TOPPING_CHARGE_CENTS },
+  { value: "left", label: "Left half", price: HALF_TOPPING_CHARGE_CENTS },
+  { value: "right", label: "Right half", price: HALF_TOPPING_CHARGE_CENTS },
+];
 
 /** Parse a human rule string into selection constraints. */
 function ruleConstraints(rule?: string): { single: boolean; required: boolean; max: number | null } {
@@ -20,13 +38,20 @@ function GroupField({
   group,
   selected,
   onToggle,
+  placements,
+  onPlacement,
 }: {
   group: OptionGroup;
   selected: Set<string>;
   onToggle: (choiceName: string, single: boolean, max: number | null) => void;
+  placements: Record<string, ToppingPlacement>;
+  onPlacement: (choiceName: string, placement: ToppingPlacement) => void;
 }) {
   const { single, required, max } = ruleConstraints(group.rule);
   const atMax = max != null && selected.size >= max;
+  // Selected toppings that can go on half the pie get a placement row below the
+  // chips — the kitchen ticket prints whatever is chosen here.
+  const placeable = group.choices.filter((c) => selected.has(c.name) && canPlace(group, c.delta));
   return (
     <fieldset className="border-t border-[var(--color-ink)]/8 pt-4">
       <legend className="flex items-baseline gap-2 pb-2">
@@ -62,6 +87,37 @@ function GroupField({
           );
         })}
       </div>
+      {placeable.length > 0 && (
+        <div className="mt-3 space-y-2 rounded-xl bg-[var(--color-cream)]/60 p-3">
+          {placeable.map((c) => {
+            const current = placements[c.name] ?? "whole";
+            return (
+              <div key={c.name} className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-sm font-semibold text-[var(--color-ink)]">{c.name}</span>
+                <div className="flex rounded-full border border-[var(--color-ink)]/15 bg-white p-0.5" role="radiogroup" aria-label={`Where does ${c.name} go?`}>
+                  {PLACEMENTS.map((p) => {
+                    const on = current === p.value;
+                    return (
+                      <button
+                        key={p.value}
+                        type="button"
+                        role="radio"
+                        aria-checked={on}
+                        onClick={() => onPlacement(c.name, p.value)}
+                        className={`rounded-full px-2.5 py-1 text-xs font-semibold transition ${
+                          on ? "bg-[var(--color-brand-red)] text-white" : "text-[var(--color-ink)]/70 hover:text-[var(--color-ink)]"
+                        }`}
+                      >
+                        {p.label} {money(p.price).replace(".00", "")}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </fieldset>
   );
 }
@@ -72,6 +128,8 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
   const groups = item.options ?? [];
   // selected choice names per group index
   const [selected, setSelected] = useState<Record<number, Set<string>>>({});
+  // topping name → where it goes (only charge-priced toppings; default whole pie)
+  const [placements, setPlacements] = useState<Record<string, ToppingPlacement>>({});
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
   const panelRef = useRef<HTMLDivElement>(null);
@@ -100,11 +158,13 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
       const sel = selected[gi];
       if (!sel) return;
       g.choices.forEach((c) => {
-        if (sel.has(c.name)) d += parsePrice(c.delta);
+        if (!sel.has(c.name)) return;
+        const base = parsePrice(c.delta);
+        d += canPlace(g, c.delta) ? placementDelta(base, placements[c.name] ?? "whole") : base;
       });
     });
     return d;
-  }, [groups, selected]);
+  }, [groups, selected, placements]);
 
   const unmetRequired = groups.some((g, gi) => {
     const { required } = ruleConstraints(g.rule);
@@ -134,7 +194,13 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
       const sel = selected[gi];
       if (!sel) return;
       g.choices.forEach((c) => {
-        if (sel.has(c.name)) options.push({ group: g.group, name: c.name, delta: parsePrice(c.delta) });
+        if (!sel.has(c.name)) return;
+        if (canPlace(g, c.delta)) {
+          const placement = placements[c.name] ?? "whole";
+          options.push({ group: g.group, name: c.name, delta: placementDelta(parsePrice(c.delta), placement), placement });
+        } else {
+          options.push({ group: g.group, name: c.name, delta: parsePrice(c.delta) });
+        }
       });
     });
     cart.addLine({ itemName: item.name, categoryId, basePrice, options, quantity, notes: notes.trim() || undefined });
@@ -185,6 +251,8 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
               group={g}
               selected={selected[gi] ?? new Set()}
               onToggle={(name, single, max) => toggle(gi, name, single, max)}
+              placements={placements}
+              onPlacement={(name, placement) => setPlacements((prev) => ({ ...prev, [name]: placement }))}
             />
           ))}
           <div className="border-t border-[var(--color-ink)]/8 pt-4">

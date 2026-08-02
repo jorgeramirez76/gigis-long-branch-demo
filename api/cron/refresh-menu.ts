@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
 import { fetchLiveInventory, pruneMenu, REMOVAL_GUARD_SHARE } from "../lib/menuSync.js";
-import { TOPPING_CHARGE_CENTS } from "../../src/data/menuToppings.js";
+import { HALF_TOPPING_CHARGE_CENTS, TOPPING_CHARGE_CENTS } from "../../src/data/menuToppings.js";
 
 /**
  * Nightly menu refresh (Vercel Cron — see vercel.json).
@@ -70,10 +70,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ? { site: TOPPING_CHARGE_CENTS, clover: inv.toppingChargeCents }
         : undefined;
     if (toppingChargeDrift) console.warn("[cron/refresh-menu] topping charge drift", toppingChargeDrift);
+    const halfToppingChargeDrift =
+      inv.halfToppingChargeCents != null && inv.halfToppingChargeCents !== HALF_TOPPING_CHARGE_CENTS
+        ? { site: HALF_TOPPING_CHARGE_CENTS, clover: inv.halfToppingChargeCents }
+        : undefined;
+    if (halfToppingChargeDrift) console.warn("[cron/refresh-menu] HALF topping charge drift", halfToppingChargeDrift);
     res.status(200).json({
       ok: true,
       items: kept,
       toppingChargeDrift,
+      halfToppingChargeDrift,
       removed,
       priceDrift,
       stockIgnored: inv.stockIgnored,

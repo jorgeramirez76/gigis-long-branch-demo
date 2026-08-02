@@ -11,12 +11,13 @@
  * Built from src/data/menuGenerated.ts (type-only imports → safe to bundle into
  * a serverless function; no runtime deps travel with it).
  */
-import { findCatalogItem, optionDelta } from "../../src/lib/menuPricing.js";
+import { findCatalogItem, optionDelta, placementEligible, resolveOptionGroup } from "../../src/lib/menuPricing.js";
+import { isToppingPlacement, isToppingsGroup, type ToppingPlacement } from "../../src/data/menuToppings.js";
 
 export type ClientLine = {
   itemName: string;
   categoryId?: string;
-  options?: { group?: string; name: string }[];
+  options?: { group?: string; name: string; placement?: string }[];
   quantity: number;
   notes?: string;
 };
@@ -25,7 +26,9 @@ export type PricedLine = {
   itemName: string;
   categoryId: string;
   basePrice: number; // authoritative cents
-  options: { group: string; name: string; delta: number }[]; // authoritative
+  /** placement is present on every half-eligible topping ("whole" unless the
+   * customer chose a half) so the kitchen ticket can print where each goes. */
+  options: { group: string; name: string; delta: number; placement?: ToppingPlacement }[]; // authoritative
   quantity: number;
   notes?: string;
 };
@@ -50,11 +53,22 @@ export function priceLines(clientLines: ClientLine[], available?: Set<string> | 
     const item = findCatalogItem(line.itemName, line.categoryId);
     if (!item) return { ok: false, reason: `Unknown item: ${line.itemName}` };
 
-    const options: { group: string; name: string; delta: number }[] = [];
+    const options: { group: string; name: string; delta: number; placement?: ToppingPlacement }[] = [];
     for (const o of line.options ?? []) {
-      const delta = optionDelta(item, o);
+      // The MENU decides which group an option lives in — a crafted or missing
+      // group can't relocate Pepperoni off the ticket's topping section.
+      const group = resolveOptionGroup(item, o);
+      // Placement only survives on options that can actually be halved; a crafted
+      // "left" on a side sauce is dropped, never priced, never printed. A topping
+      // that can't be halved (Penne Pasta, own price) but sits on a placeable pie
+      // is locked to "whole" so the kitchen ticket states it like the rest.
+      const eligible = placementEligible(item, { group, name: o.name });
+      const placement: ToppingPlacement | undefined = eligible
+        ? isToppingPlacement(o.placement) ? o.placement : "whole"
+        : isToppingsGroup(group) && item.hasPlaceableToppings ? "whole" : undefined;
+      const delta = optionDelta(item, { group, name: o.name, placement: eligible ? placement : undefined });
       if (delta == null) return { ok: false, reason: `Unknown option "${o.name}" on ${line.itemName}` };
-      options.push({ group: o.group ?? "", name: o.name, delta });
+      options.push({ group, name: o.name, delta, placement });
     }
 
     // Quote-by-call items (e.g. market-price catering) carry no price and would

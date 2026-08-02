@@ -33,10 +33,19 @@ export const TOPPING_CHARGE_CENTS = 312;
 
 const display = (cents: number) => `+$${(cents / 100).toFixed(2)}`;
 
+/** The pizza blurb promises half-pie options this removes from the site. */
+function fixBlurb(blurb?: string): string | undefined {
+  return blurb?.replace(
+    "Toppings and half-pie options under each pie.",
+    "Toppings are priced per pie — for half-and-half, give us a call.",
+  );
+}
+
 /** Price every topping, and remove the staff-facing charge group. */
 export function withToppingCharges(categories: MenuCategory[]): MenuCategory[] {
   return categories.map((cat) => ({
     ...cat,
+    blurb: fixBlurb(cat.blurb),
     items: cat.items.map((item: MenuItem) => {
       if (!item.options?.length) return item;
       const options = item.options

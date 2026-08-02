@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { findCatalogItem, optionDelta } from "../lib/menuPricing";
 
 /** NJ Sales Tax pulled from the merchant's Clover config (6.625%). Applied to
@@ -100,34 +100,44 @@ function repriceStoredLine(l: CartLine): CartLine | null {
 }
 
 let lineCounter = 0;
-/** Lines removed during hydration because they left the menu (see repriceStoredLine). */
-let droppedOnLoad = 0;
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [lines, setLines] = useState<CartLine[]>(() => {
-    try {
-      const raw = typeof localStorage !== "undefined" && localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) return [];
-      const valid = parsed.filter(isValidLine);
-      const kept = valid
-        .map((l) => repriceStoredLine({ ...l, quantity: clampQty(l.quantity) }))
-        .filter((l): l is CartLine => l !== null);
-      // Remember what the menu no longer sells so the cart can say so, rather
-      // than quietly handing back a shorter order than the customer left.
-      droppedOnLoad = valid.length - kept.length;
-      return kept;
-    } catch {
-      return [];
-    }
-  });
-  // Read the hydration tally captured by the initializer above. Cleared as soon
-  // as the customer changes the cart, so the notice doesn't linger.
-  const [dropped, setDropped] = useState(() => droppedOnLoad);
+  // Start EMPTY and restore the saved cart after mount. The page is prerendered
+  // (vite-react-ssg) with an empty cart, so reading localStorage during the
+  // first render made every returning customer's first paint mismatch the
+  // server HTML — ten hydration errors and a full client re-render on the live
+  // site until the saved cart was cleared.
+  const [lines, setLines] = useState<CartLine[]>([]);
+  const [dropped, setDropped] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  // Blocks the persist effect until the restore has run, so the initial empty
+  // state can't overwrite the saved cart it is about to load.
+  const restored = useRef(false);
 
   useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          const valid = parsed.filter(isValidLine);
+          const kept = valid
+            .map((l) => repriceStoredLine({ ...l, quantity: clampQty(l.quantity) }))
+            .filter((l): l is CartLine => l !== null);
+          setLines(kept);
+          // Say what the menu no longer sells, rather than quietly handing back
+          // a shorter order than the customer left. Cleared on any cart change.
+          setDropped(valid.length - kept.length);
+        }
+      }
+    } catch {
+      /* unreadable saved cart — start fresh */
+    }
+    restored.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!restored.current) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
     } catch {

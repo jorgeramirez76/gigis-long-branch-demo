@@ -29,7 +29,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { business, name, phone, email, address, apt, smsConsent, emailConsent, consentText, turnstileToken, source } = req.body ?? {};
+  const { business, name, phone, email, address, apt, city, state, zip, smsConsent, emailConsent, consentText, turnstileToken, source } = req.body ?? {};
 
   // Where the signup came from, so the club's growth can be attributed to the
   // thing that caused it. Allowlisted: it is written to the members table, and a
@@ -80,6 +80,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(400).json({ error: "address_required" });
     return;
   }
+  // Stored whole ("140 Brighton Ave, Long Branch, NJ 07740") because a street line
+  // on its own isn't an address — it can't be mailed to and two towns share street
+  // names. The dedupe key stays street+apt, so the one-per-household rule behaves
+  // exactly as it did for members who signed up before these fields existed.
+  const cityRaw = typeof city === "string" ? city.trim().slice(0, 60) : "";
+  const stateRaw = typeof state === "string" ? state.trim().toUpperCase().slice(0, 2) : "";
+  const zipRaw = typeof zip === "string" ? zip.trim().slice(0, 10) : "";
+  const fullAddress = [streetRaw, cityRaw, [stateRaw, zipRaw].filter(Boolean).join(" ")]
+    .filter(Boolean)
+    .join(", ");
+
   const addrKey = addressDedupeKey(streetRaw, aptRaw);
   if (!addrKey) {
     res.status(400).json({ error: "address_required" });
@@ -115,7 +126,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // claimed the welcome pie, so no row is inserted and no new pie is issued.
     const inserted = await sql`
       INSERT INTO vip_members (business, name, phone, email, address, apt, addr_key, sms_consent, email_consent, consent_text, source)
-      VALUES (${business}, ${name.trim()}, ${normalizedPhone}, ${normalizedEmail}, ${streetRaw}, ${aptRaw || null}, ${addrKey}, ${!!smsConsent}, ${!!emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${signupSource})
+      VALUES (${business}, ${name.trim()}, ${normalizedPhone}, ${normalizedEmail}, ${fullAddress}, ${aptRaw || null}, ${addrKey}, ${!!smsConsent}, ${!!emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${signupSource})
       ON CONFLICT DO NOTHING
       RETURNING id
     `;

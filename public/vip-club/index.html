@@ -58,7 +58,7 @@ padding:13px 14px;border:1.5px solid #d8cdb5;border-radius:11px;background:#fff;
 -webkit-appearance:none;appearance:none}
 input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(155,18,26,.14)}
 input[aria-invalid="true"]{border-color:var(--red);background:#fff6f5}
-.row{display:flex;gap:10px}.row>div{flex:1}.row>div.apt{flex:0 0 34%}
+.row{display:flex;gap:10px}.row>div{flex:1}.row>div.apt{flex:0 0 34%}.row>div.st{flex:0 0 22%}.row>div.zip{flex:0 0 30%}
 .hint{font-size:.76rem;color:var(--ink-mute);margin:5px 0 0}
 .consent{margin:18px 0 4px;padding:14px;background:#fff;border:1px solid var(--cream-dark);border-radius:12px}
 .consent label{display:flex;gap:10px;align-items:flex-start;font-size:.86rem;font-weight:400;
@@ -133,15 +133,29 @@ footer a{color:var(--gold-bright)}
           <input id="apt" name="apt" type="text" autocomplete="address-line2" maxlength="40" placeholder="3B">
         </div>
       </div>
+      <div class="row">
+        <div>
+          <label for="city">City <span class="req">*</span></label>
+          <input id="city" name="city" type="text" autocomplete="address-level2" required maxlength="60" placeholder="Long Branch">
+        </div>
+        <div class="st">
+          <label for="state">State <span class="req">*</span></label>
+          <input id="state" name="state" type="text" autocomplete="address-level1" required maxlength="2" placeholder="NJ" value="NJ">
+        </div>
+        <div class="zip">
+          <label for="zip">ZIP <span class="req">*</span></label>
+          <input id="zip" name="zip" type="text" autocomplete="postal-code" inputmode="numeric" required maxlength="5" placeholder="07740">
+        </div>
+      </div>
       <p class="hint">We ask for your address because the welcome pie is one per household.</p>
 
       <div class="consent">
         <label>
-          <input type="checkbox" id="sms" checked>
+          <input type="checkbox" id="sms">
           <span>Text me deals</span>
         </label>
         <label>
-          <input type="checkbox" id="email_ok" checked>
+          <input type="checkbox" id="email_ok">
           <span>Email me deals</span>
         </label>
         <p class="legal" id="legal"></p>

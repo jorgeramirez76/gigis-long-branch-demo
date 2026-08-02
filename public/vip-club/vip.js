@@ -47,7 +47,7 @@
       var src = q.get("src");
       if (src === "receipt" || src === "winback") SIGNUP_SOURCE = src;
       var filled = 0;
-      ["name", "phone", "email", "address", "apt"].forEach(function (id) {
+      ["name", "phone", "email", "address", "apt", "city", "state", "zip"].forEach(function (id) {
         var v = (q.get(id) || "").trim();
         if (!v) return;
         $(id).value = v.slice(0, 160);
@@ -70,7 +70,7 @@
   }
   function clearErr() {
     errEl.hidden = true;
-    ["name", "phone", "email", "address"].forEach(function (id) {
+    ["name", "phone", "email", "address", "city", "state", "zip"].forEach(function (id) {
       $(id).removeAttribute("aria-invalid");
     });
   }
@@ -89,11 +89,16 @@
   // The widget runs in Cloudflare's managed mode: for a normal visitor it solves itself and hands
   // back a token with nothing to click, so this is invisible in the common case.
   //
-  // Do NOT render on the script tag's own `onload`. window.turnstile is created before the SDK
-  // finishes attaching render(), so onload fires while `turnstile.render` is still undefined and
-  // the widget silently never appears — which would block every submission from a printed menu.
-  // api.js's documented `onload=` parameter fires only once render() genuinely exists; the poll is
-  // a belt-and-braces fallback in case that callback is ever missed.
+  // ⚠ Load api.js WITHOUT the `onload=` parameter, exactly as src/lib/turnstile.ts does on the
+  // React side. With `&onload=`, api.js logged "Turnstile already has been loaded. Was Turnstile
+  // imported multiple times?", left window.turnstile as an empty object with no render(), and the
+  // callback never fired — so the widget never appeared, no token was ever issued, and every
+  // submit died on "Please complete the verification above." That is the exact page 9 customers
+  // were emailed. Verified in a real browser: this loader ends with turnstile.render defined and a
+  // widget in the box; the onload= variant does not.
+  //
+  // Readiness is polled rather than taken from any load event: window.turnstile is created before
+  // the SDK finishes attaching render(), so a script onload can fire while render() is undefined.
   function renderTurnstile(siteKey) {
     if (tsWidgetId !== null || !window.turnstile || typeof window.turnstile.render !== "function") return;
     try {
@@ -114,23 +119,19 @@
       if (!cfg || !cfg.turnstileRequired || !cfg.turnstileSiteKey) return;
       tsBox.dataset.required = "1";
 
-      window.__vipTurnstileReady = function () { renderTurnstile(cfg.turnstileSiteKey); };
-
-      if (window.turnstile && typeof window.turnstile.render === "function") {
-        renderTurnstile(cfg.turnstileSiteKey);          // SDK already present
-      } else {
+      if (!window.turnstile || typeof window.turnstile.render !== "function") {
         var s = document.createElement("script");
-        s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__vipTurnstileReady";
+        s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
         s.async = true;
         s.defer = true;
         document.head.appendChild(s);
       }
 
-      // Fallback poll — stops as soon as the widget exists, and gives up after ~15s.
+      // Render as soon as render() genuinely exists; give up after ~15s.
       var tries = 0;
       var poll = setInterval(function () {
-        if (tsWidgetId !== null || ++tries > 60) { clearInterval(poll); return; }
         renderTurnstile(cfg.turnstileSiteKey);
+        if (tsWidgetId !== null || ++tries > 60) clearInterval(poll);
       }, 250);
     })
     .catch(function () { /* config unreachable — submit anyway; the server decides */ });
@@ -143,6 +144,9 @@
     if (!phoneLooksValid(val("phone"))) return showErr("That phone number doesn't look right. Please include the area code.", "phone");
     if (!EMAIL_RE.test(val("email"))) return showErr("That email doesn't look right.", "email");
     if (val("address").length < 4) return showErr("Please enter your street address — the welcome pie is one per household.", "address");
+    if (val("city").length < 2) return showErr("Please enter your city.", "city");
+    if (!/^[A-Za-z]{2}$/.test(val("state"))) return showErr("Please enter your state as two letters, like NJ.", "state");
+    if (!/^\d{5}$/.test(val("zip"))) return showErr("Please enter your 5-digit ZIP code.", "zip");
 
     var sms = $("sms").checked, em = $("email_ok").checked;
     if (!sms && !em) return showErr("Please tick at least one box so we can send your free-pie code.");
@@ -162,6 +166,9 @@
         email: val("email"),
         address: val("address"),
         apt: val("apt"),
+        city: val("city"),
+        state: val("state").toUpperCase(),
+        zip: val("zip"),
         smsConsent: sms,
         emailConsent: em,
         consentText: CONSENT_TEXT,

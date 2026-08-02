@@ -16,6 +16,9 @@ export function VipClub() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [apt, setApt] = useState("");
+  const [city, setCity] = useState("");
+  const [stateCode, setStateCode] = useState("NJ");
+  const [zip, setZip] = useState("");
   const [smsConsent, setSmsConsent] = useState(false);
   const [emailConsent, setEmailConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
@@ -33,9 +36,9 @@ export function VipClub() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!phone.trim() || !email.trim() || address.trim().length < 4) {
+    if (!phone.trim() || !email.trim() || address.trim().length < 4 || city.trim().length < 2 || !/^\d{5}$/.test(zip.trim())) {
       setStatus("error");
-      setErrorMsg("Please fill in your name, phone, email, and street address for your free pie.");
+      setErrorMsg("Please fill in your name, phone, email, and full address (street, city, state, ZIP) for your free pie.");
       return;
     }
     if (!smsConsent && !emailConsent) {
@@ -61,6 +64,9 @@ export function VipClub() {
           email,
           address,
           apt,
+          city,
+          state: stateCode,
+          zip,
           smsConsent,
           emailConsent,
           consentText: CONSENT_TEXT,
@@ -214,6 +220,57 @@ export function VipClub() {
                 onChange={(e) => setApt(e.target.value)}
                 className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                 placeholder="3B"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-[1fr_90px_120px]">
+            <div>
+              <label htmlFor="vip-city" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-white/70">
+                City
+              </label>
+              <input
+                id="vip-city"
+                type="text"
+                required
+                autoComplete="address-level2"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                placeholder="Long Branch"
+              />
+            </div>
+            <div>
+              <label htmlFor="vip-state" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-white/70">
+                State
+              </label>
+              <input
+                id="vip-state"
+                type="text"
+                required
+                maxLength={2}
+                autoComplete="address-level1"
+                value={stateCode}
+                onChange={(e) => setStateCode(e.target.value.toUpperCase())}
+                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                placeholder="NJ"
+              />
+            </div>
+            <div>
+              <label htmlFor="vip-zip" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-white/70">
+                ZIP
+              </label>
+              <input
+                id="vip-zip"
+                type="text"
+                required
+                maxLength={5}
+                inputMode="numeric"
+                autoComplete="postal-code"
+                value={zip}
+                onChange={(e) => setZip(e.target.value.replace(/\D/g, ""))}
+                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                placeholder="07740"
               />
             </div>
           </div>

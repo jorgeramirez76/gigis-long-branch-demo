@@ -32,6 +32,11 @@ export function VipJoinInline({
 }) {
   const [addr, setAddr] = useState(address);
   const [apt, setApt] = useState("");
+  const [city, setCity] = useState("");
+  const [stateCode, setStateCode] = useState("NJ");
+  const [zip, setZip] = useState("");
+  // Delivery orders prefill a full address line; asking again would be noise.
+  const hadAddress = address.trim().length >= 4;
   const [smsConsent, setSmsConsent] = useState(false);
   const [emailConsent, setEmailConsent] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "already">("idle");
@@ -50,6 +55,10 @@ export function VipJoinInline({
       setErrorMsg("Please enter your home address — the welcome pie is one per household.");
       return;
     }
+    if (!hadAddress && (city.trim().length < 2 || !/^\d{5}$/.test(zip.trim()))) {
+      setErrorMsg("Please add your city and 5-digit ZIP.");
+      return;
+    }
     if (TURNSTILE_ON && !turnstileToken) {
       setErrorMsg("Please complete the verification below.");
       return;
@@ -66,6 +75,9 @@ export function VipJoinInline({
           email,
           address: addr,
           apt,
+          city: hadAddress ? "" : city,
+          state: hadAddress ? "" : stateCode,
+          zip: hadAddress ? "" : zip,
           smsConsent,
           emailConsent,
           consentText: CONSENT_TEXT,
@@ -144,8 +156,9 @@ export function VipJoinInline({
       </p>
 
       {/* Pickup orders carry no address; the welcome pie is one per household, so ask for it. */}
-      {address.trim().length < 4 && (
-        <div className="mt-3 flex gap-2">
+      {!hadAddress && (
+        <div className="mt-3 flex flex-col gap-2">
+        <div className="flex gap-2">
           <input
             type="text"
             value={addr}
@@ -162,6 +175,36 @@ export function VipJoinInline({
             autoComplete="address-line2"
             className="w-20 shrink-0 rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
           />
+        </div>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="City"
+            autoComplete="address-level2"
+            className="w-full rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+          />
+          <input
+            type="text"
+            value={stateCode}
+            onChange={(e) => setStateCode(e.target.value.toUpperCase())}
+            maxLength={2}
+            placeholder="NJ"
+            autoComplete="address-level1"
+            className="w-16 shrink-0 rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+          />
+          <input
+            type="text"
+            value={zip}
+            onChange={(e) => setZip(e.target.value.replace(/\D/g, ""))}
+            maxLength={5}
+            inputMode="numeric"
+            placeholder="ZIP"
+            autoComplete="postal-code"
+            className="w-24 shrink-0 rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+          />
+        </div>
         </div>
       )}
 

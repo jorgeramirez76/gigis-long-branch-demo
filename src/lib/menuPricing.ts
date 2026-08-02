@@ -12,7 +12,7 @@
 // Explicit .js specifier: this module is imported by the serverless functions too,
 // where @vercel/node compiles each file to ESM and Node's loader will not resolve an
 // extensionless path. Vite maps it back to the .ts source for the browser build.
-import { MENU_GENERATED } from "../data/menuGenerated.js";
+import { MENU_PRICED } from "../data/menuPriced.js";
 
 const SEP = "\u0000"; // NUL separator — collision-free (ids/names never contain it)
 
@@ -38,7 +38,7 @@ let byItemName: Map<string, CatalogItem | null> | null = null; // "itemName" →
 function build() {
   byCatItem = new Map();
   byItemName = new Map();
-  for (const cat of MENU_GENERATED) {
+  for (const cat of MENU_PRICED) {
     for (const it of cat.items) {
       const optByGroupName = new Map<string, number>();
       const optByName = new Map<string, number>();

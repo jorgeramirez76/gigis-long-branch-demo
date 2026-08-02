@@ -13,12 +13,13 @@
  * Do not hand-edit menuGenerated.ts — edit the classification data or the
  * generator, then re-run it.
  */
-import { MENU_GENERATED } from "./menuGenerated";
+import { MENU_PRICED } from "./menuPriced";
 import type { MenuCategory } from "./menuTypes";
 
 export type { MenuItem, MenuCategory, OptionGroup, OptionChoice } from "./menuTypes";
 
-export const MENU: MenuCategory[] = MENU_GENERATED;
+// Topping charges folded in — see data/menuToppings.ts.
+export const MENU: MenuCategory[] = MENU_PRICED;
 
 export const MENU_VERIFIED = true;
 

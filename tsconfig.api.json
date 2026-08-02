@@ -12,6 +12,8 @@
   "include": [
     "api",
     "src/data/menuGenerated.ts",
+    "src/data/menuPriced.ts",
+    "src/data/menuToppings.ts",
     "src/data/menuIndex.ts",
     "src/data/menuTypes.ts",
     "src/lib/menuPricing.ts",

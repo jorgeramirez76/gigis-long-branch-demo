@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
 import { fetchLiveInventory, pruneMenu, REMOVAL_GUARD_SHARE } from "../lib/menuSync.js";
+import { TOPPING_CHARGE_CENTS } from "../../src/data/menuToppings.js";
 
 /**
  * Nightly menu refresh (Vercel Cron — see vercel.json).
@@ -62,9 +63,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `;
     if (removed.length) console.log("[cron/refresh-menu] removed", removed.join(" | "));
     if (priceDrift.length) console.log("[cron/refresh-menu] price drift", JSON.stringify(priceDrift));
+    // Reported, not applied: the order API charges toppings from the constant, so a
+    // silent reprice here would show one price and charge another.
+    const toppingChargeDrift =
+      inv.toppingChargeCents != null && inv.toppingChargeCents !== TOPPING_CHARGE_CENTS
+        ? { site: TOPPING_CHARGE_CENTS, clover: inv.toppingChargeCents }
+        : undefined;
+    if (toppingChargeDrift) console.warn("[cron/refresh-menu] topping charge drift", toppingChargeDrift);
     res.status(200).json({
       ok: true,
       items: kept,
+      toppingChargeDrift,
       removed,
       priceDrift,
       stockIgnored: inv.stockIgnored,

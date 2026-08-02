@@ -67,23 +67,18 @@ export function unitPrice(line: Pick<CartLineInput, "basePrice" | "options">): n
   return Math.round(line.basePrice + line.options.reduce((s, o) => s + Math.round(o.delta || 0), 0));
 }
 
-export type Totals = { subtotal: number; discount: number; tax: number; tip: number; total: number };
-
-/** Cash orders get the store's dual-pricing discount: listed prices are card
- * prices, so paying cash takes 3.99% off the item subtotal (tax on the
- * discounted amount — same math the register uses). */
-export const CASH_DISCOUNT_RATE = 0.0399;
+export type Totals = { subtotal: number; tax: number; tip: number; total: number };
 
 /** Authoritative server-side totals. Lines must already be catalog-priced.
+ * One price whichever way you pay — the 3.99% cash discount was removed on
+ * 2026-08-01 (owner's call: it confused customers more than it saved them).
  * Tip is clamped to [0, max($20, subtotal)] so a client bug (dollars-vs-cents)
  * or tampering can't drive the captured charge to an absurd amount. */
-export function computeTotals(lines: CartLineInput[], tipCents: number, cashDiscount = false): Totals {
+export function computeTotals(lines: CartLineInput[], tipCents: number): Totals {
   const subtotal = lines.reduce((s, l) => s + unitPrice(l) * l.quantity, 0);
-  const discount = cashDiscount ? Math.round(subtotal * CASH_DISCOUNT_RATE) : 0;
-  const taxable = subtotal - discount;
-  const tax = Math.round(taxable * TAX_RATE);
-  const tip = Math.min(Math.max(0, Math.round(tipCents || 0)), Math.max(2000, taxable));
-  return { subtotal, discount, tax, tip, total: taxable + tax + tip };
+  const tax = Math.round(subtotal * TAX_RATE);
+  const tip = Math.min(Math.max(0, Math.round(tipCents || 0)), Math.max(2000, subtotal));
+  return { subtotal, tax, tip, total: subtotal + tax + tip };
 }
 
 export class CloverError extends Error {
@@ -180,16 +175,13 @@ export function ticketTitle(fulfillment: Fulfillment, paid?: boolean): string {
  * Create a DRAFT itemized order in the merchant's POS (no state → does not fire
  * to the kitchen). Custom line items (name+price) price correctly regardless of
  * Clover modifier config; a full human-readable ticket (safety notes
- * front-loaded) is written to the order note. If item/discount attachment
+ * front-loaded) is written to the order note. If item attachment
  * fails, the partial draft is deleted so a half-built ticket can never fire.
  */
 export async function createDraftOrder(opts: {
   lines: CartLineInput[];
   fulfillment: Fulfillment;
   note: string;
-  /** Cash orders: exact cents taken off at the register (order-level Clover
-   * discount), so the POS total equals what the driver collects. */
-  discountCents?: number;
 }): Promise<{ id: string; href: string }> {
   const mid = merchantId()!;
   const title = ticketTitle(opts.fulfillment);
@@ -236,14 +228,6 @@ export async function createDraftOrder(opts: {
       );
     }
 
-    // Cash orders: attach the exact-cents cash discount so the register
-    // total matches the collected amount (staff must not re-apply it manually).
-    if (opts.discountCents && opts.discountCents > 0) {
-      await rest(`/orders/${orderId}/discounts`, {
-        method: "POST",
-        body: JSON.stringify({ name: "Cash discount 3.99% (website)", amount: -opts.discountCents }),
-      });
-    }
   } catch (err) {
     await rest(`/orders/${orderId}`, { method: "DELETE" }).catch(() => {});
     throw err;
@@ -351,7 +335,6 @@ export async function createPosOrder(opts: {
   fulfillment: Fulfillment;
   note: string;
   paid: boolean;
-  discountCents?: number;
 }): Promise<{ id: string; href: string }> {
   const draft = await createDraftOrder(opts);
   try {
@@ -467,8 +450,8 @@ export function buildOrderNote(opts: {
       ? `** PAID w/ CC ${money(opts.totals.total)} **${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
       : opts.payment === "cash"
         ? opts.fulfillment === "delivery"
-          ? `** NOT PAID — DRIVER COLLECTS CASH ${money(opts.totals.total)} ** (3.99% cash discount applied)`
-          : `** NOT PAID — COLLECT CASH AT COUNTER ${money(opts.totals.total)} ** (3.99% cash discount applied)`
+          ? `** NOT PAID — DRIVER COLLECTS CASH ${money(opts.totals.total)} **`
+          : `** NOT PAID — COLLECT CASH AT COUNTER ${money(opts.totals.total)} **`
         : `** NOT PAID — ${collector} ${money(opts.totals.total)} **`;
   const addr = opts.fulfillment === "delivery" ? ` → ${opts.customer.address ?? "(no address)"}` : "";
   const items = opts.lines
@@ -486,7 +469,7 @@ export function buildOrderNote(opts: {
     opts.orderNote ? `⚠ NOTE: ${opts.orderNote}` : "",
     `${opts.customer.name} ${opts.customer.phone}${addr}`,
     items,
-    `Sub ${money(opts.totals.subtotal)}${opts.totals.discount ? ` Cash disc -${money(opts.totals.discount)}` : ""} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
+    `Sub ${money(opts.totals.subtotal)} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
   ].filter(Boolean);
   return parts.join(" | ");
 }

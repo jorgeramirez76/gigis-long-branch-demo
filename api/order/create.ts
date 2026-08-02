@@ -70,7 +70,7 @@ async function sendOrderReceipt(o: {
     o.paymentMethod === "card"
       ? `Paid online — ${money(o.totals.total)} charged to your card.`
       : o.paymentMethod === "cash"
-        ? `Paying cash: please have ${money(o.totals.total)} ready ${o.fulfillment === "delivery" ? "for your delivery driver" : "at pickup"} — your 3.99% cash discount is already included.`
+        ? `Paying cash: please have ${money(o.totals.total)} ready ${o.fulfillment === "delivery" ? "for your delivery driver" : "at pickup"}.`
         : `${money(o.totals.total)} due when you ${o.fulfillment === "delivery" ? "receive your delivery" : "pick up"}.`;
   try {
     const html = receiptHtml({
@@ -85,7 +85,6 @@ async function sendOrderReceipt(o: {
         lineTotal: money(unitPrice(l) * l.quantity),
       })),
       subtotal: money(o.totals.subtotal),
-      discount: o.totals.discount ? money(o.totals.discount) : undefined,
       tax: money(o.totals.tax),
       tip: o.totals.tip ? money(o.totals.tip) : undefined,
       total: money(o.totals.total),
@@ -259,7 +258,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   const lines: CartLineInput[] = priced.lines;
-  const totals = computeTotals(lines, tipCents, paymentMethod === "cash");
+  const totals = computeTotals(lines, tipCents);
   if (totals.total <= 0) {
     res.status(400).json({ error: "empty_order" });
     return;
@@ -460,7 +459,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       fulfillment,
       note,
       paid: paymentMethod === "card",
-      discountCents: totals.discount,
     });
     if (reservedId != null) await updateOrder(reservedId, { status: paymentMethod === "card" ? "paid" : "placed", cloverOrderId: order.id, note });
     // Kitchen ticket — same for cash/pay-at-pickup orders: the kitchen still has

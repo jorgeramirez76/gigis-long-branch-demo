@@ -58,10 +58,10 @@ def load():
 
 def main():
     items, mods = load()
-    lines = ["## What things cost (card prices, straight from Gigi's register)",
+    lines = ["## What things cost (straight from Gigi's register)",
              "",
-             "These are the current prices at the Long Branch location. They are card prices — paying",
-             "cash, in store or by choosing Cash at online checkout, takes 3.99% off. Prices can change;",
+             "These are the current prices at the Long Branch location. One price whether you pay by card or",
+             "Prices can change;",
              "call (732) 377-2468 to confirm.",
              ""]
     for key, label in WANT:

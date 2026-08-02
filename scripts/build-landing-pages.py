@@ -229,7 +229,7 @@ def render_prices(page):
              f"<table class=\"ptable\"><caption>{E(pb.get('caption', 'Current prices'))}</caption>"
              f"<thead><tr><th scope=\"col\">Item</th><th scope=\"col\" style=\"text-align:right\">Price</th></tr></thead>"
              f"<tbody>{''.join(rows)}</tbody></table>"
-             f"<p class=\"pnote\">Card prices, straight from Gigi's register; 3.99% comes off for cash. "
+             f"<p class=\"pnote\">Straight from Gigi's register. "
              f"Prices can change &mdash; your total is confirmed before you pay.</p>"
              f"</section>")
     return table, ld
@@ -268,8 +268,7 @@ def render_direct(page):
             "<li><strong>No app service fee and no menu markup</strong> &mdash; gigislongbranch.com "
             "goes straight to Gigi's own register, and your ticket prints in the kitchen the moment "
             "you place it.</li>"
-            "<li><strong>3.99% off for cash</strong>, chosen at checkout or paid at the counter.</li>"
-            "<li><strong>A free plain cheese pie for new VIP members</strong> &mdash; one per "
+                        "<li><strong>A free plain cheese pie for new VIP members</strong> &mdash; one per "
             f"household, code good for 90 days. <a href=\"{BASE}/#vip-club\">Join the club</a>.</li>"
             "</ul></div></section>")
 

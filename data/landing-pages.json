@@ -52,7 +52,7 @@
       },
       {
         "q": "Is it cheaper to order on the website than on a delivery app?",
-        "a": "Yes. Ordering at gigislongbranch.com goes to Gigi's own register with no app service fee and no marked-up menu prices, and choosing Cash at checkout takes another 3.99% off."
+        "a": "Yes. Ordering at gigislongbranch.com goes to Gigi's own register with no app service fee and no marked-up menu prices."
       }
     ],
     "priceBlock": {
@@ -135,7 +135,7 @@
       },
       {
         "q": "How much is a gluten-free pizza at Gigi's?",
-        "a": "A gluten-free pie is $17.68, the same as a regular plain pie. Gluten-free pasta is a $2.60 substitution on many pasta dishes, and gluten-free bread is a $2.08 substitution on a breakfast sandwich. Those are card prices; paying cash takes 3.99% off."
+        "a": "A gluten-free pie is $17.68, the same as a regular plain pie. Gluten-free pasta is a $2.60 substitution on many pasta dishes, and gluten-free bread is a $2.08 substitution on a breakfast sandwich."
       },
       {
         "q": "Do you have gluten-free pasta and bread, or only pizza?",
@@ -226,7 +226,7 @@
       },
       {
         "q": "How much is the vegan pizza?",
-        "a": "The vegan pie is $20.79 as a card price, and 3.99% comes off if you pay cash. It is on the menu as its own item rather than being a regular pie with the cheese left off."
+        "a": "The vegan pie is $20.79. It is on the menu as its own item rather than being a regular pie with the cheese left off."
       },
       {
         "q": "What else on the menu is plant-based?",
@@ -315,7 +315,7 @@
       },
       {
         "q": "How much are catering trays?",
-        "a": "Chicken trays such as parm, francese, marsala and sausage and peppers are $57.20 each. Seafood trays such as shrimp scampi, salmon oreganata and zuppa are $67.60. Those are card prices, and paying cash takes 3.99% off."
+        "a": "Chicken trays such as parm, francese, marsala and sausage and peppers are $57.20 each. Seafood trays such as shrimp scampi, salmon oreganata and zuppa are $67.60."
       },
       {
         "q": "How many people does a tray feed?",
@@ -581,7 +581,7 @@
       },
       {
         "q": "How much is a pizza delivered to Elberon?",
-        "a": "A plain pie is $17.68 and a Grandma is $26.00, both card prices, with 3.99% off for cash. Ordering direct on gigislongbranch.com means no delivery-app service fee on top."
+        "a": "A plain pie is $17.68 and a Grandma is $26.00. Ordering direct on gigislongbranch.com means no delivery-app service fee on top."
       },
       {
         "q": "How late do you deliver to Elberon?",

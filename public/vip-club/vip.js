@@ -24,7 +24,11 @@
   var btn = document.getElementById("go");
   var errEl = document.getElementById("err");
   var doneEl = document.getElementById("done");
-  var tsBox = document.getElementById("turnstile");
+  // id "ts-widget", NOT "turnstile": an element with id="turnstile" becomes
+  // window.turnstile (named element access), which makes Cloudflare's api.js
+  // think it was loaded twice — it bails and render() never exists. That single
+  // collision silently broke this page for every visitor.
+  var tsBox = document.getElementById("ts-widget");
   var tsToken = null;
   var tsWidgetId = null;
   var SIGNUP_SOURCE = "menu-qr";

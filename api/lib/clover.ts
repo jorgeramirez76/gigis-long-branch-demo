@@ -105,24 +105,86 @@ export function unitPrice(line: Pick<CartLineInput, "basePrice" | "options">): n
   return Math.round(line.basePrice + line.options.reduce((s, o) => s + Math.round(o.delta || 0), 0));
 }
 
-export type Totals = { subtotal: number; tax: number; tip: number; total: number };
+export type Totals = { subtotal: number; tax: number; tip: number; deliveryFee: number; discount: number; total: number };
 
 /** Authoritative server-side totals. Lines must already be catalog-priced.
  * One price whichever way you pay — the 3.99% cash discount was removed on
  * 2026-08-01 (owner's call: it confused customers more than it saved them).
  * Tip is clamped to [0, max($20, subtotal)] so a client bug (dollars-vs-cents)
- * or tampering can't drive the captured charge to an absurd amount. */
-export function computeTotals(lines: CartLineInput[], tipCents: number): Totals {
+ * or tampering can't drive the captured charge to an absurd amount.
+ *
+ * `deliveryFeeCents` MUST come from deliveryFeeCents() in src/lib/deliveryZones.ts, keyed off a
+ * town the server validated — never from a client-supplied amount. NJ treats a separately stated
+ * delivery charge on taxable goods as taxable, so it is taxed with the food rather than added
+ * after tax. */
+export function computeTotals(
+  lines: CartLineInput[],
+  tipCents: number,
+  deliveryFeeCents = 0,
+  discountCents = 0,
+): Totals {
   const subtotal = lines.reduce((s, l) => s + unitPrice(l) * l.quantity, 0);
-  const tax = Math.round(subtotal * TAX_RATE);
+  const deliveryFee = Math.max(0, Math.round(deliveryFeeCents || 0));
+  // Clamped to the subtotal so a promo can never produce a negative order, and never eats the
+  // delivery fee or the tip — a free pie is a free pie, not free driving or a free gratuity.
+  const discount = Math.min(Math.max(0, Math.round(discountCents || 0)), subtotal);
+  // A retailer-funded free item is not taxable in NJ, so tax is computed AFTER the discount.
+  const tax = Math.round((subtotal - discount + deliveryFee) * TAX_RATE);
+  // Tip follows the food actually paid for, not the pre-discount subtotal.
   const tip = Math.min(Math.max(0, Math.round(tipCents || 0)), Math.max(2000, subtotal));
-  return { subtotal, tax, tip, total: subtotal + tax + tip };
+  return { subtotal, tax, tip, deliveryFee, discount, total: subtotal - discount + deliveryFee + tax + tip };
 }
 
 export class CloverError extends Error {
   constructor(message: string, readonly status: number, readonly body?: unknown) {
     super(message);
   }
+}
+
+/**
+ * Did Clover actually take the money?
+ *
+ * Clover answers HTTP 200 with a charge body whose `status` is "failed" when its
+ * risk engine blocks or reverses a transaction — `{"status":"failed",
+ * "outcome":{"network_status":"reversed_after_approval","type":"blocked"}}` — so
+ * `res.ok` is not a capture. Checking only `res.ok && data.id` is exactly how
+ * order #24 (2026-08-06, $18.85) was recorded as paid, printed on a "PAID w/ CC"
+ * kitchen chit and confirmed to the customer while the POS order sat OPEN with
+ * no tender and no money moved.
+ *
+ * Treated as captured ONLY on an explicit success signal. Anything ambiguous
+ * fails closed: refusing a good order costs one phone call, accepting a dead one
+ * gives the food away.
+ */
+export type ChargeBody = {
+  id?: string;
+  amount?: number;
+  amount_captured?: number;
+  captured?: boolean;
+  paid?: boolean;
+  status?: string;
+  outcome?: { network_status?: string; type?: string };
+  error?: { message?: string };
+  message?: string;
+};
+
+export function chargeCaptured(data: ChargeBody): boolean {
+  if (typeof data.status === "string" && data.status.toLowerCase() !== "succeeded") return false;
+  if (data.paid === false) return false;
+  if (data.outcome?.type && data.outcome.type.toLowerCase() !== "authorized") return false;
+  if (data.outcome?.network_status && data.outcome.network_status.toLowerCase() !== "approved_by_network") return false;
+  // A success body carries at least one positive confirmation; a bare {id} does not.
+  return data.status?.toLowerCase() === "succeeded" || data.paid === true || (data.amount_captured ?? 0) > 0;
+}
+
+/** Human-readable reason a charge body isn't a capture (for logs + staff alerts). */
+export function chargeFailureReason(data: ChargeBody): string {
+  return [
+    data.status ? `status=${data.status}` : null,
+    data.paid === false ? "paid=false" : null,
+    data.outcome?.type ? `outcome=${data.outcome.type}` : null,
+    data.outcome?.network_status ? `network=${data.outcome.network_status}` : null,
+  ].filter(Boolean).join(" ") || "no capture confirmation in Clover's response";
 }
 
 /**
@@ -162,15 +224,14 @@ export async function createCharge(opts: {
     }),
   });
 
-  const data = (await res.json().catch(() => ({}))) as {
-    id?: string;
-    amount?: number;
-    error?: { message?: string };
-    message?: string;
-  };
+  const data = (await res.json().catch(() => ({}))) as ChargeBody;
   if (!res.ok || !data.id) {
     const msg = data.error?.message || data.message || "Card was declined";
     throw new CloverError(msg, res.status, data);
+  }
+  if (!chargeCaptured(data)) {
+    // 200 OK, real charge id, no money: Clover blocked or reversed it.
+    throw new CloverError("Card was declined", 402, { ...data, __reason: chargeFailureReason(data) });
   }
   return { id: data.id, amount: data.amount ?? opts.amount };
 }
@@ -220,6 +281,10 @@ export async function createDraftOrder(opts: {
   lines: CartLineInput[];
   fulfillment: Fulfillment;
   note: string;
+  /** Cents. Added as its own taxed line item so the merchant's Clover totals, reports and the
+   *  /pay capture all include it — an amount that exists only in our DB would make Clover
+   *  undercharge the card. Server-computed; see src/lib/deliveryZones.ts. */
+  deliveryFee?: number;
 }): Promise<{ id: string; href: string }> {
   const mid = merchantId()!;
   const title = ticketTitle(opts.fulfillment);
@@ -248,6 +313,13 @@ export async function createDraftOrder(opts: {
         items.push({ name, price, note: lineNote });
       }
     }
+    // Delivery fee rides as a normal taxed line item, last, so it reads clearly on the chit and
+    // is included in what Clover captures.
+    if (opts.deliveryFee && opts.deliveryFee > 0) {
+      items.push({ name: "Delivery Fee", price: Math.round(opts.deliveryFee), note: "WEB • delivery" });
+    }
+    // A free-pie promo needs NO handling here: it arrives as a zero-priced Plain Pie line (see
+    // applyFreePie in promo.ts), so Clover's computed total and tax are right automatically.
     // Line items are created ONE BY ONE (small parallel chunks), not via
     // bulk_line_items: only the single POST accepts inline taxRates, and the
     // attached NJ rate is what makes Clover compute tax ON TOP of the price.
@@ -373,6 +445,8 @@ export async function createPosOrder(opts: {
   fulfillment: Fulfillment;
   note: string;
   paid: boolean;
+  /** Cents; forwarded to createDraftOrder as its own taxed line item. */
+  deliveryFee?: number;
 }): Promise<{ id: string; href: string }> {
   const draft = await createDraftOrder(opts);
   try {
@@ -451,15 +525,15 @@ export async function payForOrder(opts: {
     }),
   });
 
-  const data = (await res.json().catch(() => ({}))) as {
-    id?: string;
-    amount?: number;
-    error?: { message?: string };
-    message?: string;
-  };
+  const data = (await res.json().catch(() => ({}))) as ChargeBody;
   if (!res.ok || !data.id) {
     const msg = data.error?.message || data.message || "Card was declined";
     throw new CloverError(msg, res.status, data);
+  }
+  // Same trap as createCharge: /pay answers 200 with a failed, uncaptured charge
+  // when Clover's risk engine blocks it. Order #24 went out as PAID that way.
+  if (!chargeCaptured(data)) {
+    throw new CloverError("Card was declined", 402, { ...data, __reason: chargeFailureReason(data) });
   }
   return { id: data.id, amount: data.amount ?? 0 };
 }
@@ -472,7 +546,7 @@ export async function payForOrder(opts: {
  */
 export function buildOrderNote(opts: {
   fulfillment: Fulfillment;
-  customer: { name: string; phone: string; email?: string; address?: string };
+  customer: { name: string; phone: string; email?: string; address?: string; town?: string };
   lines: CartLineInput[];
   totals: Totals;
   payment: "card" | "pickup" | "cash";
@@ -491,7 +565,11 @@ export function buildOrderNote(opts: {
           ? `** NOT PAID — DRIVER COLLECTS CASH ${money(opts.totals.total)} **`
           : `** NOT PAID — COLLECT CASH AT COUNTER ${money(opts.totals.total)} **`
         : `** NOT PAID — ${collector} ${money(opts.totals.total)} **`;
-  const addr = opts.fulfillment === "delivery" ? ` → ${opts.customer.address ?? "(no address)"}` : "";
+  // Town is on the chit so the driver sees the zone the fee was charged for.
+  const addr =
+    opts.fulfillment === "delivery"
+      ? ` → ${opts.customer.address ?? "(no address)"}${opts.customer.town ? `, ${opts.customer.town}` : ""}`
+      : "";
   const items = opts.lines
     .map((l) => {
       // Compact here — (F)/(L)/(R) per topping — because this note covers the
@@ -512,7 +590,7 @@ export function buildOrderNote(opts: {
     opts.orderNote ? `⚠ NOTE: ${opts.orderNote}` : "",
     `${opts.customer.name} ${opts.customer.phone}${addr}`,
     items,
-    `Sub ${money(opts.totals.subtotal)} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
+    `Sub ${money(opts.totals.subtotal)}${opts.totals.discount ? ` FreePie -${money(opts.totals.discount)}` : ""}${opts.totals.deliveryFee ? ` Dlv ${money(opts.totals.deliveryFee)}` : ""} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
   ].filter(Boolean);
   return parts.join(" | ");
 }

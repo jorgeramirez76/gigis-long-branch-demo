@@ -22,14 +22,16 @@ import {
 } from "../lib/clover.js";
 import { priceLines, type ClientLine } from "../lib/menuCatalog.js";
 import { liveItemNames } from "../lib/menuLive.js";
-import { isOrderingOpen } from "../../src/lib/openStatus.js";
+import { isOrderingOpen, isDeliveryOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, releaseOrder, reserveOrder, updateOrder } from "../lib/orderStore.js";
+import { applyFreePie, checkPromoCode, normalizePromoCode, redeemPromoCode } from "../lib/promo.js";
 import { alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
 import { isVipMember } from "../lib/vipLookup.js";
 import { countUnits, readyMessage } from "../../src/lib/readyTime.js";
+import { deliveryFeeCents, isDeliveryTown } from "../../src/lib/deliveryZones.js";
 import { placementSuffix } from "../../src/data/menuToppings.js";
 
 /**
@@ -86,6 +88,8 @@ async function sendOrderReceipt(o: {
         lineTotal: money(unitPrice(l) * l.quantity),
       })),
       subtotal: money(o.totals.subtotal),
+      discount: o.totals.discount ? `\u2212${money(o.totals.discount)}` : undefined,
+      deliveryFee: o.totals.deliveryFee ? money(o.totals.deliveryFee) : undefined,
       tax: money(o.totals.tax),
       tip: o.totals.tip ? money(o.totals.tip) : undefined,
       total: money(o.totals.total),
@@ -126,6 +130,11 @@ function validShape(input: unknown): input is ClientLine[] {
       l.quantity >= 1 &&
       l.quantity <= MAX_UNITS &&
       (l.categoryId == null || typeof l.categoryId === "string") &&
+      // `notes` reaches a template literal in buildOrderNote. An object whose
+      // toString is null makes that interpolation throw, and the throw lands
+      // AFTER the card is captured — money taken, no POS order, no ticket, no
+      // alert. Shape-check it here, where rejecting costs nothing.
+      (l.notes == null || (typeof l.notes === "string" && l.notes.length <= 500)) &&
       (l.options == null ||
         (Array.isArray(l.options) &&
           l.options.length <= MAX_OPTS_PER_LINE &&
@@ -167,7 +176,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const body = (req.body ?? {}) as Record<string, unknown>;
   const fulfillment = body.fulfillment as Fulfillment;
-  const customer = (body.customer ?? {}) as { name?: string; phone?: string; email?: string; address?: string };
+  const customer = (body.customer ?? {}) as { name?: string; phone?: string; email?: string; address?: string; town?: string };
   const paymentMethod =
     body.paymentMethod === "card" ? "card" : body.paymentMethod === "cash" ? "cash" : "pickup";
   const cardToken = typeof body.cardToken === "string" ? body.cardToken : undefined;
@@ -175,10 +184,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const turnstileToken = typeof body.turnstileToken === "string" ? body.turnstileToken : undefined;
   const tipCents = Number.isFinite(body.tipCents) ? Number(body.tipCents) : 0;
   const orderNote = typeof body.orderNote === "string" ? body.orderNote.slice(0, 130) : undefined;
+  const promoCodeRaw = typeof body.promoCode === "string" ? body.promoCode.trim() : "";
 
   // ---- validate shape ----
   if (fulfillment !== "pickup" && fulfillment !== "delivery") {
     res.status(400).json({ error: "invalid_fulfillment" });
+    return;
+  }
+  // In-house delivery stops at 10 PM even on nights the kitchen runs later — the drivers are
+  // done. Same 5-minute grace as the store-hours gate so a checkout already in flight at 9:59
+  // isn't failed mid-payment. Pickup is unaffected and stays open until close.
+  if (fulfillment === "delivery" && !isDeliveryOpen(5)) {
+    res.status(409).json({
+      error: "delivery_closed",
+      message: "Delivery stops at 10 PM. Pickup is still available until we close — switch to pickup and we'll have it ready.",
+    });
     return;
   }
   if (typeof customer.name !== "string" || customer.name.trim().length < 1 || customer.name.length > 80) {
@@ -196,6 +216,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (fulfillment === "delivery" && (typeof customer.address !== "string" || customer.address.trim().length < 5)) {
     res.status(400).json({ error: "delivery_address_required" });
+    return;
+  }
+  // The delivery fee is keyed off the town, so an unknown town must be rejected rather than
+  // defaulted — guessing would charge the wrong amount. Also stops orders to towns Gigi's
+  // doesn't cover.
+  if (fulfillment === "delivery" && !isDeliveryTown(customer.town)) {
+    res.status(400).json({
+      error: "delivery_town_required",
+      message: "Please choose your town so we can add the right delivery fee.",
+    });
+    return;
+  }
+  // Promo format + pickup-only are cheap stateless checks, so they run with the other shape
+  // validations — before any DB work or the bot check. The code's actual validity (exists,
+  // unredeemed, unexpired) is checked after pricing, where the cart is known.
+  const promoCode = promoCodeRaw ? normalizePromoCode(promoCodeRaw) : null;
+  if (promoCodeRaw && !promoCode) {
+    res.status(400).json({ error: "promo_invalid", message: "That code doesn't look right — check it and try again." });
+    return;
+  }
+  if (promoCode && fulfillment !== "pickup") {
+    res.status(400).json({
+      error: "promo_pickup_only",
+      message: "The free welcome pie is for pickup orders only — switch to pickup to use your code.",
+    });
     return;
   }
   if (!UUID_RE.test(idempotencyKey)) {
@@ -264,11 +309,59 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   const lines: CartLineInput[] = priced.lines;
-  const totals = computeTotals(lines, tipCents);
+  // Fee resolved from the validated town by the shared schedule — never from the client.
+  const fee = deliveryFeeCents(fulfillment, customer.town);
+  if (fee === null) {
+    res.status(400).json({ error: "delivery_town_required" });
+    return;
+  }
+  // ---- VIP free-pie promo (already known to be pickup-only by here) ----
+  // The discount is server-derived: the catalog base price of the Plain Pie actually in the cart.
+  // The client only ever sends the code. `kitchenLines` is what Clover, the ticket and the receipt
+  // see — identical to `lines` except one Plain Pie unit is zero-priced (see applyFreePie).
+  let promo: { id: number; code: string } | null = null;
+  let discount = 0;
+  let kitchenLines: CartLineInput[] = lines;
+  if (promoCode) {
+    const check = await checkPromoCode("gigis_long_branch", promoCode);
+    if (!check.ok) {
+      res.status(400).json({ error: "promo_invalid", message: check.message });
+      return;
+    }
+    const applied = applyFreePie(lines, check.code);
+    if (!applied) {
+      res.status(400).json({
+        error: "promo_needs_pie",
+        message: "Your code is for a free Plain Pie — add a Plain Pie to your order to use it.",
+      });
+      return;
+    }
+    promo = { id: check.id, code: check.code };
+    discount = applied.discountCents;
+    kitchenLines = applied.lines;
+  }
+  const totals = computeTotals(lines, tipCents, fee, discount);
   if (totals.total <= 0) {
     res.status(400).json({ error: "empty_order" });
     return;
   }
+  // Marks the code used AFTER the order lands (fired to the kitchen, or paid). Conditional
+  // update, so two orders racing the same code can't both consume it — the race loser has
+  // already been charged the discounted price, which staff are alerted to rather than the
+  // customer being failed after the food is made. Never throws: a redemption hiccup must not
+  // fail an order that already exists.
+  const redeemPromo = async (orderRef: string) => {
+    if (!promo) return;
+    try {
+      const first = await redeemPromoCode(promo.id);
+      if (!first) {
+        console.error(`[order/create] promo ${promo.code} already redeemed when order ${orderRef} completed`);
+        await alertStaff(`FREE PIE CODE ${promo.code} landed on two orders at once — order ${orderRef} also got the free pie; flag for Tommy.`);
+      }
+    } catch (err) {
+      console.error("[order/create] promo redemption failed", err);
+    }
+  };
 
   if (!cloverConfigured()) {
     res.status(503).json({ error: "ordering_not_configured", message: "Online ordering isn't switched on yet. Please call the store to order." });
@@ -280,6 +373,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     phone: customer.phone.trim(),
     email: customer.email?.trim(),
     address: customer.address?.trim().slice(0, ADDR_MAX),
+    town: isDeliveryTown(customer.town) ? customer.town : undefined,
   };
 
   // ---- idempotent reservation: atomically claim the key so a retry can't
@@ -288,7 +382,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     idempotencyKey,
     fulfillment,
     customer: cust,
-    items: lines,
+    items: kitchenLines,
     subtotal: totals.subtotal,
     tax: totals.tax,
     tip: totals.tip,
@@ -356,9 +450,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       let draftId: string | undefined;
       try {
         const draft = await createDraftOrder({
-          lines,
+          lines: kitchenLines,
           fulfillment,
-          note: buildOrderNote({ fulfillment, customer: cust, lines, totals, payment: "card", orderNote }),
+          deliveryFee: totals.deliveryFee,
+          note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", orderNote }),
         });
         draftId = draft.id;
         const cloverAmount = await getEcommOrderAmount(draftId);
@@ -380,16 +475,46 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             // Persist the capture BEFORE the fire step so a mid-flight kill can't lose it.
             if (reservedId != null) await updateOrder(reservedId, { status: "charged", chargeId, cloverOrderId: draftId });
           } catch (err) {
-            // Declined (or gateway error): nothing was charged — remove the
-            // draft and fail closed exactly like the legacy flow.
-            await deleteDraftOrder(draftId).catch(() => {});
             const status = err instanceof CloverError ? err.status : 500;
-            // Nothing captured, so hand the key back — otherwise the customer we
-            // just told to "try a different card" cannot, because the reservation
-            // they made on the first attempt blocks every retry of this cart.
+            // A 4xx from Clover is a DEFINITE decline: it answered, and it refused. Anything else
+            // — a network drop, a function timeout, a 5xx — is UNCERTAIN: Clover may well have
+            // captured the money and lost the response on the way back.
+            //
+            // Treating uncertain as "nothing was charged" is how a capture goes silent: the code
+            // used to delete the order holding the payment, release the key, write no record and
+            // fire no alert, while telling the customer their card failed. The money is gone, no
+            // ticket prints, and nobody at the shop knows until the chargeback.
+            const definitelyDeclined = err instanceof CloverError && status >= 400 && status < 500;
+
+            if (!definitelyDeclined) {
+              // Keep the order — it may hold the payment. Keep the reservation so a retry can't
+              // double-charge. Page staff to reconcile it in the POS.
+              console.error("[order/create] pay-for-order UNCERTAIN — preserving order", status, err instanceof Error ? err.message : err);
+              if (reservedId != null) {
+                await updateOrder(reservedId, { status: "paid_unrouted", cloverOrderId: draftId });
+              }
+              await alertStaff(
+                `UNCERTAIN CARD RESULT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
+                `Clover order ${draftId} may hold a payment but we never got a confirmation. ` +
+                `Open it in the POS: if it is paid, make the order; if not, it can be voided.`,
+              );
+              res.status(200).json({
+                ok: true,
+                orderId: draftId,
+                paid: false,
+                routingIssue: true,
+                message: "We couldn't confirm your payment. Please call the store before re-ordering so we don't charge you twice.",
+              });
+              return;
+            }
+
+            // Definite decline: nothing was captured, so it is safe to clean up.
+            await deleteDraftOrder(draftId).catch(() => {});
+            // Hand the key back — otherwise the customer we just told to "try a different card"
+            // cannot, because the reservation from the first attempt blocks every retry.
             if (reservedId != null) await releaseOrder(reservedId);
-            console.error("[order/create] pay-for-order failed", status, err instanceof Error ? err.message : err);
-            res.status(status === 503 ? 503 : 402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
+            console.error("[order/create] pay-for-order declined", status, err instanceof Error ? err.message : err);
+            res.status(402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
             return;
           }
         } else {
@@ -433,7 +558,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // ---- single-order flow: payment already on the itemized order — fire it ----
   if (paidOrderId) {
-    const note = buildOrderNote({ fulfillment, customer: cust, lines, totals, payment: "card", chargeId, orderNote });
+    const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", chargeId, orderNote });
     try {
       await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, true) });
       if (reservedId != null) await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
@@ -441,15 +566,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // what drives the printer. Awaited (not fire-and-forget) so it isn't killed
       // by the serverless function freezing after the response; never throws.
       await printOrderTicket(paidOrderId);
+      await redeemPromo(paidOrderId);
       // Invite non-members to the free-pie club — on the confirmation popup
       // and in the receipt. Existing members are skipped.
       const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
-      await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
+      await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines: kitchenLines, totals, paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
       res.status(200).json({ ok: true, orderId: paidOrderId, paid: true, chargeId, totals, vipEligible });
     } catch (err) {
       // Paid but not fired: the payment and items live on the SAME order, so
       // staff recovery is just opening that order in the POS. Never delete it.
       console.error("[order/create] fire failed after payment", err);
+      await redeemPromo(paidOrderId);
       if (reservedId != null) await updateOrder(reservedId, { status: "paid_unrouted", note });
       await alertStaff(`PAID WEB ORDER NOT FIRED — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — Clover order ${paidOrderId} holds the payment but didn't fire; open it in the POS.`);
       res.status(200).json({ ok: true, paid: true, chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
@@ -458,26 +585,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // ---- drop the order into the POS / kitchen (atomic) ----
-  const note = buildOrderNote({ fulfillment, customer: cust, lines, totals, payment: paymentMethod, chargeId, orderNote });
+  const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: paymentMethod, chargeId, orderNote });
   try {
     const order = await createPosOrder({
-      lines,
+      lines: kitchenLines,
       fulfillment,
       note,
       paid: paymentMethod === "card",
+      deliveryFee: totals.deliveryFee,
     });
     if (reservedId != null) await updateOrder(reservedId, { status: paymentMethod === "card" ? "paid" : "placed", cloverOrderId: order.id, note });
     // Kitchen ticket — same for cash/pay-at-pickup orders: the kitchen still has
     // to make the food, and the ticket header states COLLECT vs PAID ONLINE.
     await printOrderTicket(order.id);
+    await redeemPromo(order.id);
     const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
-    await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines, totals, paymentMethod, orderId: order.id, vipPitch: vipEligible });
+    await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines: kitchenLines, totals, paymentMethod, orderId: order.id, vipPitch: vipEligible });
     res.status(200).json({ ok: true, orderId: order.id, paid: paymentMethod === "card", chargeId, totals, vipEligible });
   } catch (err) {
     console.error("[order/create] POS order failed", err);
     if (chargeId) {
       // Card captured but the kitchen ticket didn't post. Durable record + staff
       // alert so the paid order is recovered — never depend on the customer calling.
+      await redeemPromo(chargeId);
       if (reservedId != null) await updateOrder(reservedId, { status: "paid_unrouted", note });
       await alertStaff(`PAID WEB ORDER NOT IN POS — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} charge ${chargeId}. Recover manually.`);
       res.status(200).json({ ok: true, paid: true, chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });

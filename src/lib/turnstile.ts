@@ -22,7 +22,17 @@ export function loadTurnstile(): Promise<any> {
     s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
     s.async = true;
     s.defer = true;
-    s.onload = () => (w.turnstile ? resolve(w.turnstile) : reject(new Error("Turnstile SDK missing")));
+    s.onload = () => {
+      if (w.turnstile) {
+        resolve(w.turnstile);
+        return;
+      }
+      // A captive portal or filtering proxy answering 200 with a stub gets us here, not to
+      // onerror. Clear the memo as onerror does, or the rejection is cached for the whole page
+      // session and even closing and reopening checkout fails instantly with no retry.
+      sdkPromise = null;
+      reject(new Error("Turnstile SDK missing"));
+    };
     s.onerror = () => {
       sdkPromise = null;
       reject(new Error("Could not load the verification widget."));

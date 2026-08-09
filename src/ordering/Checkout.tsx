@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { lineUnitPrice, money, useCart, TAX_RATE } from "./CartContext";
 import { LOCATION } from "../data/location";
+import { blockReason as blockReasonFor, payDisabled, type GateState } from "./checkoutGate";
 import { placementSuffix } from "../data/menuToppings";
 import {
   applePayAvailable,
@@ -27,6 +28,9 @@ const CARD_ENABLED = cardPaymentEnabled();
 const TURNSTILE_ON = turnstileEnabled();
 // Clover's Apple Pay session stops accepting a result at ~30s; leave headroom.
 const APPLE_PAY_SHEET_MS = 20_000;
+/** Ceiling on the order request itself. Generous — a healthy charge + POS print + receipt
+ *  finishes far inside it. It exists only to rescue a connection that stalls with no response. */
+const ORDER_TIMEOUT_MS = 45_000;
 
 type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean };
 
@@ -83,6 +87,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [cardInitFailed, setCardInitFailed] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileReset, setTurnstileReset] = useState(0);
+  const [turnstileFailed, setTurnstileFailed] = useState(false);
   const [confirmed, setConfirmed] = useState<Confirmation | null>(null);
 
   // One price whichever way you pay — mirrors computeTotals() on the server.
@@ -261,10 +266,17 @@ export function Checkout({ onClose }: { onClose: () => void }) {
 
   /** Shared by the typed card and Apple Pay — both hand over a `clv_…` token and
    *  take the identical server path. Throws so either caller reports the same way. */
-  async function sendOrder(cardToken?: string) {
-    {
+  async function sendOrder(cardToken?: string, onDispatched?: () => void) {
+    // A stalled connection — a phone losing signal mid-submit, which is exactly when people
+    // order pizza — leaves fetch pending indefinitely with no error and no timeout of its own.
+    // That is how "Placing order…" spins forever. Bound it well past any healthy request: the
+    // function finishes or returns its own 504 long before this fires.
+    const ctl = new AbortController();
+    const stall = setTimeout(() => ctl.abort(), ORDER_TIMEOUT_MS);
+    try {
       const res = await fetch("/api/order/create", {
         method: "POST",
+        signal: ctl.signal,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           fulfillment,
@@ -292,6 +304,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           })),
         }),
       });
+      // The server has answered, so it redeemed the Turnstile token — from here a retry needs
+      // a fresh one. Before this point the token is untouched.
+      onDispatched?.();
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || data.error || "Order failed");
       const orderedUnits = countUnits(cart.lines);
@@ -309,15 +324,34 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         vipEligible: data.vipEligible !== false,
       });
       cart.clear();
+    } catch (e) {
+      // Retrying after a stall is SAFE and is the right advice: the idempotency key is memoized
+      // on the cart contents, and the server replays a prior result ahead of both the charge and
+      // the bot check. Never tell them it simply failed — the order may well have landed, and
+      // "failed" is what makes someone order the same pizza twice.
+      if (e instanceof Error && e.name === "AbortError") {
+        throw new Error(
+          "That is taking longer than usual — the connection may have dropped. Tap Pay & place order again to check on it; you won't be charged twice.",
+        );
+      }
+      throw e;
+    } finally {
+      clearTimeout(stall);
     }
   }
 
-  function failOrder(e: unknown) {
+  /**
+   * `tokenSpent` — whether this attempt actually reached the server. Cloudflare only burns a
+   * Turnstile token when /api/order/create redeems it, so a failure on the way there (card
+   * declined inside Clover's iframe, tokenize timeout, dropped connection) leaves the token
+   * perfectly good. Resetting it regardless was a dead end: the reset widget needs a fresh
+   * interaction, the Pay button's disabled includes !turnstileToken, and nothing on screen
+   * said so — one bad CVV and "Pay & place order" never worked again.
+   */
+  function failOrder(e: unknown, tokenSpent: boolean) {
     setStatus("error");
     setErrorMsg(e instanceof Error ? e.message : "Something went wrong. Please call to order.");
-    // The Turnstile token was consumed by this attempt — force a fresh one so a
-    // retry isn't rejected for reusing a spent token.
-    if (TURNSTILE_ON) {
+    if (TURNSTILE_ON && tokenSpent) {
       setTurnstileToken(null);
       setTurnstileReset((n) => n + 1);
     }
@@ -334,15 +368,18 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     }
     setStatus("submitting");
     setErrorMsg("");
+    let spent = false;
     try {
       let cardToken: string | undefined;
       if (payment === "card") {
         if (!cardRef.current) throw new Error("Payment fields aren't ready yet — one moment.");
         cardToken = await cardRef.current.tokenize();
       }
-      await sendOrder(cardToken);
+      await sendOrder(cardToken, () => {
+        spent = true;
+      });
     } catch (e) {
-      failOrder(e);
+      failOrder(e, spent);
     }
   }
 
@@ -357,6 +394,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     // Completed" on the customer's phone and get re-ordered. `finish` only closes
     // the sheet; it moves no money in either direction.
     let settled = false;
+    let spent = false;
     const release = (ok: boolean) => {
       if (settled) return;
       settled = true;
@@ -376,11 +414,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       }
       setStatus("submitting");
       setErrorMsg("");
-      await sendOrder(token);
+      await sendOrder(token, () => {
+        spent = true;
+      });
       release(true);
     } catch (e) {
       release(false);
-      failOrder(e);
+      failOrder(e, spent);
     } finally {
       clearTimeout(deadline);
       applePayBusy.current = false;
@@ -450,6 +490,26 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   }
 
   const submitting = status === "submitting";
+  // One source of truth for "can they pay, and if not, why" — see checkoutGate.ts, whose
+  // invariant (never disabled without telling them) is proven across the entire state
+  // space by scripts/verify-checkout-gate.mjs.
+  const gate: GateState = {
+    storeClosed,
+    submitting,
+    cartEmpty: cart.lines.length === 0,
+    contactOk: !!contactOk,
+    deliveryOk: !!deliveryOk,
+    payment,
+    cardReady,
+    cardInitFailed,
+    cashAgreed,
+    turnstileOn: TURNSTILE_ON,
+    turnstileToken: !!turnstileToken,
+    turnstileFailed,
+    phone: LOCATION.phone,
+  };
+  const payIsDisabled = payDisabled(gate);
+  const blockReason = blockReasonFor(gate);
   // Apple Pay skips the card fields but still needs everything else the main
   // submit button requires — the sheet charges immediately, with no second chance
   // to catch a missing phone number or delivery address.
@@ -768,16 +828,40 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             </span>
           </label>
         )}
-        {TURNSTILE_ON && <Turnstile onToken={setTurnstileToken} resetSignal={turnstileReset} />}
+        {TURNSTILE_ON && (
+          <Turnstile onToken={setTurnstileToken} resetSignal={turnstileReset} onLoadFailed={setTurnstileFailed} />
+        )}
+        {TURNSTILE_ON && turnstileFailed && (
+          // The widget renders a bare 65px gap when it fails, so without this the customer
+          // is staring at blank space. Retrying costs nothing and fixes transient cases.
+          <button
+            type="button"
+            onClick={() => {
+              setTurnstileFailed(false);
+              setTurnstileReset((n) => n + 1);
+            }}
+            className="mb-2 w-full rounded-full border border-[var(--color-ink)]/15 px-4 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-ink)]/70"
+          >
+            Retry security check
+          </button>
+        )}
         <button
           type="button"
           onClick={placeOrder}
-          disabled={storeClosed || !contactOk || !deliveryOk || submitting || cart.lines.length === 0 || (payment === "card" && !cardReady) || (payment === "cash" && !cashAgreed) || (TURNSTILE_ON && !turnstileToken)}
+          disabled={payIsDisabled}
           className="flex w-full items-center justify-between rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span>{storeClosed ? "Closed — ordering opens 10 AM" : submitting ? "Placing order…" : payment === "card" ? "Pay & place order" : "Place order"}</span>
           <span>{money(grandTotal)}</span>
         </button>
+        {blockReason && (
+          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-brand-red)]">{blockReason}</p>
+        )}
+        {submitting && (
+          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-brand-red)]">
+            Hang tight — sending your order. Please don&apos;t close this window.
+          </p>
+        )}
         <p className="mt-2 text-center text-[11px] text-[var(--color-ink)]/60">
           {payment === "card"
             ? "Your card is charged securely. Order goes straight to Gigi's kitchen."
@@ -904,7 +988,14 @@ function CardField({ label, innerRef }: { label: string; innerRef: React.RefObje
   return (
     <div>
       <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/55">{label}</label>
-      <div ref={innerRef} className="min-h-[46px] rounded-xl border border-[var(--color-cream-darker)] bg-white px-3 py-3" />
+      {/* Clover mounts a ~150px iframe in here. With min-h and vertical padding the box grew to
+          ~176px, so the card section rendered about three times its intended height. Fix the box
+          and clip it — never style the height from inside via the SDK's own style object: doing
+          that on the Sea Bright site stopped clover.createToken() responding at all. */}
+      <div
+        ref={innerRef}
+        className="h-[46px] overflow-hidden rounded-xl border border-[var(--color-cream-darker)] bg-white px-3"
+      />
     </div>
   );
 }

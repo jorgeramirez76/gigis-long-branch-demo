@@ -85,7 +85,7 @@ export async function sendEmail(
   toEmail: string,
   subject: string,
   bodyText: string,
-  opts?: { promoCode?: string; promoDescription?: string; ctaText?: string; ctaUrl?: string },
+  opts?: { promoCode?: string; promoDescription?: string; promoHowTo?: string; ctaText?: string; ctaUrl?: string },
 ): Promise<SendResult> {
   const { RESEND_API_KEY, EMAIL_FROM } = process.env;
   if (!RESEND_API_KEY || !EMAIL_FROM) {
@@ -113,7 +113,7 @@ export async function sendEmail(
         from: EMAIL_FROM,
         to: [toEmail],
         subject,
-        html: emailHtml({ bodyText, unsubUrl, promoCode: opts?.promoCode, promoDescription: opts?.promoDescription, ctaText: opts?.ctaText, ctaUrl: opts?.ctaUrl }),
+        html: emailHtml({ bodyText, unsubUrl, promoCode: opts?.promoCode, promoDescription: opts?.promoDescription, promoHowTo: opts?.promoHowTo, ctaText: opts?.ctaText, ctaUrl: opts?.ctaUrl }),
         text: `${bodyText}\n\nUnsubscribe: ${unsubUrl}`,
         headers: {
           "List-Unsubscribe": `<${unsubUrl}>`,
@@ -138,7 +138,7 @@ export async function sendEmail(
  * CAN-SPAM exempts transactional mail — so this works even if UNSUB_SECRET is
  * unset. Env-gated like everything else; never throws.
  */
-export async function sendReceiptEmail(toEmail: string, subject: string, html: string): Promise<SendResult> {
+export async function sendReceiptEmail(toEmail: string, subject: string, html: string, text?: string): Promise<SendResult> {
   const { RESEND_API_KEY, EMAIL_FROM } = process.env;
   if (!RESEND_API_KEY || !EMAIL_FROM) {
     return { sent: false, error: "email_not_configured" };
@@ -147,7 +147,10 @@ export async function sendReceiptEmail(toEmail: string, subject: string, html: s
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from: EMAIL_FROM, to: [toEmail], subject, html }),
+      // A text/plain part alongside the HTML: spam filters score HTML-only mail worse, and a
+      // verification code the customer can't read is a dead signup. Callers that don't pass one
+      // still send HTML-only (unchanged for receipts).
+      body: JSON.stringify({ from: EMAIL_FROM, to: [toEmail], subject, html, ...(text ? { text } : {}) }),
     });
     if (!res.ok) return { sent: false, error: (await res.text()).slice(0, 500) };
     const data = (await res.json()) as { id: string };
@@ -177,3 +180,7 @@ export async function alertStaff(message: string): Promise<void> {
 // Back-compat names used by vip-signup.ts
 export const sendWelcomeSms = sendSms;
 export const sendWelcomeEmail = sendEmail;
+
+/** Transactional sends (receipts, verification codes) share one implementation —
+ *  no unsubscribe machinery, works even if UNSUB_SECRET is unset. */
+export const sendTransactionalEmail = sendReceiptEmail;

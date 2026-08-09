@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { lineUnitPrice, money, useCart } from "./CartContext";
+import { lineUnitPrice, money, useCart, TAX_RATE } from "./CartContext";
 import { LOCATION } from "../data/location";
 import { placementSuffix } from "../data/menuToppings";
 import {
@@ -12,19 +12,23 @@ import {
 } from "./cloverPayment";
 import { Turnstile } from "../components/Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
-import { getOpenStatus, type OpenStatus } from "../lib/openStatus";
+import { getOpenStatus, isDeliveryOpen, deliveryClosedReason, type OpenStatus } from "../lib/openStatus";
 import { countUnits, readyMessage } from "../lib/readyTime";
+import { DELIVERY_TOWNS, DELIVERY_FEES, deliveryFeeCents, formatFee, type DeliveryTown } from "../lib/deliveryZones";
 import { VipJoinInline } from "./VipJoinInline";
 
 type Fulfillment = "pickup" | "delivery";
 type PaymentMethod = "pickup" | "card" | "cash";
 const TIP_PCTS = [0, 10, 15, 20];
+/** Keep in sync with FREE_PIE_ITEM in api/lib/promo.ts (that file pulls in the
+ *  server DB client, so it can't be imported into the browser bundle). */
+const FREE_PIE_ITEM = "Plain Pie";
 const CARD_ENABLED = cardPaymentEnabled();
 const TURNSTILE_ON = turnstileEnabled();
 // Clover's Apple Pay session stops accepting a result at ~30s; leave headroom.
 const APPLE_PAY_SHEET_MS = 20_000;
 
-type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean };
+type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean };
 
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
@@ -34,15 +38,41 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [tipPct, setTipPct] = useState(15);
-  const [orderNote, setOrderNote] = useState("");
-  const [openStatus, setOpenStatus] = useState<OpenStatus | null>(null);
+  const [town, setTown] = useState<DeliveryTown | "">("");
+  // Tip defaults follow the fulfillment — 20% on delivery, none on pickup — until the
+  // customer taps a tip themselves; an explicit choice then survives switching.
+  const [tipPct, setTipPct] = useState(0); // initial fulfillment is pickup
+  const tipTouched = useRef(false);
   useEffect(() => {
-    const tick = () => setOpenStatus(getOpenStatus());
+    if (!tipTouched.current) setTipPct(fulfillment === "delivery" ? 20 : 0);
+  }, [fulfillment]);
+  const [orderNote, setOrderNote] = useState("");
+  // VIP free-pie code. `promo` holds a server-validated code; whether it DISCOUNTS
+  // right now still depends on pickup + a Plain Pie in the cart (promoDiscount below),
+  // so switching to delivery just pauses it rather than wiping it.
+  const [promoInput, setPromoInput] = useState("");
+  const [promo, setPromo] = useState<{ code: string; discountCents: number } | null>(null);
+  const [promoMsg, setPromoMsg] = useState("");
+  const [promoChecking, setPromoChecking] = useState(false);
+  const [openStatus, setOpenStatus] = useState<OpenStatus | null>(null);
+  // Delivery closes at 10 PM while pickup runs to close, so this is tracked separately and
+  // re-checked on the same minute tick — a customer sitting on the checkout at 9:59 sees it flip.
+  const [deliveryOpen, setDeliveryOpen] = useState(true);
+  useEffect(() => {
+    const tick = () => {
+      setOpenStatus(getOpenStatus());
+      setDeliveryOpen(isDeliveryOpen());
+    };
     tick();
     const t = setInterval(tick, 60_000); // flips the gate live at open/close
     return () => clearInterval(t);
   }, []);
+  // If 10 PM passes while they are on this screen, move them to pickup rather than letting them
+  // fill in an address the server will reject.
+  useEffect(() => {
+    if (!deliveryOpen && fulfillment === "delivery") setFulfillment("pickup");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deliveryOpen]);
   const storeClosed = openStatus != null && !openStatus.open;
   const [status, setStatus] = useState<"form" | "submitting" | "error">("form");
   // Cash orders require an explicit acknowledgment that cash will be brought.
@@ -56,9 +86,20 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [confirmed, setConfirmed] = useState<Confirmation | null>(null);
 
   // One price whichever way you pay — mirrors computeTotals() on the server.
-  const tax = cart.tax;
-  const tip = Math.round(cart.subtotal * (tipPct / 100));
-  const grandTotal = cart.subtotal + tax + tip;
+  // The fee is display-only here; the server recomputes it from the town it validates, so a
+  // tampered client can never pay less than the schedule in lib/deliveryZones.ts.
+  const deliveryFee = fulfillment === "delivery" ? (deliveryFeeCents("delivery", town) ?? 0) : 0;
+  // The free pie discounts only a PICKUP order that actually contains a Plain Pie — mirrors the
+  // server, which recomputes the discount from its own catalog and rejects anything else.
+  const hasFreePie = cart.lines.some((l) => l.itemName === FREE_PIE_ITEM);
+  const promoDiscount =
+    promo && fulfillment === "pickup" && hasFreePie ? Math.min(promo.discountCents, cart.subtotal) : 0;
+  // Tax follows the server: NJ taxes a separately stated delivery charge on taxable goods, so it
+  // is taxed with the food (cart.tax alone would under-collect on delivery orders); a promo'd
+  // free item is NOT taxable, so tax is computed after the discount.
+  const tax = Math.round((cart.subtotal - promoDiscount + deliveryFee) * TAX_RATE);
+  const tip = Math.round((cart.subtotal - promoDiscount) * (tipPct / 100));
+  const grandTotal = cart.subtotal - promoDiscount + deliveryFee + tax + tip;
   // Apple Pay's button is built asynchronously and priced by message, so it needs
   // the live total rather than whatever it was on the render that started the load.
   const grandTotalRef = useRef(grandTotal);
@@ -67,18 +108,33 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   // One idempotency key per unique order (amount/params). Stable across pure
   // retries so a lost response can't double-charge; regenerated if the order
   // changes (Clover requires a fresh key when charge params differ).
+  //
+  // `grandTotal` is a dependency ON PURPOSE: it is the amount actually authorised, so ANY input
+  // that moves the price regenerates the key automatically. Listing inputs by hand is what broke
+  // this — the delivery fee added `town` as a new amount input and the array wasn't updated, so
+  // changing town changed the charge while reusing a key Clover had already seen.
   const idempotencyKey = useMemo(
-    () =>
-      typeof crypto !== "undefined" && "randomUUID" in crypto
-        ? crypto.randomUUID()
-        : `${Date.now()}-${Math.round(Math.random() * 1e9)}`,
+    () => {
+      // The server requires a real UUID (UUID_RE in api/order/create.ts), so a timestamp-based
+      // fallback would be rejected with idempotency_key_required on every attempt — the order
+      // could never succeed. Build a v4 from getRandomValues, and only then fall back to Math.random.
+      const c: Crypto | undefined = typeof crypto !== "undefined" ? crypto : undefined;
+      if (c && typeof c.randomUUID === "function") return c.randomUUID();
+      const b = new Uint8Array(16);
+      if (c && typeof c.getRandomValues === "function") c.getRandomValues(b);
+      else for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256);
+      b[6] = (b[6] & 0x0f) | 0x40; // version 4
+      b[8] = (b[8] & 0x3f) | 0x80; // variant 10
+      const h = [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
+      return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(cart.lines), tip, fulfillment, payment],
+    [JSON.stringify(cart.lines), tip, fulfillment, payment, town, grandTotal, promo?.code ?? ""],
   );
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   // Email is REQUIRED: every website order must get an emailed receipt.
   const contactOk = name.trim() && phone.replace(/\D/g, "").length >= 10 && emailOk;
-  const deliveryOk = fulfillment === "pickup" || address.trim().length > 4;
+  const deliveryOk = fulfillment === "pickup" || (address.trim().length > 4 && town !== "");
 
   // Clover hosted card fields — mount only when paying by card.
   const cardRef = useRef<CloverCard | null>(null);
@@ -174,6 +230,35 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     applePayRef.current?.updateAmount(grandTotal);
   }, [grandTotal]);
 
+  /** Validate a VIP code with the server BEFORE it can affect the total — never trust
+   *  a typed code locally. Read-only on the server; redemption happens with the order. */
+  async function applyPromo() {
+    const raw = promoInput.trim();
+    if (!raw || promoChecking) return;
+    setPromoChecking(true);
+    setPromoMsg("");
+    try {
+      const res = await fetch("/api/promo-check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: raw }),
+      });
+      const data = await res.json();
+      if (res.ok && data.valid && typeof data.code === "string") {
+        setPromo({ code: data.code, discountCents: Number(data.discountCents) || 0 });
+        setPromoInput("");
+      } else {
+        setPromo(null);
+        setPromoMsg(data.message || "We couldn't check that code — please try again.");
+      }
+    } catch {
+      setPromo(null);
+      setPromoMsg("We couldn't check that code — please try again, or show it at the counter.");
+    } finally {
+      setPromoChecking(false);
+    }
+  }
+
   /** Shared by the typed card and Apple Pay — both hand over a `clv_…` token and
    *  take the identical server path. Throws so either caller reports the same way. */
   async function sendOrder(cardToken?: string) {
@@ -187,9 +272,16 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           cardToken,
           idempotencyKey,
           turnstileToken,
-          customer: { name, phone, email, address: fulfillment === "delivery" ? address : undefined },
+          customer: {
+            name, phone, email,
+            address: fulfillment === "delivery" ? address : undefined,
+            town: fulfillment === "delivery" ? town : undefined,
+          },
           tipCents: tip,
           orderNote,
+          // Only the CODE is sent — the server re-validates it and derives the discount
+          // from its own catalog. Omitted entirely when it isn't discounting right now.
+          promoCode: promoDiscount > 0 && promo ? promo.code : undefined,
           // Send identifiers only — the server prices from its own catalog.
           lines: cart.lines.map((l) => ({
             itemName: l.itemName,
@@ -211,6 +303,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         // Prefer the server's authoritative total (what was actually charged /
         // sent to the POS); the client figure is only a fallback.
         total: typeof data.totals?.total === "number" ? data.totals.total : grandTotal,
+        discount: typeof data.totals?.discount === "number" ? data.totals.discount : promoDiscount,
         fulfillment,
         routingIssue: data.routingIssue,
         vipEligible: data.vipEligible !== false,
@@ -321,6 +414,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             </p>
           </div>
           <div className="rounded-2xl bg-white p-4 text-sm shadow-[var(--shadow-sm)]">
+            {confirmed.discount ? (
+              <div className="mb-1 flex justify-between"><span className="text-[var(--color-ink-soft)]">VIP free pie</span><span className="font-semibold">−{money(confirmed.discount)}</span></div>
+            ) : null}
             <div className="flex justify-between"><span className="text-[var(--color-ink-soft)]">Total</span><span className="font-bold">{money(confirmed.total)}</span></div>
             {confirmed.orderId && <div className="mt-1 flex justify-between"><span className="text-[var(--color-ink-soft)]">Order #</span><span className="font-mono text-xs">{confirmed.orderId.slice(-8).toUpperCase()}</span></div>}
           </div>
@@ -380,7 +476,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           options={["pickup", "delivery"] as Fulfillment[]}
           value={fulfillment}
           onChange={setFulfillment}
+          disabledOption={deliveryOpen ? undefined : "delivery"}
         />
+        {!deliveryOpen && !storeClosed && (
+          <p className="-mt-1 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-2.5 text-sm text-[var(--color-ink)]">
+            {deliveryClosedReason()}
+          </p>
+        )}
 
         {/* Contact */}
         <div className="space-y-3">
@@ -388,7 +490,31 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           <Field label="Mobile phone" value={phone} onChange={setPhone} placeholder="(732) 555-0100" type="tel" required />
           <Field label="Email (for your receipt)" value={email} onChange={setEmail} placeholder="you@email.com" type="email" required />
           {fulfillment === "delivery" && (
-            <Field label="Delivery address" value={address} onChange={setAddress} placeholder="Street, apt, town" required />
+            <>
+              <Field label="Delivery address" value={address} onChange={setAddress} placeholder="Street and apt" required />
+              <label className="block">
+                <span className="text-sm font-semibold text-[var(--color-ink-soft)]">
+                  Town<span className="text-[var(--color-brand-red)]"> *</span>
+                </span>
+                <select
+                  value={town}
+                  onChange={(e) => setTown(e.target.value as DeliveryTown | "")}
+                  required
+                  aria-required
+                  className="mt-1 w-full rounded-xl border border-[var(--color-ink)]/15 bg-white px-4 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                >
+                  <option value="">Choose your town…</option>
+                  {DELIVERY_TOWNS.map((t) => (
+                    <option key={t} value={t}>
+                      {t} — {formatFee(DELIVERY_FEES[t])} delivery
+                    </option>
+                  ))}
+                </select>
+                <span className="mt-1 block text-xs text-[var(--color-ink)]/55">
+                  Don't see your town? Give us a call — we may still be able to help.
+                </span>
+              </label>
+            </>
           )}
         </div>
 
@@ -400,7 +526,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               <button
                 key={p}
                 type="button"
-                onClick={() => setTipPct(p)}
+                onClick={() => {
+                  tipTouched.current = true; // an explicit choice survives fulfillment switches
+                  setTipPct(p);
+                }}
                 className={`rounded-xl border py-2.5 text-sm font-semibold transition ${
                   tipPct === p ? "border-[var(--color-brand-red)] bg-[var(--color-brand-red)] text-white" : "border-[var(--color-ink)]/15 bg-white text-[var(--color-ink)]"
                 }`}
@@ -515,6 +644,77 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           />
         </div>
 
+        {/* VIP free-pie code */}
+        <div>
+          <p className="mb-2 text-sm font-bold text-[var(--color-ink)]">VIP free-pie code</p>
+          {fulfillment === "delivery" ? (
+            <p className="rounded-xl bg-[var(--color-cream)] px-4 py-3 text-sm text-[var(--color-ink-soft)]">
+              Free-pie codes are good on <strong>pickup orders only</strong> — switch to pickup to redeem yours.
+            </p>
+          ) : promo ? (
+            <div className="rounded-xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-cream)] px-4 py-3 text-sm text-[var(--color-ink)]">
+              <div className="flex items-center justify-between gap-3">
+                <span>
+                  ✓ <strong className="font-mono">{promo.code}</strong> — free {FREE_PIE_ITEM}
+                  {hasFreePie && promoDiscount > 0 && <strong> (−{money(promoDiscount)})</strong>}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPromo(null);
+                    setPromoMsg("");
+                  }}
+                  className="shrink-0 text-xs font-bold text-[var(--color-brand-red)] underline"
+                >
+                  Remove
+                </button>
+              </div>
+              {!hasFreePie && (
+                <p className="mt-1.5 text-xs text-[var(--color-brand-red)]">
+                  Add a {FREE_PIE_ITEM} to your cart and it comes off the total here.
+                </p>
+              )}
+            </div>
+          ) : (
+            <>
+              <div className="flex gap-2">
+                <input
+                  value={promoInput}
+                  onChange={(e) => setPromoInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      void applyPromo();
+                    }
+                  }}
+                  placeholder="PIE-XXXXXX"
+                  aria-label="VIP free-pie code"
+                  autoCapitalize="characters"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  className="w-full rounded-xl border border-[var(--color-cream-darker)] bg-white px-4 py-3 font-mono text-sm uppercase focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
+                />
+                <button
+                  type="button"
+                  onClick={() => void applyPromo()}
+                  disabled={promoChecking || !promoInput.trim()}
+                  className="shrink-0 rounded-xl border border-[var(--color-brand-red)] px-4 py-3 text-sm font-bold text-[var(--color-brand-red)] transition hover:bg-[var(--color-brand-red)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  {promoChecking ? "Checking…" : "Apply"}
+                </button>
+              </div>
+              {promoMsg && (
+                <p role="alert" className="mt-1.5 text-xs text-[var(--color-brand-red)]">
+                  {promoMsg}
+                </p>
+              )}
+              <p className="mt-1.5 text-xs text-[var(--color-ink)]/55">
+                Got a VIP welcome code? Redeem your free {FREE_PIE_ITEM} here — pickup orders only.
+              </p>
+            </>
+          )}
+        </div>
+
         {/* Review */}
         <div className="rounded-2xl bg-white p-4 shadow-[var(--shadow-sm)]">
           <p className="mb-2 text-sm font-bold text-[var(--color-ink)]">Your order</p>
@@ -531,6 +731,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           </ul>
           <dl className="mt-3 space-y-1 border-t border-[var(--color-ink)]/8 pt-3 text-sm">
             <Row label="Subtotal" value={money(cart.subtotal)} />
+            {promoDiscount > 0 && promo && <Row label={`VIP free pie (${promo.code})`} value={`−${money(promoDiscount)}`} />}
+            {fulfillment === "delivery" &&
+              (town === "" ? (
+                <Row label="Delivery" value="choose your town" />
+              ) : (
+                <Row label={`Delivery to ${town}`} value={money(deliveryFee)} />
+              ))}
             <Row label="NJ tax (6.625%)" value={money(tax)} />
             {tip > 0 && <Row label={`Tip (${tipPct}%)`} value={money(tip)} />}
             <div className="flex justify-between pt-1 text-base font-bold text-[var(--color-ink)]">
@@ -652,21 +859,43 @@ function Shell({ onClose, title, children }: { onClose: () => void; title: strin
   );
 }
 
-function Segmented({ options, value, onChange }: { options: Fulfillment[]; value: Fulfillment; onChange: (v: Fulfillment) => void }) {
+function Segmented({
+  options,
+  value,
+  onChange,
+  disabledOption,
+}: {
+  options: Fulfillment[];
+  value: Fulfillment;
+  onChange: (v: Fulfillment) => void;
+  /** Rendered greyed out and unclickable — used to close delivery after 10 PM. */
+  disabledOption?: Fulfillment;
+}) {
   return (
     <div className="grid grid-cols-2 gap-2 rounded-full bg-white p-1 shadow-[var(--shadow-sm)]">
-      {options.map((f) => (
-        <button
-          key={f}
-          type="button"
-          onClick={() => onChange(f)}
-          className={`rounded-full py-2.5 text-sm font-bold capitalize transition ${
-            value === f ? "bg-[var(--color-brand-red)] text-white" : "text-[var(--color-ink)]"
-          }`}
-        >
-          {f}
-        </button>
-      ))}
+      {options.map((f) => {
+        const off = f === disabledOption;
+        return (
+          <button
+            key={f}
+            type="button"
+            onClick={() => !off && onChange(f)}
+            disabled={off}
+            aria-disabled={off || undefined}
+            title={off ? "Delivery stops at 10 PM" : undefined}
+            className={`rounded-full py-2.5 text-sm font-bold capitalize transition ${
+              off
+                ? "cursor-not-allowed text-[var(--color-ink)]/35"
+                : value === f
+                  ? "bg-[var(--color-brand-red)] text-white"
+                  : "text-[var(--color-ink)]"
+            }`}
+          >
+            {f}
+            {off && <span className="ml-1 font-normal normal-case opacity-80">(til 10 PM)</span>}
+          </button>
+        );
+      })}
     </div>
   );
 }

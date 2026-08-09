@@ -17,7 +17,7 @@ type Member = { id: number; name: string; phone: string | null; email: string | 
  * consenting member on the selected channels, and logs each send in vip_sends.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireAdmin(req, res)) return;
+  if (!(await requireAdmin(req, res))) return;
   if (req.method !== "POST") {
     res.status(405).json({ error: "method_not_allowed" });
     return;

@@ -18,6 +18,7 @@
     "src/data/menuTypes.ts",
     "src/lib/menuPricing.ts",
     "src/lib/openStatus.ts",
-    "src/lib/readyTime.ts"
+    "src/lib/readyTime.ts",
+    "src/lib/deliveryZones.ts"
   ]
 }

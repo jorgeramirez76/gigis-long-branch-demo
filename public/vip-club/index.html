@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Join the Gigi's VIP Club — Free Plain Pie | Gigi's NY Style Pizza, Long Branch</title>
-<meta name="description" content="Join the Gigi's VIP Club and get a code for a free plain cheese pie. New members only, one per household. Gigi's NY Style Pizza, 140 Brighton Ave, Long Branch, NJ.">
+<meta name="description" content="Join the Gigi's VIP Club and get a code for a free plain cheese pie on your next pickup order. New members only, one per household. Gigi's NY Style Pizza, 140 Brighton Ave, Long Branch, NJ.">
 <link rel="canonical" href="https://gigislongbranch.com/vip-club/">
 <meta name="theme-color" content="#9b121a">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -77,6 +77,11 @@ font-size:.88rem;margin:14px 0 0}
 .err[hidden]{display:none}
 #ts-widget{margin-top:16px;display:flex;justify-content:center}
 .done{display:none;text-align:center;padding:8px 0 4px}
+.verify{display:none;text-align:center;padding:8px 0 4px}
+.verify h2{color:var(--red-dark);font-size:2rem}
+.vhint{background:#fff;border:1px solid var(--cream-dark);border-radius:12px;padding:13px 15px;
+  font-size:.88rem;color:var(--ink-soft);margin:14px 0 0;text-align:left}
+.verify .note a{color:var(--red-dark);font-weight:700}
 .done .tick{font-family:var(--disp);font-size:3.6rem;line-height:1;color:var(--green);margin:0}
 .done h2{color:var(--green);font-size:2rem}
 .code{font-family:var(--disp);font-size:2.5rem;letter-spacing:.09em;color:var(--red-dark);
@@ -101,9 +106,9 @@ footer a{color:var(--gold-bright)}
     <p class="eyebrow">Members get first dibs</p>
     <h1>Join the Club<span class="hl">Get a Free Pie</span></h1>
     <p class="sub">Sign up and we'll send you a code for a <strong>free plain cheese pie</strong>.
-    New members only, one per household.</p>
+    New members only, one per household, pickup orders only.</p>
     <ul class="perks">
-      <li><span class="b">&#9733;</span><span>A free plain cheese pie to welcome you &mdash; your code is good for 90 days.</span></li>
+      <li><span class="b">&#9733;</span><span>A free plain cheese pie to welcome you &mdash; redeem your code at final checkout on a pickup order (or at the counter). Good for 90 days.</span></li>
       <li><span class="b">&#9733;</span><span>First dibs on weekly specials and members-only deals.</span></li>
       <li><span class="b">&#9733;</span><span>No spam, and you can cancel any time.</span></li>
     </ul>
@@ -165,6 +170,15 @@ footer a{color:var(--gold-bright)}
       <p class="err" id="err" hidden role="alert"></p>
       <button type="submit" id="go">Get My Free Pie</button>
     </form>
+
+    <div class="verify" id="verify" role="status" aria-live="polite">
+      <h2>One last tap &#128235;</h2>
+      <p class="note" id="verifyIntro"></p>
+      <p class="vhint">Open the email and tap <strong>&ldquo;Verify my email&rdquo;</strong> &mdash;
+        your free-pie code appears right away. Check spam if you don't see it; the link works for 24 hours.</p>
+      <p class="note" style="margin-top:14px"><a href="#" id="vback">Wrong email? Go back and fix it</a></p>
+      <p class="note" style="font-size:.78rem">This page updates by itself once you tap the button.</p>
+    </div>
 
     <div class="done" id="done" role="status" aria-live="polite">
       <p class="tick">&#10003;</p>

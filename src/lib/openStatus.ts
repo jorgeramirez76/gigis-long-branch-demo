@@ -53,6 +53,28 @@ export function isOrderingOpen(graceMinutes = 0): boolean {
   return false;
 }
 
+/**
+ * In-house delivery stops at 10 PM; the counter stays open for pickup until close.
+ * Owner's rule, set 2026-08-04: the drivers finish at 10 even on the nights the kitchen runs to
+ * midnight, so a delivery order taken at 10:30 has nobody to take it out.
+ *
+ * Computed in America/New_York like everything else here, so it can't be defeated by changing the
+ * device clock — and the order API gates on the same function.
+ */
+export const DELIVERY_LAST_HOUR = 22; // 10 PM
+
+export function isDeliveryOpen(graceMinutes = 0): boolean {
+  // Delivery can never outlive ordering itself (e.g. before 10 AM).
+  if (!isOrderingOpen(graceMinutes)) return false;
+  const { hour, minute } = nowInNY();
+  return hour * 60 + minute < DELIVERY_LAST_HOUR * 60 + graceMinutes;
+}
+
+/** Human-readable reason for the UI when delivery is unavailable but pickup is not. */
+export function deliveryClosedReason(): string {
+  return "Delivery stops at 10 PM — pickup is still available until we close.";
+}
+
 export function getOpenStatus(): OpenStatus {
   const { day, hour } = nowInNY();
   const close = CLOSE_HOUR[day] ?? 23;

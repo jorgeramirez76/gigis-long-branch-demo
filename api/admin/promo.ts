@@ -63,7 +63,7 @@ function describe(row: Row) {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireAdmin(req, res)) return;
+  if (!(await requireAdmin(req, res))) return;
 
   const business = req.method === "GET" ? req.query.business : (req.body ?? {})?.business;
   if (!isVipBusiness(business)) {

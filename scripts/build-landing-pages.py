@@ -244,6 +244,47 @@ def covers(page, pattern):
     """
     return any(re.search(pattern, s["h2"], re.I) for s in page["sections"])
 
+def delivery_fees():
+    """Town -> fee cents, read from src/lib/deliveryZones.ts (same source the checkout charges)."""
+    src = (ROOT / "src" / "lib" / "deliveryZones.ts").read_text()
+    block = re.search(r"export const DELIVERY_FEES = \{(.*?)\} as const;", src, re.S)
+    if not block:
+        raise SystemExit("build-landing-pages: could not read DELIVERY_FEES")
+    out = []
+    for m in re.finditer(r'(?:"([^"]+)"|([A-Za-z][A-Za-z0-9_]*))\s*:\s*(\d+)', block.group(1)):
+        out.append(((m.group(1) or m.group(2)), int(m.group(3))))
+    return out
+
+def render_delivery_block(page):
+    """Fee table + link up to the /delivery/ hub. Only on the delivery pages, so the cluster reads
+    as hub-and-spoke rather than the page farm that got the earlier town pages ignored."""
+    # Delivery pages, plus the dietary pages: the converting long-tail is "gluten free pizza
+    # DELIVERY near me", and those two pages currently say nothing about delivery or its cost.
+    #
+    # Deliberately NOT re-declaring the LocalBusiness entity here, despite the SEO plan asking for
+    # it. These pages reference the homepage's /#restaurant by bare @id. Re-stating that @id with
+    # address/geo/openingHours attached has been reverted twice already: those are anonymous blank
+    # nodes, so a consumer merging the site UNIONS rather than deduplicates them, and the canonical
+    # business ends up with several conflicting addresses and coordinate pairs. The page-level
+    # geo.position meta tag plus the bare @id give the local signal without that cost.
+    if not (page["slug"].startswith("pizza-delivery-")
+            or page["slug"] in ("gluten-free-pizza-long-branch", "vegan-pizza-long-branch")):
+        return ""
+    fees = delivery_fees()
+    rows = "".join(
+        f'<tr><th scope="row">{E(t)}</th><td class="p">${c // 100}</td></tr>' for t, c in fees
+    )
+    return (
+        '<section class="wrap"><h2>What delivery costs</h2>'
+        '<p>Gigi\u2019s runs its own delivery. The fee is flat and the same whether you order online '
+        'or call \u2014 and it stops at 10 PM, with pickup available right up to closing.</p>'
+        f'<table class="ptable"><caption>Delivery fee by town</caption>'
+        '<thead><tr><th scope="col">Town</th><th scope="col" style="text-align:right">Fee</th></tr></thead>'
+        f'<tbody>{rows}</tbody></table>'
+        '<p class="pnote">Long Branch covers the West End, Pier Village and Elberon. '
+        '<a href="/delivery/">See all delivery areas and fees</a>.</p></section>'
+    )
+
 def render_hours(page):
     if covers(page, r"hour|how late|open|find us"):
         return ""
@@ -357,6 +398,7 @@ def body(page, others, price_html):
 
 <main>{sections}
 {price_html}
+{render_delivery_block(page)}
 {render_hours(page)}
 {render_direct(page)}
 <section class="wrap faq"><h2>Good to know</h2>{faq}</section>

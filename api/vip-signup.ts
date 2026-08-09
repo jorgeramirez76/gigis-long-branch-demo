@@ -1,10 +1,22 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { sql, isVipBusiness } from "./lib/db.js";
-import { issueWelcomePie } from "./lib/promo.js";
+import { isVipBusiness } from "./lib/db.js";
 import { addressDedupeKey } from "./lib/address.js";
-import { sendWelcomeSms, sendWelcomeEmail } from "./lib/notify.js";
+import { sendTransactionalEmail } from "./lib/notify.js";
+import { verificationHtml } from "./lib/emailTemplate.js";
 import { rateLimitAll } from "./lib/rateLimit.js";
 import { verifyTurnstile } from "./lib/turnstile.js";
+import {
+  ALREADY_MEMBER_MESSAGE,
+  CANONICAL_CONSENT_TEXT,
+  generatePollId,
+  generateVerifyToken,
+  hashSecret,
+  memberExists,
+  storePendingSignup,
+  sweepExpiredPending,
+  VERIFY_TTL_HOURS,
+  type ValidatedSignup,
+} from "./lib/vipSignupShared.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Accepts loose US 10-digit input; normalizes to E.164 (+1XXXXXXXXXX).
@@ -37,12 +49,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const SIGNUP_SOURCES = ["website", "checkout", "receipt", "menu-qr", "winback"] as const;
   const signupSource = SIGNUP_SOURCES.includes(source) ? (source as string) : "website";
 
-  // Canonical consent language — MUST stay in sync with CONSENT_TEXT in
-  // src/components/VipClub.tsx and the registered A2P campaign message_flow.
-  // Stored server-side so the audit trail can't be forged by a crafted POST.
-  const CANONICAL_CONSENT_TEXT =
-    "By checking \"Text me deals,\" I agree to receive recurring promotional texts (weekly specials and promo codes) from Gigi's NY Style Pizza, 140 Brighton Ave, Long Branch, NJ, sent by automated technology to the number I provided. Consent is not a condition of any purchase. Message frequency varies, typically up to 4 per month. Message & data rates may apply. Reply STOP to opt out, HELP for help. By checking \"Email me deals,\" I agree to receive promotional emails; unsubscribe anytime via the link in any email.";
-
   if (!isVipBusiness(business)) {
     res.status(400).json({ error: "invalid_business" });
     return;
@@ -57,6 +63,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (typeof consentText !== "string" || consentText.trim().length < 1) {
     res.status(400).json({ error: "consent_text_required" });
+    return;
+  }
+  // The submitted wording must be the canonical, A2P-registered language byte for byte. Until now
+  // this was only asserted in comments, so a surface could drift and still write the registered text
+  // into vip_members.consent_text — producing consent records claiming people saw text they never
+  // saw. This turns the invariant into an actual tripwire (the Sea Bright build already had it).
+  if (consentText.trim() !== CANONICAL_CONSENT_TEXT) {
+    console.error("[vip-signup] consent text mismatch — a signup surface has drifted from the canonical wording");
+    res.status(400).json({
+      error: "consent_text_mismatch",
+      message: "Please reload the page and try again.",
+    });
     return;
   }
 
@@ -105,7 +123,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(403).json({ error: "verification_failed" });
     return;
   }
-  const contactKey = normalizedPhone || normalizedEmail || "unknown";
   const allowed = await rateLimitAll([
     ...(ip
       ? [
@@ -113,66 +130,86 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           { bucket: `signup:ip:${ip}:d`, max: 20, windowSec: 86400 },
         ]
       : []),
-    { bucket: `signup:contact:${contactKey}`, max: 2, windowSec: 86400 },
+    // Keyed on the PHONE (was the only per-target key). 4/day.
+    { bucket: `signup:contact:${normalizedPhone}`, max: 4, windowSec: 86400 },
+    // Keyed on the EMAIL — the address a verification code is actually sent to. This is
+    // the fix for the email-bomb the verification gate would otherwise open: a submit now
+    // only PARKS a pending row and emails a code, so without a per-email cap an attacker
+    // rotating the (unauthenticated, format-only) phone could email one victim's inbox
+    // over and over from Gigi's sending domain. 3/hour + 5/day bounds any single address
+    // to a few messages regardless of phone/IP rotation, while still allowing a couple of
+    // legitimate resends. Sits on top of Turnstile (enabled in prod), not instead of it.
+    { bucket: `signup:email:${normalizedEmail}:h`, max: 3, windowSec: 3600 },
+    { bucket: `signup:email:${normalizedEmail}:d`, max: 5, windowSec: 86400 },
   ]);
   if (!allowed) {
     res.status(429).json({ error: "rate_limited" });
     return;
   }
 
-  try {
-    // ON CONFLICT DO NOTHING covers ALL three unique indexes (phone, email,
-    // address+apt): a match on ANY one means this person/household already
-    // claimed the welcome pie, so no row is inserted and no new pie is issued.
-    const inserted = await sql`
-      INSERT INTO vip_members (business, name, phone, email, address, apt, addr_key, sms_consent, email_consent, consent_text, source)
-      VALUES (${business}, ${name.trim()}, ${normalizedPhone}, ${normalizedEmail}, ${fullAddress}, ${aptRaw || null}, ${addrKey}, ${!!smsConsent}, ${!!emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${signupSource})
-      ON CONFLICT DO NOTHING
-      RETURNING id
-    `;
+  const validated: ValidatedSignup = {
+    name: name.trim(),
+    phone: normalizedPhone,
+    email: normalizedEmail,
+    fullAddress,
+    apt: aptRaw || null,
+    addrKey,
+    smsConsent: !!smsConsent,
+    emailConsent: !!emailConsent,
+    source: signupSource,
+  };
 
-    if (inserted.rowCount === 0) {
-      // Existing member / phone / email / address — the free pie is one per new
-      // member, so we don't issue another. Generic message (no field echoed) to
-      // avoid leaking which detail is already on file.
-      res.status(200).json({
-        ok: true,
-        alreadyMember: true,
-        message: "You're already in the VIP Club — the free welcome pie is one per new member. Watch for our deals!",
+  try {
+    // Existing members get the friendly answer NOW — no verification email is sent
+    // for an address that can't produce a new membership anyway. (Advisory check;
+    // the INSERT's ON CONFLICT at verify time remains the authority.)
+    if (await memberExists(business, validated)) {
+      res.status(200).json({ ok: true, alreadyMember: true, message: ALREADY_MEMBER_MESSAGE });
+      return;
+    }
+
+    // ---- email-verification gate ----
+    // Nothing is created yet. Stops typo'd emails (a member who'd never get her code)
+    // and throwaway addresses farming free pies.
+    await sweepExpiredPending(business); // keep abandoned PII rows from accumulating
+
+    // ---- one-click verification link ----
+    // The emailed button carries a 32-byte token; the member + free-pie code are created only when
+    // it is opened (see api/vip-verify.ts). The link points at a STATIC page which then POSTs the
+    // token, so an email security scanner pre-fetching the URL can't activate anybody — only a real
+    // browser running the page's script does.
+    const token = generateVerifyToken();
+    const pollId = generatePollId();
+    await storePendingSignup(business, validated, hashSecret(token), pollId);
+
+    const base = process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com";
+    const verifyUrl = `${base}/vip-verify/?t=${encodeURIComponent(token)}`;
+
+    const mail = await sendTransactionalEmail(
+      normalizedEmail,
+      "Tap to confirm your email — Gigi's VIP Club 🍕",
+      verificationHtml({ url: verifyUrl, email: normalizedEmail, hours: VERIFY_TTL_HOURS }),
+      `Welcome to the Gigi's NY Style Pizza VIP Club!\n\nConfirm your email to unlock your free plain cheese pie code:\n${verifyUrl}\n\nThis link works for ${VERIFY_TTL_HOURS} hours and confirms ${normalizedEmail}.\nDidn't sign up at Gigi's? You can ignore this email — nothing was created.`,
+    );
+    if (!mail.sent) {
+      // Without the email there is nothing the person can do — fail loudly rather
+      // than strand them waiting for a link that never comes.
+      console.error("[vip-signup] verification email failed:", mail.error);
+      res.status(502).json({
+        error: "code_send_failed",
+        message: "We couldn't send the verification email just now — please try again in a minute.",
       });
       return;
     }
 
-    const memberId = inserted.rows[0].id as number;
-    const { id: promoCodeId, code, description } = await issueWelcomePie(business, memberId);
-    // Registered as the campaign's OptInMessage — keep the shape in sync with
-    // the A2P filing if this wording changes.
-    const welcomeMessage = `Gigi's NY Style Pizza VIP Club: you're in! Code ${code} gets you ${description}. Up to 4 msgs/mo. Msg&data rates may apply. Reply HELP for help, STOP to opt out.`;
-
-    // Send ONLY to the channels the member consented to (both fields are stored
-    // for dedup regardless). On-screen code (below) is the fallback if a channel
-    // isn't armed yet.
-    if (smsConsent) {
-      const sms = await sendWelcomeSms(normalizedPhone, welcomeMessage);
-      await sql`
-        INSERT INTO vip_sends (business, channel, member_id, promo_code_id, status, provider_id, error)
-        VALUES (${business}, 'sms', ${memberId}, ${promoCodeId}, ${sms.sent ? "sent" : "failed"}, ${sms.providerId ?? null}, ${sms.error ?? null})
-      `;
-    }
-    if (emailConsent) {
-      const mail = await sendWelcomeEmail(normalizedEmail, "Welcome to the Gigi's VIP Club 🍕", welcomeMessage, {
-        promoCode: code,
-        promoDescription: description,
-      });
-      await sql`
-        INSERT INTO vip_sends (business, channel, member_id, promo_code_id, status, provider_id, error)
-        VALUES (${business}, 'email', ${memberId}, ${promoCodeId}, ${mail.sent ? "sent" : "failed"}, ${mail.providerId ?? null}, ${mail.error ?? null})
-      `;
-    }
-
-    // Return the code so the success screen can show it immediately — robust
-    // even before SMS is armed. Never echo provider send results (leaks detail).
-    res.status(200).json({ ok: true, code, description });
+    res.status(200).json({
+      ok: true,
+      verifyRequired: true,
+      verifyMethod: "link",
+      email: normalizedEmail,
+      pollId,
+      ttlHours: VERIFY_TTL_HOURS,
+    });
   } catch (err) {
     console.error("[vip-signup] error", err);
     res.status(500).json({ error: "internal_error" });

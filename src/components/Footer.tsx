@@ -87,6 +87,10 @@ export function Footer() {
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-cream/75">
             <a href="/pizza-party-long-branch/" className="hover:text-white">Kids’ Pizza Parties</a>
             <a href="/late-night-pizza-long-branch/" className="hover:text-white">Late-Night Pizza</a>
+            {/* /vip-club/ had zero inbound links anywhere on the site, so Google never learned it
+                existed ("URL is unknown to Google"). One footer link makes it discoverable. */}
+            <a href="/vip-club/" className="hover:text-white">VIP Club &mdash; free pie</a>
+            <a href="/delivery/" className="hover:text-white">Delivery Areas &amp; Fees</a>
             <a href="/gluten-free-pizza-long-branch/" className="hover:text-white">Gluten-Free Pizza</a>
             <a href="/vegan-pizza-long-branch/" className="hover:text-white">Vegan Pizza</a>
             <a href="/catering-long-branch/" className="hover:text-white">Catering in Long Branch</a>
@@ -110,6 +114,30 @@ export function Footer() {
             <a href="/sms-terms/" className="hover:text-white">SMS Terms</a>
             {" · "}
             Website by <a href="https://clickmingo.com" target="_blank" rel="noopener" className="hover:text-white">ClickMingo</a>
+          </p>
+          {/* Gigi's also has a listing on Slice. Kept at the very bottom, below the fine print,
+              so the site's own ordering (which pays Gigi's in full) stays the primary path. */}
+          <p className="mt-5 flex items-center justify-center gap-2 text-xs text-white/45 md:justify-start">
+            <span>Also on</span>
+            <a
+              href="https://slicelife.com/restaurants/nj/long-branch/07740/gigi-s-ny-style-pizza-restaurant/menu"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Order from Gigi's on Slice (opens in a new tab)"
+              className="inline-flex items-center transition hover:opacity-80"
+            >
+              <img
+                src="/img/slice-logo.png"
+                alt="Slice"
+                width={96}
+                height={96}
+                /* Deliberately NOT loading="lazy": at 7 KB it saves nothing, and in the footer the
+                   lazy heuristic never fired — the image stayed unloaded (currentSrc empty) so the
+                   logo simply never appeared. */
+                decoding="async"
+                className="h-7 w-7 rounded-[6px]"
+              />
+            </a>
           </p>
         </div>
       </div>

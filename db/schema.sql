@@ -110,3 +110,43 @@ CREATE TABLE IF NOT EXISTS outreach_sends (
   sent_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (campaign, email)
 );
+
+-- Email-verification gate for the PUBLIC VIP signup (added 2026-08-06; switched from a typed
+-- 6-digit code to a one-click "Verify" LINK on 2026-08-07). A signup parks here first; the member
+-- row + free-pie code are created only when the emailed link is opened, proving control of the
+-- address. `secret_hash` is the sha256 of a 32-byte URL-safe token (never stored in the clear).
+-- `poll_id` is a public, opaque id the waiting browser tab polls so it can update itself when the
+-- link is opened on another device. Verified rows keep `issued_code` briefly so a second click (or
+-- the waiting tab) can be shown the same code; rows are swept after they expire.
+CREATE TABLE IF NOT EXISTS vip_email_verifications (
+  id          BIGSERIAL PRIMARY KEY,
+  business    TEXT NOT NULL,
+  email       TEXT NOT NULL,            -- normalized lowercase
+  secret_hash TEXT NOT NULL,            -- sha256 hex of the verification link token
+  payload     JSONB NOT NULL,           -- the fully-validated signup, replayed on verify
+  attempts    INT NOT NULL DEFAULT 0,   -- legacy from the typed-code flow; unused by links
+  poll_id     TEXT,                     -- opaque id for the waiting tab's status poll
+  verified_at TIMESTAMPTZ,              -- set when the link was opened and the member created
+  issued_code TEXT,                     -- the PIE-XXXXXX handed out, for idempotent re-clicks
+  expires_at  TIMESTAMPTZ NOT NULL,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS vip_email_verifications_uq
+  ON vip_email_verifications (business, email);
+CREATE UNIQUE INDEX IF NOT EXISTS vip_email_verifications_secret_uq
+  ON vip_email_verifications (secret_hash);
+CREATE UNIQUE INDEX IF NOT EXISTS vip_email_verifications_poll_uq
+  ON vip_email_verifications (poll_id) WHERE poll_id IS NOT NULL;
+
+-- Migration guards: CREATE TABLE IF NOT EXISTS is a NO-OP on a database that already has an older
+-- shape of this table, so it would silently leave the columns below missing (the typed-code era
+-- called secret_hash "code_hash" and had none of poll_id / verified_at / issued_code). Applying
+-- these explicitly is what makes this file safe to run against an existing database.
+ALTER TABLE vip_email_verifications RENAME COLUMN code_hash TO secret_hash;
+ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS poll_id     TEXT;
+ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ;
+ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS issued_code TEXT;
+-- NOTE the RENAME above has no IF EXISTS in Postgres: on an already-migrated database it errors
+-- with "column code_hash does not exist", which is harmless when this file is applied statement by
+-- statement (the intended way) but will abort a single-transaction run. Skip that one line if you
+-- are re-applying to a database that is already on the link-token shape.

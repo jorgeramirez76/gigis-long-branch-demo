@@ -60,9 +60,8 @@ def main():
     items, mods = load()
     lines = ["## What things cost (straight from Gigi's register)",
              "",
-             "These are the current prices at the Long Branch location. One price whether you pay by card or",
-             "Prices can change;",
-             "call (732) 377-2468 to confirm.",
+             "These are the current prices at the Long Branch location — one price whether you pay by",
+             "card or cash. Prices can change; call (732) 377-2468 to confirm.",
              ""]
     for key, label in WANT:
         if key not in items:

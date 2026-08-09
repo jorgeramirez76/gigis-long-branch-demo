@@ -15,6 +15,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
+  // A plain GET must not change anything. Corporate mail gateways, link scanners and image
+  // proxies fetch every URL in a delivered email before the recipient ever opens it — so a GET
+  // that opts out silently unsubscribed members from the welcome email itself, and they never
+  // learned why the deals stopped. RFC 8058's one-click button uses POST, which still works
+  // untouched below; the emailed link now renders a confirm button that POSTs.
+  if (req.method === "GET") {
+    res.status(200).setHeader("Content-Type", "text/html").send(
+      confirmPage(email, token),
+    );
+    return;
+  }
+
   try {
     // Suppression first, and keyed by ADDRESS not member id: a one-time campaign to
     // past customers reaches people who were never members, and for them flipping
@@ -46,6 +58,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.error("[unsubscribe] error", err);
     res.status(500).setHeader("Content-Type", "text/html").send(page("Something went wrong.", "Try the link again in a minute, or call (732) 377-2468 and we'll take you off by hand."));
   }
+}
+
+/** GET view: a one-tap confirm that POSTs. Nothing is changed until the human presses it. */
+function confirmPage(email: string, token: string): string {
+  const esc = (v: string) => v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  return `<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unsubscribe — Gigi's VIP Club</title></head>
+<body style="margin:0;font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#faf2e1;display:flex;min-height:100vh;align-items:center;justify-content:center;">
+  <div style="max-width:420px;margin:24px;padding:36px 28px;background:#fff;border-radius:16px;box-shadow:0 14px 40px rgba(26,18,16,.12);text-align:center;">
+    <h1 style="margin:0 0 10px;font-size:22px;color:#1a1210;">Unsubscribe from Gigi's emails?</h1>
+    <p style="margin:0 0 22px;color:#6a5a52;line-height:1.6;">This will stop promotional emails to <strong>${esc(email)}</strong>. Your orders and receipts are not affected.</p>
+    <form method="POST" action="/api/unsubscribe?e=${encodeURIComponent(email)}&t=${encodeURIComponent(token)}">
+      <button type="submit" style="width:100%;padding:14px 18px;border:0;border-radius:999px;background:#9b121a;color:#fff;font-size:15px;font-weight:700;cursor:pointer;">Yes, unsubscribe me</button>
+    </form>
+    <p style="margin:18px 0 0;font-size:13px;color:#6a5a52;">Changed your mind? Just close this page — nothing has changed yet.</p>
+  </div>
+</body></html>`;
 }
 
 function page(title: string, detail: string): string {

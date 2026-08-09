@@ -8,9 +8,10 @@
     "dev": "vite",
     "prebuild": "node scripts/prune-static-menu.mjs",
     "prune-menu": "node scripts/prune-static-menu.mjs",
-    "build": "tsc -b && vite-react-ssg build",
+    "build": "python3 scripts/verify-prices.py && tsc -b && tsc -p tsconfig.api.json --noEmit && vite-react-ssg build",
     "preview": "vite preview --host",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "verify:prices": "python3 scripts/verify-prices.py"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",

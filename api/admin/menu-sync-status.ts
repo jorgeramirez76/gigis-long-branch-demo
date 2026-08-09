@@ -12,7 +12,7 @@ import { MENU_INDEX } from "../../src/data/menuIndex.js";
  * "deleted" can be confirmed at the source).
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!requireAdmin(req, res)) return;
+  if (!(await requireAdmin(req, res))) return;
   if (req.method !== "GET") {
     res.status(405).json({ error: "method_not_allowed" });
     return;

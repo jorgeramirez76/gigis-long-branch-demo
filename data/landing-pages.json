@@ -2,10 +2,10 @@
   {
     "slug": "late-night-pizza-long-branch",
     "keyword": "late night pizza Long Branch",
-    "titleTag": "Late-Night Pizza in Long Branch | Gigi's Long Branch",
-    "metaDescription": "Late-night pizza in Long Branch: Gigi's serves NY-style slices and the full menu till midnight Thu-Sun, 11 PM Mon-Wed. Pickup or delivery. Call (732) 377-2468.",
+    "titleTag": "Open Late in Long Branch — Full Menu Until Midnight Thu-Sun | Gigi's",
+    "metaDescription": "Open until 11 PM Mon-Wed and midnight Thu-Sun. Delivery until 10 PM, pickup until close. 140 Brighton Ave, West End. (732) 377-2468.",
     "h1": "Late-Night Pizza in Long Branch",
-    "dek": "Craving late-night pizza in Long Branch? Gigi's NY Style Pizza on Brighton Avenue keeps hot slices and the full menu going till midnight Thursday through Sunday, and 11 PM Monday through Wednesday. Open 7 days for pickup or delivery across the West End. Order online or call (732) 377-2468.",
+    "dek": "Craving late-night pizza in Long Branch? Gigi's NY Style Pizza on Brighton Avenue keeps hot slices and the full menu going till midnight Thursday through Sunday, and 11 PM Monday through Wednesday. Open 7 days — delivery until 10 PM, pickup until close. Order online or call (732) 377-2468.",
     "sections": [
       {
         "h2": "How Late Is Gigi's Open?",
@@ -22,7 +22,7 @@
         ]
       },
       {
-        "h2": "Pickup or Delivery, Late",
+        "h2": "Late-Night Pickup",
         "paragraphs": [
           "Order online at gigislongbranch.com or call (732) 377-2468. Pick up at the counter on Brighton Avenue, or get it delivered to your door.",
           "We deliver to Long Branch and the West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport."
@@ -35,8 +35,8 @@
         "a": "Thursday through Sunday we're open until midnight, and Monday through Wednesday until 11 PM. We open at 10 AM every day."
       },
       {
-        "q": "Can I get pizza delivered late at night in Long Branch?",
-        "a": "Yes. Gigi's offers late-night delivery across Long Branch, the West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order at gigislongbranch.com or call (732) 377-2468."
+        "q": "How late can I get pizza delivered in Long Branch?",
+        "a": "Delivery runs until 10 PM. After that the kitchen is still going — pickup is available until we close, 11 PM Monday through Wednesday and midnight Thursday through Sunday. Order at gigislongbranch.com or call (732) 377-2468."
       },
       {
         "q": "Do you sell pizza by the slice late night?",
@@ -93,8 +93,8 @@
   {
     "slug": "gluten-free-pizza-long-branch",
     "keyword": "gluten free pizza Long Branch",
-    "titleTag": "Gluten-Free Pizza in Long Branch | Gigi's Long Branch",
-    "metaDescription": "Gluten-free pizza in Long Branch — Gigi's NY-style pies on a gluten-free crust. Shared kitchen, so tell staff if celiac. Call (732) 377-2468.",
+    "titleTag": "Gluten-Free Pizza, Pasta & Bread — Long Branch NJ | Gigi's",
+    "metaDescription": "GF crust pie $17.68, the same price as our plain pie. Plus a GF pasta swap and GF bread on breakfast sandwiches. Shared kitchen, so call (732) 377-2468 and we'll take extra care.",
     "h1": "Gluten-Free Pizza in Long Branch, NJ",
     "dek": "Yes — Gigi's makes gluten-free pizza in Long Branch. It's a New York-style pie on a gluten-free crust. Toppings are charged separately. Everything is prepared in a shared kitchen, so it isn't certified allergen-free. If you have celiac disease, tell our staff and we'll take extra care.",
     "sections": [
@@ -142,8 +142,8 @@
         "a": "All three. Gigi's stocks a gluten-free pizza crust, gluten-free pasta as a swap on many pasta dishes, and gluten-free bread for breakfast sandwiches."
       },
       {
-        "q": "Can I get gluten-free pizza delivered late?",
-        "a": "Yes. Gluten-free pizza is available for delivery any hour the shop is open, until midnight Thursday through Sunday and 11 PM Monday through Wednesday."
+        "q": "How late can I get gluten-free pizza?",
+        "a": "Gluten-free pizza is available for delivery until 10 PM, and for pickup right up to closing — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
       }
     ],
     "priceBlock": {
@@ -181,8 +181,8 @@
   {
     "slug": "vegan-pizza-long-branch",
     "keyword": "vegan pizza Long Branch",
-    "titleTag": "Vegan Pizza Long Branch, NJ | Gigi's Long Branch",
-    "metaDescription": "Vegan pizza in Long Branch: dairy-free cheese on our hand-stretched NY-style crust, plus a full Italian menu. Order online or call (732) 377-2468.",
+    "titleTag": "Vegan & Dairy-Free Pizza in Long Branch, NJ | Gigi's",
+    "metaDescription": "Our Vegan Pizza Pie ($20.79) is its own menu item, not a plain pie with the cheese left off. Pickup or delivery until 10 PM.",
     "h1": "Vegan Pizza in Long Branch, NJ",
     "dek": "Looking for vegan pizza in Long Branch? Gigi's makes it as its own menu item rather than a regular pie with the cheese left off. If you need something else built dairy-free, call and we'll tell you what we can do that day. Order online or call (732) 377-2468.",
     "sections": [
@@ -405,7 +405,7 @@
       },
       {
         "q": "How late do you deliver to Pier Village?",
-        "a": "Until midnight Thursday through Sunday and until 11 PM Monday through Wednesday."
+        "a": "Delivery runs until 10 PM. Pickup is available until close — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
       }
     ],
     "priceBlock": {
@@ -569,7 +569,7 @@
       },
       {
         "q": "What are your delivery hours in Elberon?",
-        "a": "We deliver during store hours, seven days a week: Monday to Wednesday, 10 AM to 11 PM, and Thursday to Sunday, 10 AM to midnight."
+        "a": "Delivery runs until 10 PM, seven days a week. Pickup keeps going until we close: 11 PM Monday through Wednesday, midnight Thursday through Sunday."
       },
       {
         "q": "Do you have gluten-free or vegan pizza for delivery?",
@@ -585,7 +585,7 @@
       },
       {
         "q": "How late do you deliver to Elberon?",
-        "a": "Until midnight Thursday through Sunday and until 11 PM Monday through Wednesday."
+        "a": "Delivery runs until 10 PM. Pickup is available until close — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
       }
     ],
     "priceBlock": {

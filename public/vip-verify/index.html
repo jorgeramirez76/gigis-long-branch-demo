@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirm your email — Gigi's VIP Club</title>
+<!-- Never indexed: every URL here is a one-time verification link. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#9b121a">
+<link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Inter";font-style:normal;font-weight:100 900;font-display:swap;
+src:url(/fonts/inter-400.woff2) format("woff2")}
+@font-face{font-family:"Bebas Neue";font-style:normal;font-weight:400;font-display:swap;
+src:url(/fonts/bebas-neue-400.woff2) format("woff2")}
+@font-face{font-family:"Inter Fallback";font-weight:400;src:local("Arial"),local("Helvetica");
+size-adjust:107.8%;ascent-override:89.9%;descent-override:22.4%;line-gap-override:0%}
+@font-face{font-family:"Bebas Fallback";src:local("Impact"),local("Arial Narrow");
+size-adjust:84.6%;ascent-override:106.4%;descent-override:35.5%;line-gap-override:0%}
+:root{--red:#9b121a;--red-dark:#6e0b12;--cream:#faf2e1;--cream-dark:#f0e5c8;--ink:#1a1210;
+--ink-soft:#3c2f2a;--ink-mute:#6a5a52;--gold:#c89441;--gold-bright:#f0c274;--green:#0a7a48;
+--disp:"Bebas Neue","Bebas Fallback",Impact,sans-serif;
+--sans:"Inter","Inter Fallback",ui-sans-serif,system-ui,-apple-system,Arial,sans-serif}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--sans);background:var(--red);color:var(--ink);line-height:1.55;
+font-size:17px;min-height:100vh}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:480px;margin:0 auto;padding:0 18px}
+header{text-align:center;padding:26px 18px 8px}
+header img{height:64px;width:auto;margin:0 auto 10px;border-radius:8px}
+.brand{font-family:var(--disp);font-size:1.5rem;letter-spacing:.03em;color:#fff;line-height:1}
+.brand small{display:block;font-family:var(--sans);font-size:.58rem;letter-spacing:.16em;
+color:var(--gold-bright);font-weight:700;margin-top:4px}
+.card{background:var(--cream);border-radius:18px;padding:30px 22px;margin:16px 0 26px;
+box-shadow:0 14px 40px rgba(0,0,0,.28);text-align:center}
+h1{font-family:var(--disp);font-weight:400;font-size:2.3rem;line-height:1;letter-spacing:.02em;
+margin:.1em 0 .3em;color:var(--red-dark)}
+h1.good{color:var(--green)}
+p{margin:0 0 14px;color:var(--ink-soft)}
+p.mute{font-size:.86rem;color:var(--ink-mute)}
+.spinner{width:38px;height:38px;margin:6px auto 16px;border:4px solid var(--cream-dark);
+border-top-color:var(--red);border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spinner{animation-duration:2.4s}}
+.tick{font-family:var(--disp);font-size:3.4rem;line-height:1;color:var(--green);margin:0}
+.code{font-family:var(--disp);font-size:2.5rem;letter-spacing:.09em;color:var(--red-dark);
+background:#fff;border:2px dashed var(--gold);border-radius:13px;padding:14px 10px;margin:14px 0 8px;
+word-break:break-all}
+.btn{display:inline-block;width:100%;margin-top:6px;font-family:var(--disp);font-size:1.35rem;
+letter-spacing:.04em;padding:.62em 1em;border:0;border-radius:13px;background:var(--red);
+color:#fff;cursor:pointer;min-height:54px;text-decoration:none}
+.btn:hover{background:var(--red-dark)}
+.btn.ghost{background:transparent;color:var(--red-dark);border:2px solid var(--red-dark)}
+[hidden]{display:none!important}
+footer{text-align:center;color:#f3d9be;font-size:.8rem;padding:2px 18px 40px;line-height:1.6}
+footer a{color:var(--gold-bright)}
+</style>
+</head><body>
+
+<header>
+  <img src="/logo-sm.png" alt="Gigi's NY Style Pizza logo" width="145" height="120">
+  <div class="brand">GIGI'S<small>NY STYLE PIZZA &middot; LONG BRANCH</small></div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <!-- Confirm: the DEFAULT state. A real tap here is what verifies — Gmail's scanner executes
+         this page's JavaScript, so an automatic POST would let the provider confirm the address
+         instead of the person (measured in production 2026-08-07). Scanners don't press buttons. -->
+    <div id="confirm">
+      <div style="font-size:34px;line-height:1;margin:0 0 8px;">&#127829;</div>
+      <h1>Confirm your email</h1>
+      <p>One tap and your free plain cheese pie code is yours.</p>
+      <button class="btn" type="button" id="confirmBtn">Yes, confirm my email</button>
+      <p class="mute" style="margin-top:14px">Tapping this confirms the address this email was sent
+        to and activates your Gigi's VIP Club membership.</p>
+      <noscript>
+        <p><strong>JavaScript is switched off in this browser</strong>, so this button can't finish
+          the confirmation.</p>
+        <p class="mute">Open the same link in your normal browser, or call
+          <a href="tel:+17323772468">(732) 377-2468</a> and we'll sign you up in a few seconds.</p>
+      </noscript>
+    </div>
+
+    <!-- Working: shown while the token is exchanged. -->
+    <div id="working" hidden role="status" aria-live="polite">
+      <div class="spinner" id="spin" aria-hidden="true"></div>
+      <h1 id="workTitle">Confirming your email…</h1>
+      <p id="workMsg">One moment — we're unlocking your free-pie code.</p>
+    </div>
+
+    <!-- Success -->
+    <div id="done" hidden role="status" aria-live="polite">
+      <p class="tick">&#10003;</p>
+      <h1 class="good" id="doneTitle">You're in!</h1>
+      <p id="doneMsg"></p>
+      <p class="code" id="doneCode" hidden></p>
+      <p class="mute" id="doneNote"></p>
+      <a class="btn" href="/#menu">Start an order</a>
+    </div>
+
+    <!-- Problem: expired / replaced / broken link -->
+    <div id="bad" hidden role="alert">
+      <h1>Link didn't work</h1>
+      <p id="badMsg"></p>
+      <a class="btn" href="/#vip-club">Back to VIP Club signup</a>
+      <p class="mute">Or call <a href="tel:+17323772468">(732) 377-2468</a> and we'll sign you up over the phone.</p>
+    </div>
+
+    <!-- Retry (network / server hiccup) -->
+    <div id="retry" hidden role="alert">
+      <h1>Couldn't reach us</h1>
+      <p id="retryMsg">Check your connection and try again.</p>
+      <button class="btn" type="button" id="retryBtn">Try again</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Gigi's NY Style Pizza &middot; 140 Brighton Ave, Long Branch, NJ 07740<br>
+  <a href="tel:+17323772468">(732) 377-2468</a> &middot; <a href="/">gigislongbranch.com</a>
+</footer>
+
+<script src="/vip-verify/verify.js" defer></script>
+</body></html>

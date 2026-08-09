@@ -10,61 +10,73 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 # --- AI search / answer engines (explicit allow so they can cite us) ---
 User-agent: GPTBot
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: Perplexity-User
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: Claude-Web
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: anthropic-ai
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 User-agent: Bingbot
 Allow: /
 Disallow: /admin.html
 Disallow: /api/
+Disallow: /vip-verify/
 
 Sitemap: https://gigislongbranch.com/sitemap.xml

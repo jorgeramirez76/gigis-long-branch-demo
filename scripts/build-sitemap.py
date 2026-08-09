@@ -32,7 +32,9 @@ BASE = "https://gigislongbranch.com"
 MANIFEST = ROOT / "sitemap-manifest.json"
 
 # Routes that exist but must never be advertised to search engines.
-EXCLUDE_DIRS = {"img", "fonts", "assets"}
+# vip-verify holds one-time verification landing pages (?t=<token>) — noindex'd, and it must never
+# be advertised to a crawler.
+EXCLUDE_DIRS = {"img", "fonts", "assets", "vip-verify"}
 EXCLUDE_FILES = {"admin.html", "llms.txt", "robots.txt", "sitemap.xml"}
 # Search-engine ownership-verification stubs. These MUST stay on disk — deleting
 # public/googlececb096098599354.html un-verifies Search Console — but they are not content and

@@ -15,8 +15,8 @@
 (function () {
   "use strict";
 
-  // MUST stay byte-identical to CONSENT_TEXT in src/components/VipClub.tsx and
-  // CANONICAL_CONSENT_TEXT in api/vip-signup.ts.
+  // MUST stay byte-identical to CONSENT_TEXT in src/lib/vipConsent.ts and
+  // CANONICAL_CONSENT_TEXT in api/lib/vipSignupShared.ts.
   var CONSENT_TEXT =
     'By checking "Text me deals," I agree to receive recurring promotional texts (weekly specials and promo codes) from Gigi\'s NY Style Pizza, 140 Brighton Ave, Long Branch, NJ, sent by automated technology to the number I provided. Consent is not a condition of any purchase. Message frequency varies, typically up to 4 per month. Message & data rates may apply. Reply STOP to opt out, HELP for help. By checking "Email me deals," I agree to receive promotional emails; unsubscribe anytime via the link in any email.';
 
@@ -24,6 +24,7 @@
   var btn = document.getElementById("go");
   var errEl = document.getElementById("err");
   var doneEl = document.getElementById("done");
+  var verifyEl = document.getElementById("verify");
   // id "ts-widget", NOT "turnstile": an element with id="turnstile" becomes
   // window.turnstile (named element access), which makes Cloudflare's api.js
   // think it was loaded twice — it bails and render() never exists. That single
@@ -202,27 +203,102 @@
           return showErr(msg);
         }
 
-        form.style.display = "none";
-        doneEl.style.display = "block";
-        if (r.data.alreadyMember) {
-          $("doneTitle").textContent = "You're already a VIP!";
-          $("doneMsg").textContent = r.data.message ||
-            "You're already in the VIP Club — the free welcome pie is one per new member. Watch for our deals!";
-        } else {
-          $("doneTitle").textContent = "You're in! \u{1F355}";
-          $("doneMsg").textContent = "Here's your code for a free plain cheese pie. We've also sent it to you.";
-          if (r.data.code) {
-            $("doneCode").textContent = r.data.code;
-            $("doneCode").hidden = false;
-          }
-          $("doneNote").textContent = "Show this code at Gigi's, 140 Brighton Avenue. Good for 90 days.";
+        if (r.data.verifyRequired) {
+          // Nothing is created yet — a Verify button went to their inbox and the
+          // member + pie code are minted by /api/vip-verify when it comes back.
+          pendingEmail = r.data.email || val("email").toLowerCase();
+          pollId = r.data.pollId || null;
+          if (typeof r.data.ttlHours === "number" && r.data.ttlHours > 0) ttlHours = r.data.ttlHours;
+          btn.disabled = false;
+          btn.textContent = original;
+          showVerify();
+          startPolling();
+          return;
         }
-        doneEl.scrollIntoView({ block: "center", behavior: "smooth" });
+        showDone(r.data);
       })
       .catch(function () {
         btn.disabled = false;
         btn.textContent = original;
+        // The token was consumed by the attempt; reset so the retry gets a fresh one.
+        if (tsWidgetId !== null && window.turnstile) { window.turnstile.reset(tsWidgetId); tsToken = null; }
         showErr("We couldn't reach the server. Please check your connection and try again, or call (732) 377-2468.");
       });
   });
+
+  // --- email-verification step: one-click link (2026-08-07) -------------------------------------
+  // The signup only emails a "Verify my email" button; the member + pie code are created when it
+  // is opened (see public/vip-verify/). This page just waits, and polls so it can show the code
+  // even when the email is opened on a different device.
+  var pendingEmail = null;
+  var pollId = null;
+  var pollTimer = null;
+  var ttlHours = 24; // replaced by the server's value on submit
+
+  function showDone(data) {
+    stopPolling();
+    form.style.display = "none";
+    verifyEl.style.display = "none";
+    doneEl.style.display = "block";
+    if (data.alreadyMember) {
+      $("doneTitle").textContent = "You're already a VIP!";
+      $("doneMsg").textContent = data.message ||
+        "You're already in the VIP Club — the free welcome pie is one per new member. Watch for our deals!";
+    } else {
+      $("doneTitle").textContent = "You're in! \u{1F355}";
+      $("doneMsg").textContent = "Here's your code for a free plain cheese pie. We've also sent it to you.";
+      if (data.code) {
+        $("doneCode").textContent = data.code;
+        $("doneCode").hidden = false;
+      }
+      $("doneNote").textContent = "Redeem it at final checkout when you order pickup at gigislongbranch.com, or show it at Gigi's, 140 Brighton Avenue. Pickup orders only. Good for 90 days.";
+    }
+    doneEl.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+
+  function showVerify() {
+    form.style.display = "none";
+    verifyEl.style.display = "block";
+    $("verifyIntro").textContent = "We just emailed " + pendingEmail + ".";
+    var hint = verifyEl.querySelector(".vhint");
+    if (hint) hint.innerHTML = 'Open the email, tap <strong>"Verify my email"</strong>, then confirm on the page that opens \u2014 your free-pie code appears right there. Check spam if you don\'t see it; the link works for ' + ttlHours + ' hours.';
+    verifyEl.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+
+  function stopPolling() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  }
+
+  // Poll every 5s for up to ~20 minutes, then stop so an abandoned tab isn't polling all day.
+  function startPolling() {
+    if (!pollId) return;
+    stopPolling();
+    var tries = 0;
+    pollTimer = setInterval(function () {
+      if (++tries > 240) return stopPolling();
+      fetch("/api/vip-verify-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pollId: pollId })
+      })
+        .then(function (res) { return res.ok ? res.json() : null; })
+        .then(function (d) {
+          if (!d) return;
+          if (d.verified) return showDone({ code: d.code });
+          if (d.stale) stopPolling(); // signup replaced or swept
+        })
+        .catch(function () { /* transient — keep waiting */ });
+    }, 5000);
+  }
+
+  $("vback").addEventListener("click", function (e) {
+    e.preventDefault();
+    // Back to the form with every field intact; resubmitting sends a fresh link.
+    // The Turnstile token was consumed by the first submit — reset for a new one.
+    stopPolling();
+    verifyEl.style.display = "none";
+    form.style.display = "";
+    if (tsWidgetId !== null && window.turnstile) { window.turnstile.reset(tsWidgetId); tsToken = null; }
+  });
+
 })();

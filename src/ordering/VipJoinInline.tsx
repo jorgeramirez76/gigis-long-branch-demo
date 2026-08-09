@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Turnstile } from "../components/Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
 import { CONSENT_TEXT } from "../lib/vipConsent";
@@ -30,6 +30,10 @@ export function VipJoinInline({
   /** Empty for pickup orders — the form asks for it; prefilled for delivery. */
   address: string;
 }) {
+  // Email is editable here even though it came from the order: it's the channel the
+  // verification code is sent to, so a typo in the order email must be fixable rather
+  // than dead-ending the customer on the code screen.
+  const [joinEmail, setJoinEmail] = useState(email);
   const [addr, setAddr] = useState(address);
   const [apt, setApt] = useState("");
   const [city, setCity] = useState("");
@@ -39,16 +43,26 @@ export function VipJoinInline({
   const hadAddress = address.trim().length >= 4;
   const [smsConsent, setSmsConsent] = useState(false);
   const [emailConsent, setEmailConsent] = useState(false);
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "already">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "verify" | "success" | "already">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [code, setCode] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileReset, setTurnstileReset] = useState(0);
+  // Email-verification step: the person must tap "Verify my email" in the email before the
+  // member and free-pie code exist. pendingEmail = server-normalized recipient; pollId lets
+  // this panel notice the tap even if they open the email elsewhere.
+  const [pendingEmail, setPendingEmail] = useState("");
+  const [pollId, setPollId] = useState<string | null>(null);
+  const [ttlHours, setTtlHours] = useState(24);
 
   async function join() {
     setErrorMsg("");
     if (!smsConsent && !emailConsent) {
       setErrorMsg("Tick at least one box so we can send your free-pie code.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(joinEmail.trim())) {
+      setErrorMsg("Please enter a valid email — that's where your verification code goes.");
       return;
     }
     if (addr.trim().length < 4) {
@@ -72,7 +86,7 @@ export function VipJoinInline({
           business: "gigis_long_branch",
           name,
           phone,
-          email,
+          email: joinEmail,
           address: addr,
           apt,
           city: hadAddress ? "" : city,
@@ -105,6 +119,17 @@ export function VipJoinInline({
       }
       if (data.alreadyMember) {
         setStatus("already");
+      } else if (data.verifyRequired) {
+        // Verify link emailed; nothing created yet. Refresh the consumed Turnstile token
+        // so going back to resend doesn't hit a stale-token error.
+        setPendingEmail(typeof data.email === "string" ? data.email : joinEmail.trim().toLowerCase());
+        setPollId(typeof data.pollId === "string" ? data.pollId : null);
+        if (typeof data.ttlHours === "number" && data.ttlHours > 0) setTtlHours(data.ttlHours);
+        setStatus("verify");
+        if (TURNSTILE_ON) {
+          setTurnstileToken(null);
+          setTurnstileReset((n) => n + 1);
+        }
       } else {
         setCode(typeof data.code === "string" ? data.code : null);
         setStatus("success");
@@ -119,6 +144,63 @@ export function VipJoinInline({
     }
   }
 
+  // Notice the tap even when the email is opened on a different device — otherwise this panel
+  // would sit on "check your email" while the membership is already live.
+  const pollStop = useRef(false);
+  useEffect(() => {
+    if (status !== "verify" || !pollId) return;
+    pollStop.current = false;
+    let tries = 0;
+    const tick = async () => {
+      if (pollStop.current || tries++ > 240) return; // ~20 min
+      try {
+        const res = await fetch("/api/vip-verify-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pollId }),
+        });
+        const data = await res.json();
+        if (data.verified) {
+          pollStop.current = true;
+          setCode(typeof data.code === "string" ? data.code : null);
+          setStatus("success");
+          return;
+        }
+        if (data.stale) pollStop.current = true;
+      } catch {
+        /* transient; keep polling */
+      }
+    };
+    const t = setInterval(tick, 5000);
+    return () => {
+      pollStop.current = true;
+      clearInterval(t);
+    };
+  }, [status, pollId]);
+
+  if (status === "verify") {
+    return (
+      <div className="rounded-2xl bg-[var(--color-brand-red)] p-5 text-center text-white" data-vip-inline="verify">
+        <p className="text-lg font-extrabold">📬 One last tap</p>
+        <p className="mt-1.5 text-sm text-white/85">
+          We emailed <strong>{pendingEmail}</strong>. Open it, tap <strong>“Verify my email”</strong>,
+          then confirm on the page that opens — your code appears right there.
+        </p>
+        <p className="mt-3 rounded-xl bg-black/20 px-3 py-2.5 text-xs text-white/80">
+          Check spam if you don't see it. The link works for {ttlHours} hours. This box updates
+          itself once you tap.
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus("idle")}
+          className="mt-3 text-xs font-bold underline"
+        >
+          Wrong email? Go back and fix it
+        </button>
+      </div>
+    );
+  }
+
   if (status === "success") {
     return (
       <div className="rounded-2xl border-2 border-[var(--color-gold-bright)] bg-white p-5 text-center" data-vip-inline="success">
@@ -129,8 +211,9 @@ export function VipJoinInline({
           </p>
         )}
         <p className="mt-3 text-sm text-[var(--color-ink-soft)]">
-          Show this code at the shop for your free plain cheese pie — it's good for 90 days, and
-          we've also sent it to you.
+          Redeem it at final checkout on your next <strong>pickup</strong> order — there's a
+          VIP code box right above the total — or show it at the counter. Pickup orders only,
+          good for 90 days. We've also sent it to you.
         </p>
       </div>
     );
@@ -152,8 +235,19 @@ export function VipJoinInline({
         Join Gigi's VIP Club with one tap — we'll use the details from your order:
       </p>
       <p className="mt-2 rounded-xl bg-white/10 px-3 py-2 text-center text-xs text-white/90">
-        {name} · {phone} · {email}
+        {name} · {phone}
       </p>
+      <label className="mt-2 block">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-white/70">Email (for your code)</span>
+        <input
+          type="email"
+          value={joinEmail}
+          onChange={(e) => setJoinEmail(e.target.value)}
+          autoComplete="email"
+          placeholder="you@email.com"
+          className="mt-1 w-full rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+        />
+      </label>
 
       {/* Pickup orders carry no address; the welcome pie is one per household, so ask for it. */}
       {!hadAddress && (

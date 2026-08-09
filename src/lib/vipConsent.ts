@@ -1,7 +1,7 @@
 /**
  * Canonical VIP Club consent language — the single copy for the React app.
  *
- * MUST stay byte-identical to CANONICAL_CONSENT_TEXT in api/vip-signup.ts (the server rejects a
+ * MUST stay byte-identical to CANONICAL_CONSENT_TEXT in api/lib/vipSignupShared.ts (the server rejects a
  * signup whose consentText doesn't match) and to the copy in public/vip-club/vip.js. This exact
  * wording is also registered as the A2P campaign's opt-in language, so changing it means updating
  * the server, the static page, and the Twilio filing together.

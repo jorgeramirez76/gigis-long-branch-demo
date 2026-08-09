@@ -5,6 +5,7 @@ import { LOCATION } from "../data/location";
 import { PhoneIcon } from "./Icons";
 import { useOrderingUI } from "../ordering/OrderingProvider";
 import { useCart } from "../ordering/CartContext";
+import { goToMenu } from "../lib/goToMenu";
 
 /** One orderable menu line. The whole row opens the item modal (options +
  * quantity → add to cart). `categoryLabel` is shown only in search results. */
@@ -246,7 +247,11 @@ export function Menu() {
             <PhoneIcon className="h-4 w-4" />
             Call ahead for pickup · {LOCATION.phone}
           </a>
-          <button type="button" onClick={cart.openCart} className="btn-gold w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={cart.count > 0 ? cart.openCart : goToMenu}
+            className="btn-gold w-full sm:w-auto"
+          >
             {cart.count > 0 ? `View your order · ${cart.count}` : "Start your order"}
           </button>
         </div>

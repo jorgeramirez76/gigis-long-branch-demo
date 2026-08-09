@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { DIRECTIONS_URL, LOCATION } from "../data/location";
 import { MenuIcon, PhoneIcon, PinIcon } from "./Icons";
 import { useCart } from "../ordering/CartContext";
+import { goToMenu } from "../lib/goToMenu";
 
 /**
  * Sticky mobile bottom bar: Call / Order / Menu / Directions.
@@ -37,9 +38,11 @@ export function StickyBar() {
         </a>
         <button
           type="button"
-          onClick={cart.openCart}
+          // The mobile bar is where most orders start, and this said "Order" while opening an
+          // empty cart — the dead end Tommy hit. Nothing to review means: show them the food.
+          onClick={cart.count > 0 ? cart.openCart : goToMenu}
           className="relative flex flex-col items-center gap-1 border-l border-black/10 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-brand-red)] transition active:bg-[var(--color-brand-red)]/5"
-          aria-label={`Open your order, ${cart.count} item${cart.count === 1 ? "" : "s"}`}
+          aria-label={cart.count > 0 ? `Open your order, ${cart.count} item${cart.count === 1 ? "" : "s"}` : "Browse the menu"}
         >
           <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M6 6h15l-1.5 9h-12z" />

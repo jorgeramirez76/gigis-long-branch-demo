@@ -3,6 +3,7 @@ import { LOCATION } from "../data/location";
 import { MenuIcon, PhoneIcon } from "./Icons";
 import { CartButton } from "../ordering/CartButton";
 import { useCart } from "../ordering/CartContext";
+import { goToMenu } from "../lib/goToMenu";
 import logoPng from "../assets/brand/logo.png";
 
 const LINKS = [
@@ -162,7 +163,9 @@ export function Nav() {
               type="button"
               onClick={() => {
                 setMobileOpen(false);
-                cart.openCart();
+                // "Start your order" on an empty cart opened an empty drawer, not the menu.
+                if (cart.count > 0) cart.openCart();
+                else goToMenu();
               }}
               className="btn-gold w-full text-base"
             >

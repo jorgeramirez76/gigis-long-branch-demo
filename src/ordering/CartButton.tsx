@@ -1,4 +1,5 @@
 import { useCart } from "./CartContext";
+import { goToMenu } from "../lib/goToMenu";
 
 /** Cart trigger with live item count. Place in the nav / sticky bar. */
 export function CartButton({
@@ -23,8 +24,15 @@ export function CartButton({
   return (
     <button
       type="button"
-      onClick={cart.openCart}
-      aria-label={`Open your order, ${cart.count} item${cart.count === 1 ? "" : "s"}`}
+      // With an empty cart this button says "Order" and opened an empty drawer whose only
+      // way out led nowhere — a customer who had not added anything yet could never reach
+      // the menu from the main call to action. Nothing to review means: show them the food.
+      onClick={cart.count > 0 ? cart.openCart : goToMenu}
+      aria-label={
+        cart.count > 0
+          ? `Open your order, ${cart.count} item${cart.count === 1 ? "" : "s"}`
+          : "Browse the menu"
+      }
       className={`relative inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition ${styles} ${className}`}
     >
       <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

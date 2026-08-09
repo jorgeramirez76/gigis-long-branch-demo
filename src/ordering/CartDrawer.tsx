@@ -1,6 +1,7 @@
 import { lineUnitPrice, money, useCart } from "./CartContext";
 import { placementSuffix } from "../data/menuToppings";
 import { Upsell } from "./Upsell";
+import { goToMenu } from "../lib/goToMenu";
 
 export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
   const cart = useCart();
@@ -54,7 +55,13 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
             </p>
             <button
               type="button"
-              onClick={cart.closeCart}
+              onClick={() => {
+                // Closing alone left the customer exactly where they were, with the menu
+                // still thousands of pixels away — the button promised the menu and
+                // delivered nothing. Take them there.
+                cart.closeCart();
+                goToMenu();
+              }}
               className="mt-2 rounded-full border-2 border-[var(--color-ink)]/15 px-6 py-3 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)] transition hover:border-[var(--color-brand-red)]"
             >
               Browse the menu

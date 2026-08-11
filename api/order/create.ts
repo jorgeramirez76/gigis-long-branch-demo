@@ -266,9 +266,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // still a draft, so it is in no POS and no ticket printed. Reporting that as a
   // finished order hands the customer a confirmation for food nobody is making,
   // so it takes the routing-issue path and pages staff instead.
-  if (prior?.status === "charged") {
-    await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${prior.cloverOrderId ?? "?"} charge ${prior.chargeId ?? "?"}; open it in the POS.`);
-    res.status(200).json({ ok: true, orderId: prior.cloverOrderId, paid: true, chargeId: prior.chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
+  if (prior?.status === "charged" || prior?.status === "paid_unrouted") {
+    await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${prior?.cloverOrderId ?? "?"} charge ${prior?.chargeId ?? "?"}; open it in the POS.`);
+    // "charged" is a confirmed capture. "paid_unrouted" can come from the UNCERTAIN
+    // branch, where Clover may or may not hold the money — so don't assert it went
+    // through. Either way the instruction is the same: call before re-ordering.
+    res.status(200).json({
+      ok: true,
+      orderId: prior?.cloverOrderId,
+      paid: true,
+      chargeId: prior?.chargeId,
+      routingIssue: true,
+      message: prior?.status === "charged"
+        ? "Your payment went through, but please call the store to confirm your order was received."
+        : "We couldn't confirm whether your last attempt went through. Please call the store to check before ordering again, so you aren't charged twice.",
+    });
     return;
   }
   if (prior?.cloverOrderId) {
@@ -342,7 +354,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   const totals = computeTotals(lines, tipCents, fee, discount);
   if (totals.total <= 0) {
-    res.status(400).json({ error: "empty_order" });
+    // Reachable without an empty cart: a free-pie promo zero-prices the Plain Pie and tax is
+    // computed after the discount, so a cart holding only the free pie totals exactly $0.00.
+    // With no message the client rendered the raw key — the banner read "empty_order".
+    res.status(400).json({
+      error: "empty_order",
+      message:
+        "Your total comes to $0.00 — add anything else to the order, or just come in and pick up your free pie.",
+    });
     return;
   }
   // Marks the code used AFTER the order lands (fired to the kitchen, or paid). Conditional
@@ -394,9 +413,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     reservedId = reservation.id;
   } else if (reservation.reserved === false) {
     const ex = reservation.existing;
-    if (ex.status === "charged") {
+    if (ex.status === "charged" || ex.status === "paid_unrouted") {
       await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${ex.cloverOrderId ?? "?"} charge ${ex.chargeId ?? "?"}; open it in the POS.`);
-      res.status(200).json({ ok: true, orderId: ex.cloverOrderId, paid: true, chargeId: ex.chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
+      // "charged" is a confirmed capture. "paid_unrouted" can come from the UNCERTAIN
+      // branch, where Clover may or may not hold the money — so don't assert it went
+      // through. Either way the instruction is the same: call before re-ordering.
+      res.status(200).json({
+        ok: true,
+        orderId: ex.cloverOrderId,
+        paid: true,
+        chargeId: ex.chargeId,
+        routingIssue: true,
+        message: ex.status === "charged"
+          ? "Your payment went through, but please call the store to confirm your order was received."
+          : "We couldn't confirm whether your last attempt went through. Please call the store to check before ordering again, so you aren't charged twice.",
+      });
       return;
     }
     if (ex.cloverOrderId) {
@@ -613,7 +644,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       res.status(200).json({ ok: true, paid: true, chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
       return;
     }
-    if (reservedId != null) await updateOrder(reservedId, { status: "failed", note });
+    if (reservedId != null) {
+      await updateOrder(reservedId, { status: "failed", note });
+      // Release the key as both card paths do. reserveOrder is ON CONFLICT DO NOTHING with
+      // no TTL and no cleanup job, so without this the dead row blocked every retry of the
+      // same cart forever: a transient Clover blip became a permanent 409 ("already being
+      // placed", which is false). releaseOrder no-ops if a charge or POS order did land.
+      await releaseOrder(reservedId);
+    }
     res.status(502).json({ error: "order_routing_failed", message: "We couldn't send your order to the kitchen. Please call the store to order." });
   }
 }

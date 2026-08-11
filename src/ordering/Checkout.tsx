@@ -32,7 +32,7 @@ const APPLE_PAY_SHEET_MS = 20_000;
  *  finishes far inside it. It exists only to rescue a connection that stalls with no response. */
 const ORDER_TIMEOUT_MS = 45_000;
 
-type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean };
+type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean; message?: string };
 
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
@@ -322,8 +322,14 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         fulfillment,
         routingIssue: data.routingIssue,
         vipEligible: data.vipEligible !== false,
+        // The server hand-writes this when it CANNOT vouch for the payment. Carry it through
+        // and show it verbatim rather than the screen's own cheerier wording.
+        message: typeof data.message === "string" ? data.message : undefined,
       });
-      cart.clear();
+      // Keep the cart when the payment is unconfirmed. Clearing it forces a rebuild, and the
+      // idempotency key is memoized on cart contents — a rebuilt cart mints a new key, so the
+      // server's replay guard can't recognise the retry and the customer really is charged twice.
+      if (!(data.routingIssue && !data.paid)) cart.clear();
     } catch (e) {
       // Retrying after a stall is SAFE and is the right advice: the idempotency key is memoized
       // on the cart contents, and the server replays a prior result ahead of both the charge and
@@ -448,11 +454,15 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               </p>
             )}
           </div>
-          <div className="rounded-2xl border-2 border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3.5">
-            <p className="text-base font-bold text-[var(--color-ink)]">
-              ⏱ {readyMessage(confirmed.units, confirmed.fulfillment)}
-            </p>
-          </div>
+          {/* A routing issue means nothing reached the kitchen, so there is no ready time to
+              promise. Showing one sends the customer in for food nobody started. */}
+          {!confirmed.routingIssue && (
+            <div className="rounded-2xl border-2 border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3.5">
+              <p className="text-base font-bold text-[var(--color-ink)]">
+                ⏱ {readyMessage(confirmed.units, confirmed.fulfillment)}
+              </p>
+            </div>
+          )}
           <div className="rounded-2xl bg-white p-4 text-sm shadow-[var(--shadow-sm)]">
             {confirmed.discount ? (
               <div className="mb-1 flex justify-between"><span className="text-[var(--color-ink-soft)]">VIP free pie</span><span className="font-semibold">−{money(confirmed.discount)}</span></div>
@@ -462,7 +472,12 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           </div>
           {confirmed.routingIssue && (
             <p className="rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
-              Your payment went through. Please call <a className="font-semibold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a> to confirm we received it.
+              {/* Never assert the payment landed on our own authority: the uncertain-payment
+                  branch returns paid:false precisely because Clover may or may not hold the
+                  capture. Say what the server said, and only fall back when it said nothing. */}
+              {confirmed.message ?? "Your payment went through."} Please call{" "}
+              <a className="font-semibold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
+              to confirm we received it.
             </p>
           )}
           {confirmed.vipEligible && (

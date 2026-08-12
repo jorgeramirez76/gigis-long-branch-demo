@@ -114,6 +114,8 @@ export function Footer() {
             <a href="/sms-terms/" className="hover:text-white">SMS Terms</a>
             {" · "}
             Website by <a href="https://clickmingo.com" target="_blank" rel="noopener" className="hover:text-white">ClickMingo</a>
+            {" · "}
+            <a href="https://thejorgeramirezgroup.com" target="_blank" rel="noopener" title="New Jersey Real Estate — The Jorge Ramirez Group" className="hover:text-white">The Jorge Ramirez Group</a>
           </p>
           {/* Gigi's also has a listing on Slice. Kept at the very bottom, below the fine print,
               so the site's own ordering (which pays Gigi's in full) stays the primary path. */}

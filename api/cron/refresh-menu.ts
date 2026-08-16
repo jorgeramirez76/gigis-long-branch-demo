@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
 import { fetchLiveInventory, pruneMenu, REMOVAL_GUARD_SHARE } from "../lib/menuSync.js";
+import { alertStaff } from "../lib/notify.js";
 import { HALF_TOPPING_CHARGE_CENTS, TOPPING_CHARGE_CENTS } from "../../src/data/menuToppings.js";
 
 /**
@@ -42,6 +43,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (total > 0 && removed.length > total * REMOVAL_GUARD_SHARE) {
       // A real menu never loses a quarter of itself overnight — treat this as a
       // bad pull and keep the previous snapshot.
+      await alertStaff(`MENU REFRESH BLOCKED — tonight's Clover pull would remove ${removed.length} of ${total} website items, which looks like a bad pull. The site is serving yesterday's menu until someone checks.`);
       res.status(422).json({ error: "too_many_removals", removed: removed.length, total });
       return;
     }
@@ -62,7 +64,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         SET data = EXCLUDED.data, item_count = EXCLUDED.item_count, updated_at = now()
     `;
     if (removed.length) console.log("[cron/refresh-menu] removed", removed.join(" | "));
-    if (priceDrift.length) console.log("[cron/refresh-menu] price drift", JSON.stringify(priceDrift));
+    if (priceDrift.length) {
+      // Drift means the site is quoting a price Clover doesn't have — a money defect that
+      // used to live only in a Vercel log nobody reads. Reported, not auto-applied.
+      console.log("[cron/refresh-menu] price drift", JSON.stringify(priceDrift));
+      const lines = priceDrift.slice(0, 5).map((d) => `${d.item} site ${d.site} vs Clover ${d.clover}`);
+      await alertStaff(`MENU PRICE DRIFT (${priceDrift.length}) — the website and the register disagree: ${lines.join("; ")}${priceDrift.length > 5 ? "; …" : ""}. The site keeps charging its shown price until it is regenerated.`);
+    }
     // Reported, not applied: the order API charges toppings from the constant, so a
     // silent reprice here would show one price and charge another.
     const toppingChargeDrift =
@@ -86,6 +94,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   } catch (err) {
     console.error("[cron/refresh-menu] error", err);
+    await alertStaff(`NIGHTLY MENU REFRESH FAILED — ${err instanceof Error ? err.message : "sync failed"}. The site keeps serving the last good menu; items 86'd in Clover today are still orderable online.`);
     res.status(502).json({ error: err instanceof Error ? err.message : "sync_failed" });
   }
 }

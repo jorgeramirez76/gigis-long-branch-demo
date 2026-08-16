@@ -30,16 +30,66 @@ const APPLE_PAY_SHEET_MS = 20_000;
 /** Ceiling on the order request itself. Generous — a healthy charge + POS print + receipt
  *  finishes far inside it. It exists only to rescue a connection that stalls with no response. */
 const ORDER_TIMEOUT_MS = 45_000;
-/** Where the in-flight idempotency key is parked so it survives a reload of this tab.
- *  Cleared the moment an order settles, so the next order always mints a fresh key. */
+/** Where the in-flight idempotency key is parked so it survives a reload — and, in
+ *  localStorage, a closed-and-reopened tab, which is how people actually retry a
+ *  stalled payment. Cleared the moment an order settles, so the next order always
+ *  mints a fresh key. */
 const IDEM_STORE_KEY = "gigis:order-idem";
+/** The checkout form itself, persisted alongside the key. The key's signature includes
+ *  the typed contact fields, so the key can only survive a reload if the fields do too —
+ *  otherwise the first render after a reload sees empty fields, mints a fresh key and
+ *  overwrites the parked one, and the retry double-charges. Cleared with the key. */
+const FORM_STORE_KEY = "gigis:checkout-form";
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function storageArea(): Storage | null {
+  try {
+    return typeof localStorage !== "undefined" ? localStorage : null;
+  } catch {
+    return null; // blocked (private mode / embedded webview policy)
+  }
+}
 
 function forgetIdempotencyKey() {
   try {
+    storageArea()?.removeItem(IDEM_STORE_KEY);
+    // sessionStorage held the key for a few hours on 2026-08-15 — clear that too so a
+    // tab from that window can't resurrect a stale entry.
     sessionStorage.removeItem(IDEM_STORE_KEY);
   } catch {
     /* storage unavailable (private mode) — nothing was stored either */
+  }
+}
+
+type SavedForm = {
+  fulfillment?: Fulfillment;
+  name?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  town?: string;
+  tipPct?: number;
+  tipTouched?: boolean;
+  orderNote?: string;
+  promo?: { code: string; discountCents: number } | null;
+};
+
+function readSavedForm(): SavedForm {
+  try {
+    const raw = storageArea()?.getItem(FORM_STORE_KEY);
+    if (!raw) return {};
+    const p = JSON.parse(raw) as SavedForm;
+    return p && typeof p === "object" ? p : {};
+  } catch {
+    return {};
+  }
+}
+
+function forgetSavedForm() {
+  try {
+    storageArea()?.removeItem(FORM_STORE_KEY);
+  } catch {
+    /* nothing stored */
   }
 }
 
@@ -47,27 +97,41 @@ type Confirmation = { orderId?: string; paid: boolean; total: number; discount?:
 
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
-  const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
+  // Restored once per mount so the idempotency key's signature reproduces after a
+  // reload/reopen — see FORM_STORE_KEY above.
+  const [saved] = useState(readSavedForm);
+  const [fulfillment, setFulfillment] = useState<Fulfillment>(saved.fulfillment === "delivery" ? "delivery" : "pickup");
   // Card is the only payment method — website orders are prepaid (2026-08-11).
   const payment = "card" as const;
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [town, setTown] = useState<DeliveryTown | "">("");
+  const [name, setName] = useState(saved.name ?? "");
+  const [phone, setPhone] = useState(saved.phone ?? "");
+  const [email, setEmail] = useState(saved.email ?? "");
+  const [address, setAddress] = useState(saved.address ?? "");
+  const [town, setTown] = useState<DeliveryTown | "">(
+    saved.town && (DELIVERY_TOWNS as readonly string[]).includes(saved.town) ? (saved.town as DeliveryTown) : "",
+  );
   // Tip defaults follow the fulfillment — 20% on delivery, none on pickup — until the
   // customer taps a tip themselves; an explicit choice then survives switching.
-  const [tipPct, setTipPct] = useState(0); // initial fulfillment is pickup
-  const tipTouched = useRef(false);
+  const [tipPct, setTipPct] = useState(
+    typeof saved.tipPct === "number" && TIP_PCTS.includes(saved.tipPct)
+      ? saved.tipPct
+      : saved.fulfillment === "delivery" ? 20 : 0,
+  );
+  const tipTouched = useRef(saved.tipTouched === true);
   useEffect(() => {
     if (!tipTouched.current) setTipPct(fulfillment === "delivery" ? 20 : 0);
   }, [fulfillment]);
-  const [orderNote, setOrderNote] = useState("");
+  const [orderNote, setOrderNote] = useState(saved.orderNote ?? "");
   // VIP free-pie code. `promo` holds a server-validated code; whether it DISCOUNTS
   // right now still depends on pickup + a Plain Pie in the cart (promoDiscount below),
-  // so switching to delivery just pauses it rather than wiping it.
+  // so switching to delivery just pauses it rather than wiping it. Restored as-is on
+  // reload — the server re-validates the code when the order is placed anyway.
   const [promoInput, setPromoInput] = useState("");
-  const [promo, setPromo] = useState<{ code: string; discountCents: number } | null>(null);
+  const [promo, setPromo] = useState<{ code: string; discountCents: number } | null>(
+    saved.promo && typeof saved.promo.code === "string" && typeof saved.promo.discountCents === "number"
+      ? saved.promo
+      : null,
+  );
   const [promoMsg, setPromoMsg] = useState("");
   const [promoChecking, setPromoChecking] = useState(false);
   const [openStatus, setOpenStatus] = useState<OpenStatus | null>(null);
@@ -119,6 +183,23 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const grandTotalRef = useRef(grandTotal);
   grandTotalRef.current = grandTotal;
 
+  // Persist the form as it's typed. Runs after render, so on the post-reload mount the
+  // restored values are already in place BEFORE the key memo compares its signature —
+  // the parked key is found intact rather than overwritten.
+  useEffect(() => {
+    try {
+      storageArea()?.setItem(
+        FORM_STORE_KEY,
+        JSON.stringify({
+          fulfillment, name, phone, email, address, town,
+          tipPct, tipTouched: tipTouched.current, orderNote, promo,
+        } satisfies SavedForm),
+      );
+    } catch {
+      /* over quota / blocked — the form still works for this page's lifetime */
+    }
+  }, [fulfillment, name, phone, email, address, town, tipPct, orderNote, promo]);
+
   // One idempotency key per unique order (amount/params). Stable across pure
   // retries so a lost response can't double-charge; regenerated if the order
   // changes (Clover requires a fresh key when charge params differ).
@@ -143,21 +224,20 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         const h = [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
         return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
       };
-      // Parked in sessionStorage under a signature of this exact order. A memo lives only as
+      // Parked in localStorage under a signature of this exact order. A memo lives only as
       // long as the page: someone whose payment stalled, reloaded the tab (the cart comes back
       // from localStorage) and paid again used to send a BRAND-NEW key, which the server's
       // replay guard cannot recognise — a second charge and a second ticket. Same order after
-      // a reload now reuses the same key; any change to the order mints a new one, as before.
+      // a reload — or in a fresh tab, the other way people retry — now reuses the same key;
+      // any change to the order mints a new one, as before. The signature can include the typed
+      // contact fields only because the form itself is persisted and restored (FORM_STORE_KEY):
+      // with empty fields after a reload the first render would mint-and-overwrite, destroying
+      // the parked key before the customer could retry.
       const sig = JSON.stringify([
         cart.lines, tip, fulfillment, payment, town, grandTotal, promo?.code ?? "",
         name.trim(), phone.trim(), email.trim().toLowerCase(), address.trim(), orderNote.trim(),
       ]);
-      let store: Storage | null = null;
-      try {
-        store = typeof sessionStorage !== "undefined" ? sessionStorage : null;
-      } catch {
-        store = null; // blocked (private mode / third-party cookie policy)
-      }
+      const store = storageArea();
       try {
         const raw = store?.getItem(IDEM_STORE_KEY);
         if (raw) {
@@ -355,6 +435,12 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       const data = await res.json();
       if (!res.ok) {
         setAttemptUncertain(data.error === "processing" || data.error === "uncertain");
+        // A definite decline (402) is Clover explicitly confirming no money moved, so the
+        // parked key is safely retired. Without this, a retry with a DIFFERENT card would
+        // reuse the old key — and Clover rejects a known idempotency key whose charge
+        // params (the card) changed, stranding the customer who did exactly what the
+        // decline message told them to do.
+        if (res.status === 402) forgetIdempotencyKey();
         throw new Error(data.message || data.error || "Order failed");
       }
       setAttemptUncertain(false);
@@ -379,10 +465,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       // server's replay guard can't recognise the retry and the customer really is charged twice.
       if (!(data.routingIssue && !data.paid)) {
         cart.clear();
-        // This order is settled, so retire its key: without this, re-ordering the identical
-        // cart in the same tab would reuse it and the server would replay the finished order
-        // ("duplicate") instead of placing the new one.
+        // This order is settled, so retire its key and saved form: without this, re-ordering
+        // the identical cart in the same tab would reuse the key and the server would replay
+        // the finished order ("duplicate") instead of placing the new one.
         forgetIdempotencyKey();
+        forgetSavedForm();
       }
     } catch (e) {
       // Retrying after a stall is SAFE and is the right advice: the idempotency key is memoized
@@ -393,6 +480,16 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         setAttemptUncertain(true);
         throw new Error(
           "That is taking longer than usual — the connection may have dropped. Tap Pay & place order again to check on it; you won't be charged twice.",
+        );
+      }
+      // fetch itself rejecting (TypeError) means the request may or may not have reached the
+      // server — indistinguishable from a response lost on the way back. Same treatment as a
+      // stall: freeze the priced inputs and advise the safe same-key retry. Only errors THROWN
+      // after a response arrived (server-decided failures) fall through unfrozen.
+      if (e instanceof TypeError) {
+        setAttemptUncertain(true);
+        throw new Error(
+          "The connection dropped while sending your order. Tap Pay & place order again to check on it; you won't be charged twice.",
         );
       }
       throw e;

@@ -219,7 +219,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   if (typeof customer.phone !== "string" || !US_PHONE_RE.test(customer.phone)) {
-    res.status(400).json({ error: "valid_phone_required" });
+    // The client's own gate is looser (any 10+ digits), so this IS customer-reachable —
+    // e.g. an international number — and without a message the checkout banner rendered
+    // the raw error key.
+    res.status(400).json({ error: "valid_phone_required", message: "Please enter a 10-digit US phone number — we text order updates to it." });
     return;
   }
   // Email is REQUIRED so every website order gets an emailed receipt.
@@ -289,8 +292,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // still a draft, so it is in no POS and no ticket printed. Reporting that as a
   // finished order hands the customer a confirmation for food nobody is making,
   // so it takes the routing-issue path and pages staff instead.
+  // One alert per stuck key per half hour: these two replay branches run BEFORE the rate
+  // limiter (so a charged customer never sees a 429), which also means a customer leaning on
+  // retry — or a tab left polling — would otherwise page staff on every single POST.
+  const replayAlertOk = () =>
+    rateLimitAll([{ bucket: `alert:replay:${idempotencyKey}`, max: 1, windowSec: 1800 }]);
   if (prior && replayOrder(prior).kind === "routing_issue") {
-    await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${prior?.cloverOrderId ?? "?"} charge ${prior?.chargeId ?? "?"}; open it in the POS.`);
+    if (await replayAlertOk()) await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${prior?.cloverOrderId ?? "?"} charge ${prior?.chargeId ?? "?"}; open it in the POS.`);
     // These states only occur after a confirmed capture, so the customer must not
     // submit another payment while staff recovers the kitchen routing.
     res.status(200).json({
@@ -308,7 +316,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   if (prior && replayOrder(prior).kind === "uncertain") {
-    await alertStaff(`UNCERTAIN WEB ORDER — retry seen for Clover order ${prior.cloverOrderId ?? "?"}; verify payment and order state before remaking.`);
+    if (await replayAlertOk()) await alertStaff(`UNCERTAIN WEB ORDER — retry seen for Clover order ${prior.cloverOrderId ?? "?"}; verify payment and order state before remaking.`);
     res.status(409).json({ error: "uncertain", message: "We couldn't confirm your previous attempt. Please call the store before re-ordering so you aren't charged twice." });
     return;
   }
@@ -412,7 +420,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         await alertStaff(`FREE PIE CODE ${promo.code} landed on two orders at once — order ${orderRef} also got the free pie; flag for Tommy.`);
       }
     } catch (err) {
+      // The sibling double-redeem branch pages staff; a THROWN redemption deserves the same —
+      // the customer got the discounted pie, the code is still spendable, and only a human
+      // burning it in the admin panel stops a second free pie.
       console.error("[order/create] promo redemption failed", err);
+      await alertStaff(`FREE PIE CODE ${promo.code} could not be marked used after order ${orderRef} (DB error) — burn it manually so it can't be spent again.`);
     }
   };
 
@@ -490,6 +502,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   if (reservation.reserved === null) {
+    // Failing closed is deliberate — ordering without the double-charge ledger is how the
+    // Aug-15 incident happened. But every customer is being turned away, so a human must
+    // hear about it: alertStaff reaches Resend/Twilio, which don't share Neon's fate.
+    await alertStaff(`ONLINE ORDERING IS DOWN — the order database is unreachable, every web order is being refused with "call the store". Check Neon/Vercel.`);
     res.status(503).json({ error: "ordering_temporarily_unavailable", message: "Online ordering is temporarily unavailable. Please call the store to order." });
     return;
   }

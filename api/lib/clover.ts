@@ -13,7 +13,7 @@
  * no CLOVER_API_TOKEN the endpoint degrades to a clear "call the store" message.
  */
 
-import { chargeFailureReason, classifyCharge, type ChargeBody } from "./chargeOutcome.js";
+import { chargeFailureReason, classifyCharge, hasCaptureEvidence, type ChargeBody } from "./chargeOutcome.js";
 import { classifyPrintPoll } from "./printOutcome.js";
 export { classifyCharge } from "./chargeOutcome.js";
 
@@ -214,7 +214,13 @@ export async function createCharge(opts: {
   if (!res.ok || !data.id) {
     // Even an error response gets classified: if its body nonetheless describes a capture,
     // routing it as a definite decline (cleanup + retry) could re-charge the customer.
-    if (classifyCharge(data) !== "failed") {
+    // The one extra decline signal accepted here is HTTP 402 itself: Clover's decline
+    // bodies often carry only an error object — vocabulary classifyCharge rightly refuses
+    // to guess about — and without this, every routine decline would strand the order on
+    // the uncertain path and page staff instead of telling the customer to try another card.
+    const definiteDecline =
+      classifyCharge(data) === "failed" || (res.status === 402 && !hasCaptureEvidence(data));
+    if (!definiteDecline) {
       throw new CloverError("capture_uncertain", 502, { ...data, __httpStatus: res.status });
     }
     const msg = data.error?.message || data.message || "Card was declined";
@@ -563,8 +569,11 @@ export async function payForOrder(opts: {
   const data = (await res.json().catch(() => ({}))) as ChargeBody;
   if (!res.ok || !data.id) {
     // Same guard as createCharge: an error status whose body still describes a capture is
-    // uncertainty, not a clean decline.
-    if (classifyCharge(data) !== "failed") {
+    // uncertainty, not a clean decline — but a 402 with zero capture evidence is Clover
+    // explicitly refusing the card, however its body words it.
+    const definiteDecline =
+      classifyCharge(data) === "failed" || (res.status === 402 && !hasCaptureEvidence(data));
+    if (!definiteDecline) {
       throw new CloverError("capture_uncertain", 502, { ...data, __httpStatus: res.status });
     }
     const msg = data.error?.message || data.message || "Card was declined";

@@ -1,5 +1,5 @@
 import { sql, type VipBusiness } from "./db.js";
-import { sendReceiptEmail, alertStaff } from "./notify.js";
+import { sendReceiptEmail, sendWelcomeSms } from "./notify.js";
 import { staffNewMemberHtml } from "./emailTemplate.js";
 import type { ValidatedSignup } from "./vipSignupShared.js";
 
@@ -7,7 +7,7 @@ import type { ValidatedSignup } from "./vipSignupShared.js";
  * Tell the owner when a VIP signup is verified and a member goes live.
  *
  * Email is the primary channel because Resend is armed for this business; SMS rides along only if
- * STAFF_ALERT_PHONE is configured (alertStaff is a no-op-with-loud-log otherwise). Recipients come
+ * STAFF_ALERT_PHONE is configured (sent directly — see below). Recipients come
  * from STAFF_ALERT_EMAIL (comma-separated, so the owner can be added alongside Jorge without a code
  * change). Entirely best-effort: a notification problem must never fail a signup that has already
  * created the member and issued their pie.
@@ -61,9 +61,19 @@ export async function notifyStaffNewMember(
       }
     }
 
-    // Optional SMS heads-up; no-op unless STAFF_ALERT_PHONE is set.
+    // Optional SMS heads-up; no-op unless STAFF_ALERT_PHONE is set. Sent DIRECTLY, not via
+    // alertStaff: alertStaff now also emails STAFF_ALERT_EMAIL, and this function already
+    // sent those addresses the proper notification above — routing through it would deliver
+    // every signup twice, the second time under an "order needs attention" subject. Phone
+    // masked to the last 4 like every order alert; the full number is in the email.
     if (process.env.STAFF_ALERT_PHONE) {
-      await alertStaff(`NEW VIP MEMBER (email verified) — ${p.name} ${p.phone} — code ${code}${total ? ` — club now ${total}` : ""}`);
+      const masked = `•••${p.phone.slice(-4)}`;
+      try {
+        const r = await sendWelcomeSms(process.env.STAFF_ALERT_PHONE, `NEW VIP MEMBER (email verified) — ${p.name} ${masked} — code ${code}${total ? ` — club now ${total}` : ""}`);
+        if (!r.sent) console.error("[vip] staff SMS failed:", r.error);
+      } catch (e) {
+        console.error("[vip] staff SMS threw:", e);
+      }
     }
   } catch (err) {
     console.error("[vip] staff notification failed (non-fatal)", err);

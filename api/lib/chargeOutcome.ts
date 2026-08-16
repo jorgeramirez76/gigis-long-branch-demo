@@ -43,6 +43,22 @@ export function classifyCharge(data: ChargeBody): ChargeOutcome {
   return "uncertain";
 }
 
+/** Any positive signal that money moved. Used by the HTTP-status-aware decline check:
+ *  a 402 response whose body shows none of these is Clover explicitly refusing payment,
+ *  even when the body's vocabulary (an error object, say) is otherwise unrecognized. */
+export function hasCaptureEvidence(data: ChargeBody): boolean {
+  const st = typeof data.status === "string" ? data.status.toLowerCase() : null;
+  const nw = data.outcome?.network_status?.toLowerCase();
+  const ot = data.outcome?.type?.toLowerCase();
+  return (
+    (st != null && ["succeeded", "paid"].includes(st)) ||
+    data.paid === true ||
+    data.captured === true ||
+    (data.amount_captured ?? 0) > 0 ||
+    (ot === "authorized" && (!nw || nw === "approved_by_network"))
+  );
+}
+
 export function chargeFailureReason(data: ChargeBody): string {
   return [
     data.status ? `status=${data.status}` : null,

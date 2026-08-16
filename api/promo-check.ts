@@ -32,9 +32,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const ip = clientIp(req);
+  // The per-IP bucket is the real brute-force guard; the global one is only a backstop
+  // against distributed probing. At 300/h one hostile IP-rotator could exhaust it and
+  // block every legitimate customer's code at checkout for the rest of the hour — a
+  // cheap denial of the free-pie promo — so it is sized well above organic traffic.
   const allowed = await rateLimitAll([
     ...(ip ? [{ bucket: `promo:ip:${ip}`, max: 10, windowSec: 300 }] : []),
-    { bucket: "promo:global", max: 300, windowSec: 3600 },
+    { bucket: "promo:global", max: 2000, windowSec: 3600 },
   ]);
   if (!allowed) {
     res.status(429).json({ valid: false, message: "Too many tries — please wait a moment." });

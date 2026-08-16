@@ -91,6 +91,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Already verified (a re-tap, or the scanner-then-human case): hand back the same code.
     if (row.verified_at) {
+      // verified_at is set by the CLAIM, before the code is issued. A re-tap landing in that
+      // window has verified_at but no issued_code yet — same situation as losing the claim
+      // race below, and it needs the same answer: "still finishing", not a codeless success.
+      if (!row.issued_code) {
+        const recoveredEarly = await recoverMemberCode(row.business, row.email);
+        if (!recoveredEarly) {
+          res.status(409).json({ error: "verification_processing", retryable: true, message: "Your membership is still being finished — wait a moment and try again." });
+          return;
+        }
+        res.status(200).json({ ok: true, alreadyVerified: true, code: recoveredEarly.code });
+        return;
+      }
       const stored = row.issued_code === NO_CODE_SENTINEL ? null : row.issued_code;
       const code = stored ?? (await recoverMemberCode(row.business, row.email))?.code ?? null;
       res.status(200).json({ ok: true, alreadyVerified: true, code });

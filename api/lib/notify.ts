@@ -178,8 +178,14 @@ export async function alertStaff(message: string): Promise<void> {
     .filter(Boolean);
   try {
     if (phone) {
-      const result = await sendSms(phone, message.slice(0, 320));
-      if (!result.sent) console.error("[alertStaff] SMS failed:", result.error, "—", message);
+      // Own try/catch: sendSms's Twilio fetch can THROW (DNS, socket reset), and this
+      // shares one try with the email loop below — an SMS throw must not cost the emails.
+      try {
+        const result = await sendSms(phone, message.slice(0, 320));
+        if (!result.sent) console.error("[alertStaff] SMS failed:", result.error, "—", message);
+      } catch (e) {
+        console.error("[alertStaff] SMS threw:", e, "—", message);
+      }
     }
     for (const addr of emails) {
       const safe = message

@@ -415,7 +415,11 @@ export async function getPrintEventState(eventId: string): Promise<string | unde
   return data?.state;
 }
 
-const PRINT_POLL_DELAYS_MS = [250, 400, 650, 900, 1300, 1800] as const;
+// ~24s of polling. The first version gave up after 5.3s, which is simply shorter than this
+// merchant's print pipeline takes (Clover queues the job, the Station picks it up, then it
+// reaches the networked kitchen printer). Every ticket therefore looked unconfirmed. The
+// function's maxDuration is 60s and the customer already has their response by now.
+const PRINT_POLL_DELAYS_MS = [400, 700, 1100, 1600, 2200, 2800, 3400, 4000, 4000, 4000] as const;
 
 async function confirmPrintEvent(eventId: string): Promise<{ printed: boolean; state?: string; error?: string }> {
   let lastState: string | undefined;
@@ -427,13 +431,29 @@ async function confirmPrintEvent(eventId: string): Promise<{ printed: boolean; s
       if (outcome === "failed") return { printed: false, state: lastState, error: "printer reported FAILED" };
     } catch (err) {
       const status = err instanceof CloverError ? err.status : undefined;
-      if (classifyPrintPoll(undefined, status) === "printed") {
+      if (classifyPrintPoll(undefined, status, err instanceof Error ? err.message : undefined) === "printed") {
         return { printed: true, state: "PRINTED" };
       }
       return { printed: false, state: lastState, error: err instanceof Error ? err.message : "print status check failed" };
     }
   }
   return { printed: false, state: lastState, error: "printer completion was not confirmed" };
+}
+
+/**
+ * Second opinion when the print event never resolves: Clover marks an order's line items
+ * `printed` once a ticket for them has come off a printer. It is the same signal that
+ * confirmed the first live paper ticket on 2026-07-28. Used only to SUPPRESS a false alarm —
+ * never to claim a print we have no evidence for.
+ */
+async function lineItemsLookPrinted(orderId: string): Promise<boolean> {
+  try {
+    const data = await rest(`/orders/${orderId}?expand=lineItems`, { method: "GET" });
+    const items = data?.lineItems?.elements;
+    return Array.isArray(items) && items.length > 0 && items.every((li: { printed?: boolean }) => li?.printed === true);
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -463,6 +483,14 @@ export async function printOrderTicket(orderId: string): Promise<{ printed: bool
         return { printed: true, eventId: ev.id, state: confirmed.state };
       }
       if (confirmed.state?.toUpperCase() === "FAILED" && attempt === 1) continue;
+
+      // The event never resolved. Before paging staff about a ticket that may well be sitting
+      // in the printer tray, ask Clover whether the line items came off a printer.
+      if (await lineItemsLookPrinted(orderId)) {
+        console.log(`[print] kitchen ticket for order ${orderId} unconfirmed by event ${ev.id}, but Clover marks its line items printed`);
+        return { printed: true, eventId: ev.id, state: confirmed.state ?? "LINE_ITEMS_PRINTED" };
+      }
+
       console.error(`[print] kitchen ticket not confirmed for order ${orderId}: ${confirmed.error ?? confirmed.state ?? "unknown"}`);
       return { printed: false, eventId: ev.id, state: confirmed.state, error: confirmed.error };
     } catch (err) {

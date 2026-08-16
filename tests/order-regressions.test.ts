@@ -47,4 +47,10 @@ test("a queued Clover print event is not mistaken for a completed kitchen ticket
   assert.equal(classifyPrintPoll("FAILED"), "failed");
   // Clover discards successful print events; its documented 404 is the completion signal.
   assert.equal(classifyPrintPoll(undefined, 404), "printed");
+  // ...but this merchant's API actually answers a consumed event with 400 "The print event is
+  // missing". Reading only 404 made every printed ticket look unconfirmed (2026-08-16 false alarm).
+  assert.equal(classifyPrintPoll(undefined, 400, '{"message":"The print event is missing"}'), "printed");
+  // A 400 for any other reason is still not proof of paper.
+  assert.equal(classifyPrintPoll(undefined, 400, '{"message":"Bad request"}'), "pending");
+  assert.equal(classifyPrintPoll(undefined, 400), "pending");
 });

@@ -61,7 +61,7 @@ export function Nav() {
             alt="Gigi's NY Style Pizza & Restaurant logo"
             className={`h-14 w-auto md:h-20 ${scrolled ? "" : "drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]"}`}
             width={96}
-            height={79}
+            height={104}
           />
           <span className="sr-only">Gigi's NY Style Pizza — Long Branch</span>
         </a>

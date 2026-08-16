@@ -102,6 +102,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const again = await lookupVerifyToken(token);
       const stored = again.ok && again.row.issued_code !== NO_CODE_SENTINEL ? again.row.issued_code : null;
       const code = stored || (await recoverMemberCode(row.business, row.email))?.code || null;
+      if (!code && again.ok && !again.row.issued_code) {
+        // Another request owns the claim but has not finished issuing the code. Calling this
+        // "already verified" strands the faster response on a success screen with no code.
+        res.status(409).json({ error: "verification_processing", retryable: true, message: "Your membership is still being finished — wait a moment and try again." });
+        return;
+      }
       res.status(200).json({ ok: true, alreadyVerified: true, code });
       return;
     }

@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { timingSafeEqual } from "node:crypto";
 import { sql } from "./lib/db.js";
+import { secretMatches } from "./lib/adminAuthToken.js";
 
 /**
  * Twilio inbound-SMS webhook for the VIP line. Handles STOP/START/HELP.
@@ -28,16 +28,7 @@ function twiml(message?: string): string {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const expected = process.env.SMS_WEBHOOK_TOKEN;
   const got = req.query.token;
-  // Compare byte lengths (not UTF-16 lengths) — a multibyte token would make
-  // timingSafeEqual throw on mismatched buffer sizes instead of returning false.
-  const gotBuf = typeof got === "string" ? Buffer.from(got) : null;
-  const expectedBuf = expected ? Buffer.from(expected) : null;
-  if (
-    !expectedBuf ||
-    !gotBuf ||
-    gotBuf.length !== expectedBuf.length ||
-    !timingSafeEqual(gotBuf, expectedBuf)
-  ) {
+  if (!expected || !secretMatches(got, expected)) {
     res.status(401).send("unauthorized");
     return;
   }

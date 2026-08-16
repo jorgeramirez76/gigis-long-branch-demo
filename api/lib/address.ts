@@ -25,9 +25,8 @@ const STREET_SUFFIX: Record<string, string> = {
 // Words that only label a unit — dropped so "Apt 3B" and unit "3B" match.
 const UNIT_FILLER = /\b(apartment|apt|unit|suite|ste|number|no|num|room|rm|floor|fl|bldg|building)\b/g;
 
-/** Combined, normalized street+unit key. Empty string if there's no usable street. */
-export function addressDedupeKey(street: string, apt?: string | null): string {
-  const combined = `${street ?? ""} ${apt ?? ""}`.toLowerCase();
+function normalize(parts: unknown[]): string {
+  const combined = parts.map((part) => typeof part === "string" ? part : "").join(" ").toLowerCase();
   const s = combined
     .replace(/[^\w\s]/g, " ") // strip punctuation incl. '#' , '.' , ','
     .replace(UNIT_FILLER, " ")
@@ -35,4 +34,20 @@ export function addressDedupeKey(street: string, apt?: string | null): string {
     .replace(/\s+/g, " ")
     .trim();
   return s;
+}
+
+/** Legacy key used to recognize households created before locality was included. */
+export function legacyAddressDedupeKey(street: string, apt?: string | null): string {
+  return normalize([street, apt]);
+}
+
+/** Combined street+unit+locality key. Empty string if there's no usable street. */
+export function addressDedupeKey(
+  street: string,
+  apt?: string | null,
+  city?: string | null,
+  state?: string | null,
+  zip?: string | null,
+): string {
+  return normalize([street, apt, city, state, zip]);
 }

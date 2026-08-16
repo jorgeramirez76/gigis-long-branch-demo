@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { lineUnitPrice, money, useCart } from "./CartContext";
 import { placementSuffix } from "../data/menuToppings";
 import { Upsell } from "./Upsell";
@@ -5,11 +6,64 @@ import { goToMenu } from "../lib/goToMenu";
 
 export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
   const cart = useCart();
+  const panelRef = useRef<HTMLElement>(null);
+  const scrimRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+    panel.inert = !cart.isOpen;
+    if (!cart.isOpen) return;
+
+    const restoreTo = document.activeElement as HTMLElement | null;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const hidden: Array<{ el: HTMLElement; aria: string | null; inert: boolean }> = [];
+    for (const sibling of Array.from(panel.parentElement?.children ?? [])) {
+      if (sibling === panel || sibling === scrimRef.current || !(sibling instanceof HTMLElement)) continue;
+      hidden.push({ el: sibling, aria: sibling.getAttribute("aria-hidden"), inert: sibling.inert });
+      sibling.setAttribute("aria-hidden", "true");
+      sibling.inert = true;
+    }
+    panel.querySelector<HTMLElement>("button")?.focus();
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        cart.closeCart();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = Array.from(panel.querySelectorAll<HTMLElement>(
+        "a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex='-1'])",
+      )).filter((el) => el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      for (const item of hidden) {
+        if (item.aria == null) item.el.removeAttribute("aria-hidden");
+        else item.el.setAttribute("aria-hidden", item.aria);
+        item.el.inert = item.inert;
+      }
+      restoreTo?.focus?.();
+    };
+  }, [cart.isOpen]);
 
   return (
     <>
       {/* Scrim */}
       <div
+        ref={scrimRef}
         className={`fixed inset-0 z-[55] bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
           cart.isOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
@@ -18,7 +72,11 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
       />
       {/* Panel */}
       <aside
+        ref={panelRef}
         aria-label="Your order"
+        aria-hidden={!cart.isOpen}
+        role="dialog"
+        aria-modal={cart.isOpen || undefined}
         className={`fixed inset-y-0 right-0 z-[56] flex w-full max-w-md flex-col bg-[var(--color-cream)] shadow-[var(--shadow-lg)] transition-transform duration-300 ease-out ${
           cart.isOpen ? "translate-x-0" : "translate-x-full"
         }`}

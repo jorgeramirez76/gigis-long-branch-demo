@@ -16,6 +16,10 @@
  * label already explains ("Closed — ordering opens 10 AM" / "Placing order…").
  *
  * Keep the two functions in step: every disjunct of payDisabled needs a blockReason branch.
+ *
+ * Since 2026-08-11 every website order is PREPAID BY CARD — the pay-at-pickup and cash options
+ * were removed after an order was placed and never collected. That deleted the fallback this gate
+ * used to offer when the card fields failed, so that branch now points at the phone instead.
  */
 
 export type GateState = {
@@ -24,11 +28,8 @@ export type GateState = {
   cartEmpty: boolean;
   contactOk: boolean;
   deliveryOk: boolean;
-  payment: "pickup" | "card" | "cash";
   cardReady: boolean;
   cardInitFailed: boolean;
-  /** the cash-at-pickup acknowledgement checkbox */
-  cashAgreed: boolean;
   turnstileOn: boolean;
   /** whether a live Turnstile token is currently held */
   turnstileToken: boolean;
@@ -45,8 +46,7 @@ export function payDisabled(s: GateState): boolean {
     !s.deliveryOk ||
     s.submitting ||
     s.cartEmpty ||
-    (s.payment === "card" && !s.cardReady) ||
-    (s.payment === "cash" && !s.cashAgreed) ||
+    !s.cardReady ||
     (s.turnstileOn && !s.turnstileToken)
   );
 }
@@ -61,11 +61,13 @@ export function blockReason(s: GateState): string | null {
   if (s.cartEmpty) return "Your cart is empty.";
   if (!s.contactOk) return "Add your name, phone and email above to continue.";
   if (!s.deliveryOk) return "Add your delivery address and town above to continue.";
-  if (s.payment === "card" && s.cardInitFailed) {
-    return "Card payment isn't available right now — choose Pay at pickup just above.";
+  if (s.cardInitFailed) {
+    // Every website order is prepaid by card (2026-08-11), so there is no longer a
+    // pay-later option to fall back to. If the card fields can't load, a call is the
+    // only way through — say so instead of leaving them on a dead button.
+    return `Card payment isn't loading right now — please reload the page, or call ${s.phone} and we'll take your order.`;
   }
-  if (s.payment === "card" && !s.cardReady) return "Card fields are still loading — one moment.";
-  if (s.payment === "cash" && !s.cashAgreed) return "Tick the box above to confirm you'll bring cash.";
+  if (!s.cardReady) return "Card fields are still loading — one moment.";
   if (s.turnstileOn && s.turnstileFailed) {
     // Must come first among the Turnstile branches: with the widget absent there is nothing
     // "just above" to finish, and the server rejects a tokenless order, so a call is the

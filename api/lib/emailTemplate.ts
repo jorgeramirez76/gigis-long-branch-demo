@@ -5,6 +5,18 @@
 
 const ADDRESS = "Gigi's NY Style Pizza · 140 Brighton Ave, Long Branch, NJ 07740 · (732) 377-2468";
 
+/** Absolute, because an email has no page to be relative to. Served opaque (no alpha) since a
+ *  handful of older clients render PNG transparency as black. */
+const LOGO_URL = (process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com") + "/logo-email.png";
+
+/** The logo, sized for email and centred. `width` as an ATTRIBUTE (not only CSS) because Outlook
+ *  ignores CSS dimensions on images; height:auto keeps the aspect ratio. Wrapped in a link so a tap
+ *  on the logo goes to the site, which is what people try. Alt text does the work when images are
+ *  blocked — which is the default in Outlook and for many Gmail users on first receipt. */
+function logoBlock(size = 132): string {
+  return `<a href="${escapeHtml(process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com")}/" style="text-decoration:none;border:0;"><img src="${escapeHtml(LOGO_URL)}" alt="Gigi's NY Style Pizza &amp; Restaurant — Long Branch, NJ" width="${size}" style="width:${size}px;max-width:${size}px;height:auto;display:block;margin:0 auto 10px;border:0;outline:none;text-decoration:none;" /></a>`;
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -43,6 +55,7 @@ export function emailHtml(opts: {
 <body style="margin:0;padding:0;background:#f0e5c8;">
   <div style="max-width:560px;margin:0 auto;padding:24px 16px;">
     <div style="background:#9b121a;border-radius:16px 16px 0 0;padding:28px 24px;text-align:center;">
+      ${logoBlock(120)}
       <div style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:0.5px;">GIGI'S VIP CLUB</div>
       <div style="font-size:13px;color:#e6b45e;margin-top:4px;letter-spacing:1px;text-transform:uppercase;">NY Style Pizza — Long Branch</div>
     </div>
@@ -75,6 +88,7 @@ export function verificationHtml(opts: { url: string; email: string; hours: numb
 <body style="margin:0;padding:0;background:#f0e5c8;">
   <div style="max-width:560px;margin:0 auto;padding:24px 16px;">
     <div style="background:#9b121a;border-radius:16px 16px 0 0;padding:24px;text-align:center;">
+      ${logoBlock(112)}
       <div style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:0.5px;">GIGI'S VIP CLUB</div>
       <div style="font-size:13px;color:#e6b45e;margin-top:4px;letter-spacing:1px;text-transform:uppercase;">One tap to finish</div>
     </div>
@@ -113,6 +127,7 @@ export function staffNewMemberHtml(opts: {
 <body style="margin:0;padding:0;background:#f0e5c8;">
   <div style="max-width:540px;margin:0 auto;padding:22px 16px;">
     <div style="background:#0a7a48;border-radius:14px 14px 0 0;padding:18px 22px;">
+      ${logoBlock(84)}
       <div style="font-size:17px;font-weight:800;color:#ffffff;">&#9989; New VIP member verified</div>
       <div style="font-size:12px;color:#d6f0e2;margin-top:3px;">Gigi's NY Style Pizza &mdash; Long Branch</div>
     </div>
@@ -178,6 +193,7 @@ export function receiptHtml(opts: {
 <body style="margin:0;padding:0;background:#f0e5c8;">
   <div style="max-width:560px;margin:0 auto;padding:24px 16px;">
     <div style="background:#9b121a;border-radius:16px 16px 0 0;padding:28px 24px;text-align:center;">
+      ${logoBlock(120)}
       <div style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:0.5px;">ORDER RECEIVED</div>
       <div style="font-size:13px;color:#e6b45e;margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Gigi's NY Style Pizza — Long Branch</div>
     </div>

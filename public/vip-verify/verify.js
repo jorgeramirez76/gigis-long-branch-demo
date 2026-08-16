@@ -32,7 +32,17 @@
 
   var token = null;
   try {
-    token = new URLSearchParams(window.location.search).get("t");
+    // Current links carry the token as a BARE query string (`?<token>`, no key) so the URL has
+    // no `=` for a quoted-printable encoder to corrupt (observed eating the `=` of `?t=` in
+    // ~1 in 5 emails, 2026-08-13). Links from before that fix used `?t=<token>` and stay valid
+    // for their 24-hour lifetime, so both shapes are accepted here.
+    var q = (window.location.search || "").replace(/^\?/, "");
+    if (q.indexOf("t=") === 0) {
+      token = new URLSearchParams(window.location.search).get("t");
+    } else {
+      token = q ? decodeURIComponent(q) : null;
+    }
+    if (token && token.length < 20) token = null; // junk like utm fragments
   } catch (e) {
     token = null;
   }

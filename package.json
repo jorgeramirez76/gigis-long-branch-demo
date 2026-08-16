@@ -8,9 +8,10 @@
     "dev": "vite",
     "prebuild": "node scripts/prune-static-menu.mjs",
     "prune-menu": "node scripts/prune-static-menu.mjs",
-    "build": "python3 scripts/verify-prices.py && tsc -b && tsc -p tsconfig.api.json --noEmit && vite-react-ssg build",
+    "build": "python3 scripts/verify-prices.py && tsc -b && tsc -p tsconfig.api.json --noEmit && vite-react-ssg build && node scripts/verify-csp-build.mjs",
     "preview": "vite preview --host",
-    "lint": "eslint .",
+    "lint": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.api.json --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
     "verify:prices": "python3 scripts/verify-prices.py"
   },
   "dependencies": {

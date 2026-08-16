@@ -284,7 +284,16 @@
         .then(function (res) { return res.ok ? res.json() : null; })
         .then(function (d) {
           if (!d) return;
-          if (d.verified) return showDone({ code: d.code });
+          // Verified with no code = an existing membership absorbed this signup. Route it to
+          // the already-a-member panel; the default one promises a code and says we sent it.
+          if (d.verified) {
+            return d.code
+              ? showDone({ code: d.code })
+              : showDone({
+                  alreadyMember: true,
+                  message: "Your email is confirmed and you're in the VIP Club. Watch for our weekly deals!",
+                });
+          }
           if (d.stale) stopPolling(); // signup replaced or swept
         })
         .catch(function () { /* transient — keep waiting */ });

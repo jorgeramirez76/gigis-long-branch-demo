@@ -41,7 +41,7 @@ async function ensure() {
   ensured = true;
 }
 
-export type OrderStatus = "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "failed";
+export type OrderStatus = "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "capture_uncertain" | "failed";
 
 export type OrderRecord = {
   idempotencyKey: string;
@@ -67,7 +67,7 @@ export type Existing = {
 export type Reservation =
   | { reserved: true; id: number }
   | { reserved: false; existing: Existing }
-  | { reserved: null }; // DB unavailable — caller proceeds without idempotency
+  | { reserved: null }; // DB unavailable — caller MUST stop before contacting Clover
 
 /**
  * Atomically claim the idempotency key with a `pending` row. If the key already
@@ -112,27 +112,22 @@ export async function reserveOrder(o: OrderRecord): Promise<Reservation> {
 }
 
 /** Read-only lookup by idempotency key (for replaying an already-placed order
- * before consuming rate-limit budget). Returns null if unseen or DB unavailable. */
+ * before consuming rate-limit budget). DB errors throw so prepaid ordering fails closed. */
 export async function peekOrder(key: string): Promise<Existing | null> {
-  try {
-    await ensure();
-    const ex = await sql`
-      SELECT id, status, charge_id, clover_order_id, EXTRACT(EPOCH FROM (now() - created_at))::int AS age
-      FROM web_orders WHERE idempotency_key = ${key}
-    `;
-    const row = ex.rows[0];
-    if (!row) return null;
-    return {
-      id: row.id as number,
-      status: row.status as OrderStatus,
-      chargeId: (row.charge_id as string) ?? null,
-      cloverOrderId: (row.clover_order_id as string) ?? null,
-      ageSec: (row.age as number) ?? 0,
-    };
-  } catch (e) {
-    console.error("[orderStore] peekOrder failed", e);
-    return null;
-  }
+  await ensure();
+  const ex = await sql`
+    SELECT id, status, charge_id, clover_order_id, EXTRACT(EPOCH FROM (now() - created_at))::int AS age
+    FROM web_orders WHERE idempotency_key = ${key}
+  `;
+  const row = ex.rows[0];
+  if (!row) return null;
+  return {
+    id: row.id as number,
+    status: row.status as OrderStatus,
+    chargeId: (row.charge_id as string) ?? null,
+    cloverOrderId: (row.clover_order_id as string) ?? null,
+    ageSec: (row.age as number) ?? 0,
+  };
 }
 
 /**
@@ -145,9 +140,17 @@ export async function peekOrder(key: string): Promise<Existing | null> {
  * existed — and staff are paged about it. Only ever called when nothing was
  * captured; Clover keeps its own record of the decline.
  */
-export async function releaseOrder(id: number): Promise<void> {
+export async function releaseOrder(id: number, opts?: { draftDiscarded?: boolean }): Promise<void> {
   try {
     await ensure();
+    // clover_order_id is now written BEFORE the card is charged, so a function killed inside
+    // /pay still leaves a pointer to the order that may hold the capture. On a definite decline
+    // the caller has already deleted that draft, so the pointer is stale and must not veto the
+    // release — otherwise the customer we just told to "try a different card" cannot retry.
+    if (opts?.draftDiscarded) {
+      await sql`DELETE FROM web_orders WHERE id = ${id} AND charge_id IS NULL`;
+      return;
+    }
     await sql`DELETE FROM web_orders WHERE id = ${id} AND charge_id IS NULL AND clover_order_id IS NULL`;
   } catch (e) {
     console.error("[orderStore] releaseOrder failed", id, e);
@@ -173,4 +176,23 @@ export async function updateOrder(
   } catch (e) {
     console.error("[orderStore] updateOrder failed", id, e);
   }
+}
+
+/** Safety-critical patch used immediately before/after capture. Storage failure propagates. */
+export async function updateOrderStrict(
+  id: number,
+  patch: { status?: OrderStatus; chargeId?: string; cloverOrderId?: string; note?: string },
+): Promise<void> {
+  await ensure();
+  const r = await sql`
+    UPDATE web_orders SET
+      status = COALESCE(${patch.status ?? null}, status),
+      charge_id = COALESCE(${patch.chargeId ?? null}, charge_id),
+      clover_order_id = COALESCE(${patch.cloverOrderId ?? null}, clover_order_id),
+      note = COALESCE(${patch.note ?? null}, note),
+      updated_at = now()
+    WHERE id = ${id}
+    RETURNING id
+  `;
+  if (r.rowCount !== 1) throw new Error("order reservation disappeared");
 }

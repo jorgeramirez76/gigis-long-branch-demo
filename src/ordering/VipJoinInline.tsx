@@ -162,8 +162,11 @@ export function VipJoinInline({
         const data = await res.json();
         if (data.verified) {
           pollStop.current = true;
-          setCode(typeof data.code === "string" ? data.code : null);
-          setStatus("success");
+          const issued = typeof data.code === "string" ? data.code : null;
+          setCode(issued);
+          // No code means an existing membership absorbed this signup — the success panel
+          // would promise a code and say we sent it, neither of which happened.
+          setStatus(issued ? "success" : "already");
           return;
         }
         if (data.stale) pollStop.current = true;

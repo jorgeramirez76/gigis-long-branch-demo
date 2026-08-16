@@ -136,7 +136,18 @@ export function VipClub() {
         const data = await res.json();
         if (data.verified) {
           pollStop.current = true;
-          setResult({ code: typeof data.code === "string" ? data.code : undefined });
+          const code = typeof data.code === "string" ? data.code : undefined;
+          // Verified with no code means an existing membership absorbed this signup. The
+          // default success panel promises a code and says we sent it — both untrue here —
+          // so take the already-a-member branch, the same way /vip-verify/ does.
+          setResult(
+            code
+              ? { code }
+              : {
+                  alreadyMember: true,
+                  message: "Your email is confirmed and you're in the VIP Club. Watch for our weekly deals!",
+                },
+          );
           setStatus("success");
           return;
         }

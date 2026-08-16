@@ -7,7 +7,7 @@
 > sandwiches, omelettes, pancakes, French toast, platters, breakfast pizza, and burritos. Open seven
 > days a week, late.
 
-Last updated: 2026-07-29
+Last updated: 2026-08-15
 Canonical site: https://gigislongbranch.com/
 Sitemap: https://gigislongbranch.com/sitemap.xml
 
@@ -17,8 +17,8 @@ Sitemap: https://gigislongbranch.com/sitemap.xml
 - Phone: (732) 377-2468 — the only contact number for this location.
 - Category: New York–style pizzeria and Italian restaurant.
 - Service: pickup and delivery. Delivery covers Long Branch and nearby towns.
-- Payment: online card payment via Clover, or pay at pickup/delivery.
-- Pricing: one price whether you pay by card or cash.
+- Payment: online orders are PREPAID by card (or Apple Pay) via Clover. There is no pay-at-pickup or cash option online; call the store to pay in person.
+- Pricing: the website shows the same prices as the in-store menu.
 - This site represents the Long Branch location only. Any other Gigi's is a separate business.
 
 ## Hours (owner-confirmed)
@@ -50,8 +50,8 @@ West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport.
 
 ## What things cost (straight from Gigi's register)
 
-These are the current prices at the Long Branch location — one price whether you pay by
-card or cash. Prices can change; call (732) 377-2468 to confirm.
+Online orders are prepaid by card. The website shows the same prices as
+the in-store menu. Prices can change; call (732) 377-2468 to confirm.
 
 - Plain cheese slice: $2.92
 - Specialty slice: $3.38
@@ -102,7 +102,7 @@ baked pasta are also local go-tos.
 
 ### Can I order Gigi's online?
 Yes. Order pickup or delivery at https://gigislongbranch.com — browse the full menu, customize
-toppings, and pay by card, or choose Cash and pay when you get your order. Orders go straight to the
+toppings, and pay securely by card or Apple Pay. Online orders are prepaid; they go straight to the
 kitchen. You can also call (732) 377-2468.
 
 ### Does Gigi's have gluten-free pizza?
@@ -115,7 +115,8 @@ Yes. Gigi's makes a vegan pizza on its NY-style crust with dairy-free cheese and
 
 ### Is there late-night pizza in Long Branch?
 Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday through Sunday and
-11 PM Monday through Wednesday — for pickup or delivery on Brighton Avenue.
+11 PM Monday through Wednesday — at 140 Brighton Avenue. Delivery runs until 10 PM; after that it is
+pickup at the counter.
 
 ### Does Gigi's serve breakfast in Long Branch?
 Yes. Gigi's serves all-day breakfast at 140 Brighton Avenue — breakfast sandwiches (bacon, egg &
@@ -144,7 +145,7 @@ quick pickup. Open 10 AM–11 PM Monday–Wednesday and 10 AM–midnight Thursda
 - Pickup and delivery; delivery reaches Long Branch, the West End, Pier Village, Elberon, and nearby
   Monmouth County towns.
 - Order online or by phone at (732) 377-2468.
-- One price whether you pay by card or cash.
+- The website shows the same prices as the in-store menu.
 - Popular menu items: cheese slice, plain NY pie, Bee Sting (hot honey), The Fonz, Drunken Grandma
   (vodka), chicken parm hero, baked pasta.
 - Coordinates (verified): 40.284619, -73.988707 (140 Brighton Ave, West End, Long Branch).

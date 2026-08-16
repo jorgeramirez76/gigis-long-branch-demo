@@ -15,7 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(400).json({ error: "invalid_business" });
     return;
   }
-  const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
+  const q = typeof req.query.q === "string" ? req.query.q.trim().slice(0, 100) : "";
   const consent = req.query.consent;
 
   try {

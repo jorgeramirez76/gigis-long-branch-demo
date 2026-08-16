@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { isVipBusiness } from "./lib/db.js";
-import { addressDedupeKey } from "./lib/address.js";
+import { addressDedupeKey, legacyAddressDedupeKey } from "./lib/address.js";
+import { validateVipConsentAndLocality } from "./lib/vipValidation.js";
 import { sendTransactionalEmail } from "./lib/notify.js";
 import { verificationHtml } from "./lib/emailTemplate.js";
 import { rateLimitAll } from "./lib/rateLimit.js";
@@ -57,8 +58,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(400).json({ error: "name_required" });
     return;
   }
-  if (!smsConsent && !emailConsent) {
-    res.status(400).json({ error: "consent_required" });
+  const consentAndLocality = validateVipConsentAndLocality(smsConsent, emailConsent, city, state, zip);
+  if (!consentAndLocality.ok) {
+    res.status(400).json({ error: consentAndLocality.error });
     return;
   }
   if (typeof consentText !== "string" || consentText.trim().length < 1) {
@@ -100,16 +102,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   // Stored whole ("140 Brighton Ave, Long Branch, NJ 07740") because a street line
   // on its own isn't an address — it can't be mailed to and two towns share street
-  // names. The dedupe key stays street+apt, so the one-per-household rule behaves
-  // exactly as it did for members who signed up before these fields existed.
-  const cityRaw = typeof city === "string" ? city.trim().slice(0, 60) : "";
-  const stateRaw = typeof state === "string" ? state.trim().toUpperCase().slice(0, 2) : "";
-  const zipRaw = typeof zip === "string" ? zip.trim().slice(0, 10) : "";
+  // names. The current key includes locality so same-number streets in different towns do not
+  // collide; a legacy street+apt key is also checked against members created before this change.
+  const cityRaw = consentAndLocality.city;
+  const stateRaw = consentAndLocality.state;
+  const zipRaw = consentAndLocality.zip;
   const fullAddress = [streetRaw, cityRaw, [stateRaw, zipRaw].filter(Boolean).join(" ")]
     .filter(Boolean)
     .join(", ");
 
-  const addrKey = addressDedupeKey(streetRaw, aptRaw);
+  const addrKey = addressDedupeKey(streetRaw, aptRaw, cityRaw, stateRaw, zipRaw);
+  const legacyAddrKey = legacyAddressDedupeKey(streetRaw, aptRaw);
   if (!addrKey) {
     res.status(400).json({ error: "address_required" });
     return;
@@ -154,8 +157,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     fullAddress,
     apt: aptRaw || null,
     addrKey,
-    smsConsent: !!smsConsent,
-    emailConsent: !!emailConsent,
+    legacyAddrKey,
+    smsConsent: consentAndLocality.smsConsent,
+    emailConsent: consentAndLocality.emailConsent,
     source: signupSource,
   };
 
@@ -183,7 +187,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await storePendingSignup(business, validated, hashSecret(token), pollId);
 
     const base = process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com";
-    const verifyUrl = `${base}/vip-verify/?t=${encodeURIComponent(token)}`;
+    // The token rides as a BARE query string — no `t=`. Deliberate: `=` is quoted-printable's
+    // escape character, and the email pipeline was observed (2026-08-13, ~1 in 5 messages)
+    // garbling the `=` in `?t=` into U+FFFD and eating two token characters — a dead link for
+    // that customer. base64url has no `=`, so with the key dropped the URL contains none at all
+    // and there is nothing left for a QP encoder/decoder pair to disagree about.
+    const verifyUrl = `${base}/vip-verify/?${token}`;
 
     const mail = await sendTransactionalEmail(
       normalizedEmail,

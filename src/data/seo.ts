@@ -87,7 +87,7 @@ export const FAQS = [
   },
   {
     q: "Can I order Gigi's pizza online?",
-    a: "Yes. You can order Gigi's for pickup or delivery right on gigislongbranch.com — browse the full menu, customize toppings, and pay by card, or choose Cash and pay when you get your order. Orders go straight to the kitchen. Prefer to call? Reach us at (732) 377-2468. Online ordering is open seven days a week during regular hours.",
+    a: "Yes. You can order Gigi's for pickup or delivery right on gigislongbranch.com — browse the full menu, customize toppings, and pay securely by card or Apple Pay. Online orders are prepaid, and go straight to the kitchen once your card is charged. Prefer to pay in person? Call us at (732) 377-2468. Online ordering is open seven days a week during regular hours.",
   },
   {
     q: "Where is Gigi's and what are the hours?",
@@ -95,7 +95,7 @@ export const FAQS = [
   },
   {
     q: "Is there late-night pizza in Long Branch?",
-    a: "Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday through Sunday, and 11 PM Monday through Wednesday — for pickup or delivery on Brighton Avenue in Long Branch. It's a go-to for a late slice after the beach, a night out, or the game.",
+    a: "Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday through Sunday, and 11 PM Monday through Wednesday — at 140 Brighton Avenue in Long Branch. Delivery runs until 10 PM; after that it's pickup at the counter. It's a go-to for a late slice after the beach, a night out, or the game.",
   },
 ] as const;
 

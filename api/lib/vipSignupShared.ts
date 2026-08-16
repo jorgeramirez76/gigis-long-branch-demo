@@ -28,6 +28,7 @@ export type ValidatedSignup = {
   fullAddress: string;
   apt: string | null;
   addrKey: string;
+  legacyAddrKey?: string;
   smsConsent: boolean;
   emailConsent: boolean;
   source: string;
@@ -47,7 +48,8 @@ export async function memberExists(business: VipBusiness, p: ValidatedSignup): P
   const r = await sql`
     SELECT 1 FROM vip_members
     WHERE business = ${business}
-      AND (phone = ${p.phone} OR email = ${p.email} OR (addr_key = ${p.addrKey} AND addr_key <> ''))
+      AND (phone = ${p.phone} OR email = ${p.email}
+        OR (addr_key IN (${p.addrKey}, ${p.legacyAddrKey ?? p.addrKey}) AND addr_key <> ''))
     LIMIT 1
   `;
   return r.rowCount > 0;
@@ -115,7 +117,13 @@ export async function completeSignup(business: VipBusiness, p: ValidatedSignup):
   // claimed the welcome pie, so no row is inserted and no new pie is issued.
   const inserted = await sql`
     INSERT INTO vip_members (business, name, phone, email, address, apt, addr_key, sms_consent, email_consent, consent_text, source)
-    VALUES (${business}, ${p.name}, ${p.phone}, ${p.email}, ${p.fullAddress}, ${p.apt}, ${p.addrKey}, ${p.smsConsent}, ${p.emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${p.source})
+    SELECT ${business}, ${p.name}, ${p.phone}, ${p.email}, ${p.fullAddress}, ${p.apt}, ${p.addrKey}, ${p.smsConsent}, ${p.emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${p.source}
+    WHERE NOT EXISTS (
+      SELECT 1 FROM vip_members
+      WHERE business = ${business}
+        AND (phone = ${p.phone} OR email = ${p.email}
+          OR (addr_key IN (${p.addrKey}, ${p.legacyAddrKey ?? p.addrKey}) AND addr_key <> ''))
+    )
     ON CONFLICT DO NOTHING
     RETURNING id
   `;

@@ -10,6 +10,15 @@ const REPO_BASE = "/gigis-long-branch-demo/";
 export default defineConfig({
   base: process.env.GITHUB_PAGES === "true" ? REPO_BASE : "/",
   plugins: [react(), tailwindcss()],
+  // vite-react-ssg always injects an inline __VITE_REACT_SSG_HASH__ assignment,
+  // even for this single-page build, which has no route loaders and never reads
+  // the value. Remove its placeholder before the package replaces it so the
+  // strict CSP can stay intact without logging a blocked-script error.
+  ssgOptions: {
+    onPageRendered(_route, html) {
+      return html.replace(/\s*<script>\/\* SCRIPT_COMMENT_PLACEHOLDER \*\/<\/script>/, "");
+    },
+  },
   build: {
     target: "es2020",
     cssCodeSplit: true,

@@ -6,7 +6,7 @@ import { rateLimitAll } from "./lib/rateLimit.js";
 /**
  * Read-only promo-code validity check, so the checkout can confirm a code (and show the
  * discount) BEFORE the customer submits the order. Never mutates anything — redemption
- * happens only inside order/create after the order lands.
+ * is reserved atomically inside order/create before payment and finalized after success.
  *
  * Response is deliberately sparse: valid/invalid + a human message. It never returns the
  * member the code belongs to, and invalid lookups are rate-limited so the 6-char code

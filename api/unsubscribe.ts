@@ -26,6 +26,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
     return;
   }
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "GET, POST");
+    res.status(405).setHeader("Content-Type", "text/html").send(page("Method not allowed.", "Open the unsubscribe link from your email and use its confirmation button."));
+    return;
+  }
 
   try {
     // Suppression first, and keyed by ADDRESS not member id: a one-time campaign to

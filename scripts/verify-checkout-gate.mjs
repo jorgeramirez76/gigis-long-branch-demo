@@ -6,7 +6,8 @@
  * screen said so. The button was greyed out forever with no explanation, which reads as
  * a broken website and loses the order.
  *
- * This walks EVERY combination of the gate's inputs (2^9 x 2 payment modes) and asserts:
+ * This walks EVERY combination of the gate's inputs (2^10; card is the only payment mode
+ * since prepay became mandatory on 2026-08-11) and asserts:
  *
  *   payDisabled(s) && !storeClosed && !submitting  =>  blockReason(s) !== null
  *
@@ -51,13 +52,11 @@ for (const storeClosed of BOOLS)
               for (const turnstileOn of BOOLS)
                 for (const turnstileToken of BOOLS)
                   for (const turnstileFailed of BOOLS)
-                    for (const cashAgreed of BOOLS)
-                      for (const payment of ["card", "pickup", "cash"])
-                        states.push({
-                          storeClosed, submitting, cartEmpty, contactOk, deliveryOk,
-                          payment, cardReady, cardInitFailed, cashAgreed, turnstileOn,
-                          turnstileToken, turnstileFailed, phone: "732-377-2468",
-                        });
+                    states.push({
+                      storeClosed, submitting, cartEmpty, contactOk, deliveryOk,
+                      cardReady, cardInitFailed, turnstileOn,
+                      turnstileToken, turnstileFailed, phone: "732-377-2468",
+                    });
 
 const silentlyDead = [];
 const reasonWhenUsable = [];

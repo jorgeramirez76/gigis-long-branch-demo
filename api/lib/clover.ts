@@ -13,6 +13,9 @@
  * no CLOVER_API_TOKEN the endpoint degrades to a clear "call the store" message.
  */
 
+import { chargeFailureReason, classifyCharge, type ChargeBody } from "./chargeOutcome.js";
+export { classifyCharge } from "./chargeOutcome.js";
+
 const ECOMMERCE_BASE = "https://scl.clover.com";
 const REST_BASE = "https://api.clover.com";
 
@@ -108,8 +111,9 @@ export function unitPrice(line: Pick<CartLineInput, "basePrice" | "options">): n
 export type Totals = { subtotal: number; tax: number; tip: number; deliveryFee: number; discount: number; total: number };
 
 /** Authoritative server-side totals. Lines must already be catalog-priced.
- * One price whichever way you pay — the 3.99% cash discount was removed on
- * 2026-08-01 (owner's call: it confused customers more than it saved them).
+ * Website orders are prepaid by card (2026-08-11); the pay-at-pickup and cash options were
+ * removed after an order was placed and never collected. (The 3.99% cash discount had already
+ * gone on 2026-08-01.)
  * Tip is clamped to [0, max($20, subtotal)] so a client bug (dollars-vs-cents)
  * or tampering can't drive the captured charge to an absurd amount.
  *
@@ -136,7 +140,13 @@ export function computeTotals(
 }
 
 export class CloverError extends Error {
-  constructor(message: string, readonly status: number, readonly body?: unknown) {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly body?: unknown,
+    /** Only true when the payment endpoint explicitly proves no money moved. */
+    readonly retrySafe = false,
+  ) {
     super(message);
   }
 }
@@ -156,35 +166,10 @@ export class CloverError extends Error {
  * fails closed: refusing a good order costs one phone call, accepting a dead one
  * gives the food away.
  */
-export type ChargeBody = {
-  id?: string;
-  amount?: number;
-  amount_captured?: number;
-  captured?: boolean;
-  paid?: boolean;
-  status?: string;
-  outcome?: { network_status?: string; type?: string };
-  error?: { message?: string };
-  message?: string;
-};
-
-export function chargeCaptured(data: ChargeBody): boolean {
-  if (typeof data.status === "string" && data.status.toLowerCase() !== "succeeded") return false;
-  if (data.paid === false) return false;
-  if (data.outcome?.type && data.outcome.type.toLowerCase() !== "authorized") return false;
-  if (data.outcome?.network_status && data.outcome.network_status.toLowerCase() !== "approved_by_network") return false;
-  // A success body carries at least one positive confirmation; a bare {id} does not.
-  return data.status?.toLowerCase() === "succeeded" || data.paid === true || (data.amount_captured ?? 0) > 0;
-}
-
-/** Human-readable reason a charge body isn't a capture (for logs + staff alerts). */
-export function chargeFailureReason(data: ChargeBody): string {
-  return [
-    data.status ? `status=${data.status}` : null,
-    data.paid === false ? "paid=false" : null,
-    data.outcome?.type ? `outcome=${data.outcome.type}` : null,
-    data.outcome?.network_status ? `network=${data.outcome.network_status}` : null,
-  ].filter(Boolean).join(" ") || "no capture confirmation in Clover's response";
+/** True only for an explicit capture. NOTE: false is NOT "declined" — it can also mean
+ *  "uncertain". Never use this to decide the cleanup-and-retry path; use classifyCharge. */
+export function isConfirmedCapture(data: ChargeBody): boolean {
+  return classifyCharge(data) === "captured";
 }
 
 /**
@@ -226,12 +211,25 @@ export async function createCharge(opts: {
 
   const data = (await res.json().catch(() => ({}))) as ChargeBody;
   if (!res.ok || !data.id) {
+    // Even an error response gets classified: if its body nonetheless describes a capture,
+    // routing it as a definite decline (cleanup + retry) could re-charge the customer.
+    if (classifyCharge(data) !== "failed") {
+      throw new CloverError("capture_uncertain", 502, { ...data, __httpStatus: res.status });
+    }
     const msg = data.error?.message || data.message || "Card was declined";
-    throw new CloverError(msg, res.status, data);
+    throw new CloverError(msg, res.status, data, true);
   }
-  if (!chargeCaptured(data)) {
-    // 200 OK, real charge id, no money: Clover blocked or reversed it.
-    throw new CloverError("Card was declined", 402, { ...data, __reason: chargeFailureReason(data) });
+  {
+    const outcome = classifyCharge(data);
+    if (outcome === "failed") {
+      // 200 OK, real charge id, no money: Clover blocked or reversed it.
+      throw new CloverError("Card was declined", 402, { ...data, __reason: chargeFailureReason(data) }, true);
+    }
+    if (outcome === "uncertain") {
+      // NOT 4xx: the caller treats 4xx as a definite decline (cleanup + retry). An
+      // unrecognised body may hold a real capture — route to the uncertain path.
+      throw new CloverError("capture_uncertain", 502, { ...data, __reason: chargeFailureReason(data) });
+    }
   }
   return { id: data.id, amount: data.amount ?? opts.amount };
 }
@@ -527,13 +525,26 @@ export async function payForOrder(opts: {
 
   const data = (await res.json().catch(() => ({}))) as ChargeBody;
   if (!res.ok || !data.id) {
+    // Same guard as createCharge: an error status whose body still describes a capture is
+    // uncertainty, not a clean decline.
+    if (classifyCharge(data) !== "failed") {
+      throw new CloverError("capture_uncertain", 502, { ...data, __httpStatus: res.status });
+    }
     const msg = data.error?.message || data.message || "Card was declined";
-    throw new CloverError(msg, res.status, data);
+    throw new CloverError(msg, res.status, data, true);
   }
   // Same trap as createCharge: /pay answers 200 with a failed, uncaptured charge
   // when Clover's risk engine blocks it. Order #24 went out as PAID that way.
-  if (!chargeCaptured(data)) {
-    throw new CloverError("Card was declined", 402, { ...data, __reason: chargeFailureReason(data) });
+  {
+    const outcome = classifyCharge(data);
+    if (outcome === "failed") {
+      throw new CloverError("Card was declined", 402, { ...data, __reason: chargeFailureReason(data) }, true);
+    }
+    if (outcome === "uncertain") {
+      // Unknown vocabulary is never retry-safe: the caller keeps the order and pages
+      // staff instead of deleting a possibly paid draft and inviting another charge.
+      throw new CloverError("capture_uncertain", 502, { ...data, __reason: chargeFailureReason(data) });
+    }
   }
   return { id: data.id, amount: data.amount ?? 0 };
 }

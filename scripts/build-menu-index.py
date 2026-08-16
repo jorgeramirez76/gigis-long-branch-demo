@@ -35,9 +35,10 @@ def norm(s: str) -> str:
 
 def main() -> int:
     dump = json.loads(DUMP.read_text())
-    ids_by_name: dict[str, list[str]] = {}
+    # (id, price) — the price is what separates two Clover items that share a name.
+    ids_by_name: dict[str, list[tuple[str, int]]] = {}
     for it in dump["items"]:
-        ids_by_name.setdefault(norm(it["name"]), []).append(it["id"])
+        ids_by_name.setdefault(norm(it["name"]), []).append((it["id"], it.get("price")))
 
     files = {p.stem: json.loads(p.read_text()) for p in SRC.glob("*.json")}
     entries = []
@@ -54,7 +55,16 @@ def main() -> int:
             if key in seen:
                 continue
             seen.add(key)
-            ids = ids_by_name.get(norm(i["name"]), [])
+            # Clover has several items sharing a name at different prices (Shrimp Oreganata is
+            # a $27.04 seafood dinner AND a $67.60 catering tray). Keying on the name alone gave
+            # BOTH site rows BOTH ids, which made the nightly job compare the dinner's price
+            # against the tray — a nightly "price drift" alert for a price that was never wrong —
+            # and let a row stay orderable because its same-named twin was still sellable.
+            # Prefer the id whose Clover price matches this row; fall back to all when none does,
+            # since an unverifiable row must never be pruned.
+            candidates = ids_by_name.get(norm(i["name"]), [])
+            exact = [cid for cid, price in candidates if price is not None and price == i.get("priceCents")]
+            ids = exact or [cid for cid, _ in candidates]
             if ids:
                 matched += 1
                 entries.append({"cat": slug, "name": i["displayName"], "ids": ids})

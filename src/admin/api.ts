@@ -68,9 +68,12 @@ export type PromoLookup = {
   redeemed: boolean;
   redeemedAt: string | null;
   expired: boolean;
+  inUse: boolean;
+  reservedAt: string | null;
   expiresAt: string | null;
   valid: boolean;
   justRedeemed?: boolean;
+  holdReleased?: boolean;
 };
 
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {

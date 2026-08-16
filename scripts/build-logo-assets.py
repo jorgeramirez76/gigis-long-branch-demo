@@ -51,8 +51,13 @@ OUTPUTS = [
 # Palette size for the quantized outputs.
 PALETTE = 64
 
-# iOS home-screen icon: square, opaque, badge contained with a little inset.
-APPLE_ICON = ("public/apple-touch-icon.png", 180)
+# Square home-screen / browser icons: opaque (transparency tiles BLACK on iOS), badge contained
+# with a little inset. These must stay SQUARE — the logo itself is not, so it is letterboxed rather
+# than stretched, and the declared `sizes` in index.html has to match the file.
+SQUARE_ICONS = [
+    ("public/apple-touch-icon.png", 180),  # iOS home screen
+    ("public/icon-192.png", 192),          # <link rel=icon sizes=192x192> (Android/Chrome)
+]
 
 
 def load_master(src: Path) -> Image.Image:
@@ -158,18 +163,18 @@ def main() -> None:
         im.save(p, "PNG", optimize=True)
         print(f"  {rel:38} {width}x{height}  {p.stat().st_size // 1024} KB")
 
-    # iOS icon — square canvas, opaque white, badge contained with an inset.
-    rel, size = APPLE_ICON
-    inset = round(size * 0.06)
-    fit = size - inset * 2
-    scale = min(fit / logo.size[0], fit / logo.size[1])
-    badge = logo.resize((max(1, round(logo.size[0] * scale)), max(1, round(logo.size[1] * scale))), Image.LANCZOS)
-    canvas = Image.new("RGB", (size, size), (255, 255, 255))
-    canvas.paste(badge, ((size - badge.size[0]) // 2, (size - badge.size[1]) // 2), badge)
-    canvas = canvas.quantize(colors=PALETTE, method=Image.FASTOCTREE, dither=Image.NONE)
-    p = ROOT / rel
-    canvas.save(p, "PNG", optimize=True)
-    print(f"  {rel:38} {size}x{size}  {p.stat().st_size // 1024} KB (opaque, iOS)")
+    # Square icons — opaque white canvas, badge contained with an inset.
+    for rel, size in SQUARE_ICONS:
+        inset = round(size * 0.06)
+        fit = size - inset * 2
+        scale = min(fit / logo.size[0], fit / logo.size[1])
+        badge = logo.resize((max(1, round(logo.size[0] * scale)), max(1, round(logo.size[1] * scale))), Image.LANCZOS)
+        canvas = Image.new("RGB", (size, size), (255, 255, 255))
+        canvas.paste(badge, ((size - badge.size[0]) // 2, (size - badge.size[1]) // 2), badge)
+        canvas = canvas.quantize(colors=PALETTE, method=Image.FASTOCTREE, dither=Image.NONE)
+        p = ROOT / rel
+        canvas.save(p, "PNG", optimize=True)
+        print(f"  {rel:38} {size}x{size}  {p.stat().st_size // 1024} KB (opaque, square)")
 
     print(f"\nHTML/JSX width+height attributes must use aspect {logo.size[0]}:{logo.size[1]} "
           f"({1 / aspect:.4f}) — e.g. width 145 → height {round(145 * aspect)}")

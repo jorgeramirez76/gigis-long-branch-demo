@@ -23,8 +23,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS vip_members_business_email_uq
 
 -- === Free-pie anti-abuse (2026-07-24) ===
 -- Capture the signup address so the welcome pie can't be re-claimed from the
--- same household. addr_key = normalized street+unit (see api/lib/address.ts):
--- same street AND same apartment ⇒ same key ⇒ blocked; different apt ⇒ allowed.
+-- same household. New addr_key values include normalized street, unit, city,
+-- state, and ZIP (see api/lib/address.ts); legacy rows may retain street+unit keys.
 ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS address  TEXT;
 ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS apt      TEXT;
 ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS addr_key TEXT;
@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS vip_promo_codes (
   description   TEXT NOT NULL,        -- e.g. "10% off welcome offer"
   member_id     BIGINT REFERENCES vip_members(id),  -- null = a broadcast code shared by all members
   redeemed_at   TIMESTAMPTZ,
+  reservation_key TEXT,
+  reserved_at   TIMESTAMPTZ,
   expires_at    TIMESTAMPTZ,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );

@@ -6,7 +6,7 @@
  * the backend charges through the one already-proven order flow.
  *
  * Card payment stays completely inert until VITE_CLOVER_PAKMS_KEY (the merchant's
- * public Ecommerce apiAccessKey) is set — until then checkout runs as pay-at-pickup.
+ * public Ecommerce apiAccessKey) is set — until then checkout directs customers to call.
  */
 
 const PUBLIC_KEY = import.meta.env.VITE_CLOVER_PAKMS_KEY as string | undefined;

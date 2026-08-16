@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql, isVipBusiness, type VipBusiness } from "../lib/db.js";
 import { requireAdmin } from "../lib/adminAuth.js";
 import { sendSms, sendEmail, withStopNotice, smsConfigured, emailConfigured } from "../lib/notify.js";
+import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
 
 export const config = { maxDuration: 300 };
 
@@ -29,16 +30,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!isVipBusiness(business)) return void res.status(400).json({ error: "invalid_business" });
   if (typeof message !== "string" || message.trim().length < 1)
     return void res.status(400).json({ error: "message_required" });
-  const wantSms = !!channels?.sms;
-  const wantEmail = !!channels?.email;
+  const wantSms = channels?.sms === true;
+  const wantEmail = channels?.email === true;
   if (!wantSms && !wantEmail) return void res.status(400).json({ error: "channel_required" });
   if (wantEmail && (typeof subject !== "string" || subject.trim().length < 1))
     return void res.status(400).json({ error: "subject_required_for_email" });
   if (wantSms && message.length > 1200)
     return void res.status(400).json({ error: "sms_too_long" });
 
-  const code = typeof promoCode === "string" && promoCode.trim() ? promoCode.trim().toUpperCase() : null;
+  const codeRequested = typeof promoCode === "string" && promoCode.trim().length > 0;
+  const code = codeRequested ? normalizeBroadcastPromoCode(promoCode) : null;
+  if (codeRequested && !code) {
+    return void res.status(400).json({
+      error: "invalid_promo_code",
+      message: "Use 4–20 letters, numbers, or hyphens. PIE codes are reserved for welcome offers.",
+    });
+  }
   const codeDesc = typeof promoDescription === "string" ? promoDescription.trim() : "";
+  if (code && !codeDesc) return void res.status(400).json({ error: "promo_description_required" });
+  const expiry = expiresAt == null || expiresAt === "" ? null : typeof expiresAt === "string" ? new Date(expiresAt) : null;
+  if (expiresAt != null && expiresAt !== "" && (!expiry || !Number.isFinite(expiry.getTime()) || expiry.getTime() <= Date.now())) {
+    return void res.status(400).json({ error: "invalid_expiration" });
+  }
   const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : message.trim());
 
   try {
@@ -75,10 +88,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (code) {
       const promo = await sql`
         INSERT INTO vip_promo_codes (business, code, description, expires_at)
-        VALUES (${business}, ${code}, ${codeDesc || "VIP promo"}, ${expiresAt ?? null})
-        ON CONFLICT (code) DO UPDATE SET description = EXCLUDED.description
+        VALUES (${business}, ${code}, ${codeDesc}, ${expiry?.toISOString() ?? null})
+        ON CONFLICT (code) DO UPDATE
+          SET description = EXCLUDED.description, expires_at = EXCLUDED.expires_at
+          WHERE vip_promo_codes.business = EXCLUDED.business
+            AND vip_promo_codes.member_id IS NULL
         RETURNING id
       `;
+      if (!promo.rows[0]) return void res.status(409).json({ error: "promo_code_conflict" });
       promoCodeId = promo.rows[0].id as number;
     }
 

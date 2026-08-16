@@ -24,8 +24,8 @@ delivery), all routed to the Clover POS automatically.
   pricing from the Clover catalog (client prices never trusted) → atomic POS
   order via v3 API (draft → bulk line items → fire, rollback on failure) →
   idempotent `web_orders` record. Orders print as "WEBSITE • PICKUP/DELIVERY"
-  with WEB-prefixed kitchen chits. Pay at pickup/delivery today (card path
-  built + live-tested, awaiting public key — see below). DoorDash removed;
+  with WEB-prefixed kitchen chits. Website orders are prepaid by card/Apple Pay;
+  there is no cash or pay-at-pickup website path. DoorDash removed;
   delivery uses the in-house driver.
 - **Security hardening** (4 audit rounds): price-tampering closed, rate
   limiting (atomic fixed-window), charge idempotency, lost-order recovery +

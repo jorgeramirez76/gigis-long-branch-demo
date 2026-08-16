@@ -145,15 +145,28 @@ def main():
         ],
     }
 
-    tier_summary = " · ".join(
-        f"${c // 100} to {', '.join(towns)}" for c, towns in tiers
-    )
+    # Naming all 12 towns and slicing the result to 110 characters chopped the last town
+    # mid-word ("Deal, Allenhur.") and silently dropped four others — in the sentence search
+    # engines show as the snippet. Name a few per tier and count the rest, so the description
+    # is short enough to survive whole.
+    def tier_phrase(cents: int, towns: list[str], named: int = 3) -> str:
+        rest = len(towns) - named
+        head = ", ".join(towns[:named])
+        return f"${cents // 100} to {head}" + (f" + {rest} more" if rest > 0 else "")
+
+    if len(tiers) == 2 and len(tiers[0][1]) <= 2:
+        tier_summary = (
+            f"${tiers[0][0] // 100} to {' and '.join(tiers[0][1])}, "
+            f"${tiers[-1][0] // 100} to the other {len(tiers[-1][1])} towns"
+        )
+    else:
+        tier_summary = " · ".join(tier_phrase(c, towns) for c, towns in tiers)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pizza Delivery Areas &amp; Fees &mdash; Long Branch &amp; Nearby | Gigi's</title>
-<meta name="description" content="Gigi's delivers to {len(town_list)} towns around Long Branch. Flat fee: {tier_summary[:110]}. Delivery until {DELIVERY_LAST}, pickup until close.">
+<meta name="description" content="Gigi's delivers to {len(town_list)} towns near Long Branch. Flat fee: {tier_summary}. Delivery until {DELIVERY_LAST}, pickup until close.">
 <link rel="canonical" href="{BASE}/delivery/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#9b121a">
@@ -209,7 +222,7 @@ footer a{{color:var(--gold)}}
 </head><body>
 
 <header class="site"><div class="row">
-<img src="/logo-sm.png" alt="Gigi's NY Style Pizza logo" width="145" height="120" fetchpriority="high" decoding="async">
+<img src="/logo-sm.png" alt="Gigi's NY Style Pizza logo" width="145" height="157" fetchpriority="high" decoding="async">
 <div class="name">GIGI'S<small>NY STYLE PIZZA &middot; LONG BRANCH</small></div>
 <a class="btn" href="{BASE}/#menu">Order Now</a></div></header>
 

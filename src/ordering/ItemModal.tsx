@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MenuItem, OptionGroup } from "../data/menu";
-import { money, parsePrice, useCart, type CartOption } from "./CartContext";
+import { MAX_LINE_QTY, money, parsePrice, useCart, type CartOption } from "./CartContext";
 import {
   HALF_TOPPING_CHARGE_CENTS,
   TOPPING_CHARGE_CENTS,
@@ -69,6 +69,7 @@ function GroupField({
             <button
               key={c.name}
               type="button"
+              aria-pressed={on}
               disabled={disabled}
               onClick={() => onToggle(c.name, single, max)}
               className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition ${
@@ -134,20 +135,54 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
   const [notes, setNotes] = useState("");
   const panelRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
-  // Same modal contract as the checkout Shell: focus in, Escape out, no scrolling
-  // the menu behind, and focus restored to whatever opened it.
+  // Same modal contract as checkout: focus stays inside, Escape exits, and the
+  // page behind is unavailable to assistive tech while the dialog is open.
   useEffect(() => {
+    const panel = panelRef.current;
     const restoreTo = document.activeElement as HTMLElement | null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    panelRef.current?.querySelector<HTMLElement>("input,button,select,textarea")?.focus();
+    const hidden: Array<{ el: HTMLElement; aria: string | null; inert: boolean }> = [];
+    let branch: HTMLElement | null = backdropRef.current;
+    while (branch?.parentElement && branch.parentElement !== document.body) {
+      for (const sibling of Array.from(branch.parentElement.children)) {
+        if (sibling === branch || !(sibling instanceof HTMLElement)) continue;
+        hidden.push({ el: sibling, aria: sibling.getAttribute("aria-hidden"), inert: sibling.inert });
+        sibling.setAttribute("aria-hidden", "true");
+        sibling.inert = true;
+      }
+      branch = branch.parentElement;
+    }
+    panel?.querySelector<HTMLElement>("input,button,select,textarea,[tabindex]:not([tabindex='-1'])")?.focus();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !panel) return;
+      const items = Array.from(
+        panel.querySelectorAll<HTMLElement>("a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex='-1'])"),
+      ).filter((el) => el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      for (const item of hidden) {
+        if (item.aria == null) item.el.removeAttribute("aria-hidden");
+        else item.el.setAttribute("aria-hidden", item.aria);
+        item.el.inert = item.inert;
+      }
       restoreTo?.focus?.();
     };
   }, [onClose]);
@@ -263,6 +298,7 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
               id="item-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
+              maxLength={500}
               rows={2}
               placeholder="e.g. well done, cut in squares, no onions…"
               className="w-full resize-none rounded-xl border border-[var(--color-cream-darker)] bg-[var(--color-cream)]/40 px-3 py-2 text-sm focus:border-[var(--color-brand-red)] focus:outline-none"
@@ -285,8 +321,9 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
             <button
               type="button"
               aria-label="Increase quantity"
-              onClick={() => setQuantity((q) => q + 1)}
-              className="px-3.5 py-2 text-lg text-[var(--color-ink)]"
+              onClick={() => setQuantity((q) => Math.min(MAX_LINE_QTY, q + 1))}
+              disabled={quantity >= MAX_LINE_QTY}
+              className="px-3.5 py-2 text-lg text-[var(--color-ink)] disabled:opacity-30"
             >
               +
             </button>

@@ -19,7 +19,6 @@ import { DELIVERY_TOWNS, DELIVERY_FEES, deliveryFeeCents, formatFee, type Delive
 import { VipJoinInline } from "./VipJoinInline";
 
 type Fulfillment = "pickup" | "delivery";
-type PaymentMethod = "pickup" | "card" | "cash";
 const TIP_PCTS = [0, 10, 15, 20];
 /** Keep in sync with FREE_PIE_ITEM in api/lib/promo.ts (that file pulls in the
  *  server DB client, so it can't be imported into the browser bundle). */
@@ -31,13 +30,26 @@ const APPLE_PAY_SHEET_MS = 20_000;
 /** Ceiling on the order request itself. Generous — a healthy charge + POS print + receipt
  *  finishes far inside it. It exists only to rescue a connection that stalls with no response. */
 const ORDER_TIMEOUT_MS = 45_000;
+/** Where the in-flight idempotency key is parked so it survives a reload of this tab.
+ *  Cleared the moment an order settles, so the next order always mints a fresh key. */
+const IDEM_STORE_KEY = "gigis:order-idem";
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-type Confirmation = { orderId?: string; paid: boolean; cash: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean; message?: string };
+function forgetIdempotencyKey() {
+  try {
+    sessionStorage.removeItem(IDEM_STORE_KEY);
+  } catch {
+    /* storage unavailable (private mode) — nothing was stored either */
+  }
+}
+
+type Confirmation = { orderId?: string; paid: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean; message?: string };
 
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
   const [fulfillment, setFulfillment] = useState<Fulfillment>("pickup");
-  const [payment, setPayment] = useState<PaymentMethod>(CARD_ENABLED ? "card" : "pickup");
+  // Card is the only payment method — website orders are prepaid (2026-08-11).
+  const payment = "card" as const;
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -79,10 +91,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   }, [deliveryOpen]);
   const storeClosed = openStatus != null && !openStatus.open;
   const [status, setStatus] = useState<"form" | "submitting" | "error">("form");
-  // Cash orders require an explicit acknowledgment that cash will be brought.
-  // Re-checked every time the payment method changes.
-  const [cashAgreed, setCashAgreed] = useState(false);
-  useEffect(() => setCashAgreed(false), [payment]);
+  const [attemptUncertain, setAttemptUncertain] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [cardInitFailed, setCardInitFailed] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -123,18 +132,51 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       // The server requires a real UUID (UUID_RE in api/order/create.ts), so a timestamp-based
       // fallback would be rejected with idempotency_key_required on every attempt — the order
       // could never succeed. Build a v4 from getRandomValues, and only then fall back to Math.random.
-      const c: Crypto | undefined = typeof crypto !== "undefined" ? crypto : undefined;
-      if (c && typeof c.randomUUID === "function") return c.randomUUID();
-      const b = new Uint8Array(16);
-      if (c && typeof c.getRandomValues === "function") c.getRandomValues(b);
-      else for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256);
-      b[6] = (b[6] & 0x0f) | 0x40; // version 4
-      b[8] = (b[8] & 0x3f) | 0x80; // variant 10
-      const h = [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
-      return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+      const mint = () => {
+        const c: Crypto | undefined = typeof crypto !== "undefined" ? crypto : undefined;
+        if (c && typeof c.randomUUID === "function") return c.randomUUID();
+        const b = new Uint8Array(16);
+        if (c && typeof c.getRandomValues === "function") c.getRandomValues(b);
+        else for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256);
+        b[6] = (b[6] & 0x0f) | 0x40; // version 4
+        b[8] = (b[8] & 0x3f) | 0x80; // variant 10
+        const h = [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
+        return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+      };
+      // Parked in sessionStorage under a signature of this exact order. A memo lives only as
+      // long as the page: someone whose payment stalled, reloaded the tab (the cart comes back
+      // from localStorage) and paid again used to send a BRAND-NEW key, which the server's
+      // replay guard cannot recognise — a second charge and a second ticket. Same order after
+      // a reload now reuses the same key; any change to the order mints a new one, as before.
+      const sig = JSON.stringify([
+        cart.lines, tip, fulfillment, payment, town, grandTotal, promo?.code ?? "",
+        name.trim(), phone.trim(), email.trim().toLowerCase(), address.trim(), orderNote.trim(),
+      ]);
+      let store: Storage | null = null;
+      try {
+        store = typeof sessionStorage !== "undefined" ? sessionStorage : null;
+      } catch {
+        store = null; // blocked (private mode / third-party cookie policy)
+      }
+      try {
+        const raw = store?.getItem(IDEM_STORE_KEY);
+        if (raw) {
+          const saved = JSON.parse(raw) as { sig?: string; key?: string };
+          if (saved?.sig === sig && typeof saved.key === "string" && UUID_RE.test(saved.key)) return saved.key;
+        }
+      } catch {
+        /* unreadable or corrupt — fall through and mint */
+      }
+      const fresh = mint();
+      try {
+        store?.setItem(IDEM_STORE_KEY, JSON.stringify({ sig, key: fresh }));
+      } catch {
+        /* over quota / blocked — the key still works for this page's lifetime */
+      }
+      return fresh;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(cart.lines), tip, fulfillment, payment, town, grandTotal, promo?.code ?? ""],
+    [JSON.stringify(cart.lines), tip, fulfillment, payment, town, grandTotal, promo?.code ?? "", name, phone, email, address, orderNote],
   );
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   // Email is REQUIRED: every website order must get an emailed receipt.
@@ -150,7 +192,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [cardReady, setCardReady] = useState(false);
 
   useEffect(() => {
-    if (payment !== "card" || !CARD_ENABLED) return;
+    if (!CARD_ENABLED) return;
     let cancelled = false;
     setCardReady(false);
     setCardInitFailed(false);
@@ -183,7 +225,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       cardRef.current?.destroy();
       cardRef.current = null;
     };
-  }, [payment]);
+  }, []);
 
   // ---- Apple Pay ----
   // Capability is probed in an effect, never at module scope or during render:
@@ -198,7 +240,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const payWithAppleRef = useRef<(token: string) => void>(() => {});
 
   useEffect(() => {
-    if (!applePayOk || payment !== "card") return;
+    if (!applePayOk) return;
     let cancelled = false;
     initApplePay(() => grandTotalRef.current, {
       onToken: (t) => void payWithAppleRef.current(t),
@@ -229,7 +271,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     // grandTotal is deliberately not a dep — re-pricing the live sheet below
     // beats tearing the button down and rebuilding it on every tip tap.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [applePayOk, payment]);
+  }, [applePayOk]);
 
   useEffect(() => {
     applePayRef.current?.updateAmount(grandTotal);
@@ -290,6 +332,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             town: fulfillment === "delivery" ? town : undefined,
           },
           tipCents: tip,
+          // The server prices every line again and refuses to charge if its authoritative total
+          // differs from the figure currently shown in this checkout.
+          expectedTotal: grandTotal,
           orderNote,
           // Only the CODE is sent — the server re-validates it and derives the discount
           // from its own catalog. Omitted entirely when it isn't discounting right now.
@@ -308,13 +353,16 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       // a fresh one. Before this point the token is untouched.
       onDispatched?.();
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || data.error || "Order failed");
+      if (!res.ok) {
+        setAttemptUncertain(data.error === "processing" || data.error === "uncertain");
+        throw new Error(data.message || data.error || "Order failed");
+      }
+      setAttemptUncertain(false);
       const orderedUnits = countUnits(cart.lines);
       setConfirmed({
         units: orderedUnits,
         orderId: data.orderId,
         paid: !!data.paid,
-        cash: payment === "cash",
         // Prefer the server's authoritative total (what was actually charged /
         // sent to the POS); the client figure is only a fallback.
         total: typeof data.totals?.total === "number" ? data.totals.total : grandTotal,
@@ -329,13 +377,20 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       // Keep the cart when the payment is unconfirmed. Clearing it forces a rebuild, and the
       // idempotency key is memoized on cart contents — a rebuilt cart mints a new key, so the
       // server's replay guard can't recognise the retry and the customer really is charged twice.
-      if (!(data.routingIssue && !data.paid)) cart.clear();
+      if (!(data.routingIssue && !data.paid)) {
+        cart.clear();
+        // This order is settled, so retire its key: without this, re-ordering the identical
+        // cart in the same tab would reuse it and the server would replay the finished order
+        // ("duplicate") instead of placing the new one.
+        forgetIdempotencyKey();
+      }
     } catch (e) {
       // Retrying after a stall is SAFE and is the right advice: the idempotency key is memoized
       // on the cart contents, and the server replays a prior result ahead of both the charge and
       // the bot check. Never tell them it simply failed — the order may well have landed, and
       // "failed" is what makes someone order the same pizza twice.
       if (e instanceof Error && e.name === "AbortError") {
+        setAttemptUncertain(true);
         throw new Error(
           "That is taking longer than usual — the connection may have dropped. Tap Pay & place order again to check on it; you won't be charged twice.",
         );
@@ -436,23 +491,26 @@ export function Checkout({ onClose }: { onClose: () => void }) {
 
   // ---- Confirmation screen ----
   if (confirmed) {
+    // A routing issue is NOT a placed order: the tick, the title and the "firing it up"
+    // line all have to stop claiming otherwise, or the customer reads past the warning
+    // below and waits at home for food nobody is making.
     return (
-      <Shell onClose={onClose} title="Order received">
+      <Shell onClose={onClose} title={confirmed.routingIssue ? "Please call the store" : "Order received"}>
         <div className="flex-1 space-y-4 overflow-y-auto p-6 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-brand-red)]/10">
-            <svg viewBox="0 0 24 24" className="h-8 w-8 text-[var(--color-brand-red)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+            <svg viewBox="0 0 24 24" className="h-8 w-8 text-[var(--color-brand-red)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              {confirmed.routingIssue ? <path d="M12 8v5M12 17h.01M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" /> : <path d="M20 6 9 17l-5-5" />}
+            </svg>
           </div>
           <div>
             <h3 className="font-display text-3xl text-[var(--color-ink)]">Thanks, {name.split(" ")[0] || "friend"}!</h3>
             <p className="mt-2 text-[var(--color-ink-soft)]">
-              Your {confirmed.fulfillment} order is in{confirmed.paid ? " and paid" : ""}. We're firing it up now.
+              {confirmed.routingIssue
+                ? confirmed.paid
+                  ? `We have your payment, but we couldn't confirm the kitchen received your ${confirmed.fulfillment} order.`
+                  : `We couldn't confirm your payment, so your ${confirmed.fulfillment} order hasn't started yet.`
+                : `Your ${confirmed.fulfillment} order is in${confirmed.paid ? " and paid" : ""}. We're firing it up now.`}
             </p>
-            {confirmed.cash && (
-              <p className="mt-2 text-sm font-semibold text-[var(--color-ink)]">
-                💵 Please have {money(confirmed.total)} in cash ready{" "}
-                {confirmed.fulfillment === "delivery" ? "for your delivery driver" : "at pickup"}.
-              </p>
-            )}
           </div>
           {/* A routing issue means nothing reached the kitchen, so there is no ready time to
               promise. Showing one sends the customer in for food nobody started. */}
@@ -505,6 +563,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   }
 
   const submitting = status === "submitting";
+  const frozen = submitting || attemptUncertain;
   // One source of truth for "can they pay, and if not, why" — see checkoutGate.ts, whose
   // invariant (never disabled without telling them) is proven across the entire state
   // space by scripts/verify-checkout-gate.mjs.
@@ -514,10 +573,8 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     cartEmpty: cart.lines.length === 0,
     contactOk: !!contactOk,
     deliveryOk: !!deliveryOk,
-    payment,
     cardReady,
     cardInitFailed,
-    cashAgreed,
     turnstileOn: TURNSTILE_ON,
     turnstileToken: !!turnstileToken,
     turnstileFailed,
@@ -537,7 +594,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     (TURNSTILE_ON && !turnstileToken);
 
   return (
-    <Shell onClose={onClose} title="Checkout">
+    <Shell onClose={onClose} title="Checkout" closeDisabled={frozen}>
       <div className="flex-1 space-y-5 overflow-y-auto p-5">
         {storeClosed && (
           <div className="rounded-2xl border border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
@@ -552,6 +609,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           value={fulfillment}
           onChange={setFulfillment}
           disabledOption={deliveryOpen ? undefined : "delivery"}
+          disabled={frozen}
         />
         {!deliveryOpen && !storeClosed && (
           <p className="-mt-1 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-2.5 text-sm text-[var(--color-ink)]">
@@ -561,12 +619,12 @@ export function Checkout({ onClose }: { onClose: () => void }) {
 
         {/* Contact */}
         <div className="space-y-3">
-          <Field label="Name" value={name} onChange={setName} placeholder="Your name" required />
-          <Field label="Mobile phone" value={phone} onChange={setPhone} placeholder="(732) 555-0100" type="tel" required />
-          <Field label="Email (for your receipt)" value={email} onChange={setEmail} placeholder="you@email.com" type="email" required />
+          <Field label="Name" value={name} onChange={setName} placeholder="Your name" required disabled={frozen} maxLength={80} />
+          <Field label="Mobile phone" value={phone} onChange={setPhone} placeholder="(732) 555-0100" type="tel" required disabled={frozen} />
+          <Field label="Email (for your receipt)" value={email} onChange={setEmail} placeholder="you@email.com" type="email" required disabled={frozen} maxLength={254} />
           {fulfillment === "delivery" && (
             <>
-              <Field label="Delivery address" value={address} onChange={setAddress} placeholder="Street and apt" required />
+              <Field label="Delivery address" value={address} onChange={setAddress} placeholder="Street and apt" required disabled={frozen} maxLength={120} />
               <label className="block">
                 <span className="text-sm font-semibold text-[var(--color-ink-soft)]">
                   Town<span className="text-[var(--color-brand-red)]"> *</span>
@@ -576,6 +634,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   onChange={(e) => setTown(e.target.value as DeliveryTown | "")}
                   required
                   aria-required
+                  disabled={frozen}
                   className="mt-1 w-full rounded-xl border border-[var(--color-ink)]/15 bg-white px-4 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
                 >
                   <option value="">Choose your town…</option>
@@ -601,11 +660,15 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               <button
                 key={p}
                 type="button"
+                // Frozen mid-submit: the tip is priced into the charge and feeds the idempotency
+                // key, so changing it while a payment is in flight would mint a new key and turn
+                // the advised "tap again to check on it" retry into a second charge.
+                disabled={frozen}
                 onClick={() => {
                   tipTouched.current = true; // an explicit choice survives fulfillment switches
                   setTipPct(p);
                 }}
-                className={`rounded-xl border py-2.5 text-sm font-semibold transition ${
+                className={`rounded-xl border py-2.5 text-sm font-semibold transition disabled:opacity-60 ${
                   tipPct === p ? "border-[var(--color-brand-red)] bg-[var(--color-brand-red)] text-white" : "border-[var(--color-ink)]/15 bg-white text-[var(--color-ink)]"
                 }`}
               >
@@ -615,92 +678,61 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           </div>
         </div>
 
-        {/* Payment method */}
+        {/* Payment — CARD ONLY. Pay-at-pickup and cash were removed on 2026-08-11 after an order
+            was placed and never collected: the kitchen made food nobody paid for. Every website
+            order is now charged before it reaches the kitchen, and api/order/create.ts refuses any
+            other payment method, so this is not merely a hidden option. */}
         <div>
           <p className="mb-2 text-sm font-bold text-[var(--color-ink)]">Payment</p>
           {CARD_ENABLED ? (
-            <>
-              <div className="grid grid-cols-3 gap-1 rounded-full bg-white p-1 shadow-[var(--shadow-sm)]">
-                {(["card", "pickup", "cash"] as PaymentMethod[]).map((m) => (
-                  <button
-                    key={m}
-                    type="button"
-                    onClick={() => setPayment(m)}
-                    className={`rounded-full px-1 py-2.5 text-[13px] font-bold transition ${
-                      payment === m ? "bg-[var(--color-brand-red)] text-white" : "text-[var(--color-ink)]"
-                    }`}
-                  >
-                    {m === "card" ? "Pay online" : m === "cash" ? "Cash" : `Card at ${fulfillment}`}
-                  </button>
-                ))}
-              </div>
-              <p className="mt-2 text-xs text-[var(--color-ink)]/55">
-                {payment === "cash"
-                  ? `Have the total ready ${fulfillment === "delivery" ? "for the driver" : "at pickup"}.`
-                  : "Pay securely online, or choose Cash and pay when you get your order."}
-              </p>
-              {payment === "card" && (
-                <div className="mt-3 space-y-2.5 rounded-2xl bg-white p-4 shadow-[var(--shadow-sm)]">
-                  {applePayOk && (
-                    <div className="space-y-2">
-                      {/* The button is a Clover-hosted iframe, so it can't be
-                          disabled — block taps until the order is actually placeable. */}
-                      <div className={applePayBlocked ? "pointer-events-none opacity-40" : ""}>
-                        <div ref={applePayMountRef} className="h-[46px] w-full overflow-hidden rounded-xl" />
-                      </div>
-                      <p className="text-center text-[11px] text-[var(--color-ink)]/60">
-                        {applePayBlocked
-                          ? "Fill in your details above to use Apple Pay."
-                          : "One tap — no card typing."}
-                      </p>
-                      <div className="flex items-center gap-3 pt-1">
-                        <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
-                          or pay by card
-                        </span>
-                        <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
-                      </div>
-                    </div>
-                  )}
-                  <CardField label="Card number" innerRef={numRef} />
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <CardField label="Expiry" innerRef={dateRef} />
-                    <CardField label="CVV" innerRef={cvvRef} />
+            <div className="mt-1 space-y-2.5 rounded-2xl bg-white p-4 shadow-[var(--shadow-sm)]">
+              {applePayOk && (
+                <div className="space-y-2">
+                  {/* The button is a Clover-hosted iframe, so it can't be
+                      disabled — block taps until the order is actually placeable. */}
+                  <div className={applePayBlocked ? "pointer-events-none opacity-40" : ""}>
+                    <div ref={applePayMountRef} className="h-[46px] w-full overflow-hidden rounded-xl" />
                   </div>
-                  <CardField label="ZIP" innerRef={postalRef} />
-                  {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-ink)]/60">Loading secure card fields…</p>}
-                  {cardInitFailed && (
-                    <div className="rounded-xl bg-[var(--color-brand-red)]/8 px-3 py-2.5 text-xs text-[var(--color-ink)]">
-                      Card payment isn't available right now.{" "}
-                      <button type="button" onClick={() => setPayment("pickup")} className="font-bold text-[var(--color-brand-red)] underline">
-                        Pay at {fulfillment} instead
-                      </button>
-                    </div>
-                  )}
-                  <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-ink)]/60">
-                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                    Encrypted & processed securely. We never see your card number.
+                  <p className="text-center text-[11px] text-[var(--color-ink)]/60">
+                    {applePayBlocked
+                      ? "Fill in your details above to use Apple Pay."
+                      : "One tap — no card typing."}
                   </p>
+                  <div className="flex items-center gap-3 pt-1">
+                    <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                      or pay by card
+                    </span>
+                    <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
+                  </div>
                 </div>
               )}
-            </>
-          ) : (
-            <div className="rounded-2xl bg-white p-4 text-sm text-[var(--color-ink-soft)] shadow-[var(--shadow-sm)]">
-              <div className="mb-2 grid grid-cols-2 gap-1 rounded-full bg-[var(--color-cream)] p-1">
-                {(["pickup", "cash"] as PaymentMethod[]).map((m) => (
-                  <button
-                    key={m}
-                    type="button"
-                    onClick={() => setPayment(m)}
-                    className={`rounded-full px-1 py-2.5 text-[13px] font-bold transition ${
-                      payment === m ? "bg-[var(--color-brand-red)] text-white" : "text-[var(--color-ink)]"
-                    }`}
-                  >
-                    {m === "cash" ? "Cash" : `Card at ${fulfillment}`}
-                  </button>
-                ))}
+              <CardField label="Card number" innerRef={numRef} />
+              <div className="grid grid-cols-2 gap-2.5">
+                <CardField label="Expiry" innerRef={dateRef} />
+                <CardField label="CVV" innerRef={cvvRef} />
               </div>
-              Pay when you {fulfillment === "delivery" ? "receive your delivery" : "pick up"}. We'll have it ready.
+              <CardField label="ZIP" innerRef={postalRef} />
+              {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-ink)]/60">Loading secure card fields…</p>}
+              {cardInitFailed && (
+                <div role="alert" className="rounded-xl bg-[var(--color-brand-red)]/8 px-3 py-2.5 text-xs text-[var(--color-ink)]">
+                  Card payment isn't loading right now. Please reload the page, or call{" "}
+                  <a className="font-bold text-[var(--color-brand-red)] underline" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
+                  and we'll take your order over the phone.
+                </div>
+              )}
+              <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-ink)]/60">
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                Encrypted &amp; processed securely. We never see your card number.
+              </p>
+            </div>
+          ) : (
+            /* Card payments not configured — with no pay-later path left, the phone is the only
+               honest thing to offer. */
+            <div role="alert" className="rounded-2xl bg-white p-4 text-sm text-[var(--color-ink-soft)] shadow-[var(--shadow-sm)]">
+              Online payment isn't available right now, and website orders are prepaid. Please call{" "}
+              <a className="font-bold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
+              and we'll take your order.
             </div>
           )}
         </div>
@@ -713,7 +745,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           <input
             id="order-note"
             value={orderNote}
+            disabled={frozen}
             onChange={(e) => setOrderNote(e.target.value)}
+            maxLength={130}
             placeholder="Allergies, utensils, pickup notes…"
             className="w-full rounded-xl border border-[var(--color-cream-darker)] bg-white px-4 py-3 text-sm focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
           />
@@ -735,6 +769,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 </span>
                 <button
                   type="button"
+                  disabled={frozen}
                   onClick={() => {
                     setPromo(null);
                     setPromoMsg("");
@@ -755,6 +790,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               <div className="flex gap-2">
                 <input
                   value={promoInput}
+                  disabled={frozen}
                   onChange={(e) => setPromoInput(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -772,7 +808,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 <button
                   type="button"
                   onClick={() => void applyPromo()}
-                  disabled={promoChecking || !promoInput.trim()}
+                  disabled={frozen || promoChecking || !promoInput.trim()}
                   className="shrink-0 rounded-xl border border-[var(--color-brand-red)] px-4 py-3 text-sm font-bold text-[var(--color-brand-red)] transition hover:bg-[var(--color-brand-red)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {promoChecking ? "Checking…" : "Apply"}
@@ -829,20 +865,6 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="border-t border-[var(--color-ink)]/10 bg-white p-5">
-        {payment === "cash" && (
-          <label className="mb-3 flex items-start gap-2.5 rounded-xl bg-[var(--color-cream)] px-3.5 py-3 text-sm text-[var(--color-ink)]">
-            <input
-              type="checkbox"
-              checked={cashAgreed}
-              onChange={(e) => setCashAgreed(e.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-brand-red)]"
-            />
-            <span>
-              I'm paying <strong>{money(grandTotal)} in cash</strong>{" "}
-              {fulfillment === "delivery" ? "when my order is delivered" : "when I pick up my order"}.
-            </span>
-          </label>
-        )}
         {TURNSTILE_ON && (
           <Turnstile onToken={setTurnstileToken} resetSignal={turnstileReset} onLoadFailed={setTurnstileFailed} />
         )}
@@ -877,20 +899,24 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             Hang tight — sending your order. Please don&apos;t close this window.
           </p>
         )}
+        {attemptUncertain && !submitting && (
+          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-brand-red)]">
+            Your order details are locked while we check the earlier attempt. Tap Pay &amp; place order again, or call the store.
+          </p>
+        )}
         <p className="mt-2 text-center text-[11px] text-[var(--color-ink)]/60">
           {payment === "card"
             ? "Your card is charged securely. Order goes straight to Gigi's kitchen."
-            : payment === "cash"
-              ? `Order goes straight to Gigi's kitchen. Have ${money(grandTotal)} cash ready.`
-              : "Order goes straight to Gigi's kitchen. Pay when you get it."}
+            : "Order goes straight to Gigi's kitchen once your card is charged."}
         </p>
       </div>
     </Shell>
   );
 }
 
-function Shell({ onClose, title, children }: { onClose: () => void; title: string; children: React.ReactNode }) {
+function Shell({ onClose, title, children, closeDisabled = false }: { onClose: () => void; title: string; children: React.ReactNode; closeDisabled?: boolean }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   // aria-modal only tells a screen reader this is modal; it doesn't make it one.
   // Move focus in, keep Tab inside, close on Escape, and stop the page behind
   // from scrolling — otherwise the dialog is a trap for sighted mouse users only.
@@ -899,10 +925,21 @@ function Shell({ onClose, title, children }: { onClose: () => void; title: strin
     const restoreTo = document.activeElement as HTMLElement | null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const hidden: Array<{ el: HTMLElement; aria: string | null; inert: boolean }> = [];
+    let branch: HTMLElement | null = overlayRef.current;
+    while (branch?.parentElement && branch.parentElement !== document.body) {
+      for (const sibling of Array.from(branch.parentElement.children)) {
+        if (sibling === branch || !(sibling instanceof HTMLElement)) continue;
+        hidden.push({ el: sibling, aria: sibling.getAttribute("aria-hidden"), inert: sibling.inert });
+        sibling.setAttribute("aria-hidden", "true");
+        sibling.inert = true;
+      }
+      branch = branch.parentElement;
+    }
     panel?.querySelector<HTMLElement>("input,button,select,textarea,[tabindex]:not([tabindex='-1'])")?.focus();
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" && !closeDisabled) {
         onClose();
         return;
       }
@@ -925,12 +962,18 @@ function Shell({ onClose, title, children }: { onClose: () => void; title: strin
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      for (const item of hidden) {
+        if (item.aria == null) item.el.removeAttribute("aria-hidden");
+        else item.el.setAttribute("aria-hidden", item.aria);
+        item.el.inert = item.inert;
+      }
       restoreTo?.focus?.();
     };
-  }, [onClose]);
+  }, [onClose, closeDisabled]);
 
   return (
     <div
+      ref={overlayRef}
       className="fixed inset-0 z-[70] flex items-end justify-center bg-black/55 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
@@ -939,7 +982,7 @@ function Shell({ onClose, title, children }: { onClose: () => void; title: strin
       // STARTED inside the form and ended on the backdrop — ordinary text
       // selection — counted as a click out here and wiped everything typed.
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget && !closeDisabled) onClose();
       }}
     >
       <div
@@ -948,7 +991,7 @@ function Shell({ onClose, title, children }: { onClose: () => void; title: strin
       >
         <header className="flex items-center justify-between border-b border-[var(--color-ink)]/10 bg-white px-5 py-4">
           <h2 className="font-display text-2xl text-[var(--color-ink)]">{title}</h2>
-          <button type="button" onClick={onClose} aria-label="Close" className="rounded-full p-2 text-[var(--color-ink)]/50 hover:bg-[var(--color-cream)]">
+          <button type="button" onClick={onClose} disabled={closeDisabled} aria-label="Close" className="rounded-full p-2 text-[var(--color-ink)]/50 hover:bg-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-30">
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
           </button>
         </header>
@@ -963,23 +1006,26 @@ function Segmented({
   value,
   onChange,
   disabledOption,
+  disabled = false,
 }: {
   options: Fulfillment[];
   value: Fulfillment;
   onChange: (v: Fulfillment) => void;
   /** Rendered greyed out and unclickable — used to close delivery after 10 PM. */
   disabledOption?: Fulfillment;
+  disabled?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-2 rounded-full bg-white p-1 shadow-[var(--shadow-sm)]">
+    <div role="group" aria-label="Fulfillment method" className="grid grid-cols-2 gap-2 rounded-full bg-white p-1 shadow-[var(--shadow-sm)]">
       {options.map((f) => {
-        const off = f === disabledOption;
+        const off = disabled || f === disabledOption;
         return (
           <button
             key={f}
             type="button"
             onClick={() => !off && onChange(f)}
             disabled={off}
+            aria-pressed={value === f}
             aria-disabled={off || undefined}
             title={off ? "Delivery stops at 10 PM" : undefined}
             className={`rounded-full py-2.5 text-sm font-bold capitalize transition ${
@@ -1016,8 +1062,8 @@ function CardField({ label, innerRef }: { label: string; innerRef: React.RefObje
 }
 
 function Field({
-  label, value, onChange, placeholder, type = "text", required,
-}: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; required?: boolean }) {
+  label, value, onChange, placeholder, type = "text", required, disabled, maxLength,
+}: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; required?: boolean; disabled?: boolean; maxLength?: number }) {
   const id = "checkout-" + label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   return (
     <div>
@@ -1028,6 +1074,8 @@ function Field({
         id={id}
         type={type}
         required={required}
+        disabled={disabled}
+        maxLength={maxLength}
         aria-required={required || undefined}
         value={value}
         onChange={(e) => onChange(e.target.value)}

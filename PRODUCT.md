@@ -7,7 +7,7 @@ Thu–Sun 10 AM–midnight. Operated by GIGIS NY STYLE PIZZA LONG BRANCH LLC. Ow
 Basile and Kenneth Gambella.
 
 The website (gigislongbranch.com) is a real ordering business, not a brochure: online ordering
-wired to the shop's own Clover POS, card and cash payment, kitchen-ticket printing, emailed
+wired to the shop's own Clover POS, prepaid card/Apple Pay, kitchen-ticket printing, emailed
 receipts, and a VIP text/email club. ~$500 of real customer orders in its first two weeks.
 
 ## The unique mechanism

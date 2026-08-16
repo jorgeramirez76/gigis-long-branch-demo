@@ -441,12 +441,14 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
             value={promoCode}
             onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
             placeholder="Promo code (optional) — e.g. GAMEDAY30"
+            maxLength={20}
             className="rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm"
           />
           <input
             value={promoDescription}
             onChange={(e) => setPromoDescription(e.target.value)}
             placeholder="What the code gets them"
+            required={!!promoCode.trim()}
             className="rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm"
           />
         </div>
@@ -586,6 +588,21 @@ function Redeem({ business }: { business: Business }) {
     }
   }
 
+  async function releaseHold() {
+    setBusy(true);
+    setError("");
+    try {
+      setResult(await api<PromoLookup>(`/api/admin/promo`, {
+        method: "DELETE",
+        body: JSON.stringify({ business, code: result?.code ?? code.trim() }),
+      }));
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Could not release the hold.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <section className="space-y-4">
       <div className="rounded-2xl bg-white p-5 shadow-[var(--shadow-sm)]">
@@ -617,7 +634,7 @@ function Redeem({ business }: { business: Business }) {
       {result && (
         <div className={`rounded-2xl p-5 shadow-[var(--shadow-sm)] ${result.valid ? "bg-emerald-50" : "bg-[var(--color-brand-red)]/8"}`}>
           <p className={`font-display text-3xl ${result.valid ? "text-emerald-700" : "text-[var(--color-brand-red)]"}`}>
-            {result.justRedeemed ? "✓ Redeemed — give the pie" : result.valid ? "✓ Valid — good for a free pie" : result.redeemed ? "✕ Already used" : "✕ Expired"}
+            {result.justRedeemed ? "✓ Redeemed — give the pie" : result.holdReleased ? "✓ Online hold released" : result.valid ? "✓ Valid — good for a free pie" : result.inUse ? "Online order in progress" : result.redeemed ? "✕ Already used" : "✕ Expired"}
           </p>
           {error && <p className="mt-1 text-sm font-semibold text-[var(--color-brand-red)]">{error}</p>}
           <dl className="mt-3 space-y-1 text-sm text-[var(--color-ink-soft)]">
@@ -632,6 +649,9 @@ function Redeem({ business }: { business: Business }) {
             {result.redeemedAt && (
               <div><span className="font-semibold">Used:</span> {new Date(result.redeemedAt).toLocaleString("en-US")}</div>
             )}
+            {result.reservedAt && !result.redeemed && (
+              <div><span className="font-semibold">Online hold:</span> {new Date(result.reservedAt).toLocaleString("en-US")}</div>
+            )}
             {result.expiresAt && !result.redeemed && (
               <div><span className="font-semibold">Expires:</span> {new Date(result.expiresAt).toLocaleDateString("en-US")}</div>
             )}
@@ -645,6 +665,19 @@ function Redeem({ business }: { business: Business }) {
             >
               {busy ? "Marking…" : "Mark as used"}
             </button>
+          )}
+          {result.inUse && (
+            <div className="mt-4 space-y-2">
+              <p className="text-sm font-semibold text-[var(--color-brand-red)]">Check the Long Branch Clover order/payment first. Release only if no payment landed.</p>
+              <button
+                type="button"
+                onClick={releaseHold}
+                disabled={busy}
+                className="w-full rounded-full border-2 border-[var(--color-brand-red)] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[var(--color-brand-red)] disabled:opacity-50"
+              >
+                {busy ? "Releasing…" : "Release online hold"}
+              </button>
+            </div>
           )}
         </div>
       )}

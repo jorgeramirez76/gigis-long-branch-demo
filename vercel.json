@@ -1,6 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "crons": [{ "path": "/api/cron/refresh-menu", "schedule": "0 8 * * *" }],
+  "functions": {
+    "api/order/create.ts": { "maxDuration": 60 }
+  },
   "redirects": [
     {
       "source": "/vip",

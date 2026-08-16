@@ -162,16 +162,44 @@ export async function sendReceiptEmail(toEmail: string, subject: string, html: s
 
 /**
  * Fire-and-forget internal alert to store staff. Used when a paid order fails to
- * reach the POS so a human can recover it before the customer shows up. Env-gated
- * on STAFF_ALERT_PHONE — a no-op (loud log only) until that's set. Never throws.
+ * reach the POS so a human can recover it before the customer shows up.
+ *
+ * Sends on EVERY configured channel — SMS (STAFF_ALERT_PHONE) and email
+ * (STAFF_ALERT_EMAIL, comma-separated). It was SMS-only, and with STAFF_ALERT_PHONE
+ * unset in production every "paid but not fired" alert went to the Vercel log and
+ * nowhere else — the alerts that exist precisely so a human catches a charged order
+ * the kitchen never saw. Never throws.
  */
 export async function alertStaff(message: string): Promise<void> {
   const phone = process.env.STAFF_ALERT_PHONE;
+  const emails = (process.env.STAFF_ALERT_EMAIL || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   try {
     if (phone) {
       const result = await sendSms(phone, message.slice(0, 320));
       if (!result.sent) console.error("[alertStaff] SMS failed:", result.error, "—", message);
-    } else console.error("[alertStaff] (set STAFF_ALERT_PHONE to receive these) —", message);
+    }
+    for (const addr of emails) {
+      const safe = message
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\n/g, "<br>");
+      const r = await sendReceiptEmail(
+        addr,
+        "🚨 Gigi's website — order needs attention",
+        `<div style="font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a1210;padding:20px;background:#faf2e1;border:2px solid #9b121a;border-radius:12px;">${safe}</div>`,
+        message,
+      );
+      if (!r.sent && r.error !== "email_not_configured") {
+        console.error(`[alertStaff] email to ${addr} failed:`, r.error, "—", message);
+      }
+    }
+    if (!phone && emails.length === 0) {
+      console.error("[alertStaff] (set STAFF_ALERT_PHONE or STAFF_ALERT_EMAIL to receive these) —", message);
+    }
   } catch (e) {
     console.error("[alertStaff] failed", e, "—", message);
   }

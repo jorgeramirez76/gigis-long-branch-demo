@@ -1,12 +1,14 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql, isVipBusiness } from "../lib/db.js";
 import { requireAdmin } from "../lib/adminAuth.js";
+import { ensurePromoReservationColumns } from "../lib/promo.js";
 
 /**
  * Counter tool for the free-pie welcome codes.
  *
  *   GET  /api/admin/promo?business=…&code=PIE-XXXXXX  → look the code up
  *   POST /api/admin/promo  { business, code }         → mark it redeemed
+ *   DELETE /api/admin/promo { business, code }        → release an online hold
  *
  * The redeem is a CONDITIONAL update (`WHERE redeemed_at IS NULL`), so two
  * simultaneous redeems can't both succeed — the second gets already_redeemed.
@@ -28,18 +30,22 @@ type Row = {
   member_id: number | null;
   redeemed_at: string | null;
   expires_at: string | null;
+  reservation_key: string | null;
+  reserved_at: string | null;
   member_name: string | null;
   member_phone: string | null;
   member_email: string | null;
 };
 
 async function lookup(business: string, code: string): Promise<Row | null> {
+  await ensurePromoReservationColumns();
   const r = await sql`
     SELECT p.id, p.code, p.description, p.member_id, p.redeemed_at, p.expires_at,
+           p.reservation_key, p.reserved_at,
            m.name AS member_name, m.phone AS member_phone, m.email AS member_email
     FROM vip_promo_codes p
     LEFT JOIN vip_members m ON m.id = p.member_id
-    WHERE p.business = ${business} AND p.code = ${code}
+    WHERE p.business = ${business} AND p.code = ${code} AND p.member_id IS NOT NULL
   `;
   return (r.rows[0] as Row | undefined) ?? null;
 }
@@ -47,6 +53,7 @@ async function lookup(business: string, code: string): Promise<Row | null> {
 function describe(row: Row) {
   const expired = !!row.expires_at && new Date(row.expires_at).getTime() < Date.now();
   const redeemed = !!row.redeemed_at;
+  const inUse = !!row.reservation_key;
   return {
     code: row.code,
     description: row.description,
@@ -56,9 +63,11 @@ function describe(row: Row) {
     redeemed,
     redeemedAt: row.redeemed_at,
     expired,
+    inUse,
+    reservedAt: row.reserved_at,
     expiresAt: row.expires_at,
     /** The only field the counter really needs. */
-    valid: !redeemed && !expired,
+    valid: !redeemed && !expired && !inUse,
   };
 }
 
@@ -103,10 +112,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         res.status(409).json({ error: "expired", message: "This code has expired.", ...info });
         return;
       }
+      if (info.inUse) {
+        res.status(409).json({ error: "promo_in_use", message: "This code is attached to an online order. Check Clover before releasing or redeeming it.", ...info });
+        return;
+      }
       // Conditional: only the first redeem wins.
       const upd = await sql`
         UPDATE vip_promo_codes SET redeemed_at = now()
-        WHERE id = ${row.id} AND redeemed_at IS NULL
+        WHERE id = ${row.id} AND redeemed_at IS NULL AND reservation_key IS NULL
         RETURNING redeemed_at
       `;
       if (upd.rowCount === 0) {
@@ -114,6 +127,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return;
       }
       res.status(200).json({ ok: true, ...info, redeemed: true, redeemedAt: upd.rows[0].redeemed_at, justRedeemed: true });
+      return;
+    }
+
+    if (req.method === "DELETE") {
+      const row = await lookup(business, code);
+      if (!row) {
+        res.status(404).json({ error: "not_found", message: `No such code: ${code}` });
+        return;
+      }
+      if (!row.reservation_key) {
+        res.status(409).json({ error: "not_reserved", message: "This code has no online-order hold.", ...describe(row) });
+        return;
+      }
+      const released = await sql`
+        UPDATE vip_promo_codes SET reservation_key = NULL, reserved_at = NULL
+        WHERE id = ${row.id} AND redeemed_at IS NULL AND reservation_key IS NOT NULL
+        RETURNING id
+      `;
+      if (released.rowCount !== 1) {
+        res.status(409).json({ error: "already_redeemed", message: "This code changed while you were checking it." });
+        return;
+      }
+      const current = await lookup(business, code);
+      res.status(200).json({ ok: true, ...(current ? describe(current) : {}), holdReleased: true });
       return;
     }
 

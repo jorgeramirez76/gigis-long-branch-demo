@@ -12,7 +12,7 @@ export function Footer() {
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div>
-            <img src={logoPng} alt="Gigi's NY Style Pizza & Restaurant logo" className="h-14 w-auto" width={70} height={58} />
+            <img src={logoPng} alt="Gigi's NY Style Pizza & Restaurant logo" className="h-14 w-auto" width={70} height={76} />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/75">
               Real NY-style pizza, specialty pies, heroes, pasta, and Italian
               classics — served on Brighton Ave in Long Branch.

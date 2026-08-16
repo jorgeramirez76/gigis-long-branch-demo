@@ -11,8 +11,7 @@ Menu (menuGenerated.ts, 582 items from Clover)
   → ItemModal (options, live price)
   → CartDrawer (+ 3-item Upsell)
   → Checkout
-       ├─ Pay at pickup/delivery  →  POST /api/order/create           → Clover v3 order (kitchen ticket)
-       └─ Pay online (card)       →  clover.js tokenize (clv_…) ──┐
+       └─ Prepaid card / Apple Pay → clover.js tokenize (clv_…) ──┐
                                                                    ↓
                                        POST /api/order/create → Clover charge (/v1/charges) → then v3 order (PAID)
 ```
@@ -44,9 +43,8 @@ Menu (menuGenerated.ts, 582 items from Clover)
 | `CLOVER_MERCHANT_ID` | Production | ✅ | `2J9HNTSEXBHG1` |
 | `VITE_CLOVER_PAKMS_KEY` | Production | ❌ **needed for card** | Clover Ecommerce **public** apiAccessKey (browser tokenization) |
 
-**With no `VITE_CLOVER_PAKMS_KEY`, checkout runs as pay-at-pickup** (order goes to
-the kitchen; customer pays at the counter/door). This is the safe default and is
-live-ready today.
+**With no `VITE_CLOVER_PAKMS_KEY`, website checkout stops and directs the customer
+to call.** Website orders are prepaid; there is no pay-at-pickup fallback.
 
 ### To enable online card payment
 

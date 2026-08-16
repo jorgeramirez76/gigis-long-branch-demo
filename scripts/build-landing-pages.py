@@ -383,7 +383,7 @@ def body(page, others, price_html):
         for o in ring)
     return f"""<body>
 <header class="site"><div class="row">
-<img src="/logo-sm.png" alt="{E(BIZ['name'])} logo" width="145" height="120" fetchpriority="high" decoding="async">
+<img src="/logo-sm.png" alt="{E(BIZ['name'])} logo" width="145" height="157" fetchpriority="high" decoding="async">
 <div class="name">GIGI'S<small>NY STYLE PIZZA · LONG BRANCH</small></div>
 <a class="btn btn-gold" href="{order}">Order Now</a></div></header>
 

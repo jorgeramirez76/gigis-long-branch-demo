@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { timingSafeEqual } from "node:crypto";
-import { rateLimitAll } from "./rateLimit.js";
+import { rateLimitAllStrict } from "./rateLimit.js";
+import { adminTokenMatches } from "./adminAuthToken.js";
 
 /** Trusted client IP. Vercel sets x-real-ip to the true client IP; deliberately NOT falling back to
  * x-forwarded-for, whose leftmost hop is client-spoofable off-platform (which would let an attacker
@@ -33,18 +33,28 @@ const GLOBAL_WINDOW = 3600;
  * flips.
  */
 export async function requireAdmin(req: VercelRequest, res: VercelResponse): Promise<boolean> {
+  // Admin responses contain customer PII and operational data; never let a browser or intermediary
+  // cache them, including auth failures that could otherwise be replayed after login.
+  res.setHeader("Cache-Control", "no-store");
   const expected = process.env.ADMIN_TOKEN;
   if (!expected) {
     res.status(503).json({ error: "admin_not_configured" });
     return false;
   }
 
-  // Throttle BEFORE the comparison, so a guessing campaign is stopped by attempt count rather than
-  // by whether it happens to guess right.
+  if (adminTokenMatches(req.headers["x-admin-token"], expected)) {
+    // A valid owner session must never consume the public failed-login buckets. The admin panel
+    // makes several API calls per page; counting successful calls let any visitor exhaust the
+    // global bucket and lock the owner out for an hour.
+    return true;
+  }
+
+  // Only failed comparisons consume the guessing limits. Attack traffic remains throttled, while
+  // a valid token can still get in to inspect or stop an incident during a distributed attack.
   const ip = clientIp(req);
   let allowed: boolean;
   try {
-    allowed = await rateLimitAll([
+    allowed = await rateLimitAllStrict([
       { bucket: `admin:ip:${ip}`, max: IP_MAX, windowSec: IP_WINDOW },
       { bucket: "admin:global", max: GLOBAL_MAX, windowSec: GLOBAL_WINDOW },
     ]);
@@ -60,19 +70,9 @@ export async function requireAdmin(req: VercelRequest, res: VercelResponse): Pro
     return false;
   }
 
-  const got = req.headers["x-admin-token"];
-  // Compare BYTE lengths, not string lengths: a multibyte token can match on
-  // UTF-16 code units while producing shorter buffers, and timingSafeEqual throws
-  // a RangeError on a length mismatch — turning a wrong token into a 500 crash
-  // instead of a clean 401.
-  const a = typeof got === "string" ? Buffer.from(got) : null;
-  const b = Buffer.from(expected);
-  if (!a || a.length !== b.length || !timingSafeEqual(a, b)) {
-    // Logged so repeated failures are visible in the function logs at all — previously a guessing
-    // campaign left no trace anywhere.
-    console.warn(`[adminAuth] failed auth ip=${ip} path=${req.url ?? "?"}`);
-    res.status(401).json({ error: "unauthorized" });
-    return false;
-  }
-  return true;
+  // Logged so repeated failures are visible in the function logs at all — previously a guessing
+  // campaign left no trace anywhere.
+  console.warn(`[adminAuth] failed auth ip=${ip} path=${req.url ?? "?"}`);
+  res.status(401).json({ error: "unauthorized" });
+  return false;
 }

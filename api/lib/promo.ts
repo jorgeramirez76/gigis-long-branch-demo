@@ -89,7 +89,15 @@ export function applyFreePie(
 
 export type PromoCheck =
   | { ok: true; id: number; code: string; description: string }
-  | { ok: false; reason: "not_found" | "already_redeemed" | "expired"; message: string };
+  | { ok: false; reason: "not_found" | "already_redeemed" | "expired" | "in_use"; message: string };
+
+let reservationColumnsEnsured = false;
+export async function ensurePromoReservationColumns() {
+  if (reservationColumnsEnsured) return;
+  await sql`ALTER TABLE vip_promo_codes ADD COLUMN IF NOT EXISTS reservation_key TEXT`;
+  await sql`ALTER TABLE vip_promo_codes ADD COLUMN IF NOT EXISTS reserved_at TIMESTAMPTZ`;
+  reservationColumnsEnsured = true;
+}
 
 /** Codes are read off a phone screen — accept any case, tolerate a missing "PIE-". */
 export function normalizePromoCode(raw: unknown): string | null {
@@ -100,14 +108,16 @@ export function normalizePromoCode(raw: unknown): string | null {
   return /^PIE-[A-Z0-9]{4,10}$/.test(withPrefix) ? withPrefix : null;
 }
 
-/** Read-only validity check. Never mutates — redemption happens only after the order succeeds. */
+/** Read-only preview. The order endpoint performs the atomic reservation before charging. */
 export async function checkPromoCode(business: VipBusiness, code: string): Promise<PromoCheck> {
+  await ensurePromoReservationColumns();
   const r = await sql`
-    SELECT id, code, description, redeemed_at, expires_at
-    FROM vip_promo_codes WHERE business = ${business} AND code = ${code}
+    SELECT id, code, description, redeemed_at, expires_at, reservation_key
+    FROM vip_promo_codes
+    WHERE business = ${business} AND code = ${code} AND member_id IS NOT NULL
   `;
   const row = r.rows[0] as
-    | { id: number; code: string; description: string; redeemed_at: string | null; expires_at: string | null }
+    | { id: number; code: string; description: string; redeemed_at: string | null; expires_at: string | null; reservation_key: string | null }
     | undefined;
   if (!row) return { ok: false, reason: "not_found", message: "We don't recognise that code." };
   if (row.redeemed_at) {
@@ -116,22 +126,43 @@ export async function checkPromoCode(business: VipBusiness, code: string): Promi
   if (row.expires_at && new Date(row.expires_at).getTime() < Date.now()) {
     return { ok: false, reason: "expired", message: "That code has expired." };
   }
+  if (row.reservation_key) {
+    return { ok: false, reason: "in_use", message: "That code is already attached to an order in progress." };
+  }
   return { ok: true, id: row.id, code: row.code, description: row.description };
 }
 
-/**
- * Mark a code redeemed. CONDITIONAL on it still being unredeemed, so two orders racing the same
- * code cannot both win — the loser gets false and its order simply charges full price rather than
- * failing (the food is already made by then).
- *
- * Called ONLY after the order has succeeded. Redeeming earlier would burn the customer's code on
- * an order that then failed payment.
- */
-export async function redeemPromoCode(id: number): Promise<boolean> {
+/** Atomically reserve a one-time code before Clover is contacted. */
+export async function claimPromoCode(id: number, idempotencyKey: string): Promise<boolean> {
+  await ensurePromoReservationColumns();
   const r = await sql`
-    UPDATE vip_promo_codes SET redeemed_at = now()
-    WHERE id = ${id} AND redeemed_at IS NULL
+    UPDATE vip_promo_codes
+    SET reservation_key = ${idempotencyKey}, reserved_at = COALESCE(reserved_at, now())
+    WHERE id = ${id}
+      AND redeemed_at IS NULL
+      AND (reservation_key IS NULL OR reservation_key = ${idempotencyKey})
     RETURNING id
   `;
   return r.rowCount === 1;
+}
+
+/** Finalize only the reservation belonging to this exact order attempt. */
+export async function redeemPromoCode(id: number, idempotencyKey: string): Promise<boolean> {
+  await ensurePromoReservationColumns();
+  const r = await sql`
+    UPDATE vip_promo_codes
+    SET redeemed_at = now(), reservation_key = NULL, reserved_at = NULL
+    WHERE id = ${id} AND redeemed_at IS NULL AND reservation_key = ${idempotencyKey}
+    RETURNING id
+  `;
+  return r.rowCount === 1;
+}
+
+/** Give the code back only after a definite, pre-capture failure. */
+export async function releasePromoCode(id: number, idempotencyKey: string): Promise<void> {
+  await ensurePromoReservationColumns();
+  await sql`
+    UPDATE vip_promo_codes SET reservation_key = NULL, reserved_at = NULL
+    WHERE id = ${id} AND redeemed_at IS NULL AND reservation_key = ${idempotencyKey}
+  `;
 }

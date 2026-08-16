@@ -50,11 +50,31 @@ export async function rateLimit(bucket: string, max: number, windowSec: number):
   }
 }
 
+/** Admin/login variant: propagates storage errors so authentication can fail closed. */
+export async function rateLimitStrict(bucket: string, max: number, windowSec: number): Promise<boolean> {
+  await ensure();
+  const windowStart = Math.floor(Date.now() / 1000 / windowSec) * windowSec;
+  const r = await sql`
+    INSERT INTO rate_counters (bucket, window_start, n)
+    VALUES (${bucket}, ${windowStart}, 1)
+    ON CONFLICT (bucket, window_start) DO UPDATE SET n = rate_counters.n + 1
+    RETURNING n
+  `;
+  return ((r.rows[0]?.n as number) ?? 1) <= max;
+}
+
 /** Check every limit; returns false (blocked) if ANY is over. Increments all. */
 export async function rateLimitAll(
   limits: { bucket: string; max: number; windowSec: number }[],
 ): Promise<boolean> {
   // Evaluate all (so every window counts this attempt), then block if any failed.
   const results = await Promise.all(limits.map((l) => rateLimit(l.bucket, l.max, l.windowSec)));
+  return results.every(Boolean);
+}
+
+export async function rateLimitAllStrict(
+  limits: { bucket: string; max: number; windowSec: number }[],
+): Promise<boolean> {
+  const results = await Promise.all(limits.map((l) => rateLimitStrict(l.bucket, l.max, l.windowSec)));
   return results.every(Boolean);
 }

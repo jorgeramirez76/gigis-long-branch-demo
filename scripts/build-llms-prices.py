@@ -13,6 +13,7 @@ existing in Clover, this script fails instead of publishing a wrong price.
 
 Run:  python3 scripts/build-llms-prices.py     (then redeploy)
 """
+import datetime
 import re
 from pathlib import Path
 
@@ -60,8 +61,8 @@ def main():
     items, mods = load()
     lines = ["## What things cost (straight from Gigi's register)",
              "",
-             "These are the current prices at the Long Branch location — one price whether you pay by",
-             "card or cash. Prices can change; call (732) 377-2468 to confirm.",
+             "Online orders are prepaid by card. The website shows the same prices as",
+             "the in-store menu. Prices can change; call (732) 377-2468 to confirm.",
              ""]
     for key, label in WANT:
         if key not in items:
@@ -104,7 +105,10 @@ def main():
         if anchor not in text:
             raise SystemExit("build-llms-prices: could not find the FAQ anchor in llms.txt.")
         text = text.replace(anchor, block + "\n\n" + anchor, 1)
-    text = re.sub(r"^Last updated: .*$", "Last updated: 2026-07-29", text, count=1, flags=re.M)
+    # Stamp the run date. It was a hard-coded 2026-07-29, so every refresh re-asserted a date
+    # that stopped being true the first time this ran — to the AI crawlers llms.txt exists for.
+    today = datetime.date.today().isoformat()
+    text = re.sub(r"^Last updated: .*$", f"Last updated: {today}", text, count=1, flags=re.M)
     LLMS.write_text(text)
     n = sum(1 for l in lines if l.startswith("- "))
     print(f"llms.txt price block written — {n} real prices, 3 priced Q&A answers")

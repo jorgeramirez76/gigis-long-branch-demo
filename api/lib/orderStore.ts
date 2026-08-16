@@ -41,7 +41,7 @@ async function ensure() {
   ensured = true;
 }
 
-export type OrderStatus = "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "paid_print_failed" | "capture_uncertain" | "failed";
+export type OrderStatus = "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "paid_print_queued" | "paid_print_failed" | "capture_uncertain" | "failed";
 
 export type OrderRecord = {
   idempotencyKey: string;
@@ -195,4 +195,35 @@ export async function updateOrderStrict(
     RETURNING id
   `;
   if (r.rowCount !== 1) throw new Error("order reservation disappeared");
+}
+
+/**
+ * Paid orders whose kitchen ticket was still moving through Clover's print queue when the
+ * request had to answer the customer. This store's queue has been measured taking ~16 minutes
+ * to reach the printer, so "still queued" is not evidence of failure — but it is not evidence
+ * of paper either, and something has to come back and look. See api/lib/printSweep.ts.
+ */
+export async function listQueuedPrints(minAgeSec: number): Promise<Array<{ id: number; cloverOrderId: string; customerName: string; phone: string; total: number }>> {
+  try {
+    await ensure();
+    const r = await sql`
+      SELECT id, clover_order_id, customer_name, customer_phone, total
+      FROM web_orders
+      WHERE status = 'paid_print_queued'
+        AND clover_order_id IS NOT NULL
+        AND created_at < now() - make_interval(secs => ${minAgeSec})
+      ORDER BY id
+      LIMIT 20
+    `;
+    return r.rows.map((row) => ({
+      id: row.id as number,
+      cloverOrderId: row.clover_order_id as string,
+      customerName: (row.customer_name as string) ?? "",
+      phone: (row.customer_phone as string) ?? "",
+      total: (row.total as number) ?? 0,
+    }));
+  } catch (e) {
+    console.error("[orderStore] listQueuedPrints failed", e);
+    return [];
+  }
 }

@@ -456,7 +456,7 @@ async function confirmPrintEvent(
  * confirmed the first live paper ticket on 2026-07-28. Used only to SUPPRESS a false alarm —
  * never to claim a print we have no evidence for.
  */
-async function lineItemsLookPrinted(orderId: string): Promise<boolean> {
+export async function orderLineItemsPrinted(orderId: string): Promise<boolean> {
   try {
     const data = await rest(`/orders/${orderId}?expand=lineItems`, { method: "GET" });
     const items = data?.lineItems?.elements;
@@ -504,7 +504,7 @@ export async function printOrderTicket(
 
       // The event never resolved. Before paging staff about a ticket that may well be sitting
       // in the printer tray, ask Clover whether the line items came off a printer.
-      if (await lineItemsLookPrinted(orderId)) {
+      if (await orderLineItemsPrinted(orderId)) {
         console.log(`[print] kitchen ticket for order ${orderId} unconfirmed by event ${ev.id}, but Clover marks its line items printed`);
         return { printed: true, eventId: ev.id, state: confirmed.state ?? "LINE_ITEMS_PRINTED" };
       }

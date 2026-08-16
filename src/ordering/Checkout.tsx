@@ -643,6 +643,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               phone={phone}
               email={email}
               address={confirmed.fulfillment === "delivery" ? address : ""}
+              town={confirmed.fulfillment === "delivery" ? town : ""}
             />
           )}
           <p className="text-xs text-[var(--color-ink)]/50">

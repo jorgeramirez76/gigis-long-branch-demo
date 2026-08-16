@@ -23,12 +23,15 @@ export function VipJoinInline({
   phone,
   email,
   address,
+  town,
 }: {
   name: string;
   phone: string;
   email: string;
   /** Empty for pickup orders — the form asks for it; prefilled for delivery. */
   address: string;
+  /** The delivery town, which the checkout collects in its own dropdown. Empty for pickup. */
+  town?: string;
 }) {
   // Email is editable here even though it came from the order: it's the channel the
   // verification code is sent to, so a typo in the order email must be fixable rather
@@ -36,11 +39,13 @@ export function VipJoinInline({
   const [joinEmail, setJoinEmail] = useState(email);
   const [addr, setAddr] = useState(address);
   const [apt, setApt] = useState("");
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState(town ?? "");
   const [stateCode, setStateCode] = useState("NJ");
   const [zip, setZip] = useState("");
-  // Delivery orders prefill a full address line; asking again would be noise.
-  const hadAddress = address.trim().length >= 4;
+  // Delivery orders prefill the street line and the town, so only the ZIP is still missing.
+  // The street line used to be treated as a COMPLETE address, posting empty city/state/zip, which
+  // the server rejects with invalid_city — every delivery customer who tapped "Join & claim my
+  // free pie" got a generic failure.
   const [smsConsent, setSmsConsent] = useState(false);
   const [emailConsent, setEmailConsent] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "verify" | "success" | "already">("idle");
@@ -69,8 +74,8 @@ export function VipJoinInline({
       setErrorMsg("Please enter your home address — the welcome pie is one per household.");
       return;
     }
-    if (!hadAddress && (city.trim().length < 2 || !/^\d{5}$/.test(zip.trim()))) {
-      setErrorMsg("Please add your city and 5-digit ZIP.");
+    if (city.trim().length < 2 || !/^\d{5}$/.test(zip.trim())) {
+      setErrorMsg("Please add your town and 5-digit ZIP.");
       return;
     }
     if (TURNSTILE_ON && !turnstileToken) {
@@ -89,9 +94,9 @@ export function VipJoinInline({
           email: joinEmail,
           address: addr,
           apt,
-          city: hadAddress ? "" : city,
-          state: hadAddress ? "" : stateCode,
-          zip: hadAddress ? "" : zip,
+          city,
+          state: stateCode,
+          zip,
           smsConsent,
           emailConsent,
           consentText: CONSENT_TEXT,
@@ -252,8 +257,9 @@ export function VipJoinInline({
         />
       </label>
 
-      {/* Pickup orders carry no address; the welcome pie is one per household, so ask for it. */}
-      {!hadAddress && (
+      {/* The welcome pie is one per household, so a complete address is required. Delivery orders
+          arrive with the street line and town already filled; only the ZIP is left to type. */}
+      {(
         <div className="mt-3 flex flex-col gap-2">
         <div className="flex gap-2">
           <input

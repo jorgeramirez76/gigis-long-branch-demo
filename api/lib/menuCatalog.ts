@@ -12,6 +12,7 @@
  * a serverless function; no runtime deps travel with it).
  */
 import { findCatalogItem, optionDelta, placementEligible, resolveOptionGroup } from "../../src/lib/menuPricing.js";
+import { availabilityKey, QUALIFIED_MARKER } from "./menuAvailability.js";
 import { isToppingPlacement, isToppingsGroup, type ToppingPlacement } from "../../src/data/menuToppings.js";
 
 export type ClientLine = {
@@ -47,7 +48,15 @@ export type PriceResult = { ok: true; lines: PricedLine[] } | { ok: false; reaso
 export function priceLines(clientLines: ClientLine[], available?: Set<string> | null): PriceResult {
   const out: PricedLine[] = [];
   for (const line of clientLines) {
-    if (available && !available.has(line.itemName)) {
+    // A snapshot carrying category-qualified keys is asked the qualified question, so a pulled
+    // item cannot hide behind a same-named item in another section (Shrimp Oreganata is both a
+    // $27.04 seafood dinner and a $67.60 catering tray). Older snapshots hold bare names only,
+    // and lines with no category can only be asked by name.
+    const qualified = available?.has(QUALIFIED_MARKER) === true && line.categoryId != null;
+    const stillSold = qualified
+      ? available!.has(availabilityKey(line.categoryId!, line.itemName))
+      : available?.has(line.itemName) !== false;
+    if (available && !stillSold) {
       return { ok: false, reason: `"${line.itemName}" is no longer on the menu — please remove it from your order` };
     }
     const item = findCatalogItem(line.itemName, line.categoryId);

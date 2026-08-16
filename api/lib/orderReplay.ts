@@ -1,6 +1,6 @@
 export type ReplayableOrder = {
   id: number;
-  status: "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "paid_print_failed" | "capture_uncertain" | "failed";
+  status: "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "paid_print_queued" | "paid_print_failed" | "capture_uncertain" | "failed";
   chargeId: string | null;
   cloverOrderId: string | null;
   ageSec: number;
@@ -14,9 +14,11 @@ export type ReplayDecision =
   | { kind: "retry"; paid: false };
 
 export function replayOrder(order: ReplayableOrder): ReplayDecision {
-  if (order.status === "paid" || order.status === "placed") {
+  // paid_print_queued is a finished, paid order whose ticket is still moving through Clover's
+  // print queue — a retry of the same key must see the order it already placed, not a warning.
+  if (order.status === "paid" || order.status === "placed" || order.status === "paid_print_queued") {
     return order.cloverOrderId
-      ? { kind: "completed", paid: order.status === "paid" }
+      ? { kind: "completed", paid: order.status !== "placed" }
       : { kind: "uncertain", paid: false };
   }
   if (order.status === "charged" || order.status === "paid_unrouted" || order.status === "paid_print_failed" || order.chargeId) {

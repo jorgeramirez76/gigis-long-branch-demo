@@ -33,6 +33,7 @@ import { deliveryFeeCents, isDeliveryTown } from "../../src/lib/deliveryZones.js
 import { placementSuffix } from "../../src/data/menuToppings.js";
 import { clientTotalMatches } from "../lib/orderSafety.js";
 import { replayOrder } from "../lib/orderReplay.js";
+import { sweepQueuedPrints } from "../lib/printSweep.js";
 import { isDefinitelyDeclined } from "../lib/paymentRetry.js";
 
 /**
@@ -324,6 +325,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(409).json({ error: "processing", message: "This order is already being placed. Please wait a moment before retrying." });
     return;
   }
+
+  // Opportunistic second look at earlier tickets that were still queued when their order had to
+  // answer. Real traffic is the trigger — during service the next order sweeps the last — so a
+  // dead printer surfaces within one order instead of waiting for the nightly cron. Awaited but
+  // never able to throw, and it only touches rows older than its threshold.
+  void sweepQueuedPrints();
 
   const ip = clientIp(req);
 
@@ -656,7 +663,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // `queued` = Clover still has the job moving (CREATED/PRINTING). Tickets here routinely take
       // minutes to reach the kitchen printer, far longer than this function can wait, so only a
       // job that is genuinely stuck or rejected gets a human out of bed.
-      if (!ticket.printed && !ticket.queued) {
+      if (ticket.queued) {
+        // Still moving through Clover's queue. Record it as such rather than as a clean "paid":
+        // sweepQueuedPrints comes back later and decides, so a genuinely stuck ticket is still
+        // caught without paging staff about every slow one.
+        if (reservedId != null) await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
+      } else if (!ticket.printed) {
         if (reservedId != null) await updateOrder(reservedId, { status: "paid_print_failed", cloverOrderId: paidOrderId, note });
         await alertStaff(
           `KITCHEN TICKET DID NOT PRINT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +

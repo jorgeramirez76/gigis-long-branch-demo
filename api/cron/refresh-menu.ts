@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
 import { fetchLiveInventory, pruneMenu, REMOVAL_GUARD_SHARE } from "../lib/menuSync.js";
 import { alertStaff } from "../lib/notify.js";
+import { sweepQueuedPrints } from "../lib/printSweep.js";
 import { HALF_TOPPING_CHARGE_CENTS, TOPPING_CHARGE_CENTS } from "../../src/data/menuToppings.js";
 
 /**
@@ -37,6 +38,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   try {
+    // Backstop for any ticket still sitting in Clover's print queue overnight.
+    const swept = await sweepQueuedPrints();
+    if (swept.checked) console.log(`[cron] print sweep — checked ${swept.checked}, printed ${swept.printed}, stuck ${swept.stuck}`);
+
     const inv = await fetchLiveInventory();
     const { categories, total, removed, priceDrift } = pruneMenu(inv);
 

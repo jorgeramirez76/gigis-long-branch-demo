@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { classifyCharge } from "../api/lib/chargeOutcome.ts";
 import { replayOrder } from "../api/lib/orderReplay.ts";
+import { availabilityKey, QUALIFIED_MARKER } from "../api/lib/menuAvailability.ts";
 import { isDefinitelyDeclined } from "../api/lib/paymentRetry.ts";
 import { classifyPrintPoll } from "../api/lib/printOutcome.ts";
 
@@ -53,4 +54,26 @@ test("a queued Clover print event is not mistaken for a completed kitchen ticket
   // A 400 for any other reason is still not proof of paper.
   assert.equal(classifyPrintPoll(undefined, 400, '{"message":"Bad request"}'), "pending");
   assert.equal(classifyPrintPoll(undefined, 400), "pending");
+});
+
+test("a paid order whose ticket is still queued replays as the placed order, not a warning", () => {
+  // The customer paid and the order is in the POS; only the paper is still on its way. A retry of
+  // the same key must show them the order they already placed.
+  assert.deepEqual(
+    replayOrder({ id: 1, status: "paid_print_queued", chargeId: "pay-1", cloverOrderId: "order-1", ageSec: 4 }),
+    { kind: "completed", paid: true },
+  );
+  // A cash/pickup order that was placed but never charged still replays as unpaid.
+  assert.deepEqual(
+    replayOrder({ id: 1, status: "placed", chargeId: null, cloverOrderId: "order-1", ageSec: 4 }),
+    { kind: "completed", paid: false },
+  );
+});
+
+test("availability keys separate same-named items in different menu sections", () => {
+  // Shrimp Oreganata is a $27.04 seafood dinner AND a $67.60 catering tray. Pulling one off
+  // Clover must not leave the other one's name vouching for it.
+  const live = new Set([availabilityKey("seafood", "Shrimp Oreganata"), "Shrimp Oreganata", QUALIFIED_MARKER]);
+  assert.equal(live.has(availabilityKey("seafood", "Shrimp Oreganata")), true);
+  assert.equal(live.has(availabilityKey("catering", "Shrimp Oreganata")), false);
 });

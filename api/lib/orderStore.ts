@@ -41,7 +41,7 @@ async function ensure() {
   ensured = true;
 }
 
-export type OrderStatus = "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "capture_uncertain" | "failed";
+export type OrderStatus = "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "paid_print_failed" | "capture_uncertain" | "failed";
 
 export type OrderRecord = {
   idempotencyKey: string;

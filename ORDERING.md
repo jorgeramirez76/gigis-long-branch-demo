@@ -32,7 +32,7 @@ Menu (menuGenerated.ts, 582 items from Clover)
 | `src/ordering/CartDrawer.tsx` + `Upsell.tsx` | cart + 3-item add-on nudge |
 | `src/ordering/Checkout.tsx` | fulfillment, tip, payment, confirmation |
 | `src/ordering/cloverPayment.ts` | clover.js loader + card tokenization |
-| `api/order/create.ts` | validates, charges card (if online), creates POS order |
+| `api/order/create.ts` | validates, creates one itemized Clover order, pays it, fires it, confirms printing |
 | `api/lib/clover.ts` | Clover Ecommerce + REST helpers, server-side totals |
 
 ## Configuration (Vercel env)
@@ -41,7 +41,7 @@ Menu (menuGenerated.ts, 582 items from Clover)
 |---|---|---|---|
 | `CLOVER_API_TOKEN` | Production | ✅ | private token — charges + POS orders |
 | `CLOVER_MERCHANT_ID` | Production | ✅ | `2J9HNTSEXBHG1` |
-| `VITE_CLOVER_PAKMS_KEY` | Production | ❌ **needed for card** | Clover Ecommerce **public** apiAccessKey (browser tokenization) |
+| `VITE_CLOVER_PAKMS_KEY` | Production | ✅ | Clover Ecommerce **public** apiAccessKey (browser tokenization) |
 
 **With no `VITE_CLOVER_PAKMS_KEY`, website checkout stops and directs the customer
 to call.** Website orders are prepaid; there is no pay-at-pickup fallback.
@@ -66,7 +66,7 @@ so **the server path is completely unchanged** (`api/order/create.ts` was not to
 
 | Var | Scope | Set? | Purpose |
 |---|---|---|---|
-| `VITE_CLOVER_MERCHANT_ID` | Production | ❌ **needed** | `2J9HNTSEXBHG1` — passed as both the Clover `merchantId` and the Apple Pay `sessionIdentifier` |
+| `VITE_CLOVER_MERCHANT_ID` | Production | ✅ | `2J9HNTSEXBHG1` — passed as both the Clover `merchantId` and the Apple Pay `sessionIdentifier` |
 | `VITE_CLOVER_APPLE_PAY` | Production | ❌ off | `"1"` enables the button; anything else keeps it hidden |
 
 ### Owner-side steps (nobody can do these from code)
@@ -142,7 +142,8 @@ Audited adversarially (correctness + security) before launch and hardened:
   order-key reservation (`web_orders.idempotency_key`) so retries/concurrency
   can't double-charge or double-fire. Stale/uncertain attempts are flagged to
   staff, never silently re-fired.
-- **Atomic orders** — draft → bulk line items → fire, with rollback.
+- **Exactly one Clover order** — itemized draft → verify Clover amount → pay that draft → fire it. Any pre-charge setup failure stops without charging; there is no standalone-charge/two-order fallback.
+- **Confirmed kitchen print** — a queued print event is polled until Clover discards it (Clover's documented successful-print signal). `CREATED`/`PRINTING` is not treated as success; failures become `paid_print_failed` and alert staff without submitting an ambiguous duplicate print job.
 - **Never lose a paid order** — chargeId persisted before the POS step; a
   post-charge POS failure → `paid_unrouted` + `alertStaff`.
 - **Generic card errors** (no decline oracle), **CSV-injection** fix on admin

@@ -14,6 +14,7 @@
  */
 
 import { chargeFailureReason, classifyCharge, type ChargeBody } from "./chargeOutcome.js";
+import { classifyPrintPoll } from "./printOutcome.js";
 export { classifyCharge } from "./chargeOutcome.js";
 
 const ECOMMERCE_BASE = "https://scl.clover.com";
@@ -400,35 +401,71 @@ export async function getOrderPaymentId(orderId: string): Promise<string | undef
   }
 }
 
-/** Read a print job's state ("CREATED" | "PRINTING" | "PRINTED" | "FAILED"). */
+/** Read a live print job's state (CREATED, PRINTING, or FAILED). Clover deletes
+ * the event after a successful print, so callers treat its resulting 404 as
+ * completion rather than as a printer failure. */
 export async function getPrintEventState(eventId: string): Promise<string | undefined> {
   const data = await rest(`/print_event/${eventId}`, { method: "GET" });
   return data?.state;
 }
 
+const PRINT_POLL_DELAYS_MS = [250, 400, 650, 900, 1300, 1800] as const;
+
+async function confirmPrintEvent(eventId: string): Promise<{ printed: boolean; state?: string; error?: string }> {
+  let lastState: string | undefined;
+  for (const delay of PRINT_POLL_DELAYS_MS) {
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    try {
+      lastState = await getPrintEventState(eventId);
+      const outcome = classifyPrintPoll(lastState);
+      if (outcome === "failed") return { printed: false, state: lastState, error: "printer reported FAILED" };
+    } catch (err) {
+      const status = err instanceof CloverError ? err.status : undefined;
+      if (classifyPrintPoll(undefined, status) === "printed") {
+        return { printed: true, state: "PRINTED" };
+      }
+      return { printed: false, state: lastState, error: err instanceof Error ? err.message : "print status check failed" };
+    }
+  }
+  return { printed: false, state: lastState, error: "printer completion was not confirmed" };
+}
+
 /**
- * Print the kitchen ticket, with one retry (a device can be briefly offline or
- * busy). NEVER throws: a printer problem must not fail an order that is already
- * paid and fired — it's logged loudly instead so it can be recovered.
+ * Print the kitchen ticket and wait for Clover's documented completion signal.
+ * An explicit FAILED event is safe to retry once. An ambiguous POST or polling
+ * failure is NOT retried because the first job may still print; retrying it could
+ * make the kitchen prepare the same order twice. NEVER throws: a printer problem
+ * must not fail an order that is already paid and fired — it is surfaced to the
+ * caller so staff can verify the POS and printer.
  */
 export async function printOrderTicket(orderId: string): Promise<{ printed: boolean; eventId?: string; state?: string; error?: string }> {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       const ev = await requestPrint(orderId);
-      if (ev.state && ev.state.toUpperCase() === "FAILED") {
-        if (attempt === 2) return { printed: false, eventId: ev.id, state: ev.state, error: "printer reported FAILED" };
-      } else {
-        console.log(`[print] kitchen ticket queued for order ${orderId} — event ${ev.id} state ${ev.state} device ${ev.device ?? "default"}`);
-        return { printed: true, eventId: ev.id, state: ev.state };
+      if (!ev.id) {
+        return { printed: false, state: ev.state, error: "Clover accepted no traceable print event" };
       }
+      if (classifyPrintPoll(ev.state) === "failed") {
+        if (attempt === 1) continue;
+        return { printed: false, eventId: ev.id, state: ev.state, error: "printer reported FAILED" };
+      }
+
+      console.log(`[print] kitchen ticket queued for order ${orderId} — event ${ev.id} state ${ev.state} device ${ev.device ?? "default"}`);
+      const confirmed = await confirmPrintEvent(ev.id);
+      if (confirmed.printed) {
+        console.log(`[print] kitchen ticket completed for order ${orderId} — event ${ev.id}`);
+        return { printed: true, eventId: ev.id, state: confirmed.state };
+      }
+      if (confirmed.state?.toUpperCase() === "FAILED" && attempt === 1) continue;
+      console.error(`[print] kitchen ticket not confirmed for order ${orderId}: ${confirmed.error ?? confirmed.state ?? "unknown"}`);
+      return { printed: false, eventId: ev.id, state: confirmed.state, error: confirmed.error };
     } catch (err) {
       const msg = err instanceof Error ? err.message : "print request failed";
-      if (attempt === 2) {
-        console.error(`[print] FAILED to print kitchen ticket for order ${orderId}: ${msg}`);
-        return { printed: false, error: msg };
-      }
+      // The POST may have reached Clover even when its response was lost. Never
+      // submit a second ambiguous job and risk two kitchen tickets.
+      console.error(`[print] FAILED to confirm kitchen print request for order ${orderId}: ${msg}`);
+      return { printed: false, error: msg };
     }
-    await new Promise((r) => setTimeout(r, 900));
   }
   return { printed: false, error: "unreachable" };
 }

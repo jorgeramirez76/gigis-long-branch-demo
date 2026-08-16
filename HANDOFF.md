@@ -21,9 +21,10 @@ delivery), all routed to the Clover POS automatically.
   jar sauce, açaí, brazilian, mexican, chubbzie-wubbzies).
 - **In-house online ordering** (replaced the old Slice/Clover-hosted-page plan;
   Clover hosted page disabled): cart → checkout → Turnstile → server-side
-  pricing from the Clover catalog (client prices never trusted) → atomic POS
-  order via v3 API (draft → bulk line items → fire, rollback on failure) →
-  idempotent `web_orders` record. Orders print as "WEBSITE • PICKUP/DELIVERY"
+  pricing from the Clover catalog (client prices never trusted) → one itemized
+  Clover order via v3 API (draft → verify amount → pay that draft → fire) →
+  confirmed print event → idempotent `web_orders` record. Orders print as
+  "WEBSITE ORDER • PICKUP/DELIVERY"
   with WEB-prefixed kitchen chits. Website orders are prepaid by card/Apple Pay;
   there is no cash or pay-at-pickup website path. DoorDash removed;
   delivery uses the in-house driver.

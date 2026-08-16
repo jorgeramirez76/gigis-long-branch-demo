@@ -3,9 +3,7 @@ import {
   buildOrderNote,
   cloverConfigured,
   computeTotals,
-  createCharge,
   createDraftOrder,
-  createPosOrder,
   deleteDraftOrder,
   fireOrder,
   getEcommOrderAmount,
@@ -483,9 +481,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return;
     }
     // Stale 'pending': a prior attempt started but never durably recorded its
-    // outcome (a mid-flight function kill can leave this even AFTER the POS order
-    // posted). createPosOrder is not idempotent, so re-firing could double the
-    // kitchen ticket. Do NOT re-create — flag staff to verify and ask the
+    // outcome (a mid-flight function kill can leave this even AFTER the Clover order
+    // posted). Draft creation itself is not idempotent, so starting over could create
+    // a second order or ticket. Do NOT re-create — flag staff to verify and ask the
     // customer to call, rather than risk making the food twice.
     await alertStaff(`UNCERTAIN WEB ORDER — ${cust.name} ${maskPhone(cust.phone)} idem ${idempotencyKey.slice(0, 8)} — verify in POS before it is remade.`);
     res.status(409).json({ error: "uncertain", message: "We couldn't confirm your previous attempt went through. Please call the store to check before re-ordering." });
@@ -521,183 +519,117 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   };
 
-  // ---- card payment ----
-  // Preferred: SINGLE-ORDER flow — build the itemized draft first, verify
-  // Clover's computed amount equals ours, charge the card AGAINST that order
-  // (payment + line items on one record; no "Item 1" ghost order), then fire.
-  // Tip orders and any amount disagreement fall back to the legacy two-order
-  // flow (standalone charge first) — the charged amount always matches what
-  // the customer was shown; dashboard tidiness never wins over correctness.
+  // ---- card payment: one website order = one itemized Clover order ----
+  // Build the draft, verify Clover's own amount, then pay THAT exact order. If
+  // any pre-charge setup step fails, stop before money moves. Never fall back to
+  // a standalone charge plus a second POS order: that legacy path produced two
+  // Clover records for one customer order and made kitchen reconciliation unsafe.
   let chargeId: string | undefined;
-  let paidOrderId: string | undefined; // set when the single-order flow holds the payment
+  let paidOrderId: string | undefined;
   if (paymentMethod === "card") {
-    {
-      // ONE Clover order per website order: create the itemized order, then pay
-      // THAT order (tip rides along via tip_amount, so a tipped order no longer
-      // falls back to the old two-order flow). The order therefore carries both
-      // the items and the payment, and shows as PAID on the POS screen.
-      const orderAmount = totals.total - totals.tip; // what Clover computes: items + tax
-      let draftId: string | undefined;
-      try {
-        const draft = await createDraftOrder({
-          lines: kitchenLines,
-          fulfillment,
-          deliveryFee: totals.deliveryFee,
-          note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", orderNote }),
-        });
-        draftId = draft.id;
-        // Record the draft BEFORE the money moves. If the function is killed inside /pay, this
-        // row is the only pointer to an order that may be holding a capture — and a paid draft
-        // does not appear in the POS Orders screen, so with no pointer there is nothing to look
-        // up. releaseOrder({draftDiscarded}) undoes it on the paths that delete the draft.
-        if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draftId });
-        const cloverAmount = await getEcommOrderAmount(draftId);
-        if (cloverAmount === orderAmount) {
-          try {
-            // No email passed: Clover would send its own bare payment receipt
-            // on top of our branded order confirmation — one receipt is enough.
-            const charge = await payForOrder({
-              orderId: draftId,
-              source: cardToken,
-              idempotencyKey,
-              clientIp: ip,
-              tipAmount: totals.tip || undefined,
-            });
-            // /pay has now explicitly confirmed the capture. Persist that fact before any
-            // optional tender lookup; a later REST 404 is not a card decline.
-            chargeId = charge.id;
-            paidOrderId = draftId;
-            if (reservedId != null) await updateOrderStrict(reservedId, { status: "charged", chargeId, cloverOrderId: draftId });
-            try {
-              const paymentId = await getOrderPaymentId(draftId);
-              if (paymentId) {
-                chargeId = paymentId;
-                if (reservedId != null) await updateOrderStrict(reservedId, { chargeId: paymentId });
-              }
-            } catch (lookupErr) {
-              // The order itself still holds the confirmed payment. Keep going and use the order
-              // id as the recovery reference instead of opening a retry/double-charge path.
-              console.error("[order/create] confirmed payment tender lookup failed", lookupErr);
-            }
-          } catch (err) {
-            const status = err instanceof CloverError ? err.status : 500;
-            // A 4xx from Clover is a DEFINITE decline: it answered, and it refused. Anything else
-            // — a network drop, a function timeout, a 5xx — is UNCERTAIN: Clover may well have
-            // captured the money and lost the response on the way back.
-            //
-            // Treating uncertain as "nothing was charged" is how a capture goes silent: the code
-            // used to delete the order holding the payment, release the key, write no record and
-            // fire no alert, while telling the customer their card failed. The money is gone, no
-            // ticket prints, and nobody at the shop knows until the chargeback.
-            const definitelyDeclined = isDefinitelyDeclined(err);
-
-            if (!definitelyDeclined) {
-              // Keep the order — it may hold the payment. Keep the reservation so a retry can't
-              // double-charge. Page staff to reconcile it in the POS.
-              console.error("[order/create] pay-for-order UNCERTAIN — preserving order", status, err instanceof Error ? err.message : err);
-              if (reservedId != null) {
-                await updateOrder(reservedId, { status: "capture_uncertain", cloverOrderId: draftId });
-              }
-              // Keep the promo RESERVED, not redeemed. That prevents reuse while staff checks
-              // Clover without permanently burning it if no payment actually landed.
-              await alertStaff(
-                `UNCERTAIN CARD RESULT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
-                `Clover order ${draftId} may hold a payment but we never got a confirmation. ` +
-                `Open it in the POS: if it is paid, make the order; if not, it can be voided.` +
-                (promo ? ` Free-pie code ${promo.code} remains on hold; release it in Admin only if no payment landed.` : ""),
-              );
-              res.status(200).json({
-                ok: true,
-                orderId: draftId,
-                paid: false,
-                routingIssue: true,
-                message: "We couldn't confirm your payment. Please call the store before re-ordering so we don't charge you twice.",
-              });
-              return;
-            }
-
-            // Definite decline: nothing was captured, so it is safe to clean up.
-            await deleteDraftOrder(draftId).catch(() => {});
-            // Hand the key back — otherwise the customer we just told to "try a different card"
-            // cannot, because the reservation from the first attempt blocks every retry.
-            if (reservedId != null) await releaseOrder(reservedId, { draftDiscarded: true });
-            await releasePromo();
-            console.error("[order/create] pay-for-order declined", status, err instanceof Error ? err.message : err);
-            res.status(402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
-            return;
-          }
-        } else {
-          console.error(`[order/create] clover order amount ${cloverAmount} != items+tax ${orderAmount} — two-order fallback`);
-          await deleteDraftOrder(draftId).catch(() => {});
-        }
-      } catch (err) {
-        // Draft creation / amount lookup failed pre-charge — fall back to the
-        // proven two-order flow rather than losing the sale.
-        console.error("[order/create] single-order setup failed — two-order fallback", err instanceof Error ? err.message : err);
-        if (draftId && !chargeId) await deleteDraftOrder(draftId).catch(() => {});
+    const orderAmount = totals.total - totals.tip; // Clover computes items + tax; tip is paid on top.
+    let draftId: string | undefined;
+    try {
+      const draft = await createDraftOrder({
+        lines: kitchenLines,
+        fulfillment,
+        deliveryFee: totals.deliveryFee,
+        note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", orderNote }),
+      });
+      draftId = draft.id;
+      // Persist the draft pointer before /pay. A function killed during payment must leave staff
+      // one exact Clover order to inspect, and the same idempotency key must never make another.
+      if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draftId });
+      const cloverAmount = await getEcommOrderAmount(draftId);
+      if (cloverAmount !== orderAmount) {
+        throw new Error(`Clover amount ${cloverAmount} did not match expected ${orderAmount}`);
       }
+    } catch (err) {
+      console.error("[order/create] single-order setup failed before payment", err instanceof Error ? err.message : err);
+      if (draftId) await deleteDraftOrder(draftId).catch(() => {});
+      if (reservedId != null) await releaseOrder(reservedId, { draftDiscarded: !!draftId });
+      await releasePromo();
+      res.status(502).json({
+        error: "order_routing_failed",
+        message: "We couldn't prepare your Clover order, so your card was not charged. Please try again or call the store.",
+      });
+      return;
     }
 
-    if (!chargeId) {
-      // Legacy two-order flow (fails closed: no charge → no order).
+    try {
+      // No email passed: Clover would send its own bare payment receipt on top of our branded one.
+      const charge = await payForOrder({
+        orderId: draftId,
+        source: cardToken,
+        idempotencyKey,
+        clientIp: ip,
+        tipAmount: totals.tip || undefined,
+      });
+      // /pay explicitly confirmed the capture. Persist it before any optional tender lookup.
+      chargeId = charge.id;
+      paidOrderId = draftId;
+      if (reservedId != null) await updateOrderStrict(reservedId, { status: "charged", chargeId, cloverOrderId: draftId });
       try {
-        // No email passed — suppresses Clover's duplicate payment receipt;
-        // our branded order confirmation is the single receipt.
-        const charge = await createCharge({
-          amount: totals.total,
-          source: cardToken,
-          taxAmount: totals.tax,
-          idempotencyKey,
-          clientIp: ip,
-          description: `Gigi's Long Branch web order — ${cust.name}`,
-        });
-        chargeId = charge.id;
-        // Persist the capture BEFORE the POS step so a mid-flight kill can't lose it.
-        if (reservedId != null) await updateOrderStrict(reservedId, { status: "charged", chargeId });
-      } catch (err) {
-        const status = err instanceof CloverError ? err.status : 500;
-        // Same discipline as the single-order path: only a DEFINITE 4xx decline may clean up
-        // and invite a retry. Anything else — capture_uncertain (502), a network drop, a
-        // Clover 5xx — may have captured money, so the reservation is KEPT, staff are paged,
-        // and the customer is told NOT to re-order. This catch previously released the key
-        // unconditionally, which was the last surviving copy of the incident pattern that
-        // charged one customer five times on 2026-08-15.
-        const definitelyDeclined = isDefinitelyDeclined(err);
-        if (!definitelyDeclined) {
-          console.error("[order/create] fallback charge UNCERTAIN — keeping reservation", status, err instanceof Error ? err.message : err);
-          if (reservedId != null) await updateOrder(reservedId, { status: "capture_uncertain" });
-          // The promo remains reserved until staff confirms whether the capture landed.
-          await alertStaff(
-            `UNCERTAIN CARD RESULT (fallback) — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
-            `the charge may have captured but we never got a clean answer. Check Clover payments before re-charging.` +
-            (promo ? ` Free-pie code ${promo.code} remains on hold; release it in Admin only if nothing captured.` : ""),
-          );
-          res.status(200).json({
-            ok: true,
-            paid: false,
-            routingIssue: true,
-            message: "We couldn't confirm your payment. Please call the store before re-ordering so we don't charge you twice.",
-          });
-          return;
+        const paymentId = await getOrderPaymentId(draftId);
+        if (paymentId) {
+          chargeId = paymentId;
+          if (reservedId != null) await updateOrderStrict(reservedId, { chargeId: paymentId });
         }
-        // Definite decline: nothing captured, so it is safe to release the key for a retry.
-        // draftDiscarded: a draft from the abandoned single-order attempt may still be recorded
-        // on this row, and it was deleted before the fallback ran.
-        if (reservedId != null) await releaseOrder(reservedId, { draftDiscarded: true });
-        await releasePromo();
-        console.error("[order/create] charge declined", status, err instanceof Error ? err.message : err);
-        res.status(402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
+      } catch (lookupErr) {
+        console.error("[order/create] confirmed payment tender lookup failed", lookupErr);
+      }
+    } catch (err) {
+      const status = err instanceof CloverError ? err.status : 500;
+      const definitelyDeclined = isDefinitelyDeclined(err);
+      if (!definitelyDeclined) {
+        console.error("[order/create] pay-for-order UNCERTAIN — preserving order", status, err instanceof Error ? err.message : err);
+        if (reservedId != null) await updateOrder(reservedId, { status: "capture_uncertain", cloverOrderId: draftId });
+        await alertStaff(
+          `UNCERTAIN CARD RESULT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
+          `Clover order ${draftId} may hold a payment but we never got a confirmation. ` +
+          `Open it in the POS: if it is paid, make the order; if not, it can be voided.` +
+          (promo ? ` Free-pie code ${promo.code} remains on hold; release it in Admin only if no payment landed.` : ""),
+        );
+        res.status(200).json({
+          ok: true,
+          orderId: draftId,
+          paid: false,
+          routingIssue: true,
+          message: "We couldn't confirm your payment. Please call the store before re-ordering so we don't charge you twice.",
+        });
         return;
       }
+
+      // A definite decline moved no money, so deleting this one draft and releasing the key is safe.
+      await deleteDraftOrder(draftId).catch(() => {});
+      if (reservedId != null) await releaseOrder(reservedId, { draftDiscarded: true });
+      await releasePromo();
+      console.error("[order/create] pay-for-order declined", status, err instanceof Error ? err.message : err);
+      res.status(402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
+      return;
     }
   }
 
-  // ---- single-order flow: payment already on the itemized order — fire it ----
-  if (paidOrderId) {
-    const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", chargeId, orderNote });
-    try {
+  if (!paidOrderId || !chargeId) {
+    // Defensive invariant: every successful pay-for-order response sets both.
+    // Preserve the reservation because reaching here after a payment call is ambiguous.
+    console.error("[order/create] paid order invariant failed");
+    if (reservedId != null) await updateOrder(reservedId, { status: "capture_uncertain", cloverOrderId: paidOrderId });
+    await alertStaff(`UNCERTAIN WEB ORDER — paid-order invariant failed for idempotency key ${idempotencyKey.slice(0, 8)}. Check Clover before retrying.`);
+    res.status(200).json({
+      ok: true,
+      paid: false,
+      routingIssue: true,
+      message: "We couldn't confirm your payment. Please call the store before re-ordering so we don't charge you twice.",
+    });
+    return;
+  }
+
+  // Payment is attached to this exact itemized order. Fire that same order once,
+  // then wait for Clover to confirm the kitchen print before marking it complete.
+  const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", chargeId, orderNote });
+  try {
       await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, true) });
-      if (reservedId != null) await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
       // Kitchen ticket: firing only makes the order visible in the POS — this is
       // what drives the printer. Awaited (not fire-and-forget) so it isn't killed
       // by the serverless function freezing after the response; never throws.
@@ -706,17 +638,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // prepaid ordering exists to prevent — page staff instead of only logging.
       const ticket = await printOrderTicket(paidOrderId);
       if (!ticket.printed) {
+        if (reservedId != null) await updateOrder(reservedId, { status: "paid_print_failed", cloverOrderId: paidOrderId, note });
         await alertStaff(
           `KITCHEN TICKET DID NOT PRINT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
           `Clover order ${paidOrderId} is PAID and open in the POS, but no ticket came out (${ticket.error ?? ticket.state ?? "unknown"}). Print it from the POS.`,
         );
+      } else if (reservedId != null) {
+        await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
       }
       await redeemPromo(paidOrderId);
       // Invite non-members to the free-pie club — on the confirmation popup
       // and in the receipt. Existing members are skipped.
       const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
       await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines: kitchenLines, totals, paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
-      res.status(200).json({ ok: true, orderId: paidOrderId, paid: true, chargeId, totals, vipEligible });
+      res.status(200).json({
+        ok: true,
+        orderId: paidOrderId,
+        paid: true,
+        chargeId,
+        totals,
+        vipEligible,
+        ...(!ticket.printed
+          ? { routingIssue: true, message: "Your payment went through, but please call the store to confirm the kitchen received your order." }
+          : {}),
+      });
     } catch (err) {
       // Paid but not fired: the payment and items live on the SAME order, so
       // staff recovery is just opening that order in the POS. Never delete it.
@@ -726,52 +671,5 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       await alertStaff(`PAID WEB ORDER NOT FIRED — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — Clover order ${paidOrderId} holds the payment but didn't fire; open it in the POS.`);
       res.status(200).json({ ok: true, paid: true, chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
     }
-    return;
-  }
-
-  // ---- drop the order into the POS / kitchen (atomic) ----
-  const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: paymentMethod, chargeId, orderNote });
-  try {
-    const order = await createPosOrder({
-      lines: kitchenLines,
-      fulfillment,
-      note,
-      paid: paymentMethod === "card",
-      deliveryFee: totals.deliveryFee,
-    });
-    if (reservedId != null) await updateOrder(reservedId, { status: paymentMethod === "card" ? "paid" : "placed", cloverOrderId: order.id, note });
-    // Kitchen ticket for the prepaid website order.
-    const ticket = await printOrderTicket(order.id);
-    if (!ticket.printed) {
-      await alertStaff(
-        `KITCHEN TICKET DID NOT PRINT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
-        `Clover order ${order.id} is in the POS but no ticket came out (${ticket.error ?? ticket.state ?? "unknown"}). Print it from the POS.`,
-      );
-    }
-    await redeemPromo(order.id);
-    const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
-    await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines: kitchenLines, totals, paymentMethod, orderId: order.id, vipPitch: vipEligible });
-    res.status(200).json({ ok: true, orderId: order.id, paid: paymentMethod === "card", chargeId, totals, vipEligible });
-  } catch (err) {
-    console.error("[order/create] POS order failed", err);
-    if (chargeId) {
-      // Card captured but the kitchen ticket didn't post. Durable record + staff
-      // alert so the paid order is recovered — never depend on the customer calling.
-      await redeemPromo(chargeId);
-      if (reservedId != null) await updateOrder(reservedId, { status: "paid_unrouted", note });
-      await alertStaff(`PAID WEB ORDER NOT IN POS — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} charge ${chargeId}. Recover manually.`);
-      res.status(200).json({ ok: true, paid: true, chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
-      return;
-    }
-    if (reservedId != null) {
-      await updateOrder(reservedId, { status: "failed", note });
-      // Release the key as both card paths do. reserveOrder is ON CONFLICT DO NOTHING with
-      // no TTL and no cleanup job, so without this the dead row blocked every retry of the
-      // same cart forever: a transient Clover blip became a permanent 409 ("already being
-      // placed", which is false). releaseOrder no-ops if a charge or POS order did land.
-      await releaseOrder(reservedId);
-    }
-    await releasePromo();
-    res.status(502).json({ error: "order_routing_failed", message: "We couldn't send your order to the kitchen. Please call the store to order." });
-  }
+  return;
 }

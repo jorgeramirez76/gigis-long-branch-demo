@@ -1,6 +1,6 @@
 export type ReplayableOrder = {
   id: number;
-  status: "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "capture_uncertain" | "failed";
+  status: "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "paid_print_failed" | "capture_uncertain" | "failed";
   chargeId: string | null;
   cloverOrderId: string | null;
   ageSec: number;
@@ -19,7 +19,7 @@ export function replayOrder(order: ReplayableOrder): ReplayDecision {
       ? { kind: "completed", paid: order.status === "paid" }
       : { kind: "uncertain", paid: false };
   }
-  if (order.status === "charged" || order.status === "paid_unrouted" || order.chargeId) {
+  if (order.status === "charged" || order.status === "paid_unrouted" || order.status === "paid_print_failed" || order.chargeId) {
     return { kind: "routing_issue", paid: true };
   }
   if (order.status === "capture_uncertain" || order.cloverOrderId) {

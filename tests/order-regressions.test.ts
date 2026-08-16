@@ -3,6 +3,7 @@ import test from "node:test";
 import { classifyCharge } from "../api/lib/chargeOutcome.ts";
 import { replayOrder } from "../api/lib/orderReplay.ts";
 import { isDefinitelyDeclined } from "../api/lib/paymentRetry.ts";
+import { classifyPrintPoll } from "../api/lib/printOutcome.ts";
 
 test("unknown or contradictory Clover responses are never treated as safe declines", () => {
   assert.equal(classifyCharge({ status: "complete", paid: false }), "uncertain");
@@ -28,10 +29,22 @@ test("capture uncertainty stays distinct from a confirmed paid routing failure",
     replayOrder({ id: 1, status: "paid_unrouted", chargeId: "pay-1", cloverOrderId: "order-1", ageSec: 4 }),
     { kind: "routing_issue", paid: true },
   );
+  assert.deepEqual(
+    replayOrder({ id: 1, status: "paid_print_failed", chargeId: "pay-1", cloverOrderId: "order-1", ageSec: 4 }),
+    { kind: "routing_issue", paid: true },
+  );
 });
 
 test("only an explicitly marked payment decline may release an order for retry", () => {
   assert.equal(isDefinitelyDeclined(Object.assign(new Error("declined"), { retrySafe: true })), true);
   assert.equal(isDefinitelyDeclined(Object.assign(new Error("tender lookup 404"), { status: 404 })), false);
   assert.equal(isDefinitelyDeclined(Object.assign(new Error("capture uncertain"), { status: 502 })), false);
+});
+
+test("a queued Clover print event is not mistaken for a completed kitchen ticket", () => {
+  assert.equal(classifyPrintPoll("CREATED"), "pending");
+  assert.equal(classifyPrintPoll("PRINTING"), "pending");
+  assert.equal(classifyPrintPoll("FAILED"), "failed");
+  // Clover discards successful print events; its documented 404 is the completion signal.
+  assert.equal(classifyPrintPoll(undefined, 404), "printed");
 });

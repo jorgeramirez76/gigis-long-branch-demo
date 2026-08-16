@@ -653,7 +653,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // so a silent failure is exactly the "customer shows up, nobody made it" case
       // prepaid ordering exists to prevent — page staff instead of only logging.
       const ticket = await printOrderTicket(paidOrderId);
-      if (!ticket.printed) {
+      // `queued` = Clover still has the job moving (CREATED/PRINTING). Tickets here routinely take
+      // minutes to reach the kitchen printer, far longer than this function can wait, so only a
+      // job that is genuinely stuck or rejected gets a human out of bed.
+      if (!ticket.printed && !ticket.queued) {
         if (reservedId != null) await updateOrder(reservedId, { status: "paid_print_failed", cloverOrderId: paidOrderId, note });
         await alertStaff(
           `KITCHEN TICKET DID NOT PRINT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
@@ -674,7 +677,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         chargeId,
         totals,
         vipEligible,
-        ...(!ticket.printed
+        ...(!ticket.printed && !ticket.queued
           ? { routingIssue: true, message: "Your payment went through, but please call the store to confirm the kitchen received your order." }
           : {}),
       });

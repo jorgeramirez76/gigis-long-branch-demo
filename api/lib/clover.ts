@@ -421,7 +421,9 @@ export async function getPrintEventState(eventId: string): Promise<string | unde
 // function's maxDuration is 60s and the customer already has their response by now.
 const PRINT_POLL_DELAYS_MS = [400, 700, 1100, 1600, 2200, 2800, 3400, 4000, 4000, 4000] as const;
 
-async function confirmPrintEvent(eventId: string): Promise<{ printed: boolean; state?: string; error?: string }> {
+async function confirmPrintEvent(
+  eventId: string,
+): Promise<{ printed: boolean; queued?: boolean; state?: string; error?: string }> {
   let lastState: string | undefined;
   for (const delay of PRINT_POLL_DELAYS_MS) {
     await new Promise((resolve) => setTimeout(resolve, delay));
@@ -436,6 +438,14 @@ async function confirmPrintEvent(eventId: string): Promise<{ printed: boolean; s
       }
       return { printed: false, state: lastState, error: err instanceof Error ? err.message : "print status check failed" };
     }
+  }
+  // Still CREATED or PRINTING. At this store that is NORMAL, not a failure: a job was measured
+  // taking 16 minutes to reach PRINTING (2026-08-16, event 96WQ7TG4X1FPP). No serverless function
+  // can wait that out, so a job that is moving through the queue counts as queued, not as a
+  // missing ticket — waking staff for every one of them is how a working printer looks broken.
+  const normalized = lastState?.trim().toUpperCase();
+  if (normalized === "CREATED" || normalized === "PRINTING") {
+    return { printed: false, queued: true, state: lastState };
   }
   return { printed: false, state: lastState, error: "printer completion was not confirmed" };
 }
@@ -464,7 +474,9 @@ async function lineItemsLookPrinted(orderId: string): Promise<boolean> {
  * must not fail an order that is already paid and fired — it is surfaced to the
  * caller so staff can verify the POS and printer.
  */
-export async function printOrderTicket(orderId: string): Promise<{ printed: boolean; eventId?: string; state?: string; error?: string }> {
+export async function printOrderTicket(
+  orderId: string,
+): Promise<{ printed: boolean; queued?: boolean; eventId?: string; state?: string; error?: string }> {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       const ev = await requestPrint(orderId);
@@ -483,6 +495,12 @@ export async function printOrderTicket(orderId: string): Promise<{ printed: bool
         return { printed: true, eventId: ev.id, state: confirmed.state };
       }
       if (confirmed.state?.toUpperCase() === "FAILED" && attempt === 1) continue;
+
+      // Still moving through Clover's print queue — the normal case here. Not a failure.
+      if (confirmed.queued) {
+        console.log(`[print] kitchen ticket for order ${orderId} still ${confirmed.state} on event ${ev.id} — queued, not failed`);
+        return { printed: false, queued: true, eventId: ev.id, state: confirmed.state };
+      }
 
       // The event never resolved. Before paging staff about a ticket that may well be sitting
       // in the printer tray, ask Clover whether the line items came off a printer.

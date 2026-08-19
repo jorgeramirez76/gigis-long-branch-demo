@@ -97,6 +97,10 @@ export const FAQS = [
     q: "Is there late-night pizza in Long Branch?",
     a: "Yes. Gigi's serves hot slices and the full menu late — until midnight Thursday through Sunday, and 11 PM Monday through Wednesday — at 140 Brighton Avenue in Long Branch. Delivery runs until 10 PM; after that it's pickup at the counter. It's a go-to for a late slice after the beach, a night out, or the game.",
   },
+  {
+    q: "How do I redeem my VIP Club free-pie code?",
+    a: "Start a pickup order at gigislongbranch.com, add a Plain Pie to your cart, and enter your PIE code in the VIP code box at final checkout — the pie comes off the total. Ordering nothing but the free pie? Just show your code at the counter instead, since a $0 order can't be placed online. Codes are one per household, pickup only, and good for 90 days.",
+  },
 ] as const;
 
 /** Display-friendly comma-separated string of service areas. */

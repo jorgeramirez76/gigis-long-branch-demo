@@ -424,6 +424,10 @@ export function VipClub() {
           <p className="text-center text-xs text-white/80">
             Prefer to call? {LOCATION.phone}
           </p>
+          <p className="text-center text-xs text-white/80">
+            Already a member? Redeem your free-pie code in the VIP code box at final checkout —
+            pickup orders only — or show it at the counter.
+          </p>
         </form>
       </div>
     </section>

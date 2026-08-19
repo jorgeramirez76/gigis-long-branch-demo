@@ -17,13 +17,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   const q = typeof req.query.q === "string" ? req.query.q.trim().slice(0, 100) : "";
   const consent = req.query.consent;
+  // Phones are stored E.164 (+17325551234); searching "(732) 555-1234" must still hit.
+  const qDigits = q.replace(/\D/g, "");
 
   try {
     const rows = await sql`
       SELECT id, name, phone, email, sms_consent, email_consent, source, created_at
       FROM vip_members
       WHERE business = ${business}
-        AND (${q} = '' OR name ILIKE ${"%" + q + "%"} OR phone ILIKE ${"%" + q + "%"} OR email ILIKE ${"%" + q + "%"})
+        AND (${q} = '' OR name ILIKE ${"%" + q + "%"} OR phone ILIKE ${"%" + q + "%"} OR email ILIKE ${"%" + q + "%"}
+             OR (${qDigits} <> '' AND phone LIKE ${"%" + qDigits + "%"}))
         AND (${consent === "sms"} = FALSE OR sms_consent)
         AND (${consent === "email"} = FALSE OR email_consent)
       ORDER BY created_at DESC

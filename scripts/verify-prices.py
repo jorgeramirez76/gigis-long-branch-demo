@@ -53,7 +53,12 @@ def same(a, b):
 
 def main():
     items, mods = clover()
-    problems, checked = [], 0
+    # `problems` (wrong PRICE) fail the build — drift must never reach a customer.
+    # `warnings` (item no longer on Clover) do NOT: the prebuild prune removes shop-deleted
+    # items from the catalog, and failing here would brick EVERY subsequent deploy — hotfixes
+    # included — until index.html is hand-edited. A stale JSON-LD row is copy rot, not a wrong
+    # charge; it is reported loudly instead.
+    problems, warnings, checked = [], [], 0
 
     # --- homepage JSON-LD offers -------------------------------------------------
     idx = (ROOT / "index.html").read_text()
@@ -63,7 +68,7 @@ def main():
         checked += 1
         real = items.get(DISPLAY_ALIAS.get(name, name))
         if real is None:
-            problems.append(f"index.html: '{name}' is not a Clover item (add a DISPLAY_ALIAS entry)")
+            warnings.append(f"index.html: '{name}' is not a Clover item (removed from the register? fix the JSON-LD, or add a DISPLAY_ALIAS entry)")
         elif not same(price, real):
             problems.append(f"index.html: '{name}' shows ${price}, Clover says ${real}")
 
@@ -83,7 +88,7 @@ def main():
             checked += 1
             real = items.get(alias.get(label, label))
             if real is None:
-                problems.append(f"breakfast.html: '{label}' is not a Clover item")
+                warnings.append(f"breakfast.html: '{label}' is not a Clover item (removed from the register? fix the page)")
             elif not same(shown.lstrip("$"), real):
                 problems.append(f"breakfast.html: '{label}' shows {shown}, Clover says ${real}")
 
@@ -106,12 +111,16 @@ def main():
                 continue  # descriptive label, not a catalog name — the generator already guards these
             problems.append(f"{page.parent.name}: '{label}' shows ${shown}, Clover says ${real}")
 
+    if warnings:
+        print(f"verify-prices: WARNING — {len(warnings)} published item(s) no longer exist on Clover (stale copy, not a wrong charge — deploy proceeds):", file=sys.stderr)
+        for w in warnings:
+            print("   " + w, file=sys.stderr)
     if problems:
         print(f"verify-prices: {len(problems)} price(s) disagree with the Clover register\n", file=sys.stderr)
         for p in problems:
             print("   " + p, file=sys.stderr)
         sys.exit(1)
-    print(f"verify-prices: OK — {checked} published prices all match the Clover register")
+    print(f"verify-prices: OK — {checked} published prices all match the Clover register" + (f" ({len(warnings)} stale-item warning(s))" if warnings else ""))
 
 
 if __name__ == "__main__":

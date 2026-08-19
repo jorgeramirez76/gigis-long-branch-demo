@@ -61,24 +61,31 @@ export async function sendSms(toE164: string, message: string): Promise<SendResu
   const params: Record<string, string> = mss
     ? { To: toE164, MessagingServiceSid: mss, Body: message }
     : { To: toE164, From: from, Body: message };
-  const res = await fetch(
-    `https://api.twilio.com/2010-04-01/Accounts/${auth.accountSid}/Messages.json`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${basic}`,
-        "Content-Type": "application/x-www-form-urlencoded",
+  // Same contract as sendEmail: NEVER throws. A DNS failure or socket reset here used to
+  // propagate — killing a broadcast pool mid-blast and failing VIP signups whose member row
+  // was already committed. Transport loss becomes {sent:false} like any other failure.
+  try {
+    const res = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${auth.accountSid}/Messages.json`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${basic}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams(params),
       },
-      body: new URLSearchParams(params),
-    },
-  );
+    );
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    return { sent: false, error: errorText.slice(0, 500) };
+    if (!res.ok) {
+      const errorText = await res.text();
+      return { sent: false, error: errorText.slice(0, 500) };
+    }
+    const data = (await res.json()) as { sid: string };
+    return { sent: true, providerId: data.sid };
+  } catch (e) {
+    return { sent: false, error: e instanceof Error ? e.message : "send_failed" };
   }
-  const data = (await res.json()) as { sid: string };
-  return { sent: true, providerId: data.sid };
 }
 
 export async function sendEmail(
@@ -178,8 +185,8 @@ export async function alertStaff(message: string): Promise<void> {
     .filter(Boolean);
   try {
     if (phone) {
-      // Own try/catch: sendSms's Twilio fetch can THROW (DNS, socket reset), and this
-      // shares one try with the email loop below — an SMS throw must not cost the emails.
+      // sendSms no longer throws (its fetch is wrapped), but this belt-and-suspenders
+      // guard stays: an SMS problem must never cost the email loop below.
       try {
         const result = await sendSms(phone, message.slice(0, 320));
         if (!result.sent) console.error("[alertStaff] SMS failed:", result.error, "—", message);

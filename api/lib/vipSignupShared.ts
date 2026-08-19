@@ -141,23 +141,36 @@ export async function completeSignup(business: VipBusiness, p: ValidatedSignup):
 
   // Send ONLY to the channels the member consented to (both fields are stored
   // for dedup regardless). On-screen code is the fallback if a channel isn't armed.
+  //
+  // Past this point the member and code are REAL (each statement above autocommitted) — a
+  // welcome-send or audit-row failure must not throw the signup into the 500-retry path,
+  // where the retry reports alreadyMember and the customer loses the other channel's
+  // welcome, the vip_sends audit rows, and the staff notification.
   if (p.smsConsent) {
-    const sms = await sendWelcomeSms(p.phone, welcomeMessage);
-    await sql`
-      INSERT INTO vip_sends (business, channel, member_id, promo_code_id, status, provider_id, error)
-      VALUES (${business}, 'sms', ${memberId}, ${promoCodeId}, ${sms.sent ? "sent" : "failed"}, ${sms.providerId ?? null}, ${sms.error ?? null})
-    `;
+    try {
+      const sms = await sendWelcomeSms(p.phone, welcomeMessage);
+      await sql`
+        INSERT INTO vip_sends (business, channel, member_id, promo_code_id, status, provider_id, error)
+        VALUES (${business}, 'sms', ${memberId}, ${promoCodeId}, ${sms.sent ? "sent" : "failed"}, ${sms.providerId ?? null}, ${sms.error ?? null})
+      `;
+    } catch (e) {
+      console.error(`[vip] welcome SMS leg failed for member ${memberId} (code still issued)`, e);
+    }
   }
   if (p.emailConsent) {
-    const mail = await sendWelcomeEmail(p.email, "Welcome to the Gigi's VIP Club 🍕", welcomeMessage, {
-      promoCode: code,
-      promoDescription: description,
-      promoHowTo: "Pickup orders only — redeem it in the promo code box at final checkout on gigislongbranch.com, or show it at the counter.",
-    });
-    await sql`
-      INSERT INTO vip_sends (business, channel, member_id, promo_code_id, status, provider_id, error)
-      VALUES (${business}, 'email', ${memberId}, ${promoCodeId}, ${mail.sent ? "sent" : "failed"}, ${mail.providerId ?? null}, ${mail.error ?? null})
-    `;
+    try {
+      const mail = await sendWelcomeEmail(p.email, "Welcome to the Gigi's VIP Club 🍕", welcomeMessage, {
+        promoCode: code,
+        promoDescription: description,
+        promoHowTo: "Pickup orders only — redeem it in the promo code box at final checkout on gigislongbranch.com, or show it at the counter.",
+      });
+      await sql`
+        INSERT INTO vip_sends (business, channel, member_id, promo_code_id, status, provider_id, error)
+        VALUES (${business}, 'email', ${memberId}, ${promoCodeId}, ${mail.sent ? "sent" : "failed"}, ${mail.providerId ?? null}, ${mail.error ?? null})
+      `;
+    } catch (e) {
+      console.error(`[vip] welcome email leg failed for member ${memberId} (code still issued)`, e);
+    }
   }
 
   return { ok: true, code, description };
@@ -231,6 +244,7 @@ export type PendingRow = {
   expires_at: string;
   verified_at: string | null;
   issued_code: string | null;
+  created_at: string;
 };
 
 export type TokenLookup =
@@ -247,7 +261,7 @@ export type TokenLookup =
  */
 export async function lookupVerifyToken(token: string): Promise<TokenLookup> {
   const r = await sql`
-    SELECT id, business, email, payload, expires_at, verified_at, issued_code
+    SELECT id, business, email, payload, expires_at, verified_at, issued_code, created_at
     FROM vip_email_verifications WHERE secret_hash = ${hashSecret(token)}
   `;
   const row = r.rows[0] as PendingRow | undefined;
@@ -273,14 +287,39 @@ export async function claimForVerification(id: number): Promise<boolean> {
   return r.rowCount === 1;
 }
 
-/** Record the code that was issued, so re-clicks and the waiting tab can be shown the same one. */
-export async function recordIssuedCode(id: number, code: string): Promise<void> {
-  await sql`UPDATE vip_email_verifications SET issued_code = ${code} WHERE id = ${id}`;
+/** Record the code that was issued, so re-clicks and the waiting tab can be shown the same one.
+ *  Conditional on the slot being empty, and returns whether THIS call filled it — the stale-claim
+ *  recovery path uses that as its serialization: two simultaneous re-taps both computing "the
+ *  claim owner is dead" race here, and only the winner may page staff. */
+export async function recordIssuedCode(id: number, code: string): Promise<boolean> {
+  const r = await sql`
+    UPDATE vip_email_verifications SET issued_code = ${code}
+    WHERE id = ${id} AND issued_code IS NULL
+    RETURNING id
+  `;
+  return r.rowCount === 1;
 }
 
 /** Release a failed claim so the person's link still works on a retry. */
 export async function releaseClaim(id: number): Promise<void> {
   await sql`UPDATE vip_email_verifications SET verified_at = NULL WHERE id = ${id} AND issued_code IS NULL`;
+}
+
+/** Whether this member row appeared during the given verification flow (created at or after the
+ *  pending row). Distinguishes a crash-retry — where THIS flow created the member but its staff
+ *  notification died with the original attempt — from a genuine pre-existing member, who staff
+ *  already know about. */
+export async function memberCreatedSince(
+  business: VipBusiness,
+  email: string,
+  since: string,
+): Promise<boolean> {
+  const r = await sql`
+    SELECT 1 FROM vip_members
+    WHERE business = ${business} AND email = ${email} AND created_at >= ${since}
+    LIMIT 1
+  `;
+  return r.rowCount > 0;
 }
 
 /** Written to issued_code when a verification legitimately produces no new code (an existing

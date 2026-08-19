@@ -49,7 +49,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `;
     const updated = await sql`
       UPDATE vip_members SET email_consent = FALSE
-      WHERE email = ${email} AND email_consent
+      WHERE LOWER(email) = ${email} AND email_consent
       RETURNING id
     `;
     for (const row of updated.rows) {

@@ -72,6 +72,11 @@ type SavedForm = {
   tipTouched?: boolean;
   orderNote?: string;
   promo?: { code: string; discountCents: number } | null;
+  /** The uncertainty freeze must survive the reload it exists for: an aborted attempt whose
+   *  capture may have landed freezes the priced inputs, and reload is exactly how people
+   *  retry — an unfrozen post-reload form lets them nudge the tip, mint a fresh key, and
+   *  genuinely pay twice for the same food. Cleared with the rest when the order settles. */
+  attemptUncertain?: boolean;
 };
 
 function readSavedForm(): SavedForm {
@@ -93,7 +98,7 @@ function forgetSavedForm() {
   }
 }
 
-type Confirmation = { orderId?: string; paid: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; units: number; vipEligible?: boolean; message?: string };
+type Confirmation = { orderId?: string; paid: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; duplicate?: boolean; units: number; vipEligible?: boolean; message?: string };
 
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
@@ -155,13 +160,16 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   }, [deliveryOpen]);
   const storeClosed = openStatus != null && !openStatus.open;
   const [status, setStatus] = useState<"form" | "submitting" | "error">("form");
-  const [attemptUncertain, setAttemptUncertain] = useState(false);
+  const [attemptUncertain, setAttemptUncertain] = useState(saved.attemptUncertain === true);
   const [errorMsg, setErrorMsg] = useState("");
   const [cardInitFailed, setCardInitFailed] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileReset, setTurnstileReset] = useState(0);
   const [turnstileFailed, setTurnstileFailed] = useState(false);
   const [confirmed, setConfirmed] = useState<Confirmation | null>(null);
+  // Bumped when the parked key is retired mid-mount (a 402 decline), so the memo below
+  // actually re-mints — clearing storage alone cannot reach a memoized value.
+  const [idemEpoch, setIdemEpoch] = useState(0);
 
   // One price whichever way you pay — mirrors computeTotals() on the server.
   // The fee is display-only here; the server recomputes it from the town it validates, so a
@@ -186,19 +194,24 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   // Persist the form as it's typed. Runs after render, so on the post-reload mount the
   // restored values are already in place BEFORE the key memo compares its signature —
   // the parked key is found intact rather than overwritten.
+  // True once this mount's order settled — the persist effect must not resurrect the form
+  // storage that settling just cleared (state updates in the success path re-fire it).
+  const settledRef = useRef(false);
   useEffect(() => {
+    if (settledRef.current) return;
     try {
       storageArea()?.setItem(
         FORM_STORE_KEY,
         JSON.stringify({
           fulfillment, name, phone, email, address, town,
           tipPct, tipTouched: tipTouched.current, orderNote, promo,
+          attemptUncertain,
         } satisfies SavedForm),
       );
     } catch {
       /* over quota / blocked — the form still works for this page's lifetime */
     }
-  }, [fulfillment, name, phone, email, address, town, tipPct, orderNote, promo]);
+  }, [fulfillment, name, phone, email, address, town, tipPct, orderNote, promo, attemptUncertain]);
 
   // One idempotency key per unique order (amount/params). Stable across pure
   // retries so a lost response can't double-charge; regenerated if the order
@@ -237,6 +250,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         cart.lines, tip, fulfillment, payment, town, grandTotal, promo?.code ?? "",
         name.trim(), phone.trim(), email.trim().toLowerCase(), address.trim(), orderNote.trim(),
       ]);
+      // NO age limit on a parked key, ever: an uncertain attempt's key is the ONLY handle the
+      // server's replay guard has on it, and a customer can come back to check on a stalled
+      // payment days later. Expiring the key was tried (2026-08-18) and refuted in review — a
+      // fresh key on that retry sails past every replay branch and charges again. The stale-
+      // confirmation concern is handled by the persisted freeze + the honest duplicate screen.
       const store = storageArea();
       try {
         const raw = store?.getItem(IDEM_STORE_KEY);
@@ -256,7 +274,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       return fresh;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(cart.lines), tip, fulfillment, payment, town, grandTotal, promo?.code ?? "", name, phone, email, address, orderNote],
+    [JSON.stringify(cart.lines), tip, fulfillment, payment, town, grandTotal, promo?.code ?? "", name, phone, email, address, orderNote, idemEpoch],
   );
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   // Email is REQUIRED: every website order must get an emailed receipt.
@@ -434,16 +452,29 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       onDispatched?.();
       const data = await res.json();
       if (!res.ok) {
-        setAttemptUncertain(data.error === "processing" || data.error === "uncertain");
-        // A definite decline (402) is Clover explicitly confirming no money moved, so the
-        // parked key is safely retired. Without this, a retry with a DIFFERENT card would
-        // reuse the old key — and Clover rejects a known idempotency key whose charge
-        // params (the card) changed, stranding the customer who did exactly what the
-        // decline message told them to do.
-        if (res.status === 402) forgetIdempotencyKey();
+        // Only ever SET the freeze here — never clear it on a generic error. Pre-replay
+        // failures (store closed, delivery closed, the 503 when the order store is down —
+        // which correlates with the very outage that made the attempt uncertain) say NOTHING
+        // about an outstanding uncertain attempt; clearing on them unfreezes the priced
+        // inputs, an edit mints a fresh key, and the retry double-charges over a capture
+        // that may have landed. The freeze clears only on proof the replay guard ran and
+        // found nothing: a success below, or the definite 402 decline.
+        if (data.error === "processing" || data.error === "uncertain") setAttemptUncertain(true);
+        // A definite decline (402) is Clover explicitly confirming no money moved, and the
+        // server has deleted both the draft and the web_orders row — the old key has no
+        // server-side memory left. Retire it and mint fresh so the retry starts clean.
+        // (The 2026-08-15 incident proved Clover's /pay does NOT dedupe a reused key across
+        // order ids, so the server's replay guard is the only protection that matters.)
+        if (res.status === 402) {
+          setAttemptUncertain(false);
+          forgetIdempotencyKey();
+          setIdemEpoch((n) => n + 1);
+        }
         throw new Error(data.message || data.error || "Order failed");
       }
-      setAttemptUncertain(false);
+      // A 200 with routingIssue+unpaid is a capture the server itself cannot vouch for —
+      // exactly what the freeze exists for. Everything else settles the uncertainty.
+      setAttemptUncertain(data.routingIssue === true && !data.paid);
       const orderedUnits = countUnits(cart.lines);
       setConfirmed({
         units: orderedUnits,
@@ -455,6 +486,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         discount: typeof data.totals?.discount === "number" ? data.totals.discount : promoDiscount,
         fulfillment,
         routingIssue: data.routingIssue,
+        // A replay of an already-settled order: the confirmation screen switches to honest
+        // wording ("already went through") instead of promising fresh food and a ready time.
+        duplicate: data.duplicate === true,
         vipEligible: data.vipEligible !== false,
         // The server hand-writes this when it CANNOT vouch for the payment. Carry it through
         // and show it verbatim rather than the screen's own cheerier wording.
@@ -464,6 +498,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       // idempotency key is memoized on cart contents — a rebuilt cart mints a new key, so the
       // server's replay guard can't recognise the retry and the customer really is charged twice.
       if (!(data.routingIssue && !data.paid)) {
+        // Settled: stop the persist effect FIRST — setAttemptUncertain(false) above re-runs it
+        // after this block, and without the guard it would rewrite the form storage that
+        // forgetSavedForm just cleared.
+        settledRef.current = true;
         cart.clear();
         // This order is settled, so retire its key and saved form: without this, re-ordering
         // the identical cart in the same tab would reuse the key and the server would replay
@@ -592,7 +630,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     // line all have to stop claiming otherwise, or the customer reads past the warning
     // below and waits at home for food nobody is making.
     return (
-      <Shell onClose={onClose} title={confirmed.routingIssue ? "Please call the store" : "Order received"}>
+      <Shell onClose={onClose} title={confirmed.routingIssue ? "Please call the store" : confirmed.duplicate ? "Order already placed" : "Order received"}>
         <div className="flex-1 space-y-4 overflow-y-auto p-6 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-brand-red)]/10">
             <svg viewBox="0 0 24 24" className="h-8 w-8 text-[var(--color-brand-red)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -606,12 +644,15 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 ? confirmed.paid
                   ? `We have your payment, but we couldn't confirm the kitchen received your ${confirmed.fulfillment} order.`
                   : `We couldn't confirm your payment, so your ${confirmed.fulfillment} order hasn't started yet.`
-                : `Your ${confirmed.fulfillment} order is in${confirmed.paid ? " and paid" : ""}. We're firing it up now.`}
+                : confirmed.duplicate
+                  ? `Good news — this exact ${confirmed.fulfillment} order already went through earlier, and you were not charged again. If something looks off, call us at ${LOCATION.phone}.`
+                  : `Your ${confirmed.fulfillment} order is in${confirmed.paid ? " and paid" : ""}. We're firing it up now.`}
             </p>
           </div>
           {/* A routing issue means nothing reached the kitchen, so there is no ready time to
-              promise. Showing one sends the customer in for food nobody started. */}
-          {!confirmed.routingIssue && (
+              promise. Showing one sends the customer in for food nobody started. A duplicate
+              replay gets none either — the original order's clock ran long ago. */}
+          {!confirmed.routingIssue && !confirmed.duplicate && (
             <div className="rounded-2xl border-2 border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3.5">
               <p className="text-base font-bold text-[var(--color-ink)]">
                 ⏱ {readyMessage(confirmed.units, confirmed.fulfillment)}

@@ -108,7 +108,11 @@ export function normalizePromoCode(raw: unknown): string | null {
   return /^PIE-[A-Z0-9]{4,10}$/.test(withPrefix) ? withPrefix : null;
 }
 
-/** Read-only preview. The order endpoint performs the atomic reservation before charging. */
+/** Read-only preview. The order endpoint performs the atomic reservation before charging.
+ *  A held reservation NEVER expires on its own: the capture-uncertain path deliberately
+ *  keeps the hold pending a human decision (the staff alert names the code and points at
+ *  the Admin release), and an auto-expiry was tried (2026-08-18) and refuted in review —
+ *  a code whose first attempt actually captured would buy a second free pie. */
 export async function checkPromoCode(business: VipBusiness, code: string): Promise<PromoCheck> {
   await ensurePromoReservationColumns();
   const r = await sql`

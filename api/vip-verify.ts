@@ -7,6 +7,7 @@ import {
   completeSignup,
   ensureMemberHasCode,
   lookupVerifyToken,
+  memberCreatedSince,
   NO_CODE_SENTINEL,
   recordIssuedCode,
   recoverMemberCode,
@@ -100,6 +101,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           res.status(409).json({ error: "verification_processing", retryable: true, message: "Your membership is still being finished — wait a moment and try again." });
           return;
         }
+        // Settle the row and page staff ONLY when the claim owner is provably dead: a claim
+        // is stamped when verification starts and the function lives ≤60s, so minutes later
+        // the attempt died between issuing the code and recording it — and its staff notify
+        // died with it. A FRESH claim means the winner is still mid-flight and will record
+        // and notify itself; doing it here too would double-page staff for one member.
+        const claimStale = row.verified_at != null && Date.now() - new Date(row.verified_at).getTime() > 5 * 60_000;
+        if (claimStale) {
+          // recordIssuedCode doubles as the tie-breaker: of two simultaneous re-taps on a
+          // dead claim, only the one that fills the empty issued_code slot may page staff.
+          const wonRecord = await recordIssuedCode(row.id, recoveredEarly.code);
+          if (wonRecord && (await memberCreatedSince(row.business, row.email, row.created_at))) {
+            await notifyStaffNewMember(row.business, row.payload, recoveredEarly.code);
+          }
+        }
         res.status(200).json({ ok: true, alreadyVerified: true, code: recoveredEarly.code });
         return;
       }
@@ -144,8 +159,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (recovered) {
         await recordIssuedCode(row.id, recovered.code);
         // Notify on this path too: a member who arrives via recovery is just as real, and staff
-        // never hearing about them is how one goes unnoticed.
-        if (recovered.minted) await notifyStaffNewMember(row.business, row.payload, recovered.code);
+        // never hearing about them is how one goes unnoticed. A recovered (not minted) code
+        // still notifies when THIS flow created the member — that is the crash-retry whose
+        // original attempt died before it could page anyone. A member predating this
+        // verification is genuinely pre-existing; staff already heard about them.
+        if (recovered.minted || (await memberCreatedSince(row.business, row.email, row.created_at))) {
+          await notifyStaffNewMember(row.business, row.payload, recovered.code);
+        }
         res.status(200).json({ ok: true, code: recovered.code, description: recovered.description });
         return;
       }

@@ -313,7 +313,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   if (prior && replayOrder(prior).kind === "completed") {
-    res.status(200).json({ ok: true, orderId: prior.cloverOrderId, paid: prior.status === "paid", duplicate: true });
+    res.status(200).json({ ok: true, orderId: prior.cloverOrderId, paid: replayOrder(prior).paid, duplicate: true });
     return;
   }
   if (prior && replayOrder(prior).kind === "uncertain") {
@@ -328,9 +328,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Opportunistic second look at earlier tickets that were still queued when their order had to
   // answer. Real traffic is the trigger — during service the next order sweeps the last — so a
-  // dead printer surfaces within one order instead of waiting for the nightly cron. Awaited but
-  // never able to throw, and it only touches rows older than its threshold.
-  void sweepQueuedPrints();
+  // dead printer surfaces within one order instead of waiting for the nightly cron. AWAITED, not
+  // fire-and-forget: this request often answers within a second (validation failures, 403s), and
+  // Vercel freezes the instance after the response — a detached sweep frozen between marking a
+  // row paid_print_failed and paging staff silently loses the one alert for a charged order the
+  // kitchen never saw. It never throws, and it only touches rows older than its threshold.
+  // Capped small: each row costs a Clover GET (+ alerts when stuck) in front of THIS customer's
+  // order, whose own charge still needs most of the 60s budget. The nightly cron takes the
+  // backlog at full width.
+  await sweepQueuedPrints(3);
 
   const ip = clientIp(req);
 
@@ -492,7 +498,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return;
     }
     if (replay.kind === "completed") {
-      res.status(200).json({ ok: true, orderId: ex.cloverOrderId, paid: ex.status === "paid", duplicate: true, totals });
+      res.status(200).json({ ok: true, orderId: ex.cloverOrderId, paid: replay.paid, duplicate: true, totals });
       return;
     }
     if (replay.kind === "processing") {

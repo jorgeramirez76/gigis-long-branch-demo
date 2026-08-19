@@ -10,7 +10,8 @@ const SUGGESTIONS = [
   { itemName: "Mozzarella Sticks (6)", categoryId: "appetizers", basePrice: 1040, tag: "Crowd favorite" },
   { itemName: "Cannoli (2)", categoryId: "desserts", basePrice: 623, tag: "Sweet finish" },
   { itemName: "French Fries Regular", categoryId: "french-fries", basePrice: 416, tag: "Classic side" },
-  { itemName: "Two Liter Soda", categoryId: "drinks", basePrice: 415, tag: "For the table" },
+  // Two Liter Soda is NOT quick-addable: its "Soda Choices" group is Choose 1, and a one-tap
+  // add skips the modal that enforces it — the kitchen got paid tickets with no flavor picked.
 ];
 
 export function Upsell() {

@@ -88,6 +88,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ? { site: HALF_TOPPING_CHARGE_CENTS, clover: inv.halfToppingChargeCents }
         : undefined;
     if (halfToppingChargeDrift) console.warn("[cron/refresh-menu] HALF topping charge drift", halfToppingChargeDrift);
+    // Same promotion priceDrift got: these rates bill on every pie, and a console.warn in a
+    // Vercel log nobody reads is where the item-price alert used to rot too.
+    if (toppingChargeDrift || halfToppingChargeDrift) {
+      const parts = [
+        toppingChargeDrift && `full topping site $${(toppingChargeDrift.site / 100).toFixed(2)} vs Clover $${(toppingChargeDrift.clover / 100).toFixed(2)}`,
+        halfToppingChargeDrift && `half topping site $${(halfToppingChargeDrift.site / 100).toFixed(2)} vs Clover $${(halfToppingChargeDrift.clover / 100).toFixed(2)}`,
+      ].filter(Boolean);
+      await alertStaff(`TOPPING CHARGE DRIFT — the website and the register disagree: ${parts.join("; ")}. The site keeps charging its shown rate until the constants in menuToppings.ts are updated and redeployed.`);
+    }
     res.status(200).json({
       ok: true,
       items: kept,

@@ -16,6 +16,7 @@ Run: python3 scripts/build-menu-index.py   (from the repo root)
 import json
 import pathlib
 import sys
+import time
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "data" / "clover" / "classified"
@@ -34,6 +35,12 @@ def norm(s: str) -> str:
 
 
 def main() -> int:
+    # The price that separates two Clover items sharing a name comes FROM this dump, so a
+    # stale dump silently regresses the twin disambiguation (rows fall back to carrying
+    # every candidate id). Refuse to build the index from data old enough to have drifted.
+    age_h = (time.time() - DUMP.stat().st_mtime) / 3600
+    if age_h > 24:
+        sys.exit(f"build-menu-index: {DUMP.name} is {age_h:.0f}h old — run scripts/pull-clover.py first.")
     dump = json.loads(DUMP.read_text())
     # (id, price) — the price is what separates two Clover items that share a name.
     ids_by_name: dict[str, list[tuple[str, int]]] = {}

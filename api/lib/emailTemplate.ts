@@ -69,7 +69,7 @@ export function emailHtml(opts: {
     <div style="background:#2b1a14;border-radius:0 0 16px 16px;padding:18px 24px;text-align:center;">
       <div style="font-size:12px;color:#c9b8a8;line-height:1.6;">${ADDRESS}</div>
       <div style="font-size:12px;margin-top:8px;">
-        <a href="${opts.unsubUrl}" style="color:#e6b45e;">Unsubscribe</a>
+        <a href="${escapeHtml(opts.unsubUrl)}" style="color:#e6b45e;">Unsubscribe</a>
       </div>
     </div>
   </div>

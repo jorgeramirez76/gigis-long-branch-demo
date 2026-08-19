@@ -348,6 +348,10 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
     promoCode: promoCode.trim() || undefined,
     promoDescription: promoDescription.trim() || undefined,
   };
+  // What "Send it" sends is the exact body that was previewed — never the live
+  // form state, which could have been edited after the dry run.
+  const [previewedBody, setPreviewedBody] = useState<typeof body | null>(null);
+  const composing = phase === "compose";
 
   async function doDryRun(e: React.FormEvent) {
     e.preventDefault();
@@ -357,6 +361,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
         method: "POST",
         body: JSON.stringify({ ...body, dryRun: true }),
       });
+      setPreviewedBody(body);
       setPreview(data);
       setPhase("confirm");
     } catch (err) {
@@ -365,12 +370,13 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
   }
 
   async function doSend() {
+    if (!previewedBody) return;
     setPhase("sending");
     setError("");
     try {
       const data = await api<NonNullable<typeof result>>("/api/admin/broadcast", {
         method: "POST",
-        body: JSON.stringify(body),
+        body: JSON.stringify(previewedBody),
       });
       setResult(data);
       setPhase("done");
@@ -380,7 +386,9 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
       setError(
         err instanceof ApiError && err.message.endsWith("not_configured")
           ? "A selected channel isn't configured on the server yet — see Overview."
-          : "Send failed — nothing may have gone out. Check History before retrying.",
+          : err instanceof ApiError && err.message === "duplicate_broadcast"
+            ? "A blast with this exact message already delivered messages in the last 15 minutes — check History. Nothing was sent again."
+            : "Send failed — nothing may have gone out. Check History before retrying.",
       );
     }
   }
@@ -408,24 +416,26 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
       <div className="rounded-2xl bg-white p-5 shadow-[var(--shadow-sm)]">
         <div className="flex flex-wrap gap-4 text-sm font-semibold">
           <label className="flex items-center gap-2">
-            <input type="checkbox" checked={smsOn} onChange={(e) => setSmsOn(e.target.checked)} />
+            <input type="checkbox" checked={smsOn} disabled={!composing} onChange={(e) => setSmsOn(e.target.checked)} />
             Text ({stats?.members.sms_ok ?? "…"} on list)
           </label>
           <label className="flex items-center gap-2">
-            <input type="checkbox" checked={emailOn} onChange={(e) => setEmailOn(e.target.checked)} />
+            <input type="checkbox" checked={emailOn} disabled={!composing} onChange={(e) => setEmailOn(e.target.checked)} />
             Email ({stats?.members.email_ok ?? "…"} on list)
           </label>
         </div>
         {emailOn && (
           <input
             value={subject}
+            disabled={!composing}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Email subject — e.g. This weekend only: 2 large pies $30"
-            className="mt-4 w-full rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm"
+            className="mt-4 w-full rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm disabled:opacity-60"
           />
         )}
         <textarea
           value={message}
+          disabled={!composing}
           onChange={(e) => setMessage(e.target.value)}
           rows={4}
           placeholder={"The offer, in plain words. Example:\nGame day special — 2 large cheese pies + 12 garlic knots for $30, Sat & Sun only. Show this text at the counter or order at gigislongbranch.com."}
@@ -439,17 +449,19 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           <input
             value={promoCode}
+            disabled={!composing}
             onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
             placeholder="Promo code (optional) — e.g. GAMEDAY30"
             maxLength={20}
-            className="rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm"
+            className="rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm disabled:opacity-60"
           />
           <input
             value={promoDescription}
+            disabled={!composing}
             onChange={(e) => setPromoDescription(e.target.value)}
             placeholder="What the code gets them"
             required={!!promoCode.trim()}
-            className="rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm"
+            className="rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm disabled:opacity-60"
           />
         </div>
       </div>

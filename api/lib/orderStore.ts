@@ -178,6 +178,26 @@ export async function updateOrder(
   }
 }
 
+/** Flip a queued-print row to its outcome ONLY while it is still queued. Every order POST
+ *  triggers a sweep, so two concurrent sweeps can read the same row — the conditional update
+ *  makes exactly one of them the owner of the page/log that follows. Returns false when the
+ *  row was already decided (or on a storage error, in which case the row stays queued and the
+ *  next sweep retries). */
+export async function claimQueuedPrint(id: number, status: "paid" | "paid_print_failed"): Promise<boolean> {
+  try {
+    await ensure();
+    const r = await sql`
+      UPDATE web_orders SET status = ${status}, updated_at = now()
+      WHERE id = ${id} AND status = 'paid_print_queued'
+      RETURNING id
+    `;
+    return r.rowCount === 1;
+  } catch (e) {
+    console.error("[orderStore] claimQueuedPrint failed", id, e);
+    return false;
+  }
+}
+
 /** Safety-critical patch used immediately before/after capture. Storage failure propagates. */
 export async function updateOrderStrict(
   id: number,
@@ -203,7 +223,7 @@ export async function updateOrderStrict(
  * to reach the printer, so "still queued" is not evidence of failure — but it is not evidence
  * of paper either, and something has to come back and look. See api/lib/printSweep.ts.
  */
-export async function listQueuedPrints(minAgeSec: number): Promise<Array<{ id: number; cloverOrderId: string; customerName: string; phone: string; total: number }>> {
+export async function listQueuedPrints(minAgeSec: number, limit = 20): Promise<Array<{ id: number; cloverOrderId: string; customerName: string; phone: string; total: number }>> {
   try {
     await ensure();
     const r = await sql`
@@ -213,7 +233,7 @@ export async function listQueuedPrints(minAgeSec: number): Promise<Array<{ id: n
         AND clover_order_id IS NOT NULL
         AND created_at < now() - make_interval(secs => ${minAgeSec})
       ORDER BY id
-      LIMIT 20
+      LIMIT ${limit}
     `;
     return r.rows.map((row) => ({
       id: row.id as number,

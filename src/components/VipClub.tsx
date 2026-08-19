@@ -44,7 +44,7 @@ export function VipClub() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!phone.trim() || !email.trim() || address.trim().length < 4 || city.trim().length < 2 || !/^\d{5}$/.test(zip.trim())) {
+    if (!phone.trim() || !email.trim() || address.trim().length < 4 || city.trim().length < 2 || !/^[A-Za-z]{2}$/.test(stateCode.trim()) || !/^\d{5}$/.test(zip.trim())) {
       setStatus("error");
       setErrorMsg("Please fill in your name, phone, email, and full address (street, city, state, ZIP) for your free pie.");
       return;
@@ -89,6 +89,9 @@ export function VipClub() {
           data.error === "invalid_phone" ? "That phone number doesn't look right."
           : data.error === "invalid_email" ? "That email doesn't look right."
           : data.error === "address_required" ? "Please enter your street address."
+          : data.error === "invalid_city" ? "That town doesn't look right — letters only, please."
+          : data.error === "invalid_state" ? "Please use your 2-letter state (e.g. NJ)."
+          : data.error === "invalid_zip" ? "That ZIP doesn't look right — 5 digits, please."
           : data.error === "verification_failed" ? "Verification failed — please try again."
           : data.error === "rate_limited" ? "Too many attempts — please wait a bit."
           : "Something went wrong — try again or call us.",

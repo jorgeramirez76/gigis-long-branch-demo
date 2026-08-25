@@ -1,6 +1,12 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { findCatalogItem, optionDelta, placementEligible } from "../lib/menuPricing";
-import { isToppingPlacement } from "../data/menuToppings";
+import {
+  HALF_TOPPING_CHARGE_CENTS,
+  HALF_TOPPING_DISPLAY_CENTS,
+  TOPPING_CHARGE_CENTS,
+  TOPPING_DISPLAY_CENTS,
+  isToppingPlacement,
+} from "../data/menuToppings";
 
 /** NJ Sales Tax pulled from the merchant's Clover config (6.625%). Applied to
  * the taxable subtotal; the final authoritative total is re-computed by Clover
@@ -26,6 +32,25 @@ export function lineUnitPrice(line: Pick<CartLine, "basePrice" | "options">): nu
 }
 export function lineTotal(line: CartLine): number {
   return lineUnitPrice(line) * line.quantity;
+}
+
+/** Presentation-only companions to lineUnitPrice (2026-08-19, Tommy via Jorge): toppings
+ *  display at the flat menu-board rate and the card-pricing remainder shows as one
+ *  "Card pricing" line in the cart and checkout summaries. Charged amounts never change —
+ *  subtotal/tax/tip/total all still come from the real deltas. An option counts as a
+ *  charge-priced topping only when it carries a placement (only those do) AND the exact
+ *  charge value, so a coincidentally-priced modifier can never display wrong. */
+export function optionUpliftCents(o: CartOption): number {
+  if (!o.placement) return 0;
+  if (o.delta === TOPPING_CHARGE_CENTS) return TOPPING_CHARGE_CENTS - TOPPING_DISPLAY_CENTS;
+  if (o.delta === HALF_TOPPING_CHARGE_CENTS) return HALF_TOPPING_CHARGE_CENTS - HALF_TOPPING_DISPLAY_CENTS;
+  return 0;
+}
+export function lineDisplayUnitPrice(line: Pick<CartLine, "basePrice" | "options">): number {
+  return lineUnitPrice(line) - line.options.reduce((s, o) => s + optionUpliftCents(o), 0);
+}
+export function cartUpliftCents(lines: CartLine[]): number {
+  return lines.reduce((s, l) => s + l.options.reduce((u, o) => u + optionUpliftCents(o), 0) * l.quantity, 0);
 }
 
 type CartState = {

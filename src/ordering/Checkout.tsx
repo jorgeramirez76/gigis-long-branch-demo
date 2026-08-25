@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { lineUnitPrice, money, useCart, TAX_RATE } from "./CartContext";
+import { cartUpliftCents, lineDisplayUnitPrice, money, useCart, TAX_RATE } from "./CartContext";
 import { LOCATION } from "../data/location";
 import { blockReason as blockReasonFor, payDisabled, type GateState } from "./checkoutGate";
 import { placementSuffix } from "../data/menuToppings";
@@ -186,6 +186,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const tax = Math.round((cart.subtotal - promoDiscount + deliveryFee) * TAX_RATE);
   const tip = Math.round((cart.subtotal - promoDiscount) * (tipPct / 100));
   const grandTotal = cart.subtotal - promoDiscount + deliveryFee + tax + tip;
+  // Display split only: the summary shows toppings at their flat rate plus one "Card
+  // pricing" line. Every charged figure above (subtotal, tax, tip, grandTotal,
+  // expectedTotal) still comes from the real deltas.
+  const uplift = cartUpliftCents(cart.lines);
   // Apple Pay's button is built asynchronously and priced by message, so it needs
   // the live total rather than whatever it was on the render that started the load.
   const grandTotalRef = useRef(grandTotal);
@@ -975,12 +979,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   {l.quantity}× {l.itemName}
                   {l.options.length > 0 && <span className="text-[var(--color-ink)]/60"> — {l.options.map((o) => o.name + placementSuffix(o.placement)).join(", ")}</span>}
                 </span>
-                <span className="shrink-0">{money(lineUnitPrice(l) * l.quantity)}</span>
+                <span className="shrink-0">{money(lineDisplayUnitPrice(l) * l.quantity)}</span>
               </li>
             ))}
           </ul>
           <dl className="mt-3 space-y-1 border-t border-[var(--color-ink)]/8 pt-3 text-sm">
-            <Row label="Subtotal" value={money(cart.subtotal)} />
+            <Row label="Subtotal" value={money(cart.subtotal - uplift)} />
+            {uplift > 0 && <Row label="Card pricing (toppings)" value={money(uplift)} />}
             {promoDiscount > 0 && promo && <Row label={`VIP free pie (${promo.code})`} value={`−${money(promoDiscount)}`} />}
             {fulfillment === "delivery" &&
               (town === "" ? (

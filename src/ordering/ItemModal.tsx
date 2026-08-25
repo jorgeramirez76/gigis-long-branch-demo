@@ -2,8 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { MenuItem, OptionGroup } from "../data/menu";
 import { MAX_LINE_QTY, money, parsePrice, useCart, type CartOption } from "./CartContext";
 import {
-  HALF_TOPPING_CHARGE_CENTS,
+  HALF_TOPPING_DISPLAY_CENTS,
   TOPPING_CHARGE_CENTS,
+  TOPPING_DISPLAY_CENTS,
   isToppingsGroup,
   placementDelta,
   type ToppingPlacement,
@@ -14,10 +15,16 @@ function canPlace(group: OptionGroup, choiceDelta?: string): boolean {
   return isToppingsGroup(group.group) && parsePrice(choiceDelta) === TOPPING_CHARGE_CENTS;
 }
 
+/** What a topping SHOWS here ("+$3"); the 12¢ card-pricing remainder is itemized at
+ *  checkout (Tommy's spec, 2026-08-19). The charged delta stays TOPPING_CHARGE_CENTS. */
+const TOPPING_DISPLAY_LABEL = `+$${TOPPING_DISPLAY_CENTS / 100}`;
+
+// Placement pills show the flat display rates; the stored cart delta still comes from
+// placementDelta() on the real charge values below.
 const PLACEMENTS: { value: ToppingPlacement; label: string; price: number }[] = [
-  { value: "whole", label: "Whole pie", price: TOPPING_CHARGE_CENTS },
-  { value: "left", label: "Left half", price: HALF_TOPPING_CHARGE_CENTS },
-  { value: "right", label: "Right half", price: HALF_TOPPING_CHARGE_CENTS },
+  { value: "whole", label: "Whole pie", price: TOPPING_DISPLAY_CENTS },
+  { value: "left", label: "Left half", price: HALF_TOPPING_DISPLAY_CENTS },
+  { value: "right", label: "Right half", price: HALF_TOPPING_DISPLAY_CENTS },
 ];
 
 /** Parse a human rule string into selection constraints. */
@@ -82,7 +89,9 @@ function GroupField({
             >
               {c.name}
               {c.delta && (
-                <span className={on ? "text-white/80" : "font-semibold text-[var(--color-brand-red)]"}>{c.delta}</span>
+                <span className={on ? "text-white/80" : "font-semibold text-[var(--color-brand-red)]"}>
+                  {canPlace(group, c.delta) ? TOPPING_DISPLAY_LABEL : c.delta}
+                </span>
               )}
             </button>
           );
@@ -118,6 +127,13 @@ function GroupField({
             );
           })}
         </div>
+      )}
+      {group.choices.some((c) => canPlace(group, c.delta)) && (
+        // NJ card-surcharge rules require the adjustment disclosed BEFORE checkout, so this
+        // note rides with the prices it applies to.
+        <p className="mt-2 text-xs text-[var(--color-ink)]/50">
+          Card pricing adds 12¢ per topping (8¢ per half) at checkout.
+        </p>
       )}
     </fieldset>
   );
@@ -187,26 +203,31 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
     };
   }, [onClose]);
 
-  const deltaCents = useMemo(() => {
+  const unmetRequired = groups.some((g, gi) => {
+    const { required } = ruleConstraints(g.rule);
+    return required && !(selected[gi] && selected[gi].size > 0);
+  });
+
+  // What the button SHOWS: toppings at their flat display rate. The 12¢/8¢ card-pricing
+  // remainder is itemized at checkout; the cart line is priced from the real deltas when
+  // it is added (placementDelta below), so charged amounts are untouched by this.
+  const displayDeltaCents = useMemo(() => {
     let d = 0;
     groups.forEach((g, gi) => {
       const sel = selected[gi];
       if (!sel) return;
       g.choices.forEach((c) => {
         if (!sel.has(c.name)) return;
-        const base = parsePrice(c.delta);
-        d += canPlace(g, c.delta) ? placementDelta(base, placements[c.name] ?? "whole") : base;
+        if (canPlace(g, c.delta)) {
+          d += (placements[c.name] ?? "whole") === "whole" ? TOPPING_DISPLAY_CENTS : HALF_TOPPING_DISPLAY_CENTS;
+        } else {
+          d += parsePrice(c.delta);
+        }
       });
     });
     return d;
   }, [groups, selected, placements]);
-
-  const unmetRequired = groups.some((g, gi) => {
-    const { required } = ruleConstraints(g.rule);
-    return required && !(selected[gi] && selected[gi].size > 0);
-  });
-
-  const unit = basePrice + deltaCents;
+  const displayUnit = basePrice + displayDeltaCents;
 
   function toggle(gi: number, choiceName: string, single: boolean, max: number | null) {
     setSelected((prev) => {
@@ -335,7 +356,7 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
             className="flex flex-1 items-center justify-between rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span>{unmetRequired ? "Choose required options" : "Add to order"}</span>
-            <span>{money(unit * quantity)}</span>
+            <span>{money(displayUnit * quantity)}</span>
           </button>
         </div>
       </div>

@@ -47,6 +47,14 @@ export const TOPPING_CHARGE_CENTS = 312;
 /** Clover "$ TOPPING $" → "1st Half" / "2nd Half" — a topping on half the pie. */
 export const HALF_TOPPING_CHARGE_CENTS = 208;
 
+/** 2026-08-19, Tommy via Jorge: toppings DISPLAY at the flat menu-board rate ($3, $2 a
+ *  half); the card-pricing remainder (12¢ / 8¢) is itemized as one "Card pricing" line
+ *  in the cart and at checkout. What is CHARGED never changes — 312/208 everywhere in
+ *  the money path, so totals, Clover orders, tickets, receipts, and the nightly drift
+ *  check are all untouched. These constants exist for presentation only. */
+export const TOPPING_DISPLAY_CENTS = 300;
+export const HALF_TOPPING_DISPLAY_CENTS = 200;
+
 /**
  * Where a topping goes on the pie. Only toppings priced by the folded charge
  * (i.e. delta === TOPPING_CHARGE_CENTS) offer a choice — a topping with its own

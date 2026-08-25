@@ -53,6 +53,16 @@ export function FAQ() {
                   <div className="overflow-hidden">
                     <p className="px-5 pb-5 text-sm leading-relaxed text-[var(--color-ink-soft)] md:text-base">
                       {f.a}
+                      {/* Deeper page for this topic. The FAQPage JSON-LD answers stay plain text —
+                          only the visible answer carries the anchor. */}
+                      {f.link && (
+                        <>
+                          {" "}
+                          <a href={f.link.href} className="font-semibold text-[var(--color-brand-red)] underline underline-offset-2">
+                            {f.link.label} →
+                          </a>
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>

@@ -66,7 +66,7 @@ export function About() {
                   Loved locally
                 </p>
                 <p className="font-display text-xl text-white md:text-2xl">
-                  Rated 4.6 out of 5 on Restaurantji
+                  Rated 4.4 out of 5 on Restaurantji
                 </p>
               </div>
             </div>

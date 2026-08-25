@@ -6,7 +6,7 @@
   "description": "Gigi's NY Style Pizza \u2014 Long Branch location website",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/prune-static-menu.mjs",
+    "prebuild": "node scripts/prune-static-menu.mjs && python3 scripts/build-menu-page.py",
     "prune-menu": "node scripts/prune-static-menu.mjs",
     "build": "python3 scripts/verify-prices.py && tsc -b && tsc -p tsconfig.api.json --noEmit && vite-react-ssg build && node scripts/verify-csp-build.mjs",
     "preview": "vite preview --host",

@@ -85,6 +85,9 @@ export function Footer() {
         <nav className="mt-10 border-t border-white/10 pt-6" aria-label="Popular pages">
           <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-gold-bright)]">Explore</p>
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-cream/75">
+            <a href="/menu/" className="hover:text-white">Full Menu &amp; Prices</a>
+            <a href="/square-pizza-long-branch/" className="hover:text-white">Square Pizza</a>
+            <a href="/pizza-delivery-west-long-branch/" className="hover:text-white">West Long Branch Delivery</a>
             <a href="/pizza-party-long-branch/" className="hover:text-white">Kids’ Pizza Parties</a>
             <a href="/late-night-pizza-long-branch/" className="hover:text-white">Late-Night Pizza</a>
             {/* /vip-club/ had zero inbound links anywhere on the site, so Google never learned it

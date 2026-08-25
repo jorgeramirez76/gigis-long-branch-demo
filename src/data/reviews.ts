@@ -48,10 +48,11 @@ export const REVIEW_THEMES: ReviewTheme[] = [
   },
 ];
 
-/** Real, single-source ratings (re-verified 2026-07-12 by direct page fetch).
+/** Real, single-source ratings (re-verified 2026-08-24 by direct page fetch — Restaurantji's
+ * own JSON-LD returned ratingValue 4.4, ratingCount 90; was 4.6/86 when verified 7/12).
  * Displayed as attributed tiles with links — never summed into one AggregateRating. */
 export const RATING_SNAPSHOT = {
-  restaurantji: { score: 4.6, count: 86, url: "https://www.restaurantji.com/nj/long-branch/gigis-ny-style-pizza-and-restaurant-lb-/" },
+  restaurantji: { score: 4.4, count: 90, url: "https://www.restaurantji.com/nj/long-branch/gigis-ny-style-pizza-and-restaurant-lb-/" },
   /* Restaurant Guru tile REMOVED 2026-07-29. It displayed "4.3 · 130 reviews · on Restaurant Guru",
    * but 4.3 is GOOGLE's rating that Restaurant Guru republishes — its own aggregateRating JSON-LD
    * declares 2.9/5 with those 130 reviews, and its visible page reads "Google (4.3/5)" with

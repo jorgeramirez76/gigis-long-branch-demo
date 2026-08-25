@@ -39,7 +39,7 @@ def clover():
     src = (ROOT / "src" / "data" / "menuGenerated.ts").read_text()
     items, mods = {}, {}
     for n, p in re.findall(r'\{ name: "([^"]+)", price: "\$([\d.]+)"', src):
-        items.setdefault(n, p)
+        items.setdefault(n, []).append(p)
     for n, d in re.findall(r'\{ name: "([^"]+)", delta: "\+\$([\d.]+)" \}', src):
         mods.setdefault(n, d)
     if not items:
@@ -69,8 +69,8 @@ def main():
         real = items.get(DISPLAY_ALIAS.get(name, name))
         if real is None:
             warnings.append(f"index.html: '{name}' is not a Clover item (removed from the register? fix the JSON-LD, or add a DISPLAY_ALIAS entry)")
-        elif not same(price, real):
-            problems.append(f"index.html: '{name}' shows ${price}, Clover says ${real}")
+        elif not any(same(price, r) for r in real):
+            problems.append(f"index.html: '{name}' shows ${price}, Clover says ${'/'.join(real)}")
 
     # --- breakfast ---------------------------------------------------------------
     bp = ROOT / "public" / "breakfast.html"
@@ -89,8 +89,8 @@ def main():
             real = items.get(alias.get(label, label))
             if real is None:
                 warnings.append(f"breakfast.html: '{label}' is not a Clover item (removed from the register? fix the page)")
-            elif not same(shown.lstrip("$"), real):
-                problems.append(f"breakfast.html: '{label}' shows {shown}, Clover says ${real}")
+            elif not any(same(shown.lstrip("$"), r) for r in real):
+                problems.append(f"breakfast.html: '{label}' shows {shown}, Clover says ${'/'.join(real)}")
 
     # --- generated landing pages -------------------------------------------------
     for page in sorted((ROOT / "public").glob("*/index.html")):
@@ -101,15 +101,15 @@ def main():
             label = H.unescape(re.sub(r"<[^>]+>.*", "", label)).strip()
             checked += 1
             # a row is either an item or a modifier; accept whichever matches
-            if any(same(shown, v) for v in (items.get(label), mods.get(label)) if v is not None):
+            candidates = list(items.get(label) or []) + ([mods[label]] if label in mods else [])
+            if any(same(shown, v) for v in candidates):
                 continue
             # fall back to the delivery-fee table, which is priced from deliveryZones.ts
             if page.parent.name == "delivery" or "Delivery" in label:
                 continue
-            real = items.get(label) or mods.get(label)
-            if real is None:
+            if not candidates:
                 continue  # descriptive label, not a catalog name — the generator already guards these
-            problems.append(f"{page.parent.name}: '{label}' shows ${shown}, Clover says ${real}")
+            problems.append(f"{page.parent.name}: '{label}' shows ${shown}, Clover says ${'/'.join(candidates)}")
 
     if warnings:
         print(f"verify-prices: WARNING — {len(warnings)} published item(s) no longer exist on Clover (stale copy, not a wrong charge — deploy proceeds):", file=sys.stderr)

@@ -432,6 +432,8 @@ def main():
         "pizza-delivery-pier-village": "Pier Village Delivery",
         "pizza-delivery-west-end-long-branch": "West End Pizza",
         "pizza-delivery-elberon": "Elberon Delivery",
+        "square-pizza-long-branch": "Square Pizza",
+        "pizza-delivery-west-long-branch": "West Long Branch Delivery",
     }
     for p in DATA:
         p["linklabel"] = labels.get(p["slug"], p["h1"][:22])

@@ -1,624 +1,781 @@
 [
-  {
-    "slug": "late-night-pizza-long-branch",
-    "keyword": "late night pizza Long Branch",
-    "titleTag": "Late Night Food in Long Branch — Open Til Midnight Thu-Sun | Gigi's",
-    "metaDescription": "Open until 11 PM Mon-Wed and midnight Thu-Sun. Delivery until 10 PM, pickup until close. 140 Brighton Ave, West End. (732) 377-2468.",
-    "h1": "Late-Night Pizza in Long Branch",
-    "dek": "Craving late-night pizza in Long Branch? Gigi's NY Style Pizza on Brighton Avenue keeps hot slices and the full menu going till midnight Thursday through Sunday, and 11 PM Monday through Wednesday. Open 7 days — delivery until 10 PM, pickup until close. Order online or call (732) 377-2468.",
-    "sections": [
-      {
-        "h2": "How Late Is Gigi's Open?",
-        "paragraphs": [
-          "Gigi's kitchen runs late every night of the week. Thursday, Friday, Saturday, and Sunday we're open till midnight. Monday, Tuesday, and Wednesday we close at 11 PM. Doors open at 10 AM, seven days a week.",
-          "Hot NY-style slices and the full menu are available right up to closing, not just a limited late-night list."
-        ]
-      },
-      {
-        "h2": "After the Beach, the Bar, or the Game",
-        "paragraphs": [
-          "West End sits a quick walk or drive from the beach, Pier Village, and the spots along Brighton Avenue. When the night winds down, Gigi's is the go-to for a hot slice, a hero, or a full pie to take home.",
-          "Grab it fresh at 140 Brighton Avenue, or have it delivered."
-        ]
-      },
-      {
-        "h2": "Late-Night Pickup",
-        "paragraphs": [
-          "Order online at gigislongbranch.com or call (732) 377-2468. Pick up at the counter on Brighton Avenue, or get it delivered to your door.",
-          "We deliver to Long Branch and the West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport."
-        ]
-      }
-    ],
-    "faq": [
-      {
-        "q": "What time does Gigi's close?",
-        "a": "Thursday through Sunday we're open until midnight, and Monday through Wednesday until 11 PM. We open at 10 AM every day."
-      },
-      {
-        "q": "How late can I get pizza delivered in Long Branch?",
-        "a": "Delivery runs until 10 PM. After that the kitchen is still going — pickup is available until we close, 11 PM Monday through Wednesday and midnight Thursday through Sunday. Order at gigislongbranch.com or call (732) 377-2468."
-      },
-      {
-        "q": "Do you sell pizza by the slice late night?",
-        "a": "Yes. Hot NY-style slices are available right up to closing, along with the full menu of heroes, pasta, salads, and specialty pies. For today's selection, call (732) 377-2468."
-      },
-      {
-        "q": "Where is Gigi's located?",
-        "a": "140 Brighton Avenue in the West End of Long Branch, NJ 07740, easy to reach from the beach, Pier Village, and downtown."
-      },
-      {
-        "q": "Is the full menu available late, or only slices?",
-        "a": "The full menu runs right up to closing. The online menu stays open for orders until closing time, so heroes, pasta, dinners and salads are still orderable late, not just slices."
-      },
-      {
-        "q": "Is it cheaper to order on the website than on a delivery app?",
-        "a": "Yes. Ordering at gigislongbranch.com goes to Gigi's own register with no app service fee and no marked-up menu prices."
-      }
-    ],
-    "priceBlock": {
-      "h2": "Late-Night Slice and Pie Prices",
-      "caption": "Slices & pies, straight from the register",
-      "intro": "Slices are available all night, and whole pies keep going till close. These are the actual register prices, not an app's marked-up version of them.",
-      "rows": [
-        {
-          "item": "Plain",
-          "label": "Plain slice"
-        },
-        {
-          "item": "Specialty",
-          "label": "Specialty slice"
-        },
-        {
-          "item": "Gourmet",
-          "label": "Gourmet slice"
-        },
-        {
-          "item": "Hangover Slice",
-          "what": "The late-night one, built to soak up the evening"
-        },
-        {
-          "item": "Plain Pie",
-          "label": "Plain pie (whole)"
-        },
-        {
-          "item": "Meat Lover's Pie"
-        },
-        {
-          "item": "Buffalo Chicken Pie"
-        }
-      ]
+ {
+  "slug": "late-night-pizza-long-branch",
+  "keyword": "late night pizza Long Branch",
+  "titleTag": "Late Night Food in Long Branch — Open Til Midnight Thu-Sun | Gigi's",
+  "metaDescription": "Open until 11 PM Mon-Wed and midnight Thu-Sun. Delivery until 10 PM, pickup until close. 140 Brighton Ave, West End. (732) 377-2468.",
+  "h1": "Late-Night Pizza in Long Branch",
+  "dek": "Craving late-night pizza in Long Branch? Gigi's NY Style Pizza on Brighton Avenue keeps hot slices and the full menu going till midnight Thursday through Sunday, and 11 PM Monday through Wednesday. Open 7 days — delivery until 10 PM, pickup until close. Order online or call (732) 377-2468.",
+  "sections": [
+   {
+    "h2": "How Late Is Gigi's Open?",
+    "paragraphs": [
+     "Gigi's kitchen runs late every night of the week. Thursday, Friday, Saturday, and Sunday we're open till midnight. Monday, Tuesday, and Wednesday we close at 11 PM. Doors open at 10 AM, seven days a week.",
+     "Hot NY-style slices and the full menu are available right up to closing, not just a limited late-night list."
+    ]
+   },
+   {
+    "h2": "After the Beach, the Bar, or the Game",
+    "paragraphs": [
+     "West End sits a quick walk or drive from the beach, Pier Village, and the spots along Brighton Avenue. When the night winds down, Gigi's is the go-to for a hot slice, a hero, or a full pie to take home.",
+     "Grab it fresh at 140 Brighton Avenue, or have it delivered."
+    ]
+   },
+   {
+    "h2": "Late-Night Pickup",
+    "paragraphs": [
+     "Order online at gigislongbranch.com or call (732) 377-2468. Pick up at the counter on Brighton Avenue, or get it delivered to your door.",
+     "We deliver to Long Branch and the West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport."
+    ]
+   }
+  ],
+  "faq": [
+   {
+    "q": "What time does Gigi's close?",
+    "a": "Thursday through Sunday we're open until midnight, and Monday through Wednesday until 11 PM. We open at 10 AM every day."
+   },
+   {
+    "q": "How late can I get pizza delivered in Long Branch?",
+    "a": "Delivery runs until 10 PM. After that the kitchen is still going — pickup is available until we close, 11 PM Monday through Wednesday and midnight Thursday through Sunday. Order at gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "Do you sell pizza by the slice late night?",
+    "a": "Yes. Hot NY-style slices are available right up to closing, along with the full menu of heroes, pasta, salads, and specialty pies. For today's selection, call (732) 377-2468."
+   },
+   {
+    "q": "Where is Gigi's located?",
+    "a": "140 Brighton Avenue in the West End of Long Branch, NJ 07740, easy to reach from the beach, Pier Village, and downtown."
+   },
+   {
+    "q": "Is the full menu available late, or only slices?",
+    "a": "The full menu runs right up to closing. The online menu stays open for orders until closing time, so heroes, pasta, dinners and salads are still orderable late, not just slices."
+   },
+   {
+    "q": "Is it cheaper to order on the website than on a delivery app?",
+    "a": "Yes. Ordering at gigislongbranch.com goes to Gigi's own register with no app service fee and no marked-up menu prices."
+   }
+  ],
+  "priceBlock": {
+   "h2": "Late-Night Slice and Pie Prices",
+   "caption": "Slices & pies, straight from the register",
+   "intro": "Slices are available all night, and whole pies keep going till close. These are the actual register prices, not an app's marked-up version of them.",
+   "rows": [
+    {
+     "item": "Plain",
+     "label": "Plain slice"
     },
-    "relatedblurb": "how late the kitchen runs, and what's still hot at closing"
+    {
+     "item": "Specialty",
+     "label": "Specialty slice"
+    },
+    {
+     "item": "Gourmet",
+     "label": "Gourmet slice"
+    },
+    {
+     "item": "Hangover Slice",
+     "what": "The late-night one, built to soak up the evening"
+    },
+    {
+     "item": "Plain Pie",
+     "label": "Plain pie (whole)"
+    },
+    {
+     "item": "Meat Lover's Pie"
+    },
+    {
+     "item": "Buffalo Chicken Pie"
+    }
+   ]
   },
-  {
-    "slug": "gluten-free-pizza-long-branch",
-    "keyword": "gluten free pizza Long Branch",
-    "titleTag": "Gluten-Free Pizza, Pasta & Bread — Long Branch NJ | Gigi's",
-    "metaDescription": "GF crust pie $17.68, the same price as our plain pie. Plus a GF pasta swap and GF bread on breakfast sandwiches. Shared kitchen, so call (732) 377-2468 and we'll take extra care.",
-    "h1": "Gluten-Free Pizza in Long Branch, NJ",
-    "dek": "Yes — Gigi's makes gluten-free pizza in Long Branch. It's a New York-style pie on a gluten-free crust. Toppings are charged separately. Everything is prepared in a shared kitchen, so it isn't certified allergen-free. If you have celiac disease, tell our staff and we'll take extra care.",
-    "sections": [
-      {
-        "h2": "Gluten-free NY-style pizza",
-        "paragraphs": [
-          "We start with a gluten-free crust and build the pie from there. Toppings are charged separately and are not selectable online yet, so call (732) 377-2468 and we'll put together what you want.",
-          "Going plant-based too? If you need a pie that is both gluten-free and dairy-free, call and we'll tell you what we can do that day."
-        ]
-      },
-      {
-        "h2": "An honest note on our shared kitchen",
-        "paragraphs": [
-          "We want you to order with clear expectations. Our gluten-free pizzas are prepared and baked in the same kitchen as our regular pies, so we can't promise a fully allergen-free or gluten-free-certified pizza.",
-          "If you have celiac disease or a serious gluten allergy, please tell our staff when you order. We'll take extra care, and you can decide what's right for you."
-        ]
-      },
-      {
-        "h2": "How to order in Long Branch",
-        "paragraphs": [
-          "Gigi's is at 140 Brighton Avenue in the West End, open seven days a week for pickup and delivery. We deliver across Long Branch, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport.",
-          "Order online at gigislongbranch.com or call (732) 377-2468 with any questions about ingredients or toppings."
-        ]
-      }
-    ],
-    "faq": [
-      {
-        "q": "Is Gigi's gluten-free pizza safe for celiacs?",
-        "a": "Gigi's gluten-free pizza is made on a gluten-free crust, but it's prepared and baked in a shared kitchen, so it isn't certified allergen-free and there's a risk of cross-contact. If you have celiac disease, please tell our staff when you order so we can take extra care."
-      },
-      {
-        "q": "Can I get toppings on the gluten-free crust?",
-        "a": "Toppings are charged separately on the gluten-free pie and are not selectable online yet. Call (732) 377-2468 and we'll build it with what you want. If you need it dairy-free as well, call (732) 377-2468 and we'll tell you what's possible that day. Order online or call (732) 377-2468 if you'd like help building your pie."
-      },
-      {
-        "q": "Does Gigi's deliver gluten-free pizza in Long Branch?",
-        "a": "Yes. Gigi's offers pickup and delivery seven days a week. We deliver gluten-free pizza across Long Branch, the West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order at gigislongbranch.com or call (732) 377-2468."
-      },
-      {
-        "q": "How much is a gluten-free pizza at Gigi's?",
-        "a": "A gluten-free pie is $17.68, the same as a regular plain pie. Gluten-free pasta is a $2.60 substitution on many pasta dishes, and gluten-free bread is a $2.08 substitution on a breakfast sandwich."
-      },
-      {
-        "q": "Do you have gluten-free pasta and bread, or only pizza?",
-        "a": "All three. Gigi's stocks a gluten-free pizza crust, gluten-free pasta as a swap on many pasta dishes, and gluten-free bread for breakfast sandwiches."
-      },
-      {
-        "q": "How late can I get gluten-free pizza?",
-        "a": "Gluten-free pizza is available for delivery until 10 PM, and for pickup right up to closing — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
-      }
-    ],
-    "priceBlock": {
-      "h2": "What Gluten-Free Costs at Gigi's",
-      "caption": "Gluten-free options & prices",
-      "intro": "Gigi's keeps a gluten-free pizza crust, gluten-free pasta and gluten-free bread, so a GF order isn't limited to a salad. Here is exactly what each one costs.",
-      "rows": [
-        {
-          "item": "Gluten Free",
-          "label": "Gluten-free pizza pie",
-          "what": "Toppings are charged separately — call and we'll build it",
-          "kind": "item"
-        },
-        {
-          "item": "Gluten Free",
-          "label": "Gluten-free pasta swap",
-          "what": "GF pasta swap, on many pasta dishes",
-          "kind": "mod"
-        },
-        {
-          "item": "Gluten-Free",
-          "label": "Gluten-free bread swap",
-          "what": "Substitute GF bread on a breakfast sandwich",
-          "kind": "mod"
-        },
-        {
-          "item": "Plain Pie",
-          "label": "Regular plain pie (for comparison)",
-          "what": "So you can see exactly what the GF crust costs versus standard"
-        }
-      ]
+  "relatedblurb": "how late the kitchen runs, and what's still hot at closing"
+ },
+ {
+  "slug": "gluten-free-pizza-long-branch",
+  "keyword": "gluten free pizza Long Branch",
+  "titleTag": "Gluten-Free Pizza, Pasta & Bread — Long Branch NJ | Gigi's",
+  "metaDescription": "GF crust pie $17.68, the same price as our plain pie. Plus a GF pasta swap and GF bread on breakfast sandwiches. Shared kitchen, so call (732) 377-2468 and we'll take extra care.",
+  "h1": "Gluten-Free Pizza in Long Branch, NJ",
+  "dek": "Yes — Gigi's makes gluten-free pizza in Long Branch. It's a New York-style pie on a gluten-free crust. Toppings are charged separately. Everything is prepared in a shared kitchen, so it isn't certified allergen-free. If you have celiac disease, tell our staff and we'll take extra care.",
+  "sections": [
+   {
+    "h2": "Gluten-free NY-style pizza",
+    "paragraphs": [
+     "We start with a gluten-free crust and build the pie from there. Toppings are charged separately and are not selectable online yet, so call (732) 377-2468 and we'll put together what you want.",
+     "Going plant-based too? If you need a pie that is both gluten-free and dairy-free, call and we'll tell you what we can do that day."
+    ]
+   },
+   {
+    "h2": "An honest note on our shared kitchen",
+    "paragraphs": [
+     "We want you to order with clear expectations. Our gluten-free pizzas are prepared and baked in the same kitchen as our regular pies, so we can't promise a fully allergen-free or gluten-free-certified pizza.",
+     "If you have celiac disease or a serious gluten allergy, please tell our staff when you order. We'll take extra care, and you can decide what's right for you."
+    ]
+   },
+   {
+    "h2": "How to order in Long Branch",
+    "paragraphs": [
+     "Gigi's is at 140 Brighton Avenue in the West End, open seven days a week for pickup and delivery. We deliver across Long Branch, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport.",
+     "Order online at gigislongbranch.com or call (732) 377-2468 with any questions about ingredients or toppings."
+    ]
+   }
+  ],
+  "faq": [
+   {
+    "q": "Is Gigi's gluten-free pizza safe for celiacs?",
+    "a": "Gigi's gluten-free pizza is made on a gluten-free crust, but it's prepared and baked in a shared kitchen, so it isn't certified allergen-free and there's a risk of cross-contact. If you have celiac disease, please tell our staff when you order so we can take extra care."
+   },
+   {
+    "q": "Can I get toppings on the gluten-free crust?",
+    "a": "Toppings are charged separately on the gluten-free pie and are not selectable online yet. Call (732) 377-2468 and we'll build it with what you want. If you need it dairy-free as well, call (732) 377-2468 and we'll tell you what's possible that day. Order online or call (732) 377-2468 if you'd like help building your pie."
+   },
+   {
+    "q": "Does Gigi's deliver gluten-free pizza in Long Branch?",
+    "a": "Yes. Gigi's offers pickup and delivery seven days a week. We deliver gluten-free pizza across Long Branch, the West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order at gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "How much is a gluten-free pizza at Gigi's?",
+    "a": "A gluten-free pie is $17.68, the same as a regular plain pie. Gluten-free pasta is a $2.60 substitution on many pasta dishes, and gluten-free bread is a $2.08 substitution on a breakfast sandwich."
+   },
+   {
+    "q": "Do you have gluten-free pasta and bread, or only pizza?",
+    "a": "All three. Gigi's stocks a gluten-free pizza crust, gluten-free pasta as a swap on many pasta dishes, and gluten-free bread for breakfast sandwiches."
+   },
+   {
+    "q": "How late can I get gluten-free pizza?",
+    "a": "Gluten-free pizza is available for delivery until 10 PM, and for pickup right up to closing — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
+   }
+  ],
+  "priceBlock": {
+   "h2": "What Gluten-Free Costs at Gigi's",
+   "caption": "Gluten-free options & prices",
+   "intro": "Gigi's keeps a gluten-free pizza crust, gluten-free pasta and gluten-free bread, so a GF order isn't limited to a salad. Here is exactly what each one costs.",
+   "rows": [
+    {
+     "item": "Gluten Free",
+     "label": "Gluten-free pizza pie",
+     "what": "Toppings are charged separately — call and we'll build it",
+     "kind": "item"
     },
-    "relatedblurb": "the gluten-free crust, GF pasta and GF bread, with prices"
+    {
+     "item": "Gluten Free",
+     "label": "Gluten-free pasta swap",
+     "what": "GF pasta swap, on many pasta dishes",
+     "kind": "mod"
+    },
+    {
+     "item": "Gluten-Free",
+     "label": "Gluten-free bread swap",
+     "what": "Substitute GF bread on a breakfast sandwich",
+     "kind": "mod"
+    },
+    {
+     "item": "Plain Pie",
+     "label": "Regular plain pie (for comparison)",
+     "what": "So you can see exactly what the GF crust costs versus standard"
+    }
+   ]
   },
-  {
-    "slug": "vegan-pizza-long-branch",
-    "keyword": "vegan pizza Long Branch",
-    "titleTag": "Vegan & Dairy-Free Pizza in Long Branch, NJ | Gigi's",
-    "metaDescription": "Our Vegan Pizza Pie ($20.79) is its own menu item, not a plain pie with the cheese left off. Delivery until 10 PM, pickup until close.",
-    "h1": "Vegan Pizza in Long Branch, NJ",
-    "dek": "Looking for vegan pizza in Long Branch? Gigi's makes it as its own menu item rather than a regular pie with the cheese left off. If you need something else built dairy-free, call and we'll tell you what we can do that day. Order online or call (732) 377-2468.",
-    "sections": [
-      {
-        "h2": "Vegan pizza, made right in Long Branch",
-        "paragraphs": [
-          "Our vegan pie starts with the same hand-stretched New York-style crust we make every day, topped with dairy-free cheese and the vegetable toppings you want. It is on the menu as its own item, not a regular pie with the cheese left off.",
-          "Want a specific combo or to double-check toppings? Just ask when you order online or call (732) 377-2468."
-        ]
-      },
-      {
-        "h2": "More than pizza",
-        "paragraphs": [
-          "Not in a cheese mood? We also do other dairy-free requests by phone (crust and sauce, no cheese), simple and easy to build the way you like. See the full menu at gigislongbranch.com."
-        ]
-      },
-      {
-        "h2": "Pickup, delivery, and how to order",
-        "paragraphs": [
-          "Order vegan pizza for pickup or delivery. We deliver around Long Branch and West End, plus Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport.",
-          "Find us at 140 Brighton Avenue in the West End, open 7 days a week. Order online at gigislongbranch.com or call (732) 377-2468."
-        ]
-      }
-    ],
-    "faq": [
-      {
-        "q": "Do you have vegan pizza in Long Branch?",
-        "a": "Yes. Gigi's makes vegan pizza on our hand-stretched New York-style crust. It's on the menu as its own item rather than a regular pie with the cheese left off. Order online or call (732) 377-2468."
-      },
-      {
-        "q": "What vegan options are there besides pizza?",
-        "a": "The Vegan Pizza Pie is the vegan item on the menu. For anything else dairy-free, call (732) 377-2468 and we'll tell you what we can build that day. For the full menu or a custom build, see gigislongbranch.com or call (732) 377-2468."
-      },
-      {
-        "q": "Is the vegan pizza made in a shared kitchen?",
-        "a": "Yes. Our vegan pizza uses dairy-free cheese and vegetable toppings, but it's prepared in the same kitchen as our other food. If you have a strict dietary need, please tell us when you order so we can do our best for you."
-      },
-      {
-        "q": "Can I get vegan pizza delivered in Long Branch?",
-        "a": "Yes. We offer pickup and delivery around Long Branch and West End, plus Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order at gigislongbranch.com or call (732) 377-2468."
-      },
-      {
-        "q": "How much is the vegan pizza?",
-        "a": "The vegan pie is $20.79. It is on the menu as its own item rather than being a regular pie with the cheese left off."
-      },
-      {
-        "q": "What else on the menu is plant-based?",
-        "a": "The Vegan Pizza Pie is the one item the menu lists as vegan. There is also a Beyond-patty veggie burger and a grilled veggie wrap, but those are built to order and can come with dairy or mayo, so say what you need when you order. Gigi's also has a vegetable-loaded Veggie Pie and a veggie bolognese, though those are made with regular dairy cheese — ask when you order if you need it fully plant-based."
-      }
-    ],
-    "priceBlock": {
-      "h2": "Vegan and Vegetarian Prices",
-      "caption": "The vegan pie, plus vegetarian options",
-      "intro": "Only the Vegan Pizza Pie is on the menu as a vegan item. The rest below are vegetarian and are made with regular dairy cheese unless you ask otherwise. Current prices:",
-      "rows": [
-        {
-          "item": "Vegan Pizza Pie",
-          "what": "The vegan item on the menu"
-        },
-        {
-          "item": "Veggie Pie",
-          "what": "Vegetarian — made with dairy cheese"
-        },
-        {
-          "item": "Grilled Veggie Wrap"
-        },
-        {
-          "item": "Veggie Burger Beyond",
-          "what": "A Beyond patty, cooked to order"
-        },
-        {
-          "item": "Veggie Bolognese",
-          "what": "Vegetarian — made with dairy cheese"
-        },
-        {
-          "item": "Stuffed Veggie",
-          "label": "Stuffed veggie pie",
-          "what": "Vegetarian — made with dairy cheese"
-        }
-      ]
+  "relatedblurb": "the gluten-free crust, GF pasta and GF bread, with prices"
+ },
+ {
+  "slug": "vegan-pizza-long-branch",
+  "keyword": "vegan pizza Long Branch",
+  "titleTag": "Vegan & Dairy-Free Pizza in Long Branch, NJ | Gigi's",
+  "metaDescription": "Our Vegan Pizza Pie ($20.79) is its own menu item, not a plain pie with the cheese left off. Delivery until 10 PM, pickup until close.",
+  "h1": "Vegan Pizza in Long Branch, NJ",
+  "dek": "Looking for vegan pizza in Long Branch? Gigi's makes it as its own menu item rather than a regular pie with the cheese left off. If you need something else built dairy-free, call and we'll tell you what we can do that day. Order online or call (732) 377-2468.",
+  "sections": [
+   {
+    "h2": "Vegan pizza, made right in Long Branch",
+    "paragraphs": [
+     "Our vegan pie starts with the same hand-stretched New York-style crust we make every day, topped with dairy-free cheese and the vegetable toppings you want. It is on the menu as its own item, not a regular pie with the cheese left off.",
+     "Want a specific combo or to double-check toppings? Just ask when you order online or call (732) 377-2468."
+    ]
+   },
+   {
+    "h2": "More than pizza",
+    "paragraphs": [
+     "Not in a cheese mood? We also do other dairy-free requests by phone (crust and sauce, no cheese), simple and easy to build the way you like. See the full menu at gigislongbranch.com."
+    ]
+   },
+   {
+    "h2": "Pickup, delivery, and how to order",
+    "paragraphs": [
+     "Order vegan pizza for pickup or delivery. We deliver around Long Branch and West End, plus Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport.",
+     "Find us at 140 Brighton Avenue in the West End, open 7 days a week. Order online at gigislongbranch.com or call (732) 377-2468."
+    ]
+   }
+  ],
+  "faq": [
+   {
+    "q": "Do you have vegan pizza in Long Branch?",
+    "a": "Yes. Gigi's makes vegan pizza on our hand-stretched New York-style crust. It's on the menu as its own item rather than a regular pie with the cheese left off. Order online or call (732) 377-2468."
+   },
+   {
+    "q": "What vegan options are there besides pizza?",
+    "a": "The Vegan Pizza Pie is the vegan item on the menu. For anything else dairy-free, call (732) 377-2468 and we'll tell you what we can build that day. For the full menu or a custom build, see gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "Is the vegan pizza made in a shared kitchen?",
+    "a": "Yes. Our vegan pizza uses dairy-free cheese and vegetable toppings, but it's prepared in the same kitchen as our other food. If you have a strict dietary need, please tell us when you order so we can do our best for you."
+   },
+   {
+    "q": "Can I get vegan pizza delivered in Long Branch?",
+    "a": "Yes. We offer pickup and delivery around Long Branch and West End, plus Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order at gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "How much is the vegan pizza?",
+    "a": "The vegan pie is $20.79. It is on the menu as its own item rather than being a regular pie with the cheese left off."
+   },
+   {
+    "q": "What else on the menu is plant-based?",
+    "a": "The Vegan Pizza Pie is the one item the menu lists as vegan. There is also a Beyond-patty veggie burger and a grilled veggie wrap, but those are built to order and can come with dairy or mayo, so say what you need when you order. Gigi's also has a vegetable-loaded Veggie Pie and a veggie bolognese, though those are made with regular dairy cheese — ask when you order if you need it fully plant-based."
+   }
+  ],
+  "priceBlock": {
+   "h2": "Vegan and Vegetarian Prices",
+   "caption": "The vegan pie, plus vegetarian options",
+   "intro": "Only the Vegan Pizza Pie is on the menu as a vegan item. The rest below are vegetarian and are made with regular dairy cheese unless you ask otherwise. Current prices:",
+   "rows": [
+    {
+     "item": "Vegan Pizza Pie",
+     "what": "The vegan item on the menu"
     },
-    "relatedblurb": "the vegan pie and the plant-based rest of the menu"
+    {
+     "item": "Veggie Pie",
+     "what": "Vegetarian — made with dairy cheese"
+    },
+    {
+     "item": "Grilled Veggie Wrap"
+    },
+    {
+     "item": "Veggie Burger Beyond",
+     "what": "A Beyond patty, cooked to order"
+    },
+    {
+     "item": "Veggie Bolognese",
+     "what": "Vegetarian — made with dairy cheese"
+    },
+    {
+     "item": "Stuffed Veggie",
+     "label": "Stuffed veggie pie",
+     "what": "Vegetarian — made with dairy cheese"
+    }
+   ]
   },
-  {
-    "slug": "catering-long-branch",
-    "keyword": "pizza catering Long Branch",
-    "titleTag": "Pizza Catering in Long Branch | Gigi's Long Branch",
-    "metaDescription": "Pizza catering in Long Branch from Gigi's NY Style Pizza — pies, heroes, pasta & salads for offices, parties & gatherings. Call (732) 377-2468 to plan.",
-    "h1": "Pizza & Italian Catering in Long Branch",
-    "dek": "Gigi's NY Style Pizza caters offices, parties, and gatherings across Long Branch. We bring hand-stretched New York pizza, Grandma squares, hot and cold heroes, pasta, salads, and appetizers. Tell us your headcount and date, and call (732) 377-2468 to plan your order.",
-    "sections": [
-      {
-        "h2": "What Gigi's Caters",
-        "paragraphs": [
-          "We cater the full Gigi's menu: hand-stretched New York-style pizza, Grandma squares, and specialty pies, plus hot and cold heroes, pasta, salads, appetizers, and full Italian dinners. It travels well and feeds a crowd.",
-          "Feeding guests with dietary needs? We make gluten-free NY-style pizza (prepared in a shared kitchen, so not guaranteed allergen-free) and vegan pizza on our NY crust with dairy-free cheese and vegetable toppings."
-        ]
-      },
-      {
-        "h2": "How to Plan a Catering Order",
-        "paragraphs": [
-          "Call (732) 377-2468 to plan. Let us know your date, headcount, and whether you'd like pickup or delivery, and we'll help you build an order that fits your group.",
-          "For exact quantities and pricing, it's easiest to talk it through by phone. You can also browse the full menu anytime at gigislongbranch.com."
-        ]
-      },
-      {
-        "h2": "Catering Pickup & Delivery Area",
-        "paragraphs": [
-          "We deliver across Long Branch and West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Pickup is at 140 Brighton Avenue in the West End.",
-          "Open 7 days: Monday through Wednesday 10 AM to 11 PM, and Thursday through Sunday 10 AM to midnight."
-        ]
-      }
-    ],
-    "faq": [
-      {
-        "q": "Do you cater offices and parties in Long Branch?",
-        "a": "Yes. Gigi's caters offices, parties, and gatherings with pizza, Grandma squares, heroes, pasta, salads, and appetizers. Call (732) 377-2468 to plan your order."
-      },
-      {
-        "q": "How far in advance should I place a catering order?",
-        "a": "The more notice you can give, the better, especially for larger groups. Call (732) 377-2468 with your date and headcount and we'll help you plan."
-      },
-      {
-        "q": "Do you have gluten-free or vegan options for catering?",
-        "a": "Yes. We make gluten-free NY-style pizza (prepared in a shared kitchen, so not guaranteed allergen-free) and vegan pizza with dairy-free cheese and vegetable toppings. Please tell staff about any allergies."
-      },
-      {
-        "q": "Do you deliver catering orders?",
-        "a": "Yes, we offer pickup and delivery across Long Branch and nearby towns including Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Call (732) 377-2468 for details."
-      },
-      {
-        "q": "How much are catering trays?",
-        "a": "Chicken trays such as parm, francese, marsala and sausage and peppers are $57.20 each. Seafood trays such as shrimp scampi, salmon oreganata and zuppa are $67.60."
-      },
-      {
-        "q": "How many people does a tray feed?",
-        "a": "It depends on what else you are serving alongside it, so call (732) 377-2468 and we will work out the tray count from your headcount rather than guess at it."
-      }
-    ],
-    "priceBlock": {
-      "h2": "Catering Tray Prices",
-      "caption": "Catering trays, plus a pie that travels well",
-      "intro": "Trays feed a room, and every one of these is on the register today. Call and we will help you work out how many trays your headcount actually needs.",
-      "rows": [
-        {
-          "item": "Chicken Parm Tray"
-        },
-        {
-          "item": "Chicken Francese Tray"
-        },
-        {
-          "item": "Chicken Marsala Tray"
-        },
-        {
-          "item": "Sausage & Peppers Tray"
-        },
-        {
-          "item": "Shrimp Scampi Tray"
-        },
-        {
-          "item": "Salmon Oreganata Tray"
-        },
-        {
-          "item": "Grandma",
-          "label": "Grandma pie"
-        }
-      ]
+  "relatedblurb": "the vegan pie and the plant-based rest of the menu"
+ },
+ {
+  "slug": "catering-long-branch",
+  "keyword": "pizza catering Long Branch",
+  "titleTag": "Pizza Catering in Long Branch | Gigi's Long Branch",
+  "metaDescription": "Pizza catering in Long Branch from Gigi's NY Style Pizza — pies, heroes, pasta & salads for offices, parties & gatherings. Call (732) 377-2468 to plan.",
+  "h1": "Pizza & Italian Catering in Long Branch",
+  "dek": "Gigi's NY Style Pizza caters offices, parties, and gatherings across Long Branch. We bring hand-stretched New York pizza, Grandma squares, hot and cold heroes, pasta, salads, and appetizers. Tell us your headcount and date, and call (732) 377-2468 to plan your order.",
+  "sections": [
+   {
+    "h2": "What Gigi's Caters",
+    "paragraphs": [
+     "We cater the full Gigi's menu: hand-stretched New York-style pizza, Grandma squares, and specialty pies, plus hot and cold heroes, pasta, salads, appetizers, and full Italian dinners. It travels well and feeds a crowd.",
+     "Feeding guests with dietary needs? We make gluten-free NY-style pizza (prepared in a shared kitchen, so not guaranteed allergen-free) and vegan pizza on our NY crust with dairy-free cheese and vegetable toppings."
+    ]
+   },
+   {
+    "h2": "How to Plan a Catering Order",
+    "paragraphs": [
+     "Call (732) 377-2468 to plan. Let us know your date, headcount, and whether you'd like pickup or delivery, and we'll help you build an order that fits your group.",
+     "For exact quantities and pricing, it's easiest to talk it through by phone. You can also browse the full menu anytime at gigislongbranch.com."
+    ]
+   },
+   {
+    "h2": "Catering Pickup & Delivery Area",
+    "paragraphs": [
+     "We deliver across Long Branch and West End, Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Pickup is at 140 Brighton Avenue in the West End.",
+     "Open 7 days: Monday through Wednesday 10 AM to 11 PM, and Thursday through Sunday 10 AM to midnight."
+    ]
+   }
+  ],
+  "faq": [
+   {
+    "q": "Do you cater offices and parties in Long Branch?",
+    "a": "Yes. Gigi's caters offices, parties, and gatherings with pizza, Grandma squares, heroes, pasta, salads, and appetizers. Call (732) 377-2468 to plan your order."
+   },
+   {
+    "q": "How far in advance should I place a catering order?",
+    "a": "The more notice you can give, the better, especially for larger groups. Call (732) 377-2468 with your date and headcount and we'll help you plan."
+   },
+   {
+    "q": "Do you have gluten-free or vegan options for catering?",
+    "a": "Yes. We make gluten-free NY-style pizza (prepared in a shared kitchen, so not guaranteed allergen-free) and vegan pizza with dairy-free cheese and vegetable toppings. Please tell staff about any allergies."
+   },
+   {
+    "q": "Do you deliver catering orders?",
+    "a": "Yes, we offer pickup and delivery across Long Branch and nearby towns including Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Call (732) 377-2468 for details."
+   },
+   {
+    "q": "How much are catering trays?",
+    "a": "Chicken trays such as parm, francese, marsala and sausage and peppers are $57.20 each. Seafood trays such as shrimp scampi, salmon oreganata and zuppa are $67.60."
+   },
+   {
+    "q": "How many people does a tray feed?",
+    "a": "It depends on what else you are serving alongside it, so call (732) 377-2468 and we will work out the tray count from your headcount rather than guess at it."
+   }
+  ],
+  "priceBlock": {
+   "h2": "Catering Tray Prices",
+   "caption": "Catering trays, plus a pie that travels well",
+   "intro": "Trays feed a room, and every one of these is on the register today. Call and we will help you work out how many trays your headcount actually needs.",
+   "rows": [
+    {
+     "item": "Chicken Parm Tray"
     },
-    "relatedblurb": "catering trays for offices, teams and parties, with real per-tray prices"
+    {
+     "item": "Chicken Francese Tray"
+    },
+    {
+     "item": "Chicken Marsala Tray"
+    },
+    {
+     "item": "Sausage & Peppers Tray"
+    },
+    {
+     "item": "Shrimp Scampi Tray"
+    },
+    {
+     "item": "Salmon Oreganata Tray"
+    },
+    {
+     "item": "Grandma",
+     "label": "Grandma pie"
+    }
+   ]
   },
-  {
-    "slug": "pizza-delivery-pier-village",
-    "keyword": "pizza delivery Pier Village",
-    "titleTag": "Pizza Delivery to Pier Village | Gigi's Long Branch",
-    "metaDescription": "Pizza delivery to Pier Village, Long Branch from Gigi's NY Style Pizza. Hand-stretched slices, heroes, pasta and salads. Order online or call (732) 377-2468.",
-    "h1": "Pizza Delivery to Pier Village, Long Branch",
-    "dek": "Yes, Gigi's NY Style Pizza delivers to Pier Village, Long Branch. From our West End kitchen at 140 Brighton Avenue, we bring hand-stretched New York slices, hot and cold heroes, pasta, salads and full Italian dinners to the boardwalk, shops and condos. Order online or call (732) 377-2468.",
-    "sections": [
-      {
-        "h2": "Delivery across the Pier Village area",
-        "paragraphs": [
-          "We deliver to Pier Village and the beachfront around it, from the boardwalk shops to the oceanfront condos and the streets nearby. Whether you're winding down after a beach day or feeding a full condo, we bring the food to your door.",
-          "Just outside Pier Village? We also deliver across Long Branch and West End, plus Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst and Oceanport."
-        ]
-      },
-      {
-        "h2": "The full menu, delivered",
-        "paragraphs": [
-          "You get the whole menu, not a short list. Hand-stretched New York-style pizza, Grandma squares and specialty pies, hot and cold heroes, pasta, salads, appetizers and full Italian dinners.",
-          "Eating differently? We make a NY-style pizza on a gluten-free crust and a vegan pizza that's its own menu item, not a regular pie with the cheese left off."
-        ]
-      },
-      {
-        "h2": "How to order",
-        "paragraphs": [
-          "Order online at gigislongbranch.com by tapping the menu or Order button, or call us at (732) 377-2468. We're open 7 days: Monday through Wednesday 10 AM to 11 PM, and Thursday through Sunday 10 AM to midnight. Catering is available for events, offices and gatherings too."
-        ]
-      }
-    ],
-    "faq": [
-      {
-        "q": "Does Gigi's deliver pizza to Pier Village?",
-        "a": "Yes. Pier Village and West End Long Branch are both in our delivery area. Order online at gigislongbranch.com or call (732) 377-2468."
-      },
-      {
-        "q": "What are your delivery hours?",
-        "a": "Delivery runs until 10 PM, seven days a week. The counter stays open later for pickup — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
-      },
-      {
-        "q": "Do you have gluten-free or vegan pizza?",
-        "a": "Yes. We make a NY-style pizza on a gluten-free crust and a vegan pizza with dairy-free cheese and veggie toppings. The gluten-free crust is prepared in a shared kitchen, so it isn't guaranteed allergen-free, please tell us if you have celiac."
-      },
-      {
-        "q": "Is there a delivery fee or minimum for Pier Village?",
-        "a": "For current delivery details, the easiest way is to order online at gigislongbranch.com or call (732) 377-2468 and we'll confirm everything before your order goes out."
-      },
-      {
-        "q": "How much is a plain pie delivered to Pier Village?",
-        "a": "A plain pie is $17.68 at the register, and that is the same price you pay ordering on gigislongbranch.com — there is no delivery-app markup added to the menu."
-      },
-      {
-        "q": "How late do you deliver to Pier Village?",
-        "a": "Delivery runs until 10 PM. Pickup is available until close — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
-      }
-    ],
-    "priceBlock": {
-      "h2": "Pier Village Delivery Prices",
-      "caption": "Popular pies for delivery",
-      "intro": "Gigi's delivers to Pier Village from Brighton Avenue. Register prices:",
-      "rows": [
-        {
-          "item": "Plain Pie",
-          "label": "Plain pie"
-        },
-        {
-          "item": "Margherita"
-        },
-        {
-          "item": "Vodka Pie"
-        },
-        {
-          "item": "Grandma",
-          "label": "Grandma pie"
-        },
-        {
-          "item": "Buffalo Chicken Pie"
-        },
-        {
-          "item": "Vegan Pizza Pie"
-        },
-        {
-          "item": "Gluten Free",
-          "label": "Gluten-free pie"
-        }
-      ]
+  "relatedblurb": "catering trays for offices, teams and parties, with real per-tray prices"
+ },
+ {
+  "slug": "pizza-delivery-pier-village",
+  "keyword": "pizza delivery Pier Village",
+  "titleTag": "Pizza in Pier Village — Delivery & Pickup | Gigi's Long Branch",
+  "metaDescription": "Pizza delivery to Pier Village, Long Branch from Gigi's NY Style Pizza. Hand-stretched slices, heroes, pasta and salads. Order online or call (732) 377-2468.",
+  "h1": "Pizza for Pier Village — Delivery & Pickup from Gigi's",
+  "dek": "Craving pizza at Pier Village? Gigi's NY Style Pizza is in nearby West End at 140 Brighton Avenue — a short hop from the boardwalk — and we deliver to Pier Village until 10 PM every day. Hand-stretched New York slices, Grandma squares, hot and cold heroes, pasta and full Italian dinners. Order online at gigislongbranch.com or call (732) 377-2468.",
+  "sections": [
+   {
+    "h2": "At Pier Village and hungry? Here's the play",
+    "paragraphs": [
+     "If you're at the boardwalk, the shops, or one of the oceanfront condos, you have two easy options: have Gigi's delivered to wherever you are in Pier Village, or make the quick trip to our shop in the West End on Brighton Avenue and grab it hot off the oven.",
+     "We deliver to Pier Village and the beachfront around it until 10 PM. Just outside Pier Village? We also cover the rest of Long Branch and the West End, plus Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst and Oceanport."
+    ]
+   },
+   {
+    "h2": "The full menu, delivered",
+    "paragraphs": [
+     "You get the whole menu, not a short list. Hand-stretched New York-style pizza, Grandma squares and specialty pies, hot and cold heroes, pasta, salads, appetizers and full Italian dinners.",
+     "Eating differently? We make a NY-style pizza on a gluten-free crust and a vegan pizza that's its own menu item, not a regular pie with the cheese left off."
+    ]
+   },
+   {
+    "h2": "How to order",
+    "paragraphs": [
+     "Order online at gigislongbranch.com by tapping the menu or Order button, or call us at (732) 377-2468. We're open 7 days: Monday through Wednesday 10 AM to 11 PM, and Thursday through Sunday 10 AM to midnight. Catering is available for events, offices and gatherings too."
+    ]
+   }
+  ],
+  "faq": [
+   {
+    "q": "Does Gigi's deliver pizza to Pier Village?",
+    "a": "Yes. Pier Village and West End Long Branch are both in our delivery area. Order online at gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "What are your delivery hours?",
+    "a": "Delivery runs until 10 PM, seven days a week. The counter stays open later for pickup — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
+   },
+   {
+    "q": "Do you have gluten-free or vegan pizza?",
+    "a": "Yes. We make a NY-style pizza on a gluten-free crust and a vegan pizza with dairy-free cheese and veggie toppings. The gluten-free crust is prepared in a shared kitchen, so it isn't guaranteed allergen-free, please tell us if you have celiac."
+   },
+   {
+    "q": "Is there a delivery fee or minimum for Pier Village?",
+    "a": "For current delivery details, the easiest way is to order online at gigislongbranch.com or call (732) 377-2468 and we'll confirm everything before your order goes out."
+   },
+   {
+    "q": "How much is a plain pie delivered to Pier Village?",
+    "a": "A plain pie is $17.68 at the register, and that is the same price you pay ordering on gigislongbranch.com — there is no delivery-app markup added to the menu."
+   },
+   {
+    "q": "How late do you deliver to Pier Village?",
+    "a": "Delivery runs until 10 PM. Pickup is available until close — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
+   }
+  ],
+  "priceBlock": {
+   "h2": "Pier Village Delivery Prices",
+   "caption": "Popular pies for delivery",
+   "intro": "Gigi's delivers to Pier Village from Brighton Avenue. Register prices:",
+   "rows": [
+    {
+     "item": "Plain Pie",
+     "label": "Plain pie"
     },
-    "relatedblurb": "delivery to Pier Village and the beachfront blocks"
+    {
+     "item": "Margherita"
+    },
+    {
+     "item": "Vodka Pie"
+    },
+    {
+     "item": "Grandma",
+     "label": "Grandma pie"
+    },
+    {
+     "item": "Buffalo Chicken Pie"
+    },
+    {
+     "item": "Vegan Pizza Pie"
+    },
+    {
+     "item": "Gluten Free",
+     "label": "Gluten-free pie"
+    }
+   ]
   },
-  {
-    "slug": "pizza-delivery-west-end-long-branch",
-    "keyword": "pizza West End Long Branch",
-    "titleTag": "Pizza in the West End | Gigi's Long Branch",
-    "metaDescription": "Pizza in the West End of Long Branch? Gigi's is your neighborhood pizzeria on Brighton Ave, with NY-style pies for pickup and delivery. Call (732) 377-2468.",
-    "h1": "Pizza in the West End of Long Branch — Gigi's Is Right Here on Brighton Ave",
-    "dek": "Gigi's NY Style Pizza is the West End's neighborhood pizzeria, right on Brighton Avenue in Long Branch. We hand-stretch New York–style pies and Grandma squares for pickup or fast local delivery, seven days a week. Order online at gigislongbranch.com or call (732) 377-2468.",
-    "sections": [
-      {
-        "h2": "Your neighborhood pizzeria in the West End",
-        "paragraphs": [
-          "Gigi's isn't delivering into the West End from across town — we're in it. Our shop sits at 140 Brighton Avenue, so a slice, a whole pie, or a hot hero is just around the corner.",
-          "Everything's made the way a New York pizzeria should: thin, hand-stretched, foldable slices, Grandma squares, specialty pies, plus subs, pasta, salads, and full Italian dinners. Open 10 AM to 11 PM Monday through Wednesday, and to midnight Thursday through Sunday."
-        ]
-      },
-      {
-        "h2": "Pickup or fast local delivery",
-        "paragraphs": [
-          "Walk in and grab your order, or have it brought to you. Because we're right here in the West End, your food doesn't travel far.",
-          "We also deliver to Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order online at gigislongbranch.com or call (732) 377-2468."
-        ]
-      },
-      {
-        "h2": "Gluten-free and vegan pizza too",
-        "paragraphs": [
-          "We make NY-style pizza on a gluten-free crust, and a vegan pizza that's its own menu item rather than a regular pie with the cheese left off.",
-          "Our gluten-free crust is prepared in a shared kitchen, so it isn't guaranteed allergen-free. If you have celiac disease, please let us know when you order."
-        ]
-      }
-    ],
-    "faq": [
-      {
-        "q": "Do you deliver pizza in the West End of Long Branch?",
-        "a": "Yes. Gigi's is located in the West End at 140 Brighton Avenue, and we deliver throughout Long Branch and the West End, plus Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order online at gigislongbranch.com or call (732) 377-2468."
-      },
-      {
-        "q": "Where is Gigi's located?",
-        "a": "We're at 140 Brighton Avenue in the West End neighborhood of Long Branch, NJ 07740. You can pick up or order delivery — call (732) 377-2468."
-      },
-      {
-        "q": "How late are you open?",
-        "a": "We're open seven days a week: 10 AM to 11 PM Monday, Tuesday, and Wednesday, and 10 AM to midnight Thursday through Sunday. Call (732) 377-2468 to confirm holiday hours."
-      },
-      {
-        "q": "Do you have gluten-free or vegan pizza?",
-        "a": "Yes to both. We offer NY-style pizza on a gluten-free crust and a vegan pizza with dairy-free cheese and veggie toppings. The gluten-free crust is made in a shared kitchen, so it's not guaranteed allergen-free — tell us if you have celiac disease."
-      },
-      {
-        "q": "How much is a plain pie in the West End?",
-        "a": "A plain pie is $17.68 as a card price. Gigi's is at 140 Brighton Avenue, in the West End itself."
-      },
-      {
-        "q": "Can I just walk in for a slice instead?",
-        "a": "Yes. Plain slices are $2.92, specialty $3.38 and gourmet $3.90, cut and reheated to order at the counter at 140 Brighton Avenue."
-      }
-    ],
-    "priceBlock": {
-      "h2": "West End Delivery Prices",
-      "caption": "Popular pies for delivery",
-      "intro": "Gigi's is on Brighton Avenue in the West End. Register prices:",
-      "rows": [
-        {
-          "item": "Plain Pie",
-          "label": "Plain pie"
-        },
-        {
-          "item": "Meat Lover's Pie"
-        },
-        {
-          "item": "White Pie"
-        },
-        {
-          "item": "Grandma",
-          "label": "Grandma pie"
-        },
-        {
-          "item": "Sicilian",
-          "label": "Sicilian pie"
-        },
-        {
-          "item": "Chicken Parm Pie"
-        },
-        {
-          "item": "Plain",
-          "label": "Plain slice",
-          "what": "If you would rather walk down for a slice"
-        }
-      ]
+  "relatedblurb": "delivery to Pier Village and the beachfront blocks"
+ },
+ {
+  "slug": "pizza-delivery-west-end-long-branch",
+  "keyword": "pizza West End Long Branch",
+  "titleTag": "Pizza in the West End | Gigi's Long Branch",
+  "metaDescription": "Pizza in the West End of Long Branch? Gigi's is your neighborhood pizzeria on Brighton Ave, with NY-style pies for pickup and delivery. Call (732) 377-2468.",
+  "h1": "Pizza in the West End of Long Branch — Gigi's Is Right Here on Brighton Ave",
+  "dek": "Gigi's NY Style Pizza is the West End's neighborhood pizzeria, right on Brighton Avenue in Long Branch. We hand-stretch New York–style pies and Grandma squares for pickup or fast local delivery, seven days a week. Order online at gigislongbranch.com or call (732) 377-2468.",
+  "sections": [
+   {
+    "h2": "Your neighborhood pizzeria in the West End",
+    "paragraphs": [
+     "Gigi's isn't delivering into the West End from across town — we're in it. Our shop sits at 140 Brighton Avenue, so a slice, a whole pie, or a hot hero is just around the corner.",
+     "Everything's made the way a New York pizzeria should: thin, hand-stretched, foldable slices, Grandma squares, specialty pies, plus subs, pasta, salads, and full Italian dinners. Open 10 AM to 11 PM Monday through Wednesday, and to midnight Thursday through Sunday."
+    ]
+   },
+   {
+    "h2": "Pickup or fast local delivery",
+    "paragraphs": [
+     "Walk in and grab your order, or have it brought to you. Because we're right here in the West End, your food doesn't travel far.",
+     "We also deliver to Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order online at gigislongbranch.com or call (732) 377-2468."
+    ]
+   },
+   {
+    "h2": "Gluten-free and vegan pizza too",
+    "paragraphs": [
+     "We make NY-style pizza on a gluten-free crust, and a vegan pizza that's its own menu item rather than a regular pie with the cheese left off.",
+     "Our gluten-free crust is prepared in a shared kitchen, so it isn't guaranteed allergen-free. If you have celiac disease, please let us know when you order."
+    ]
+   }
+  ],
+  "faq": [
+   {
+    "q": "Do you deliver pizza in the West End of Long Branch?",
+    "a": "Yes. Gigi's is located in the West End at 140 Brighton Avenue, and we deliver throughout Long Branch and the West End, plus Pier Village, Elberon, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order online at gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "Where is Gigi's located?",
+    "a": "We're at 140 Brighton Avenue in the West End neighborhood of Long Branch, NJ 07740. You can pick up or order delivery — call (732) 377-2468."
+   },
+   {
+    "q": "How late are you open?",
+    "a": "We're open seven days a week: 10 AM to 11 PM Monday, Tuesday, and Wednesday, and 10 AM to midnight Thursday through Sunday. Call (732) 377-2468 to confirm holiday hours."
+   },
+   {
+    "q": "Do you have gluten-free or vegan pizza?",
+    "a": "Yes to both. We offer NY-style pizza on a gluten-free crust and a vegan pizza with dairy-free cheese and veggie toppings. The gluten-free crust is made in a shared kitchen, so it's not guaranteed allergen-free — tell us if you have celiac disease."
+   },
+   {
+    "q": "How much is a plain pie in the West End?",
+    "a": "A plain pie is $17.68 as a card price. Gigi's is at 140 Brighton Avenue, in the West End itself."
+   },
+   {
+    "q": "Can I just walk in for a slice instead?",
+    "a": "Yes. Plain slices are $2.92, specialty $3.38 and gourmet $3.90, cut and reheated to order at the counter at 140 Brighton Avenue."
+   }
+  ],
+  "priceBlock": {
+   "h2": "West End Delivery Prices",
+   "caption": "Popular pies for delivery",
+   "intro": "Gigi's is on Brighton Avenue in the West End. Register prices:",
+   "rows": [
+    {
+     "item": "Plain Pie",
+     "label": "Plain pie"
     },
-    "relatedblurb": "delivery around the West End, minutes from Brighton Ave"
+    {
+     "item": "Meat Lover's Pie"
+    },
+    {
+     "item": "White Pie"
+    },
+    {
+     "item": "Grandma",
+     "label": "Grandma pie"
+    },
+    {
+     "item": "Sicilian",
+     "label": "Sicilian pie"
+    },
+    {
+     "item": "Chicken Parm Pie"
+    },
+    {
+     "item": "Plain",
+     "label": "Plain slice",
+     "what": "If you would rather walk down for a slice"
+    }
+   ]
   },
-  {
-    "slug": "pizza-delivery-elberon",
-    "keyword": "pizza delivery Elberon",
-    "titleTag": "Pizza Delivery to Elberon | Gigi's Long Branch",
-    "metaDescription": "Pizza delivery to Elberon from Gigi's NY Style Pizza — hand-stretched NY-style pizza and our full menu, seven days a week. Order online or call (732) 377-2468.",
-    "h1": "Pizza Delivery to Elberon, NJ",
-    "dek": "Gigi's NY Style Pizza delivers hand-stretched New York-style pizza and our full menu to Elberon, the quiet residential end of Long Branch. Order online at gigislongbranch.com or call (732) 377-2468. We're open seven days a week for pickup and delivery.",
-    "sections": [
-      {
-        "h2": "NY-Style Pizza, Brought to Your Elberon Door",
-        "paragraphs": [
-          "Elberon is one of Long Branch's calmest, most residential stretches — tree-lined streets and family homes. When it's a stay-in night, Gigi's brings the pizzeria to you.",
-          "We're a neighborhood shop on Brighton Avenue in West End, and Elberon is part of our regular delivery area. Same hand-stretched New York-style pies and Grandma squares we make for the folks around the corner."
-        ]
-      },
-      {
-        "h2": "More Than Pizza — the Whole Menu Delivers",
-        "paragraphs": [
-          "Feeding the family or the office? Beyond our specialty pies, we deliver hot and cold heroes, pasta, fresh salads, appetizers, and full Italian dinners.",
-          "We also make a gluten-free NY-style pizza (prepared in a shared kitchen, so not guaranteed allergen-free — please tell us if you're celiac) and a vegan pizza with dairy-free cheese and vegetable toppings."
-        ]
-      },
-      {
-        "h2": "Hours & How to Order",
-        "paragraphs": [
-          "We're open seven days a week: Monday through Wednesday, 10 AM to 11 PM, and Thursday through Sunday, 10 AM to midnight.",
-          "Order online at gigislongbranch.com — just tap the menu or Order button — or call us at (732) 377-2468. Prefer to grab it yourself? Pickup is always available at 140 Brighton Avenue."
-        ]
-      }
-    ],
-    "faq": [
-      {
-        "q": "Do you deliver to Elberon?",
-        "a": "Yes. Elberon is part of our regular delivery area, along with West End, Pier Village, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order online at gigislongbranch.com or call (732) 377-2468."
-      },
-      {
-        "q": "What are your delivery hours in Elberon?",
-        "a": "Delivery runs until 10 PM, seven days a week. Pickup keeps going until we close: 11 PM Monday through Wednesday, midnight Thursday through Sunday."
-      },
-      {
-        "q": "Do you have gluten-free or vegan pizza for delivery?",
-        "a": "Yes. We make a gluten-free NY-style pizza on a gluten-free crust (prepared in a shared kitchen, so not guaranteed allergen-free — tell us if you're celiac) and a vegan pizza with dairy-free cheese and veggie toppings."
-      },
-      {
-        "q": "How do I place a delivery order?",
-        "a": "Order online at gigislongbranch.com — tap the menu or Order button — or call (732) 377-2468. For any specifics about your delivery, just give us a call and we'll take care of you."
-      },
-      {
-        "q": "How much is a pizza delivered to Elberon?",
-        "a": "A plain pie is $17.68 and a Grandma is $26.00. Ordering direct on gigislongbranch.com means no delivery-app service fee on top."
-      },
-      {
-        "q": "How late do you deliver to Elberon?",
-        "a": "Delivery runs until 10 PM. Pickup is available until close — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
-      }
-    ],
-    "priceBlock": {
-      "h2": "Elberon Delivery Prices",
-      "caption": "Popular pies for delivery",
-      "intro": "Gigi's delivers to Elberon from Brighton Avenue. These are the register prices, with no delivery-app markup on top.",
-      "rows": [
-        {
-          "item": "Plain Pie",
-          "label": "Plain pie"
-        },
-        {
-          "item": "Margherita"
-        },
-        {
-          "item": "Veggie Pie"
-        },
-        {
-          "item": "Grandma",
-          "label": "Grandma pie"
-        },
-        {
-          "item": "Philly Cheesesteak Pie"
-        },
-        {
-          "item": "Gluten Free",
-          "label": "Gluten-free pie"
-        },
-        {
-          "item": "Grandpa Pie"
-        }
-      ]
+  "relatedblurb": "delivery around the West End, minutes from Brighton Ave"
+ },
+ {
+  "slug": "pizza-delivery-elberon",
+  "keyword": "pizza delivery Elberon",
+  "titleTag": "Pizza Delivery to Elberon | Gigi's Long Branch",
+  "metaDescription": "Pizza delivery to Elberon from Gigi's NY Style Pizza — hand-stretched NY-style pizza and our full menu, seven days a week. Order online or call (732) 377-2468.",
+  "h1": "Pizza Delivery to Elberon, NJ",
+  "dek": "Gigi's NY Style Pizza delivers hand-stretched New York-style pizza and our full menu to Elberon, the quiet residential end of Long Branch. Order online at gigislongbranch.com or call (732) 377-2468. We're open seven days a week for pickup and delivery.",
+  "sections": [
+   {
+    "h2": "NY-Style Pizza, Brought to Your Elberon Door",
+    "paragraphs": [
+     "Elberon is one of Long Branch's calmest, most residential stretches — tree-lined streets and family homes. When it's a stay-in night, Gigi's brings the pizzeria to you.",
+     "We're a neighborhood shop on Brighton Avenue in West End, and Elberon is part of our regular delivery area. Same hand-stretched New York-style pies and Grandma squares we make for the folks around the corner."
+    ]
+   },
+   {
+    "h2": "More Than Pizza — the Whole Menu Delivers",
+    "paragraphs": [
+     "Feeding the family or the office? Beyond our specialty pies, we deliver hot and cold heroes, pasta, fresh salads, appetizers, and full Italian dinners.",
+     "We also make a gluten-free NY-style pizza (prepared in a shared kitchen, so not guaranteed allergen-free — please tell us if you're celiac) and a vegan pizza with dairy-free cheese and vegetable toppings."
+    ]
+   },
+   {
+    "h2": "Hours & How to Order",
+    "paragraphs": [
+     "We're open seven days a week: Monday through Wednesday, 10 AM to 11 PM, and Thursday through Sunday, 10 AM to midnight.",
+     "Order online at gigislongbranch.com — just tap the menu or Order button — or call us at (732) 377-2468. Prefer to grab it yourself? Pickup is always available at 140 Brighton Avenue."
+    ]
+   }
+  ],
+  "faq": [
+   {
+    "q": "Do you deliver to Elberon?",
+    "a": "Yes. Elberon is part of our regular delivery area, along with West End, Pier Village, West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, and Oceanport. Order online at gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "What are your delivery hours in Elberon?",
+    "a": "Delivery runs until 10 PM, seven days a week. Pickup keeps going until we close: 11 PM Monday through Wednesday, midnight Thursday through Sunday."
+   },
+   {
+    "q": "Do you have gluten-free or vegan pizza for delivery?",
+    "a": "Yes. We make a gluten-free NY-style pizza on a gluten-free crust (prepared in a shared kitchen, so not guaranteed allergen-free — tell us if you're celiac) and a vegan pizza with dairy-free cheese and veggie toppings."
+   },
+   {
+    "q": "How do I place a delivery order?",
+    "a": "Order online at gigislongbranch.com — tap the menu or Order button — or call (732) 377-2468. For any specifics about your delivery, just give us a call and we'll take care of you."
+   },
+   {
+    "q": "How much is a pizza delivered to Elberon?",
+    "a": "A plain pie is $17.68 and a Grandma is $26.00. Ordering direct on gigislongbranch.com means no delivery-app service fee on top."
+   },
+   {
+    "q": "How late do you deliver to Elberon?",
+    "a": "Delivery runs until 10 PM. Pickup is available until close — 11 PM Monday through Wednesday, midnight Thursday through Sunday."
+   }
+  ],
+  "priceBlock": {
+   "h2": "Elberon Delivery Prices",
+   "caption": "Popular pies for delivery",
+   "intro": "Gigi's delivers to Elberon from Brighton Avenue. These are the register prices, with no delivery-app markup on top.",
+   "rows": [
+    {
+     "item": "Plain Pie",
+     "label": "Plain pie"
     },
-    "relatedblurb": "delivery to Elberon and the south end of Long Branch"
-  }
+    {
+     "item": "Margherita"
+    },
+    {
+     "item": "Veggie Pie"
+    },
+    {
+     "item": "Grandma",
+     "label": "Grandma pie"
+    },
+    {
+     "item": "Philly Cheesesteak Pie"
+    },
+    {
+     "item": "Gluten Free",
+     "label": "Gluten-free pie"
+    },
+    {
+     "item": "Grandpa Pie"
+    }
+   ]
+  },
+  "relatedblurb": "delivery to Elberon and the south end of Long Branch"
+ },
+ {
+  "slug": "square-pizza-long-branch",
+  "keyword": "square pizza Long Branch",
+  "titleTag": "Grandma & Sicilian Square Pizza in Long Branch | Gigi's",
+  "metaDescription": "Square pizza in Long Branch: thin Grandma pies from $26 and thick Sicilian squares at Gigi's on Brighton Ave. Pickup & delivery until 10 PM. (732) 377-2468.",
+  "h1": "Square Pizza in Long Branch: Grandma & Sicilian Pies",
+  "dek": "Looking for square pizza in Long Branch? Gigi's NY Style Pizza on Brighton Avenue bakes both kinds of square pie: the thin, crisp Grandma and the thicker, airier Sicilian, plus the vodka-sauce Drunken Grandma and the Sicilian Pan Pie. Order a whole square pie for pickup or delivery at gigislongbranch.com, or call (732) 377-2468.",
+  "sections": [
+   {
+    "h2": "Grandma vs. Sicilian: what's the difference?",
+    "paragraphs": [
+     "Both are square, pan-baked pies, but they eat very differently. A Grandma pie is the thin one: the dough is pressed into an olive-oiled pan and baked crisp, so you get a low, crunchy crust with the sauce and cheese right up top. A Sicilian is the thick one: the dough gets time to rise in the pan, so the crumb comes out taller and airier with a golden, fried-crisp bottom.",
+     "If you want a square that eats like a crisp flatbread, order the Grandma. If you want a square with real chew and height, order the Sicilian. Plenty of tables settle it by ordering one of each."
+    ]
+   },
+   {
+    "h2": "The square pies on Gigi's menu",
+    "paragraphs": [
+     "Gigi's keeps four square pies on the regular menu: the classic Grandma, the classic Sicilian, the Drunken Grandma — creamy vodka sauce on a thin square Grandma crust — and the Sicilian Pan Pie. Exact current prices are in the table below, fed straight from the register.",
+     "Toppings work the same way they do on the round pies: pick each topping for the whole pie or either half, and the kitchen ticket prints exactly where every topping goes."
+    ]
+   },
+   {
+    "h2": "Square pizza for pickup or delivery",
+    "paragraphs": [
+     "Order a square pie online at gigislongbranch.com for pickup at 140 Brighton Avenue in the West End, or have it delivered anywhere in Long Branch — West End, Pier Village and Elberon included — plus West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, Oceanport and nearby towns. Delivery runs until 10 PM; pickup goes right up to closing, which is midnight Thursday through Sunday and 11 PM Monday through Wednesday."
+    ]
+   }
+  ],
+  "priceBlock": {
+   "h2": "Square pizza prices at Gigi's",
+   "caption": "Square pies & prices",
+   "intro": "These are the square pies on the menu right now, at the same prices as the register.",
+   "rows": [
+    {
+     "item": "Grandma",
+     "label": "Grandma pie (thin square)",
+     "what": "Thin, crisp, pan-baked square",
+     "kind": "item"
+    },
+    {
+     "item": "Sicilian",
+     "label": "Sicilian pie (thick square)",
+     "what": "Thick, airy square with a crisp bottom",
+     "kind": "item"
+    },
+    {
+     "item": "Drunken Grandma",
+     "label": "Drunken Grandma",
+     "what": "Creamy vodka sauce on a thin square Grandma crust",
+     "kind": "item"
+    },
+    {
+     "item": "Sicilian Pan Pie",
+     "label": "Sicilian Pan Pie",
+     "what": "The tallest square on the menu",
+     "kind": "item"
+    }
+   ]
+  },
+  "faq": [
+   {
+    "q": "What is a Grandma pie?",
+    "a": "A Grandma pie is a thin square pizza baked in an olive-oiled pan, so the crust comes out low and crisp rather than tall and airy. Gigi's bakes them fresh at 140 Brighton Avenue in Long Branch — order online at gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "What's the difference between Grandma and Sicilian pizza?",
+    "a": "Thickness. The Grandma is thin and crisp because the dough goes into the pan without a long rise; the Sicilian rises in the pan, so it bakes up thick and airy with a crisp golden bottom. Gigi's makes both, plus the vodka-sauce Drunken Grandma and the Sicilian Pan Pie."
+   },
+   {
+    "q": "Can I get toppings on a square pie?",
+    "a": "Yes — toppings on Gigi's square pies work per topping, on the whole pie or either half, the same as the round pies. Build the pie in the online menu at gigislongbranch.com and the kitchen ticket prints exactly where each topping goes."
+   },
+   {
+    "q": "Do you deliver square pizza in Long Branch?",
+    "a": "Yes. Gigi's delivers across Long Branch — West End, Pier Village and Elberon included — plus West Long Branch, Monmouth Beach, Deal, Eatontown, Allenhurst, Oceanport and nearby towns, until 10 PM. Pickup at 140 Brighton Avenue runs until closing."
+   }
+  ],
+  "relatedblurb": "Grandma and Sicilian square pies, with prices"
+ },
+ {
+  "slug": "pizza-delivery-west-long-branch",
+  "keyword": "pizza delivery West Long Branch",
+  "titleTag": "Pizza Delivery to West Long Branch, NJ | Gigi's",
+  "metaDescription": "Gigi's delivers NY-style pizza to West Long Branch for a flat $3 fee — same as Long Branch. Delivery until 10 PM daily. Order online or call (732) 377-2468.",
+  "h1": "Pizza Delivery to West Long Branch, NJ",
+  "dek": "Yes, Gigi's NY Style Pizza delivers to West Long Branch. Our kitchen is at 140 Brighton Avenue in neighboring Long Branch, and West Long Branch gets our lowest delivery fee — a flat $3, the same rate as Long Branch itself. Hand-stretched NY pies, Grandma and Sicilian squares, heroes, pasta and full Italian dinners, delivered until 10 PM every day. Order at gigislongbranch.com or call (732) 377-2468.",
+  "sections": [
+   {
+    "h2": "West Long Branch is in our home delivery zone",
+    "paragraphs": [
+     "West Long Branch is its own borough — it isn't the West End neighborhood of Long Branch — and it sits right next door to our kitchen on Brighton Avenue. Because it's that close, the owner set West Long Branch's delivery fee at a flat $3, the same as Long Branch itself and less than the $5 rate for the towns further out.",
+     "To be clear about where we are: Gigi's storefront is at 140 Brighton Avenue in Long Branch, and we deliver to West Long Branch with our own drivers. No third-party apps marking up the menu."
+    ]
+   },
+   {
+    "h2": "Feeding Monmouth University",
+    "paragraphs": [
+     "Monmouth University's campus is in West Long Branch, minutes from our kitchen. A hot NY pie, a stack of garlic knots, or a hero delivered to a dorm study session or a game-day watch party is exactly the kind of order we run all the time — and the whole menu is available for delivery, not a shortened list."
+    ]
+   },
+   {
+    "h2": "How West Long Branch delivery works",
+    "paragraphs": [
+     "Order online at gigislongbranch.com — the menu shows every price up front, and checkout takes cards including Apple Pay — or call (732) 377-2468. Delivery runs until 10 PM every night. After 10, pickup at 140 Brighton Avenue keeps going right up to closing: midnight Thursday through Sunday, 11 PM Monday through Wednesday."
+    ]
+   }
+  ],
+  "priceBlock": {
+   "h2": "What a West Long Branch order looks like",
+   "caption": "Popular delivery picks & prices",
+   "intro": "A few of the most-ordered items, at the same prices as the register. The full menu with every price is on the online ordering page.",
+   "rows": [
+    {
+     "item": "Plain Pie",
+     "label": "Plain NY pie",
+     "what": "The classic hand-stretched round",
+     "kind": "item"
+    },
+    {
+     "item": "Grandma",
+     "label": "Grandma pie",
+     "what": "Thin, crisp square",
+     "kind": "item"
+    },
+    {
+     "item": "Garlic Knots",
+     "label": "Garlic knots",
+     "what": "The go-to side",
+     "kind": "item"
+    }
+   ]
+  },
+  "faq": [
+   {
+    "q": "Does Gigi's deliver to West Long Branch?",
+    "a": "Yes. West Long Branch is in Gigi's home delivery zone at a flat $3 delivery fee — the same rate as Long Branch itself. We deliver until 10 PM every day with our own drivers. Order at gigislongbranch.com or call (732) 377-2468."
+   },
+   {
+    "q": "How much is pizza delivery to West Long Branch?",
+    "a": "A flat $3 — West Long Branch shares our lowest delivery rate with Long Branch, and it's the same fee whether you order online or call. Towns further out are a flat $5."
+   },
+   {
+    "q": "Do you deliver to Monmouth University?",
+    "a": "Monmouth University's campus is in West Long Branch, which is inside our delivery zone, so yes — we deliver there until 10 PM daily. Order online at gigislongbranch.com and put the campus address in at checkout."
+   },
+   {
+    "q": "How late can I get delivery in West Long Branch?",
+    "a": "Delivery runs until 10 PM every night. After that, pickup at 140 Brighton Avenue in Long Branch stays open until midnight Thursday through Sunday and 11 PM Monday through Wednesday."
+   },
+   {
+    "q": "Is West Long Branch the same as the West End?",
+    "a": "No — they're different places. The West End is a neighborhood of Long Branch (it's where Gigi's is, on Brighton Avenue). West Long Branch is a separate borough next door, and Gigi's delivers there for the same flat $3 fee as Long Branch."
+   }
+  ],
+  "relatedblurb": "flat $3 delivery to West Long Branch, with how it works"
+ }
 ]

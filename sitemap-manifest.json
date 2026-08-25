@@ -1,58 +1,70 @@
 {
   "https://gigislongbranch.com/": {
-    "hash": "6b099a41af2ef4e9",
-    "lastmod": "2026-08-12"
+    "hash": "998fb059b7173a8c",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/breakfast": {
-    "hash": "a6b4af0580b8a483",
-    "lastmod": "2026-08-11"
+    "hash": "580cef0458d75147",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/catering-long-branch/": {
-    "hash": "55f724b0f47d34e2",
-    "lastmod": "2026-08-11"
+    "hash": "63a7fe562316327c",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/delivery/": {
-    "hash": "c5026c74f6220d64",
-    "lastmod": "2026-08-11"
+    "hash": "2f86ce5c27383e82",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/gluten-free-pizza-long-branch/": {
-    "hash": "8c2611225558c9fb",
-    "lastmod": "2026-08-11"
+    "hash": "9e48d4b8f0875894",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/late-night-pizza-long-branch/": {
-    "hash": "3fe3bff8f5a99e4c",
-    "lastmod": "2026-08-12"
+    "hash": "1aed5b82b1996a65",
+    "lastmod": "2026-08-24"
+  },
+  "https://gigislongbranch.com/menu/": {
+    "hash": "54ffe5fa85570cc6",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/pizza-delivery-elberon/": {
-    "hash": "1b0f9bc65b23cca5",
-    "lastmod": "2026-08-11"
+    "hash": "800c779e431042cf",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/pizza-delivery-pier-village/": {
-    "hash": "5f22658a0bdbadd4",
-    "lastmod": "2026-08-11"
+    "hash": "08e88742b5dec09e",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/pizza-delivery-west-end-long-branch/": {
-    "hash": "913b37b79170bfe8",
-    "lastmod": "2026-08-11"
+    "hash": "42f545529f3d7f05",
+    "lastmod": "2026-08-24"
+  },
+  "https://gigislongbranch.com/pizza-delivery-west-long-branch/": {
+    "hash": "307cc3a91fc11798",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/pizza-party-long-branch/": {
     "hash": "25b403076a585497",
     "lastmod": "2026-08-11"
   },
   "https://gigislongbranch.com/privacy-policy/": {
-    "hash": "d7f932c12a7c11d0",
-    "lastmod": "2026-08-11"
+    "hash": "ec41eab065e6939f",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/sms-terms/": {
-    "hash": "46ff328092e0ee0e",
-    "lastmod": "2026-08-11"
+    "hash": "47ef486fded0d011",
+    "lastmod": "2026-08-24"
+  },
+  "https://gigislongbranch.com/square-pizza-long-branch/": {
+    "hash": "5bef3f9b672fec6e",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/vegan-pizza-long-branch/": {
-    "hash": "b65c0ab3c9fd5ee9",
-    "lastmod": "2026-08-11"
+    "hash": "8bdffce587adbe97",
+    "lastmod": "2026-08-24"
   },
   "https://gigislongbranch.com/vip-club/": {
-    "hash": "65bea51b3869ff38",
-    "lastmod": "2026-08-11"
+    "hash": "78dd6225ab062d80",
+    "lastmod": "2026-08-24"
   }
 }

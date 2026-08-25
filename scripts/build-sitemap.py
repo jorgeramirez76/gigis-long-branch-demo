@@ -111,7 +111,9 @@ def main():
             changed.append(route)
         new_manifest[url] = {"hash": h, "lastmod": lastmod}
         if route in LEGAL:
-            freq, prio = "yearly", "0.2"
+            # Utility pages: noindexed (they were ranking for stray brand queries), so they
+            # don't belong in the sitemap either.
+            continue
         elif route == "/":
             freq, prio = "weekly", PRIORITY["/"]
         else:

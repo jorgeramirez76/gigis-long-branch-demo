@@ -35,6 +35,10 @@ export const MAP_EMBED_URL = `https://www.google.com/maps?q=${LOCATION.googleMap
 /** Socials. Note: accounts are multi-location — posts clearly reference
  * Long Branch in captions. Link but don't claim exclusivity. */
 export const SOCIALS = {
+  // LB's own Facebook page (Jorge, 2026-08-24: "facebook is Gigis Pizza Long Branch").
+  // Instagram: LB has no account yet — the family @gigisnystylepizza stays as the human
+  // link per Jorge, but it is deliberately NOT in the homepage schema sameAs (it geotags
+  // Sea Bright, and asserting it as LB's identity leaked SB queries onto this property).
   instagram: "https://www.instagram.com/gigisnystylepizza/",
-  facebook: "https://www.facebook.com/gigispizzasb/",
+  facebook: "https://www.facebook.com/Gigis-Pizza-Long-Branch-100269039285894/",
 };

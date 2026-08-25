@@ -98,6 +98,13 @@ function forgetSavedForm() {
   }
 }
 
+/** Whether a persisted uncertain payment attempt is on file. The CartDrawer checks this so a
+ *  post-reload cart edit can't change the idempotency signature — minting a fresh key over a
+ *  capture that may have landed — while the checkout freeze locks only its own form inputs. */
+export function savedAttemptUncertain(): boolean {
+  return readSavedForm().attemptUncertain === true;
+}
+
 type Confirmation = { orderId?: string; paid: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; duplicate?: boolean; units: number; vipEligible?: boolean; message?: string };
 
 export function Checkout({ onClose }: { onClose: () => void }) {

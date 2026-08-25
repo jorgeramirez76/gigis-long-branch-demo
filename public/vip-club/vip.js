@@ -193,6 +193,9 @@
             e2 === "invalid_phone" ? "That phone number doesn't look right." :
             e2 === "invalid_email" ? "That email doesn't look right." :
             e2 === "address_required" ? "Please enter your street address." :
+            e2 === "invalid_city" ? "That town doesn't look right — letters only, please." :
+            e2 === "invalid_state" ? "Please use your 2-letter state (e.g. NJ)." :
+            e2 === "invalid_zip" ? "That ZIP doesn't look right — 5 digits, please." :
             e2 === "consent_required" ? "Please tick at least one box so we can send your code." :
             e2 === "verification_failed" ? "Verification failed — please try again." :
             e2 === "rate_limited" ? "Too many attempts — please wait a few minutes and try again." :

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { cartUpliftCents, lineDisplayUnitPrice, money, useCart } from "./CartContext";
+import { savedAttemptUncertain } from "./Checkout";
 import { placementSuffix } from "../data/menuToppings";
 import { Upsell } from "./Upsell";
 import { goToMenu } from "../lib/goToMenu";
@@ -8,6 +9,10 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
   const cart = useCart();
   // Display split only — cart.subtotal/tax/total (the charged figures) are untouched.
   const uplift = cartUpliftCents(cart.lines);
+  // The checkout's uncertainty freeze must also hold the CART still: an edit here changes the
+  // idempotency signature, and a repay under the fresh key sails past the server's replay
+  // guard over a capture that may have landed. Re-read each time the drawer opens.
+  const uncertainHold = cart.isOpen && savedAttemptUncertain();
   const panelRef = useRef<HTMLElement>(null);
   const scrimRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -99,6 +104,13 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
           </button>
         </header>
 
+        {uncertainHold && (
+          <p role="status" className="mx-5 mt-4 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
+            We're still confirming your earlier payment attempt, so your order can't be changed
+            right now. Go to checkout and tap Pay &amp; place order again to check on it — you
+            won't be charged twice — or call (732) 377-2468.
+          </p>
+        )}
         {cart.droppedOnLoad > 0 && (
           <p role="status" className="mx-5 mt-4 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
             {cart.droppedOnLoad === 1 ? "An item" : `${cart.droppedOnLoad} items`} from your saved order{" "}
@@ -151,8 +163,9 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                       <button
                         type="button"
                         aria-label="Decrease"
+                        disabled={uncertainHold}
                         onClick={() => cart.updateQty(l.lineId, l.quantity - 1)}
-                        className="px-3 py-1 text-[var(--color-ink)]"
+                        className="px-3 py-1 text-[var(--color-ink)] disabled:opacity-30"
                       >
                         −
                       </button>
@@ -160,16 +173,18 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                       <button
                         type="button"
                         aria-label="Increase"
+                        disabled={uncertainHold}
                         onClick={() => cart.updateQty(l.lineId, l.quantity + 1)}
-                        className="px-3 py-1 text-[var(--color-ink)]"
+                        className="px-3 py-1 text-[var(--color-ink)] disabled:opacity-30"
                       >
                         +
                       </button>
                     </div>
                     <button
                       type="button"
+                      disabled={uncertainHold}
                       onClick={() => cart.removeLine(l.lineId)}
-                      className="text-xs font-semibold uppercase tracking-wide text-[var(--color-ink)]/40 hover:text-[var(--color-brand-red)]"
+                      className="text-xs font-semibold uppercase tracking-wide text-[var(--color-ink)]/40 hover:text-[var(--color-brand-red)] disabled:opacity-40 disabled:hover:text-[var(--color-ink)]/40"
                     >
                       Remove
                     </button>
@@ -178,7 +193,8 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
               ))}
             </ul>
 
-            <Upsell />
+            {/* Adding an upsell also changes the idempotency signature — held with the rest. */}
+            {!uncertainHold && <Upsell />}
 
             <footer className="border-t border-[var(--color-ink)]/10 bg-white px-5 py-4">
               <dl className="space-y-1.5 text-sm">

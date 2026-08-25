@@ -11,21 +11,42 @@ import { goToMenu } from "../lib/goToMenu";
  */
 export function StickyBar() {
   const [show, setShow] = useState(false);
+  // iOS floats fixed-bottom elements into the middle of the screen while the software
+  // keyboard is up (the visual viewport shrinks but the layout viewport doesn't), which is
+  // exactly where this bar landed when someone tapped the menu search field. Hide it while
+  // any text field has focus; it slides back when the keyboard goes away.
+  const [typing, setTyping] = useState(false);
   const cart = useCart();
 
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > 120);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const isField = (el: EventTarget | null) =>
+      el instanceof HTMLElement && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable);
+    const onFocusIn = (e: FocusEvent) => setTyping(isField(e.target));
+    const onFocusOut = () => setTyping(false);
+    document.addEventListener("focusin", onFocusIn);
+    document.addEventListener("focusout", onFocusOut);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("focusin", onFocusIn);
+      document.removeEventListener("focusout", onFocusOut);
+    };
   }, []);
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-white/97 backdrop-blur transition-transform duration-300 md:hidden ${
-        show ? "translate-y-0" : "translate-y-full"
-      }`}
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      // Plain `transform`, NOT the translate-y-* utilities: Tailwind v4 implements those via
+      // `translate: var(--tw-translate-x) var(--tw-translate-y)`, and with transition-transform
+      // the transition gets STUCK — the custom property updates but the transitioned `translate`
+      // froze at 100% (verified live), leaving the bar parked below the fold on desktop and
+      // floating mid-screen on iOS as the visual viewport moved (Tommy's report, 2026-08-19).
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-white/97 backdrop-blur transition-transform duration-300 md:hidden"
+      style={{
+        paddingBottom: "env(safe-area-inset-bottom)",
+        transform: show && !typing ? "translateY(0)" : "translateY(100%)",
+      }}
     >
       <div className="mx-auto grid max-w-md grid-cols-4">
         <a

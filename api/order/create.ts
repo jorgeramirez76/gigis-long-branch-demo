@@ -210,7 +210,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!isOrderingOpen(5)) {
     res.status(409).json({
       error: "store_closed",
-      message: "Gigi's is closed right now — online ordering is open daily from 10 AM until close (11 PM Mon–Wed, midnight Thu–Sun). See you when we open!",
+      message: "Online ordering is closed right now — we take web orders daily from 10 AM to 11 PM. The counter is open later Thursday through Sunday: call (732) 377-2468 and we'll take care of you.",
     });
     return;
   }

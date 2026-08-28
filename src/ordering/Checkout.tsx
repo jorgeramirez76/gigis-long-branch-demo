@@ -14,7 +14,7 @@ import {
 import { Turnstile } from "../components/Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
 import { CONSENT_TEXT } from "../lib/vipConsent";
-import { getOpenStatus, isDeliveryOpen, deliveryClosedReason, type OpenStatus } from "../lib/openStatus";
+import { getOpenStatus, isOrderingOpen, isDeliveryOpen, deliveryClosedReason, type OpenStatus } from "../lib/openStatus";
 import { countUnits, readyMessage } from "../lib/readyTime";
 import { DELIVERY_TOWNS, DELIVERY_FEES, deliveryFeeCents, formatFee, type DeliveryTown } from "../lib/deliveryZones";
 import { VipJoinInline } from "./VipJoinInline";
@@ -160,9 +160,14 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   // Delivery closes at 10 PM while pickup runs to close, so this is tracked separately and
   // re-checked on the same minute tick — a customer sitting on the checkout at 9:59 sees it flip.
   const [deliveryOpen, setDeliveryOpen] = useState(true);
+  // Online ordering closes at 11 PM even on the nights the counter runs to midnight, so this
+  // is NOT getOpenStatus().open — gating the UI on the counter clock would let someone build a
+  // cart and enter a card at 11:30 only for the server's own gate to refuse the charge.
+  const [orderingOpen, setOrderingOpen] = useState(true);
   useEffect(() => {
     const tick = () => {
       setOpenStatus(getOpenStatus());
+      setOrderingOpen(isOrderingOpen());
       setDeliveryOpen(isDeliveryOpen());
     };
     tick();
@@ -175,7 +180,8 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     if (!deliveryOpen && fulfillment === "delivery") setFulfillment("pickup");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deliveryOpen]);
-  const storeClosed = openStatus != null && !openStatus.open;
+  // "Closed" for checkout purposes means ORDERING is closed — the counter may still be serving.
+  const storeClosed = openStatus != null && !orderingOpen;
   const [status, setStatus] = useState<"form" | "submitting" | "error">("form");
   const [attemptUncertain, setAttemptUncertain] = useState(saved.attemptUncertain === true);
   const [errorMsg, setErrorMsg] = useState("");
@@ -602,10 +608,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   async function placeOrder() {
     // Fresh check at click time (the interval only ticks each minute); the
     // server enforces the same gate authoritatively.
-    if (!getOpenStatus().open) {
+    if (!isOrderingOpen()) {
       setOpenStatus(getOpenStatus());
+      setOrderingOpen(false);
       setStatus("error");
-      setErrorMsg("We're closed right now — online ordering reopens at 10 AM.");
+      setErrorMsg("Online ordering just closed for the night (10 AM–11 PM daily). The counter may still be open — give us a call.");
       return;
     }
     setStatus("submitting");
@@ -644,9 +651,10 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     };
     const deadline = setTimeout(() => release(true), APPLE_PAY_SHEET_MS);
     try {
-      if (!getOpenStatus().open) {
+      if (!isOrderingOpen()) {
         setOpenStatus(getOpenStatus());
-        throw new Error("We're closed right now — online ordering reopens at 10 AM.");
+        setOrderingOpen(false);
+        throw new Error("Online ordering just closed for the night (10 AM–11 PM daily). The counter may still be open — give us a call.");
       }
       // Never charge a total the shopper didn't see. Face ID approved whatever the
       // sheet last displayed; if the cart has moved since, make them approve again.
@@ -812,8 +820,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       <div className="flex-1 space-y-5 overflow-y-auto p-5">
         {storeClosed && (
           <div className="rounded-2xl border border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
-            <span className="font-bold">We're closed right now.</span> Online ordering is open daily from 10 AM until
-            close (11 PM Mon–Wed, midnight Thu–Sun). Your cart will be saved — see you when we open!
+            <span className="font-bold">Online ordering is closed right now.</span> We take web orders daily from
+            10 AM to 11 PM. The counter stays open later on Thursday through Sunday — call{" "}
+            {LOCATION.phone} and we'll take care of you. Your cart will be saved!
           </div>
         )}
 

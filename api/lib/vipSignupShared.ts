@@ -1,7 +1,9 @@
 import { createHash, randomBytes } from "node:crypto";
 import { sql, type VipBusiness } from "./db.js";
 import { issueWelcomePie } from "./promo.js";
-import { sendWelcomeSms, sendWelcomeEmail } from "./notify.js";
+import { claimWindow, releaseWindow } from "./rateLimit.js";
+import { sendWelcomeSms, sendWelcomeEmail, sendTransactionalEmail } from "./notify.js";
+import { verificationHtml } from "./emailTemplate.js";
 
 /**
  * The half of a VIP signup that actually creates things — member row, free-pie
@@ -104,9 +106,28 @@ export async function ensureMemberHasCode(
   const any = await sql`SELECT 1 FROM vip_promo_codes WHERE business = ${business} AND member_id = ${memberId} LIMIT 1`;
   if (any.rowCount > 0) return null;
 
-  const issued = await issueWelcomePie(business, memberId);
-  console.log(`[vip] minted a missing welcome code for member ${memberId} (${email})`);
-  return { code: issued.code, description: issued.description, minted: true };
+  // Serialize with the OTHER mint site (api/vip-code-recovery.ts) on the same key:
+  // both endpoints reach "member with no code -> mint" from a check-then-act read, and
+  // a verify-tap racing a recovery submit minted two codes without this. The claim is
+  // released in the finally, so a mint failure never wedges the member; a lost claim
+  // waits a beat and hands back whatever the winner produced.
+  if (!(await claimWindow(`recover-mint:${business}:${memberId}`, 3600))) {
+    await new Promise((r) => setTimeout(r, 800));
+    const won = await recoverMemberCode(business, email);
+    return won ? { ...won, minted: false } : null;
+  }
+  try {
+    const again = await sql`SELECT 1 FROM vip_promo_codes WHERE business = ${business} AND member_id = ${memberId} LIMIT 1`;
+    if (again.rowCount > 0) {
+      const won = await recoverMemberCode(business, email);
+      return won ? { ...won, minted: false } : null;
+    }
+    const issued = await issueWelcomePie(business, memberId);
+    console.log(`[vip] minted a missing welcome code for member ${memberId} (${email})`);
+    return { code: issued.code, description: issued.description, minted: true };
+  } finally {
+    await releaseWindow(`recover-mint:${business}:${memberId}`, 3600);
+  }
 }
 
 /** Create the member, issue the pie, send the welcome messages. Verbatim the logic
@@ -375,4 +396,57 @@ export async function sweepExpiredPending(business: VipBusiness): Promise<void> 
 /** Burn a pending row outright (used when a signup can't proceed). */
 export async function deletePendingSignup(business: VipBusiness, email: string): Promise<void> {
   await sql`DELETE FROM vip_email_verifications WHERE business = ${business} AND email = ${email}`;
+}
+
+/** What became of an attempt to start (park) a signup — branched on by both the
+ *  public form endpoint and the checkout opt-in inside order/create. */
+export type ParkOutcome =
+  | { status: "already_member" }
+  | { status: "verify_sent"; email: string; pollId: string; ttlHours: number }
+  | { status: "send_failed" };
+
+/**
+ * The whole "start a signup" sequence behind BOTH entry points: existing-member
+ * short-circuit -> park the pending row -> email the one-click verification link.
+ * Extracted verbatim from api/vip-signup.ts when the checkout opt-in shipped, so
+ * the two surfaces can never drift.
+ *
+ * Long Branch specifics preserved deliberately:
+ *  - The token rides as a BARE query string (no `t=`): quoted-printable encoders
+ *    were observed (2026-08-13) garbling the `=` in `?t=` for ~1 in 5 messages.
+ *  - Any earlier pending link for this email is retired inside storePendingSignup
+ *    (row replaced wholesale) — no separate retire step exists or is needed here.
+ *
+ * Callers do their OWN validation and rate limiting first. Nothing is created
+ * here: the member + code exist only once the emailed link is tapped
+ * (api/vip-verify.ts) — which is also what guarantees a checkout signup's free
+ * pie can only ever apply to a LATER order, never the one being placed.
+ */
+export async function parkPendingSignupAndSendLink(
+  business: VipBusiness,
+  p: ValidatedSignup,
+): Promise<ParkOutcome> {
+  if (await memberExists(business, p)) return { status: "already_member" };
+
+  await sweepExpiredPending(business); // keep abandoned PII rows from accumulating
+
+  const token = generateVerifyToken();
+  const pollId = generatePollId();
+  await storePendingSignup(business, p, hashSecret(token), pollId);
+
+  const base = process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com";
+  const verifyUrl = `${base}/vip-verify/?${token}`;
+
+  const mail = await sendTransactionalEmail(
+    p.email,
+    "Tap to confirm your email — Gigi's VIP Club 🍕",
+    verificationHtml({ url: verifyUrl, email: p.email, hours: VERIFY_TTL_HOURS }),
+    `Welcome to the Gigi's NY Style Pizza VIP Club!\n\nConfirm your email to unlock your free plain cheese pie code:\n${verifyUrl}\n\nThis link works for ${VERIFY_TTL_HOURS} hours and confirms ${p.email}.\nDidn't sign up at Gigi's? You can ignore this email — nothing was created.`,
+  );
+  if (!mail.sent) {
+    console.error("[vip-signup] verification email failed:", mail.error);
+    return { status: "send_failed" };
+  }
+
+  return { status: "verify_sent", email: p.email, pollId, ttlHours: VERIFY_TTL_HOURS };
 }

@@ -78,3 +78,37 @@ export async function rateLimitAllStrict(
   const results = await Promise.all(limits.map((l) => rateLimitStrict(l.bucket, l.max, l.windowSec)));
   return results.every(Boolean);
 }
+
+/**
+ * Atomic presence-row claim: exactly ONE caller per (bucket, window) gets true.
+ * Ported from Sea Bright, where it serializes staff pages; here it serializes
+ * the code-recovery mint. Fail-OPEN on a DB error (matching rateLimit's rule) —
+ * callers that need stronger guarantees re-check state after claiming.
+ */
+export async function claimWindow(bucket: string, windowSec: number): Promise<boolean> {
+  try {
+    await ensure();
+    const windowStart = Math.floor(Date.now() / 1000 / windowSec) * windowSec;
+    const r = await sql`
+      INSERT INTO rate_counters (bucket, window_start, n)
+      VALUES (${bucket}, ${windowStart}, 1)
+      ON CONFLICT (bucket, window_start) DO NOTHING
+      RETURNING n
+    `;
+    return r.rowCount === 1;
+  } catch (e) {
+    console.error("[rateLimit] claimWindow fail-open due to error", e);
+    return true;
+  }
+}
+
+/** Hand back an unused claim so the next occurrence can retry. */
+export async function releaseWindow(bucket: string, windowSec: number): Promise<void> {
+  try {
+    await ensure();
+    const windowStart = Math.floor(Date.now() / 1000 / windowSec) * windowSec;
+    await sql`DELETE FROM rate_counters WHERE bucket = ${bucket} AND window_start = ${windowStart}`;
+  } catch (e) {
+    console.error("[rateLimit] releaseWindow failed (claim stays spent)", bucket, e);
+  }
+}

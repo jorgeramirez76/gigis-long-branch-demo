@@ -33,6 +33,13 @@ export function VipClub() {
   const [pollId, setPollId] = useState<string | null>(null);
   // Stated by the server so the copy can't drift from the real expiry.
   const [ttlHours, setTtlHours] = useState(24);
+  // "Lost your code?" — self-serve recovery. Shares the form's single Turnstile
+  // widget: tokens are single-use, so whichever action submits consumes it and
+  // bumpTurnstile issues a fresh challenge for the next.
+  const [recoverOpen, setRecoverOpen] = useState(false);
+  const [recoverEmail, setRecoverEmail] = useState("");
+  const [recoverStatus, setRecoverStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
+  const [recoverMsg, setRecoverMsg] = useState("");
   const verifyHeadingRef = useRef<HTMLHeadingElement>(null);
 
   function bumpTurnstile() {
@@ -174,6 +181,54 @@ export function VipClub() {
     h?.scrollIntoView({ block: "center", behavior: "smooth" });
     h?.focus({ preventScroll: true });
   }, [status]);
+
+  async function recoverCode() {
+    // Re-entrancy guard: the button disables while submitting, but Enter in the input
+    // calls this directly — two quick presses must not fire two POSTs (and burn two
+    // Turnstile tokens) for one request.
+    if (recoverStatus === "submitting") return;
+    const addr = recoverEmail.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) {
+      setRecoverStatus("error");
+      setRecoverMsg("Please enter the email you joined with.");
+      return;
+    }
+    if (TURNSTILE_ON && !turnstileToken) {
+      setRecoverStatus("error");
+      setRecoverMsg("Please complete the verification above first.");
+      return;
+    }
+    setRecoverStatus("submitting");
+    setRecoverMsg("");
+    try {
+      const res = await fetch("/api/vip-code-recovery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ business: "gigis_long_branch", email: addr, turnstileToken }),
+      });
+      // The server answered, so the token is consumed — bump BEFORE parsing: a non-JSON
+      // body (platform 502 page) must not strand a dead token behind an enabled button.
+      bumpTurnstile();
+      const data = await res.json();
+      if (!res.ok) {
+        setRecoverStatus("error");
+        setRecoverMsg(
+          data.error === "rate_limited"
+            ? "Too many tries — give it an hour and try again, or call the shop."
+            : "Something went wrong — please try again, or call the shop.",
+        );
+        return;
+      }
+      setRecoverStatus("done");
+      // The server's answer is deliberately the same whether or not the email matches
+      // a member — show it verbatim; inventing anything more specific would leak.
+      setRecoverMsg(typeof data.message === "string" ? data.message : "Check your inbox.");
+    } catch {
+      setRecoverStatus("error");
+      setRecoverMsg("We couldn't reach the server — please try again.");
+      bumpTurnstile(); // token state unknown after a failed round trip — same rule as the join form
+    }
+  }
 
   if (status === "verify") {
     return (
@@ -429,6 +484,85 @@ export function VipClub() {
             pickup orders only — or show it at the counter.
           </p>
         </form>
+
+        {/* Self-serve code recovery. OUTSIDE the join <form> on purpose: Enter in the
+            recovery input must never trigger the join form's implicit submission. The
+            code is only ever EMAILED to the address on file, never shown here, so
+            owning the inbox stays the one and only key to it. */}
+        <div className="mx-auto mt-4 max-w-xl rounded-xl bg-black/15 p-4 text-sm" data-reveal>
+          <p className="text-center text-white/85">
+            Lost your free-pie code?{" "}
+            <button
+              type="button"
+              onClick={() => {
+                // Seed from the join form's email ON OPEN only — a plain controlled
+                // value after that, so the field can actually be cleared and retyped.
+                setRecoverOpen((v) => {
+                  if (!v && !recoverEmail) setRecoverEmail(email);
+                  return !v;
+                });
+              }}
+              className="font-bold underline hover:text-white"
+            >
+              Get it emailed again
+            </button>
+          </p>
+          {recoverOpen && (
+            <div className="mt-3 space-y-2.5">
+              {recoverStatus === "done" ? (
+                <div className="space-y-2">
+                  <p className="rounded-lg bg-black/25 px-4 py-2.5 text-white/90" role="status">📬 {recoverMsg}</p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRecoverStatus("idle");
+                      setRecoverMsg("");
+                    }}
+                    className="text-xs font-bold underline hover:text-white"
+                  >
+                    Typed the wrong email? Try another
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex gap-2">
+                    <input
+                      type="email"
+                      value={recoverEmail}
+                      onChange={(e) => setRecoverEmail(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          recoverCode();
+                        }
+                      }}
+                      placeholder="Email you joined with"
+                      autoComplete="email"
+                      className="w-full rounded-xl border-0 bg-white/95 px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                    />
+                    <button
+                      type="button"
+                      onClick={recoverCode}
+                      disabled={recoverStatus === "submitting" || (TURNSTILE_ON && !turnstileToken)}
+                      className="shrink-0 rounded-full bg-white/90 px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--color-brand-red)] transition hover:bg-white disabled:opacity-60"
+                    >
+                      {recoverStatus === "submitting" ? "Sending…" : "Email my code"}
+                    </button>
+                  </div>
+                  {TURNSTILE_ON && !turnstileToken && (
+                    <p className="text-xs text-white/70">Complete the verification above to enable this.</p>
+                  )}
+                  {recoverStatus === "error" && (
+                    <p className="rounded-lg bg-black/25 px-4 py-2.5 text-white" role="alert">{recoverMsg}</p>
+                  )}
+                  <p className="text-xs text-white/70">
+                    We'll email the code to the address on file — it's never shown on this page.
+                  </p>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

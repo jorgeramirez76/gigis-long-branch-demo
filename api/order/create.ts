@@ -28,6 +28,11 @@ import { alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
 import { isVipMember } from "../lib/vipLookup.js";
+import { parseVipJoinWith } from "../lib/vipCheckoutJoin.js";
+import { addressDedupeKey, legacyAddressDedupeKey } from "../lib/address.js";
+import { normalizePhone } from "../lib/phone.js";
+import { validateVipConsentAndLocality } from "../lib/vipValidation.js";
+import { CANONICAL_CONSENT_TEXT, parkPendingSignupAndSendLink, type ValidatedSignup } from "../lib/vipSignupShared.js";
 import { countUnits, readyMessage } from "../../src/lib/readyTime.js";
 import { deliveryFeeCents, isDeliveryTown } from "../../src/lib/deliveryZones.js";
 import { placementSuffix } from "../../src/data/menuToppings.js";
@@ -155,6 +160,43 @@ function validShape(input: unknown): input is ClientLine[] {
 function clientIp(req: VercelRequest): string | undefined {
   const real = req.headers["x-real-ip"];
   return typeof real === "string" && real ? real : undefined;
+}
+
+/** What the checkout opt-in produced, for the confirmation screen. Absent (null)
+ *  means "nothing started" — invalid block, rate-limited, send failure, or leg
+ *  error — and the client falls back to the inline form, which retries through
+ *  the public endpoint. */
+type VipJoinResult =
+  | { status: "already_member" }
+  | { status: "verify_sent"; email: string; pollId: string; ttlHours: number };
+
+/**
+ * Start the club signup for an order that just landed. NEVER throws and never
+ * blocks the order — a marketing leg has no business failing a purchase. Runs
+ * only on the success path (after the kitchen has the order), which is also what
+ * guarantees the welcome pie can only apply to a FUTURE order: the code doesn't
+ * exist until the customer taps the verification email.
+ */
+async function startVipEnrollment(join: ValidatedSignup | null): Promise<VipJoinResult | null> {
+  if (!join) return null;
+  try {
+    // Same per-email send caps as the public form, shared buckets — checkout must
+    // not become the email path the form's limits don't cover. The form's
+    // IP/contact buckets are deliberately skipped: this leg only runs behind a
+    // Turnstile-gated, catalog-priced, CARD-CAPTURED order, which throttles far
+    // harder than any counter here would.
+    const allowed = await rateLimitAll([
+      { bucket: `signup:email:${join.email}:h`, max: 3, windowSec: 3600 },
+      { bucket: `signup:email:${join.email}:d`, max: 5, windowSec: 86400 },
+    ]);
+    if (!allowed) return null;
+    const parked = await parkPendingSignupAndSendLink("gigis_long_branch", join);
+    if (parked.status === "send_failed") return null;
+    return parked;
+  } catch (err) {
+    console.error("[order/create] vip enrollment leg failed (order unaffected)", err);
+    return null;
+  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -464,6 +506,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     town: isDeliveryTown(customer.town) ? customer.town : undefined,
   };
 
+  // Optional VIP-club opt-in riding on the checkout. Parsed here (a pure check),
+  // acted on only AFTER the order succeeds — see startVipEnrollment.
+  const vipJoinReq = parseVipJoinWith(
+    { normalizePhone, addressDedupeKey, legacyAddressDedupeKey, validateVipConsentAndLocality, canonicalConsentText: CANONICAL_CONSENT_TEXT },
+    body.vip,
+    cust,
+    fulfillment,
+  );
+
   // ---- idempotent reservation: atomically claim the key so a retry can't
   //      double-charge or double-fire. Replay/short-circuit if already seen. ----
   const reservation = await reserveOrder({
@@ -684,9 +735,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
       }
       await redeemPromo(paidOrderId);
-      // Invite non-members to the free-pie club — on the confirmation popup
-      // and in the receipt. Existing members are skipped.
-      const vipEligible = !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
+      // Checkout opt-in first: a started (or absorbed) signup answers the
+      // membership question itself, and suppresses the receipt's join pitch — a
+      // "join the club" invite next to the verification email it just asked for
+      // reads as a glitch. Deliberately NOT run on the paid-but-not-fired or
+      // uncertain exits: no marketing on an order we cannot vouch for.
+      const vipJoin = await startVipEnrollment(vipJoinReq);
+      const vipEligible = vipJoin ? false : !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
       await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines: kitchenLines, totals, paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
       res.status(200).json({
         ok: true,
@@ -695,6 +750,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         chargeId,
         totals,
         vipEligible,
+        ...(vipJoin ? { vipJoin } : {}),
         ...(!ticket.printed && !ticket.queued
           ? { routingIssue: true, message: "Your payment went through, but please call the store to confirm the kitchen received your order." }
           : {}),

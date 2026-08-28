@@ -24,6 +24,8 @@ export function VipJoinInline({
   email,
   address,
   town,
+  initialConsents,
+  startAt,
 }: {
   name: string;
   phone: string;
@@ -32,6 +34,13 @@ export function VipJoinInline({
   address: string;
   /** The delivery town, which the checkout collects in its own dropdown. Empty for pickup. */
   town?: string;
+  /** Boxes the customer already ticked in the checkout opt-in, carried over so the
+   *  fallback form doesn't make them consent twice. */
+  initialConsents?: { sms: boolean; email: boolean };
+  /** Land directly on a state the server already produced at checkout: "verify" when
+   *  order/create parked the signup and emailed the link (the poll below then shows
+   *  the code live), "already" when the order matched an existing membership. */
+  startAt?: { kind: "verify"; email: string; pollId: string | null; ttlHours: number } | { kind: "already" };
 }) {
   // Email is editable here even though it came from the order: it's the channel the
   // verification code is sent to, so a typo in the order email must be fixable rather
@@ -46,9 +55,11 @@ export function VipJoinInline({
   // The street line used to be treated as a COMPLETE address, posting empty city/state/zip, which
   // the server rejects with invalid_city — every delivery customer who tapped "Join & claim my
   // free pie" got a generic failure.
-  const [smsConsent, setSmsConsent] = useState(false);
-  const [emailConsent, setEmailConsent] = useState(false);
-  const [status, setStatus] = useState<"idle" | "submitting" | "verify" | "success" | "already">("idle");
+  const [smsConsent, setSmsConsent] = useState(initialConsents?.sms ?? false);
+  const [emailConsent, setEmailConsent] = useState(initialConsents?.email ?? false);
+  const [status, setStatus] = useState<"idle" | "submitting" | "verify" | "success" | "already">(
+    startAt?.kind === "verify" ? "verify" : startAt?.kind === "already" ? "already" : "idle",
+  );
   const [errorMsg, setErrorMsg] = useState("");
   const [code, setCode] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -56,9 +67,9 @@ export function VipJoinInline({
   // Email-verification step: the person must tap "Verify my email" in the email before the
   // member and free-pie code exist. pendingEmail = server-normalized recipient; pollId lets
   // this panel notice the tap even if they open the email elsewhere.
-  const [pendingEmail, setPendingEmail] = useState("");
-  const [pollId, setPollId] = useState<string | null>(null);
-  const [ttlHours, setTtlHours] = useState(24);
+  const [pendingEmail, setPendingEmail] = useState(startAt?.kind === "verify" ? startAt.email : "");
+  const [pollId, setPollId] = useState<string | null>(startAt?.kind === "verify" ? startAt.pollId : null);
+  const [ttlHours, setTtlHours] = useState(startAt?.kind === "verify" ? startAt.ttlHours : 24);
 
   async function join() {
     setErrorMsg("");

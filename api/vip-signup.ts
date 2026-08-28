@@ -2,32 +2,18 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { isVipBusiness } from "./lib/db.js";
 import { addressDedupeKey, legacyAddressDedupeKey } from "./lib/address.js";
 import { validateVipConsentAndLocality } from "./lib/vipValidation.js";
-import { sendTransactionalEmail } from "./lib/notify.js";
-import { verificationHtml } from "./lib/emailTemplate.js";
+import { normalizePhone } from "./lib/phone.js";
 import { rateLimitAll } from "./lib/rateLimit.js";
 import { verifyTurnstile } from "./lib/turnstile.js";
 import {
   ALREADY_MEMBER_MESSAGE,
   CANONICAL_CONSENT_TEXT,
-  generatePollId,
-  generateVerifyToken,
-  hashSecret,
   memberExists,
-  storePendingSignup,
-  sweepExpiredPending,
-  VERIFY_TTL_HOURS,
+  parkPendingSignupAndSendLink,
   type ValidatedSignup,
 } from "./lib/vipSignupShared.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Accepts loose US 10-digit input; normalizes to E.164 (+1XXXXXXXXXX).
-const US_PHONE_RE = /^\+?1?[\s.-]?\(?(\d{3})\)?[\s.-]?(\d{3})[\s.-]?(\d{4})$/;
-
-function normalizePhone(input: string): string | null {
-  const match = input.trim().match(US_PHONE_RE);
-  if (!match) return null;
-  return `+1${match[1]}${match[2]}${match[3]}`;
-}
 
 function clientIp(req: VercelRequest): string | undefined {
   // Vercel-set trusted IP only — no x-forwarded-for fallback (its leftmost hop is
@@ -174,40 +160,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // ---- email-verification gate ----
     // Nothing is created yet. Stops typo'd emails (a member who'd never get her code)
-    // and throwaway addresses farming free pies.
-    await sweepExpiredPending(business); // keep abandoned PII rows from accumulating
-
-    // ---- one-click verification link ----
-    // The emailed button carries a 32-byte token; the member + free-pie code are created only when
-    // it is opened (see api/vip-verify.ts). The link points at a STATIC page which then POSTs the
-    // token, so an email security scanner pre-fetching the URL can't activate anybody — only a real
-    // browser running the page's script does.
-    const token = generateVerifyToken();
-    const pollId = generatePollId();
-    await storePendingSignup(business, validated, hashSecret(token), pollId);
-
-    const base = process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com";
-    // The token rides as a BARE query string — no `t=`. Deliberate: `=` is quoted-printable's
-    // escape character, and the email pipeline was observed (2026-08-13, ~1 in 5 messages)
-    // garbling the `=` in `?t=` into U+FFFD and eating two token characters — a dead link for
-    // that customer. base64url has no `=`, so with the key dropped the URL contains none at all
-    // and there is nothing left for a QP encoder/decoder pair to disagree about.
-    const verifyUrl = `${base}/vip-verify/?${token}`;
-
-    const mail = await sendTransactionalEmail(
-      normalizedEmail,
-      "Tap to confirm your email — Gigi's VIP Club 🍕",
-      verificationHtml({ url: verifyUrl, email: normalizedEmail, hours: VERIFY_TTL_HOURS }),
-      `Welcome to the Gigi's NY Style Pizza VIP Club!\n\nConfirm your email to unlock your free plain cheese pie code:\n${verifyUrl}\n\nThis link works for ${VERIFY_TTL_HOURS} hours and confirms ${normalizedEmail}.\nDidn't sign up at Gigi's? You can ignore this email — nothing was created.`,
-    );
-    if (!mail.sent) {
+    // and throwaway addresses farming free pies. The whole park-and-email sequence
+    // lives in parkPendingSignupAndSendLink, shared with the checkout opt-in.
+    const parked = await parkPendingSignupAndSendLink(business, validated);
+    if (parked.status === "send_failed") {
       // Without the email there is nothing the person can do — fail loudly rather
       // than strand them waiting for a link that never comes.
-      console.error("[vip-signup] verification email failed:", mail.error);
       res.status(502).json({
         error: "code_send_failed",
         message: "We couldn't send the verification email just now — please try again in a minute.",
       });
+      return;
+    }
+    if (parked.status === "already_member") {
+      // Unreachable in practice (memberExists answered above), kept for type honesty.
+      res.status(200).json({ ok: true, alreadyMember: true, message: ALREADY_MEMBER_MESSAGE });
       return;
     }
 
@@ -215,9 +182,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ok: true,
       verifyRequired: true,
       verifyMethod: "link",
-      email: normalizedEmail,
-      pollId,
-      ttlHours: VERIFY_TTL_HOURS,
+      email: parked.email,
+      pollId: parked.pollId,
+      ttlHours: parked.ttlHours,
     });
   } catch (err) {
     console.error("[vip-signup] error", err);

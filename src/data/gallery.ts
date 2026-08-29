@@ -48,8 +48,8 @@ export const GALLERY: GalleryImage[] = [
   },
   {
     src: fanzTile,
-    alt: "The Fanz specialty pizza — pepperoni, sausage and ricotta dollops on a silver pan",
-    caption: "The 'Fanz' Specialty",
+    alt: "The Fonz specialty pizza — pepperoni, sausage and ricotta dollops on a silver pan",
+    caption: "The 'Fonz' Specialty",
     credit: "Gigi's NY Style Pizza — Long Branch",
     aspect: "portrait",
   },

@@ -242,6 +242,24 @@ export async function createCharge(opts: {
   return { id: data.id, amount: data.amount ?? opts.amount };
 }
 
+/** One ticket, by id — answers regardless of how far back the list scan reaches. */
+export async function getOrderSummary(orderId: string): Promise<{
+  id: string; title?: string; state?: string; paymentState?: string; total?: number;
+  note?: string; paymentCount: number; createdTime?: number;
+}> {
+  const d = await rest(`/orders/${orderId}?expand=payments`, { method: "GET" });
+  return {
+    id: d?.id ?? orderId,
+    title: d?.title,
+    state: d?.state,
+    paymentState: d?.paymentState,
+    total: typeof d?.total === "number" ? d.total : undefined,
+    note: d?.note,
+    paymentCount: Array.isArray(d?.payments?.elements) ? d.payments.elements.length : 0,
+    createdTime: d?.createdTime,
+  };
+}
+
 /**
  * Open website tickets, for the admin reconciliation worklist. Matches BOTH title eras —
  * the current "WEBSITE ORDER • …" and the legacy "WEBSITE • PICKUP" (Brandon Casella's
@@ -593,11 +611,15 @@ export async function createPosOrder(opts: {
  * (line items + tax) so we can verify it equals our own total BEFORE charging.
  * A just-created v3 order takes a beat to appear on the ecommerce side
  * (separate systems, eventual consistency), so 404s are retried briefly. */
-export async function getEcommOrderAmount(orderId: string): Promise<number> {
+export async function getEcommOrderAmount(orderId: string, expected?: number): Promise<number> {
   const t = ecommToken();
   if (!t) throw new CloverError("clover_not_configured", 503);
   const delays = [0, 400, 900, 1600]; // ~3s worst case — invisible next to card auth time
   let last: CloverError | null = null;
+  let short: number | null = null;
+  /** null = not asked, true = v3 REST agrees with `expected` (lag: keep waiting),
+   *  false = REST holds a DIFFERENT number (genuinely wrong: stop early). */
+  let restConfirmed: boolean | null = null;
   for (const ms of delays) {
     if (ms) await new Promise((r) => setTimeout(r, ms));
     const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
@@ -613,11 +635,28 @@ export async function getEcommOrderAmount(orderId: string): Promise<number> {
       message?: string;
     };
     if (res.ok && Array.isArray(data.items) && data.items.length > 0) {
-      return data.items.reduce((s, it) => s + (typeof it.amount === "number" ? it.amount : 0), 0);
+      const amount = data.items.reduce((s, it) => s + (typeof it.amount === "number" ? it.amount : 0), 0);
+      // Ported from Sea Bright after its 8/29 measurements: a 200 with items can still be a
+      // PARTIALLY replicated mirror (whole line items absent). Returning that first read made
+      // the caller's equality check fail and — this build is fail-closed — refuse the sale.
+      // Retry a short read; ask the v3 REST order (the side we built and the kitchen prints)
+      // whether OUR figure is the real one, so lag is waited out and a genuinely wrong order
+      // stops early. A REST read with no total is UNKNOWN, not disagreement.
+      if (expected === undefined || amount >= expected) return amount;
+      console.warn(`[clover] ecomm order ${orderId} read ${amount}, expected ${expected} — retrying`);
+      short = amount;
+      if (restConfirmed === null) {
+        restConfirmed = await rest(`/orders/${orderId}`, { method: "GET" })
+          .then((d) => (typeof d?.total === "number" ? d.total === expected : null))
+          .catch(() => null);
+        if (restConfirmed === false) break;
+      }
+      continue;
     }
     last = new CloverError(data.message || "ecomm order lookup failed", res.status, data);
     if (res.status !== 404 && res.status < 500) break; // real error — don't spin on it
   }
+  if (short != null) return short;
   throw last ?? new CloverError("ecomm order lookup failed", 500);
 }
 

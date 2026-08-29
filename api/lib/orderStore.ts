@@ -246,8 +246,31 @@ export async function getCaptureByCloverId(cloverOrderId: string): Promise<
       customerName: (row.customer_name as string) ?? "",
     };
   } catch (e) {
+    // THROW, never null: to the worklist, null means "no record — this ticket is owed money,
+    // collect it". A database blip answering null for every row would relabel already-paid
+    // tickets as owed and send staff to double-charge customers.
     console.error("[orderStore] getCaptureByCloverId failed", cloverOrderId, e);
-    return null;
+    throw e;
+  }
+}
+
+/** Open-ticket candidates from OUR ledger — the worklist's second net. The Clover scan is a
+ *  window over EVERY order the shop rang up, and Brandon Casella's 7/26 stranded split sat
+ *  outside an 800-order window by late August; rows here are checked individually against
+ *  Clover regardless of scan depth. */
+export async function listWorklistCandidates(days = 90): Promise<{ cloverOrderId: string }[]> {
+  try {
+    const r = await sql`
+      SELECT DISTINCT clover_order_id
+      FROM web_orders
+      WHERE clover_order_id IS NOT NULL AND clover_order_id != ''
+        AND created_at > now() - make_interval(days => ${days})
+        AND status IN ('placed', 'charged', 'paid', 'paid_unrouted', 'paid_print_queued', 'capture_uncertain')
+    `;
+    return r.rows.map((row) => ({ cloverOrderId: String(row.clover_order_id) }));
+  } catch (e) {
+    console.error("[orderStore] listWorklistCandidates failed", e);
+    return [];
   }
 }
 

@@ -207,7 +207,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // ---- store hours gate (authoritative; the checkout UI mirrors it) ----
   // 5-minute grace so a checkout in flight at closing time isn't failed mid-payment.
-  if (!isOrderingOpen(5)) {
+  // A REPLAY is exempt (ported from Sea Bright): asking "what happened to the order I already
+  // sent?" is not placing a new one, and the client tells an unresolved customer to tap again
+  // — refused for being after 11 PM, the freeze protecting them cannot lift until morning.
+  // The replay ladder below is read-only for every status it answers.
+  const closedReplayKey =
+    typeof (req.body ?? {})?.idempotencyKey === "string" ? String((req.body as Record<string, unknown>).idempotencyKey) : "";
+  const closedReplay = /^[0-9a-f-]{36}$/i.test(closedReplayKey) ? await peekOrder(closedReplayKey) : null;
+  // "retry" is the one kind that means "go ahead and place a NEW order" — that must not slip
+  // past the closed gate. Every other kind is a read-only answer about money already in flight.
+  const closedReplayAnswers = closedReplay != null && replayOrder(closedReplay).kind !== "retry";
+  if (!isOrderingOpen(5) && !closedReplayAnswers) {
     res.status(409).json({
       error: "store_closed",
       message: "Online ordering is closed right now — we take web orders daily from 10 AM to 11 PM. The counter is open later Thursday through Sunday: call (732) 377-2468 and we'll take care of you.",
@@ -620,7 +630,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // Persist the draft pointer before /pay. A function killed during payment must leave staff
       // one exact Clover order to inspect, and the same idempotency key must never make another.
       if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draftId });
-      const cloverAmount = await getEcommOrderAmount(draftId);
+      const cloverAmount = await getEcommOrderAmount(draftId, orderAmount);
       if (cloverAmount !== orderAmount) {
         throw new Error(`Clover amount ${cloverAmount} did not match expected ${orderAmount}`);
       }

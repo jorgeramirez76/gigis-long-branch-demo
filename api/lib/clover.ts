@@ -14,6 +14,7 @@
  */
 
 import { chargeFailureReason, classifyCharge, hasCaptureEvidence, type ChargeBody } from "./chargeOutcome.js";
+import { uniquifyLineNames } from "./lineNames.js";
 import { classifyPrintPoll } from "./printOutcome.js";
 export { classifyCharge } from "./chargeOutcome.js";
 
@@ -323,6 +324,9 @@ export async function createDraftOrder(opts: {
     if (opts.deliveryFee && opts.deliveryFee > 0) {
       items.push({ name: "Delivery Fee", price: Math.round(opts.deliveryFee), note: "WEB • delivery" });
     }
+    // Duplicate names never reach Clover — its ecommerce mirror collapses them and the order
+    // splits. The why and the measurement live with the function.
+    uniquifyLineNames(items);
     // A free-pie promo needs NO handling here: it arrives as a zero-priced Plain Pie line (see
     // applyFreePie in promo.ts), so Clover's computed total and tax are right automatically.
     // Line items are created ONE BY ONE (small parallel chunks), not via

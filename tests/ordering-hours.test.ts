@@ -45,8 +45,12 @@ test("the checkout UI gates on the ORDERING clock, never the counter clock", () 
   // enter a card at 11:30 PM only for the server to refuse the charge.
   assert.match(src, /const storeClosed = openStatus != null && !orderingOpen;/);
   assert.ok(!/const storeClosed = openStatus != null && !openStatus\.open/.test(src));
-  // Both click-time rechecks (card + Apple Pay) must use the same clock as the server.
-  assert.equal((src.match(/if \(!isOrderingOpen\(\)\)/g) ?? []).length, 2);
+  // Both click-time rechecks use the same clock as the server — but asymmetrically, on
+  // purpose: the MAIN button carves out a frozen attempt's replay (it re-sends the parked
+  // key; the server answers read-only after close), while Apple Pay must NOT — an Apple Pay
+  // tap mints a brand-new payment, which the closed gate exists to refuse.
+  assert.equal((src.match(/if \(!isOrderingOpen\(\) && !attemptUncertain\)/g) ?? []).length, 1);
+  assert.equal((src.match(/if \(!isOrderingOpen\(\)\)/g) ?? []).length, 1);
   assert.ok(!/if \(!getOpenStatus\(\)\.open\)/.test(src), "a click-time gate still reads the counter clock");
 });
 

@@ -607,8 +607,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
 
   async function placeOrder() {
     // Fresh check at click time (the interval only ticks each minute); the
-    // server enforces the same gate authoritatively.
-    if (!isOrderingOpen()) {
+    // server enforces the same gate authoritatively. A frozen attempt's replay is exempt —
+    // it asks about money already in flight, and the server answers it read-only after close.
+    if (!isOrderingOpen() && !attemptUncertain) {
       setOpenStatus(getOpenStatus());
       setOrderingOpen(false);
       setStatus("error");
@@ -790,7 +791,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   // invariant (never disabled without telling them) is proven across the entire state
   // space by scripts/verify-checkout-gate.mjs.
   const gate: GateState = {
-    storeClosed,
+    // A frozen replay tap must reach the server even after 11 PM: the uncertainty banner says
+    // "tap again to check", and the server now exempts replays from the closed gate for
+    // exactly this customer. Blocking the button here made that exemption dead code — a
+    // charge that captured at 10:57 PM stayed unknown to its customer until 10 AM.
+    storeClosed: storeClosed && !attemptUncertain,
     submitting,
     cartEmpty: cart.lines.length === 0,
     contactOk: !!contactOk,
@@ -1189,7 +1194,15 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           disabled={payIsDisabled}
           className="flex w-full items-center justify-between rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)] disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <span>{storeClosed ? "Closed — ordering opens 10 AM" : submitting ? "Placing order…" : payment === "card" ? "Pay & place order" : "Place order"}</span>
+          <span>
+            {storeClosed && !attemptUncertain
+              ? "Closed — ordering opens 10 AM"
+              : submitting
+                ? "Placing order…"
+                : payment === "card"
+                  ? "Pay & place order"
+                  : "Place order"}
+          </span>
           <span>{money(grandTotal)}</span>
         </button>
         {blockReason && (

@@ -232,7 +232,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // every website order is charged before it reaches the kitchen. "pickup" (card on collection)
   // and "cash" are gone. Enforced HERE and not merely hidden in the UI — otherwise a crafted POST
   // could still book food nobody has paid for.
-  const paymentMethod: "card" = "card";
+  const paymentMethod = "card" as const;
   if (body.paymentMethod !== undefined && body.paymentMethod !== "card") {
     res.status(400).json({
       error: "prepay_required",

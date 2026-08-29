@@ -82,8 +82,16 @@ export { parsePrice } from "../lib/menuPricing";
 
 /** Per-line quantity cap (mirrors the server's per-line bound). */
 export const MAX_LINE_QTY = 50;
+/** Whole-cart unit cap, mirroring the server's MAX_UNITS: three 50-pie lines pass the per-line
+ *  clamp but the server refuses the ORDER at 100 units — after the customer has typed a card
+ *  and spent a Turnstile token. Enforce at the cart so nobody builds an order they cannot buy. */
+export const MAX_CART_UNITS = 100;
 
 const clampQty = (q: number) => Math.min(Math.max(1, Math.floor(q)), MAX_LINE_QTY);
+const unitsIn = (ls: { quantity: number }[]) => ls.reduce((s, l) => s + l.quantity, 0);
+/** Room left for `lineId` given the rest of the cart; 0 when the cart is at capacity. */
+const roomFor = (ls: { lineId?: string; quantity: number }[], excludeId?: string) =>
+  MAX_CART_UNITS - unitsIn(ls.filter((l) => l.lineId !== excludeId));
 
 /** Guard hydrated localStorage against malformed/tampered shapes that would crash the cart. */
 function isValidLine(l: unknown): l is CartLine {
@@ -194,11 +202,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
           const idx = prev.findIndex((l) => key(l) === key(line));
           if (idx >= 0) {
             const next = [...prev];
-            next[idx] = { ...next[idx], quantity: clampQty(next[idx].quantity + line.quantity) };
+            const cap = Math.min(clampQty(next[idx].quantity + line.quantity), next[idx].quantity + roomFor(prev, next[idx].lineId));
+            next[idx] = { ...next[idx], quantity: Math.max(next[idx].quantity, cap) };
             return next;
           }
+          const room = roomFor(prev);
+          if (room <= 0) return prev; // at capacity — the server would refuse this order anyway
           lineCounter += 1;
-          return [...prev, { ...line, quantity: clampQty(line.quantity), lineId: `l${Date.now()}_${lineCounter}` }];
+          return [...prev, { ...line, quantity: Math.min(clampQty(line.quantity), room), lineId: `l${Date.now()}_${lineCounter}` }];
         });
         setIsOpen(true);
         setDropped(0);
@@ -207,7 +218,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setLines((prev) =>
           quantity <= 0
             ? prev.filter((l) => l.lineId !== lineId)
-            : prev.map((l) => (l.lineId === lineId ? { ...l, quantity: clampQty(quantity) } : l)),
+            : prev.map((l) =>
+                l.lineId === lineId
+                  ? // room is computed EXCLUDING this line, so the bound is absolute for it
+                    { ...l, quantity: Math.max(1, Math.min(clampQty(quantity), roomFor(prev, lineId))) }
+                  : l,
+              ),
         ),
       removeLine: (lineId) => setLines((prev) => prev.filter((l) => l.lineId !== lineId)),
       clear: () => {

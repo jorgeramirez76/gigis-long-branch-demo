@@ -174,7 +174,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     await runPool(smsAudience, async (m) => {
       const result = await sendSms(m.phone!, smsBody);
-      result.sent ? counts.smsSent++ : counts.smsFailed++;
+      if (result.sent) counts.smsSent++;
+      else counts.smsFailed++;
       await record("sms", m.id, result);
     });
 
@@ -187,7 +188,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         promoCode: code ?? undefined,
         promoDescription: codeDesc || undefined,
       });
-      result.sent ? counts.emailSent++ : counts.emailFailed++;
+      if (result.sent) counts.emailSent++;
+      else counts.emailFailed++;
       await record("email", m.id, result);
       await new Promise((r) => setTimeout(r, 600));
     }, 1);

@@ -4,6 +4,10 @@
     {
       "path": "/api/cron/refresh-menu",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/daily-digest",
+      "schedule": "5 11 * * *"
     }
   ],
   "functions": {

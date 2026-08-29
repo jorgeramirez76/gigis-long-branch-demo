@@ -223,6 +223,34 @@ export async function updateOrderStrict(
  * to reach the printer, so "still queued" is not evidence of failure — but it is not evidence
  * of paper either, and something has to come back and look. See api/lib/printSweep.ts.
  */
+/** Our ledger's view of one Clover ticket — the discriminator the worklist reconciles with.
+ *  A ticket with a charge here was paid ONLINE (never ring it up); one without is owed money. */
+export async function getCaptureByCloverId(cloverOrderId: string): Promise<
+  { id: number; status: string; chargeId: string | null; total: number; tip: number; paymentMethod: string | null; customerName: string } | null
+> {
+  try {
+    const r = await sql`
+      SELECT id, status, charge_id, total, tip, payment_method, customer_name
+      FROM web_orders WHERE clover_order_id = ${cloverOrderId}
+      ORDER BY created_at DESC LIMIT 1
+    `;
+    const row = r.rows[0];
+    if (!row) return null;
+    return {
+      id: row.id as number,
+      status: String(row.status),
+      chargeId: (row.charge_id as string) || null,
+      total: Number(row.total ?? 0),
+      tip: Number(row.tip ?? 0),
+      paymentMethod: (row.payment_method as string) ?? null,
+      customerName: (row.customer_name as string) ?? "",
+    };
+  } catch (e) {
+    console.error("[orderStore] getCaptureByCloverId failed", cloverOrderId, e);
+    return null;
+  }
+}
+
 export async function listQueuedPrints(minAgeSec: number, limit = 20): Promise<Array<{ id: number; cloverOrderId: string; customerName: string; phone: string; total: number }>> {
   try {
     await ensure();

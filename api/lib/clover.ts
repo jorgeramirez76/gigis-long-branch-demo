@@ -242,6 +242,46 @@ export async function createCharge(opts: {
   return { id: data.id, amount: data.amount ?? opts.amount };
 }
 
+/**
+ * Open website tickets, for the admin reconciliation worklist. Matches BOTH title eras —
+ * the current "WEBSITE ORDER • …" and the legacy "WEBSITE • PICKUP" (Brandon Casella's
+ * 7/26 stranded split carried the legacy title and stayed invisible to a WEBSITE ORDER
+ * prefix scan for five weeks).
+ */
+export async function listOpenWebsiteOrders(maxPages = 8): Promise<{
+  orders: {
+    id: string; title?: string; state?: string; total?: number;
+    paymentCount: number; createdTime?: number; note?: string;
+  }[];
+  scanned: number;
+  truncated: boolean;
+}> {
+  const PAGE = 100;
+  const rows: Record<string, any>[] = [];
+  let truncated = false;
+  for (let page = 0; page < Math.max(1, maxPages); page++) {
+    const d = await rest(`/orders?limit=${PAGE}&offset=${page * PAGE}&expand=payments`, { method: "GET" });
+    const batch: Record<string, any>[] = Array.isArray(d?.elements) ? d.elements : [];
+    rows.push(...batch);
+    if (batch.length < PAGE) break;
+    if (page === Math.max(1, maxPages) - 1) truncated = true;
+  }
+  const orders = rows
+    .filter((o) => typeof o?.title === "string" && /^WEBSITE(\s+ORDER)?\s+[•·]/i.test(o.title))
+    .filter((o) => String(o?.state ?? "").toLowerCase() === "open")
+    .map((o) => ({
+      id: o.id,
+      title: o.title,
+      state: o.state,
+      total: typeof o.total === "number" ? o.total : undefined,
+      paymentCount: Array.isArray(o?.payments?.elements) ? o.payments.elements.length : 0,
+      createdTime: o.createdTime,
+      note: o.note,
+    }))
+    .sort((a, b) => (b.createdTime ?? 0) - (a.createdTime ?? 0));
+  return { orders, scanned: rows.length, truncated };
+}
+
 async function rest(path: string, init: RequestInit): Promise<any> {
   const t = token();
   const mid = merchantId();

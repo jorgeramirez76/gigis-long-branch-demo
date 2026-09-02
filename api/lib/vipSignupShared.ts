@@ -133,12 +133,21 @@ export async function ensureMemberHasCode(
 /** Create the member, issue the pie, send the welcome messages. Verbatim the logic
  *  the public endpoint ran before the verification gate existed. */
 export async function completeSignup(business: VipBusiness, p: ValidatedSignup): Promise<SignupOutcome> {
+  // SMS DOUBLE OPT-IN (2026-09-02, mirrored from the Sea Bright audit's finding M2). The phone
+  // is never verified: a signup holding a VERIFIED email could enroll anyone's number, and the
+  // moment that email link was tapped the number became a consenting broadcast recipient. So
+  // the form's SMS tick is recorded as a REQUEST (sms_requested), consent itself starts FALSE,
+  // and it flips TRUE only when that phone replies YES/START to the welcome text — a reply only
+  // the phone's holder can send. Broadcast already filters on sms_consent, so an unconfirmed
+  // number never gets a blast. The welcome text (code + how to confirm) is the one message
+  // sent unconfirmed.
+  await sql`ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS sms_requested BOOLEAN NOT NULL DEFAULT FALSE`.catch(() => {});
   // ON CONFLICT DO NOTHING covers ALL three unique indexes (phone, email,
   // address+apt): a match on ANY one means this person/household already
   // claimed the welcome pie, so no row is inserted and no new pie is issued.
   const inserted = await sql`
-    INSERT INTO vip_members (business, name, phone, email, address, apt, addr_key, sms_consent, email_consent, consent_text, source)
-    SELECT ${business}, ${p.name}, ${p.phone}, ${p.email}, ${p.fullAddress}, ${p.apt}, ${p.addrKey}, ${p.smsConsent}, ${p.emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${p.source}
+    INSERT INTO vip_members (business, name, phone, email, address, apt, addr_key, sms_consent, sms_requested, email_consent, consent_text, source)
+    SELECT ${business}, ${p.name}, ${p.phone}, ${p.email}, ${p.fullAddress}, ${p.apt}, ${p.addrKey}, FALSE, ${p.smsConsent}, ${p.emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${p.source}
     WHERE NOT EXISTS (
       SELECT 1 FROM vip_members
       WHERE business = ${business}
@@ -158,7 +167,7 @@ export async function completeSignup(business: VipBusiness, p: ValidatedSignup):
   const { id: promoCodeId, code, description } = await issueWelcomePie(business, memberId);
   // Registered as the campaign's OptInMessage — keep the shape in sync with
   // the A2P filing if this wording changes.
-  const welcomeMessage = `Gigi's NY Style Pizza VIP Club: you're in! Code ${code} gets you ${description}. Up to 4 msgs/mo. Msg&data rates may apply. Reply HELP for help, STOP to opt out.`;
+  const welcomeMessage = `Gigi's NY Style Pizza VIP Club: you're in! Code ${code} gets you ${description}. Reply YES to get our deals by text. Up to 4 msgs/mo. Msg&data rates may apply. Reply HELP for help, STOP to opt out.`;
 
   // Send ONLY to the channels the member consented to (both fields are stored
   // for dedup regardless). On-screen code is the fallback if a channel isn't armed.

@@ -17,6 +17,7 @@
  * renaming an item in Clover can't knock it off the site. A site row whose id
  * we can't verify is always kept — unverifiable is not "gone".
  */
+import { menuPriceCents } from "./cardPricing.mjs";
 import { MENU_PRICED } from "../../src/data/menuPriced.js";
 import { MENU_INDEX } from "../../src/data/menuIndex.js";
 import type { MenuCategory } from "../../src/data/menuTypes.js";
@@ -155,7 +156,10 @@ export function pruneMenu(inv: LiveInventory): PruneResult {
       if (!ids || ids.length === 0) return true; // unmapped row — never pruned
       if (ids.some((id) => inv.sellable.has(id))) {
         const sellableId = ids.find((id) => inv.sellable.has(id))!;
-        const clover = inv.priceById.get(sellableId);
+        // The register price carries the cash-discount program's 4%; the site shows cash prices,
+        // so the comparison is made on the same footing (api/lib/cardPricing.mjs).
+        const register = inv.priceById.get(sellableId);
+        const clover = typeof register === "number" ? menuPriceCents(register) : register;
         const site = Math.round(parseFloat((it.price || "").replace(/[^0-9.]/g, "")) * 100);
         if (clover != null && site > 0 && clover !== site) {
           priceDrift.push({

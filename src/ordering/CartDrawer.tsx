@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { cartUpliftCents, lineDisplayUnitPrice, money, useCart } from "./CartContext";
+import { lineUnitPrice, money, useCart, CARD_PRICING_LABEL } from "./CartContext";
 import { savedAttemptUncertain } from "./Checkout";
 import { placementSuffix } from "../data/menuToppings";
 import { Upsell } from "./Upsell";
@@ -8,7 +8,6 @@ import { goToMenu } from "../lib/goToMenu";
 export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
   const cart = useCart();
   // Display split only — cart.subtotal/tax/total (the charged figures) are untouched.
-  const uplift = cartUpliftCents(cart.lines);
   // The checkout's uncertainty freeze must also hold the CART still: an edit here changes the
   // idempotency signature, and a repay under the fresh key sails past the server's replay
   // guard over a capture that may have landed. Re-read each time the drawer opens.
@@ -155,7 +154,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                       {l.notes && <p className="mt-0.5 text-xs italic text-[var(--color-ink)]/50">“{l.notes}”</p>}
                     </div>
                     <span className="shrink-0 font-semibold text-[var(--color-ink)]">
-                      {money(lineDisplayUnitPrice(l) * l.quantity)}
+                      {money(lineUnitPrice(l) * l.quantity)}
                     </span>
                   </div>
                   <div className="mt-2 flex items-center justify-between">
@@ -200,14 +199,12 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
               <dl className="space-y-1.5 text-sm">
                 <div className="flex justify-between text-[var(--color-ink-soft)]">
                   <dt>Subtotal</dt>
-                  <dd>{money(cart.subtotal - uplift)}</dd>
+                  <dd>{money(cart.subtotal)}</dd>
                 </div>
-                {uplift > 0 && (
-                  <div className="flex justify-between text-[var(--color-ink-soft)]">
-                    <dt>Card pricing (toppings)</dt>
-                    <dd>{money(uplift)}</dd>
-                  </div>
-                )}
+                <div className="flex justify-between text-[var(--color-ink-soft)]">
+                  <dt>{CARD_PRICING_LABEL}</dt>
+                  <dd>{money(cart.cardPricing)}</dd>
+                </div>
                 <div className="flex justify-between text-[var(--color-ink-soft)]">
                   <dt>NJ tax (6.625%)</dt>
                   <dd>{money(cart.tax)}</dd>

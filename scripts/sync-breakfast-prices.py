@@ -27,6 +27,14 @@ PAGE = ROOT / "public" / "breakfast.html"
 
 # page label -> exact Clover item name.
 ALIAS = {
+    # Same name on the page and in Clover — listed so the sync covers them (2026-09-06: these
+    # five were the only breakfast prices still carrying the register's 4%).
+    "Full Stack Pancakes (3)": "Full Stack Pancakes (3)",
+    "Short Stack Pancakes (2)": "Short Stack Pancakes (2)",
+    "Bacon (2 Pieces)": "Bacon (2 Pieces)",
+    "Sausage (3)": "Sausage (3)",
+    "Pork Roll (2 Pieces)": "Pork Roll (2 Pieces)",
+    "Turkey Bacon (2 Pieces)": "Turkey Bacon (2 Pieces)",
     "Full Stack (3)": "Full Stack Pancakes (3)",
     "Short Stack (2)": "Short Stack Pancakes (2)",
     "French Toast (2)": "French Toast (2)",

@@ -164,3 +164,38 @@ Audited adversarially (correctness + security) before launch and hardened:
   to subtotal; tax/tip live in the ecommerce charge + the order note. Confirm the
   owner's preferred reporting view before enabling online card payment.
 - **Promote CSP** from the current allowlist to stricter once verified in prod.
+
+## Cash prices on the menu, 4% card pricing at checkout (2026-09-06)
+
+The register runs a cash-discount program: every Clover item price carries 4% ($17.00 is stored
+as $17.68) and cash customers get it back at the counter. Until 2026-09-06 the site mirrored the
+register verbatim, so the menu read $17.68 — except toppings, which since 2026-08-19 showed $3.00
+with a 12¢ "Card pricing (toppings)" line. Per Jorge, the whole menu now shows the clean cash
+price and ONE "Card pricing (4%)" line is added at checkout on the food actually paid for. The
+toppings-only split is gone; it is the same idea applied to everything.
+
+- **Where the 4% lives:** `api/lib/cardPricing.mjs` (order API, browser) and its Python twin
+  `scripts/card_pricing.py` (the generators). `tests/card-pricing.test.ts` runs both over the
+  same inputs and fails if they disagree. Nothing else knows the number.
+- **Where register prices become cash prices:** `scripts/build-menu.py` (`price_display` /
+  `cents_display`), once, from `data/clover/classified/*.json` → `menuGenerated.ts`. Every
+  other surface (landing pages, llms.txt, /menu/, breakfast.html, the React menu) reads that
+  file, and `verify-prices.py` still fails the build if any of them disagree with it. The
+  nightly cron strips the register's 4% the same way before it compares topping rates.
+  `menuPriceCents()` is NOT idempotent — never apply it at read time.
+- **Which prices were stripped:** the register was inflated item by item, so the rule decides
+  from the number (header comment on `menuPriceCents`). Prices it kept flat — $1.00 side
+  sauces, $22.00 pies, $13.99 — now cost 4% MORE online than they did; prices it stripped
+  charge exactly what they did before, tax included. `TOPPING_CHARGE_CENTS` is 300 (was 312)
+  and `HALF_TOPPING_CHARGE_CENTS` 200 (was 208) — cash rates.
+- **Totals:** `computeTotals()` (server) and `CartContext` / `Checkout` (browser) agree:
+  `cardPricing = round((subtotal − discount) × 4%)`, taxed with the food; not on the delivery
+  fee, not on the tip. `expectedTotal` still matches to the cent.
+- **Kitchen ticket:** `createDraftOrder` pushes "Card pricing (4%)" as a taxed line after the
+  delivery fee, so Clover's order total equals the card charge. Receipt email, cart drawer and
+  checkout summary each gain one row; `web_orders` gains a `card_pricing` column.
+- **Disclosure:** NJ law requires a card-price adjustment to be disclosed before checkout. It is
+  under the menu heading, in the item sheet, on the toppings selector, and itemized in the cart
+  and at checkout. Note for Jorge: card-network rules (Visa in particular) cap a stated
+  surcharge at 3%; the register's cash-discount framing sidestepped that, an itemized 4% line
+  does not. Worth a word with the processor before this goes live.

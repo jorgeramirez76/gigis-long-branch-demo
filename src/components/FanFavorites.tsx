@@ -1,4 +1,15 @@
 import { FAVORITES } from "../data/gallery";
+import { MENU } from "../data/menu";
+
+/** Price straight from the Clover-synced menu, so the homepage can never quote a price the
+ *  register won't honor. An item renamed in Clover shows no price rather than a stale one. */
+const priceOf = (menuName: string): string | undefined => {
+  for (const cat of MENU) {
+    const hit = cat.items.find((i) => i.name === menuName);
+    if (hit) return hit.price;
+  }
+  return undefined;
+};
 
 /** Signature pies with real photos — the conversion bridge between the
  * gallery vibe and the (very long) full menu. */
@@ -42,7 +53,9 @@ export function FanFavorites() {
               <div className="p-4 md:p-5">
                 <div className="flex items-baseline justify-between gap-3">
                   <h3 className="font-display text-2xl leading-none">{f.name}</h3>
-                  <span className="shrink-0 font-bold text-[var(--color-brand-red)]">{f.price}</span>
+                  {priceOf(f.menuName) && (
+                    <span className="shrink-0 font-bold text-[var(--color-brand-red)]">{priceOf(f.menuName)}</span>
+                  )}
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">{f.blurb}</p>
               </div>

@@ -4,25 +4,25 @@ const ITEMS = [
   {
     src: "/img/breakfast-skillet.jpg",
     name: "The Gigi Skillet",
-    price: "$9.83",
+    price: "$9.45",
     blurb: "Tater-tots smothered in our homemade cheese sauce with bacon, sausage, or pork roll.",
   },
   {
     src: "/img/breakfast-omelette.jpg",
     name: "Loaded Omelettes",
-    price: "from $11.43",
+    price: "from $10.99",
     blurb: "Fluffy omelettes with Gigi's famous home-fries & toast — Veggie, Western, B-Fit & more.",
   },
   {
     src: "/img/breakfast-burrito.jpg",
     name: "Toasty-Tasty Burritos",
-    price: "from $10.39",
+    price: "from $9.99",
     blurb: "Scrambled eggs, crispy tater tots & melted cheese wrapped in a huge tortilla.",
   },
   {
     src: "/img/breakfast-sandwich.jpg",
     name: "Egg Sandwiches",
-    price: "from $4.16",
+    price: "from $4.00",
     blurb: "Egg & cheese your way on a Kaiser roll, bagel, or wrap. Add pork roll, bacon, or sausage.",
   },
 ];

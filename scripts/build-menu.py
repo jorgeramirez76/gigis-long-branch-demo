@@ -13,6 +13,9 @@ import pathlib
 import re
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from card_pricing import menu_price_cents  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "data" / "clover" / "classified"
 OUT = ROOT / "src" / "data" / "menuGenerated.ts"
@@ -82,7 +85,16 @@ POPULAR = {
 
 
 def cents_display(delta: int) -> str:
-    return f"+${delta / 100:.2f}"
+    return f"+${menu_price_cents(delta) / 100:.2f}"
+
+
+def price_display(item: dict):
+    """The cash price the menu shows. Register prices carry the cash-discount program's 4%
+    (see scripts/card_pricing.py); it comes off HERE, once, as the price enters the site."""
+    cents = item.get("priceCents")
+    if isinstance(cents, int) and cents > 0:
+        return f"${menu_price_cents(cents) / 100:.2f}"
+    return item.get("priceDisplay") or None
 
 
 def ts_str(s: str) -> str:
@@ -139,8 +151,9 @@ def main() -> int:
         for i in items:
             total_items += 1
             parts = [f"name: {ts_str(i['displayName'])}"]
-            if i.get("priceDisplay"):
-                parts.append(f"price: {ts_str(i['priceDisplay'])}")
+            shown = price_display(i)
+            if shown:
+                parts.append(f"price: {ts_str(shown)}")
             if i["displayName"].strip().lower() in POPULAR:
                 parts.append("popular: true")
             opts = i.get("options") or []

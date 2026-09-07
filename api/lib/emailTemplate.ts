@@ -163,6 +163,8 @@ export function receiptHtml(opts: {
   subtotal: string;
   /** e.g. "−$17.68" — rendered as "VIP free pie" between subtotal and tax. */
   discount?: string;
+  /** "Card pricing (4%)" — the register's card price, itemized instead of baked in. */
+  cardPricing?: string;
   deliveryFee?: string;
   tax: string;
   tip?: string;
@@ -206,6 +208,7 @@ export function receiptHtml(opts: {
       <table style="width:100%;border-collapse:collapse;">
         ${totalRow("Subtotal", opts.subtotal)}
         ${opts.discount ? totalRow("VIP free pie", opts.discount) : ""}
+        ${opts.cardPricing ? totalRow("Card pricing (4%)", opts.cardPricing) : ""}
         ${opts.deliveryFee ? totalRow("Delivery", opts.deliveryFee) : ""}
         ${totalRow("NJ tax (6.625%)", opts.tax)}
         ${opts.tip ? totalRow("Tip", opts.tip) : ""}

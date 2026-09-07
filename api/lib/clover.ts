@@ -13,6 +13,7 @@
  * no CLOVER_API_TOKEN the endpoint degrades to a clear "call the store" message.
  */
 
+import { CARD_PRICING_LABEL, cardPricingCents } from "./cardPricing.mjs";
 import { chargeFailureReason, classifyCharge, hasCaptureEvidence, type ChargeBody } from "./chargeOutcome.js";
 import { uniquifyLineNames } from "./lineNames.js";
 import { classifyPrintPoll } from "./printOutcome.js";
@@ -110,7 +111,7 @@ export function unitPrice(line: Pick<CartLineInput, "basePrice" | "options">): n
   return Math.round(line.basePrice + line.options.reduce((s, o) => s + Math.round(o.delta || 0), 0));
 }
 
-export type Totals = { subtotal: number; tax: number; tip: number; deliveryFee: number; discount: number; total: number };
+export type Totals = { subtotal: number; cardPricing: number; tax: number; tip: number; deliveryFee: number; discount: number; total: number };
 
 /** Authoritative server-side totals. Lines must already be catalog-priced.
  * Website orders are prepaid by card (2026-08-11); the pay-at-pickup and cash options were
@@ -134,11 +135,25 @@ export function computeTotals(
   // Clamped to the subtotal so a promo can never produce a negative order, and never eats the
   // delivery fee or the tip — a free pie is a free pie, not free driving or a free gratuity.
   const discount = Math.min(Math.max(0, Math.round(discountCents || 0)), subtotal);
+  // Menu prices are the register's cash prices (see api/lib/cardPricing.mjs); a website order
+  // is paid by card, so the 4% goes on as ONE line, on the food actually paid for — not on the
+  // delivery fee (a flat schedule that never carried the 4%) and not on the tip.
+  const cardPricing = cardPricingCents(subtotal - discount);
   // A retailer-funded free item is not taxable in NJ, so tax is computed AFTER the discount.
-  const tax = Math.round((subtotal - discount + deliveryFee) * TAX_RATE);
+  // Card pricing is part of the taxable receipt: it is the same 4% the register's card prices
+  // already carried, so taxing it keeps the tax on a $17.00 pie exactly what it was at $17.68.
+  const tax = Math.round((subtotal - discount + cardPricing + deliveryFee) * TAX_RATE);
   // Tip follows the food actually paid for, not the pre-discount subtotal.
   const tip = Math.min(Math.max(0, Math.round(tipCents || 0)), Math.max(2000, subtotal));
-  return { subtotal, tax, tip, deliveryFee, discount, total: subtotal - discount + deliveryFee + tax + tip };
+  return {
+    subtotal,
+    cardPricing,
+    tax,
+    tip,
+    deliveryFee,
+    discount,
+    total: subtotal - discount + cardPricing + deliveryFee + tax + tip,
+  };
 }
 
 export class CloverError extends Error {
@@ -349,6 +364,8 @@ export async function createDraftOrder(opts: {
    *  /pay capture all include it — an amount that exists only in our DB would make Clover
    *  undercharge the card. Server-computed; see src/lib/deliveryZones.ts. */
   deliveryFee?: number;
+  /** The "Card pricing (4%)" line, cents — see computeTotals. */
+  cardPricing?: number;
 }): Promise<{ id: string; href: string }> {
   const mid = merchantId()!;
   const title = ticketTitle(opts.fulfillment);
@@ -381,6 +398,12 @@ export async function createDraftOrder(opts: {
     // is included in what Clover captures.
     if (opts.deliveryFee && opts.deliveryFee > 0) {
       items.push({ name: "Delivery Fee", price: Math.round(opts.deliveryFee), note: "WEB • delivery" });
+    }
+    // The 4% the register bakes into its card prices, as one taxed line: the food lines above
+    // are at cash prices, so without this Clover's own total (and its tax) would come in under
+    // what the card was charged.
+    if (opts.cardPricing && opts.cardPricing > 0) {
+      items.push({ name: CARD_PRICING_LABEL, price: Math.round(opts.cardPricing), note: "WEB • card pricing" });
     }
     // Duplicate names never reach Clover — its ecommerce mirror collapses them and the order
     // splits. The why and the measurement live with the function.
@@ -596,6 +619,8 @@ export async function createPosOrder(opts: {
   paid: boolean;
   /** Cents; forwarded to createDraftOrder as its own taxed line item. */
   deliveryFee?: number;
+  /** The "Card pricing (4%)" line, cents — see computeTotals. */
+  cardPricing?: number;
 }): Promise<{ id: string; href: string }> {
   const draft = await createDraftOrder(opts);
   try {

@@ -38,6 +38,9 @@ async function ensure() {
   // Belt-and-suspenders: guarantees the idempotency uniqueness even if the table
   // somehow pre-existed without the inline UNIQUE (keeps reserveOrder atomic).
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS web_orders_idem_key ON web_orders (idempotency_key)`;
+  // 2026-09-06: menu prices became cash prices and the 4% moved to its own line, so the row
+  // keeps it — subtotal + tax + tip no longer reconciles to total without it.
+  await sql`ALTER TABLE web_orders ADD COLUMN IF NOT EXISTS card_pricing INTEGER`;
   ensured = true;
 }
 
@@ -49,6 +52,8 @@ export type OrderRecord = {
   customer: { name: string; phone: string; email?: string; address?: string };
   items: unknown;
   subtotal: number;
+  /** The "Card pricing (4%)" line, cents (see api/lib/cardPricing.mjs). */
+  cardPricing?: number;
   tax: number;
   tip: number;
   total: number;
@@ -80,10 +85,10 @@ export async function reserveOrder(o: OrderRecord): Promise<Reservation> {
     const ins = await sql`
       INSERT INTO web_orders
         (idempotency_key, fulfillment, customer_name, customer_phone, customer_email, address,
-         items, subtotal, tax, tip, total, payment_method, status, note)
+         items, subtotal, card_pricing, tax, tip, total, payment_method, status, note)
       VALUES
         (${o.idempotencyKey}, ${o.fulfillment}, ${o.customer.name}, ${o.customer.phone}, ${o.customer.email ?? null}, ${o.customer.address ?? null},
-         ${JSON.stringify(o.items)}, ${o.subtotal}, ${o.tax}, ${o.tip}, ${o.total}, ${o.paymentMethod}, 'pending', ${o.note ?? null})
+         ${JSON.stringify(o.items)}, ${o.subtotal}, ${o.cardPricing ?? 0}, ${o.tax}, ${o.tip}, ${o.total}, ${o.paymentMethod}, 'pending', ${o.note ?? null})
       ON CONFLICT (idempotency_key) DO NOTHING
       RETURNING id
     `;

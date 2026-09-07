@@ -128,6 +128,12 @@ export function Menu() {
             dinners — plus all-day breakfast and gluten-free &amp; vegan pizza. Straight
             from our kitchen, updated July 2026.
           </p>
+          {/* NJ requires a card-price adjustment to be disclosed before checkout, so it is
+              stated here, at the prices it applies to, and again in the item sheet and cart. */}
+          <p className="mt-3 text-sm text-[var(--color-ink)]/60">
+            Prices shown are our cash prices. Online orders are paid by card, so 4% card
+            pricing is added at checkout.
+          </p>
         </div>
 
         {/* Search */}

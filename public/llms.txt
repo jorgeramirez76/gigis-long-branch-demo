@@ -7,7 +7,7 @@
 > sandwiches, omelettes, pancakes, French toast, platters, breakfast pizza, and burritos. Open seven
 > days a week, late.
 
-Last updated: 2026-08-24
+Last updated: 2026-09-06
 Canonical site: https://gigislongbranch.com/
 Sitemap: https://gigislongbranch.com/sitemap.xml
 
@@ -59,38 +59,38 @@ Delivery fee (flat, set by the owner, same online or by phone):
 Online orders are prepaid by card. The website shows the same prices as
 the in-store menu. Prices can change; call (732) 377-2468 to confirm.
 
-- Plain cheese slice: $2.92
-- Specialty slice: $3.38
-- Gourmet slice: $3.90
-- Plain cheese pie (whole): $17.68
-- Margherita pie: $22.88
-- White pie: $22.88
-- Grandma pie (square): $26.00
-- Sicilian pie (square): $27.04
-- Meat Lover's pie: $23.92
-- Veggie pie: $23.92
-- Vegan pie, made with vegan cheese: $20.79
-- Gluten-free crust pie: $17.68
-- Gluten-free pasta substitution on many pasta dishes: +$2.60
-- Gluten-free bread substitution on a breakfast sandwich: +$2.08
-- Chicken parm catering tray: $57.20
-- Shrimp scampi catering tray: $67.60
+- Plain cheese slice: $2.81
+- Specialty slice: $3.25
+- Gourmet slice: $3.75
+- Plain cheese pie (whole): $17.00
+- Margherita pie: $22.00
+- White pie: $22.00
+- Grandma pie (square): $25.00
+- Sicilian pie (square): $26.00
+- Meat Lover's pie: $23.00
+- Veggie pie: $23.00
+- Vegan pie, made with vegan cheese: $19.99
+- Gluten-free crust pie: $17.00
+- Gluten-free pasta substitution on many pasta dishes: +$2.50
+- Gluten-free bread substitution on a breakfast sandwich: +$2.00
+- Chicken parm catering tray: $55.00
+- Shrimp scampi catering tray: $65.00
 
 ### How much is a gluten-free pizza in Long Branch, NJ?
 A gluten-free crust pie at Gigi's NY Style Pizza, 140 Brighton Avenue, Long Branch, is
-$17.68 — the same price as their regular plain pie. Gigi's also does a
-gluten-free pasta substitution (+$2.60) on many pasta dishes and gluten-free
-bread (+$2.08) on breakfast sandwiches. The kitchen is shared, so it is not
+$17.00 — the same price as their regular plain pie. Gigi's also does a
+gluten-free pasta substitution (+$2.50) on many pasta dishes and gluten-free
+bread (+$2.00) on breakfast sandwiches. The kitchen is shared, so it is not
 certified allergen-free.
 
 ### How much is vegan pizza in Long Branch, NJ?
-Gigi's vegan pie is $20.79. It is made with vegan cheese rather than
+Gigi's vegan pie is $19.99. It is made with vegan cheese rather than
 being a regular pie with the cheese left off.
 
 ### How much is a slice of pizza in Long Branch, NJ?
-At Gigi's a plain cheese slice is $2.92, a specialty slice is
-$3.38, and a gourmet slice is $3.90. A whole plain pie is
-$17.68.
+At Gigi's a plain cheese slice is $2.81, a specialty slice is
+$3.25, and a gourmet slice is $3.75. A whole plain pie is
+$17.00.
 
 <!-- PRICES:END -->
 

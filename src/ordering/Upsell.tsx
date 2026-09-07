@@ -1,15 +1,19 @@
 import { money, useCart } from "./CartContext";
+import { findCatalogItem } from "../lib/menuPricing";
 
 /**
  * In-cart upsell — three "add these to your order" suggestions with one-tap add.
  * Curated to quick-add items (no required options), high-margin impulse buys.
- * Prices mirror the live Clover menu (src/data/menuGenerated.ts).
+ * Prices are read from the catalog at render time, never typed here: the hand-typed
+ * numbers this list used to carry were still the register's 4%-inclusive prices after the
+ * menu moved to cash prices (2026-09-06), so the drawer offered Garlic Knots at $6.24 next
+ * to a menu that said $6.00.
  */
 const SUGGESTIONS = [
-  { itemName: "Garlic Knots", categoryId: "appetizers", basePrice: 624, tag: "Most added" },
-  { itemName: "Mozzarella Sticks (6)", categoryId: "appetizers", basePrice: 1040, tag: "Crowd favorite" },
-  { itemName: "Cannoli (2)", categoryId: "desserts", basePrice: 623, tag: "Sweet finish" },
-  { itemName: "French Fries Regular", categoryId: "french-fries", basePrice: 416, tag: "Classic side" },
+  { itemName: "Garlic Knots", categoryId: "appetizers", tag: "Most added" },
+  { itemName: "Mozzarella Sticks (6)", categoryId: "appetizers", tag: "Crowd favorite" },
+  { itemName: "Cannoli (2)", categoryId: "desserts", tag: "Sweet finish" },
+  { itemName: "French Fries Regular", categoryId: "french-fries", tag: "Classic side" },
   // Two Liter Soda is NOT quick-addable: its "Soda Choices" group is Choose 1, and a one-tap
   // add skips the modal that enforces it — the kitchen got paid tickets with no flavor picked.
 ];
@@ -17,7 +21,14 @@ const SUGGESTIONS = [
 export function Upsell() {
   const cart = useCart();
   const inCart = new Set(cart.lines.map((l) => l.itemName));
-  const picks = SUGGESTIONS.filter((s) => !inCart.has(s.itemName)).slice(0, 3);
+  const picks = SUGGESTIONS.flatMap((s) => {
+    if (inCart.has(s.itemName)) return [];
+    const item = findCatalogItem(s.itemName, s.categoryId);
+    // Skip anything the catalog no longer sells: one tap must always produce a line the
+    // server will accept at the price shown.
+    if (!item || item.basePrice <= 0) return [];
+    return [{ ...s, basePrice: item.basePrice }];
+  }).slice(0, 3);
   if (picks.length === 0) return null;
 
   return (

@@ -136,14 +136,15 @@ export const GALLERY: GalleryImage[] = [
 
 /** Signature items with REAL owner-provided photos, shown in the Fan Favorites
  * band that leads into the full menu. Only items we have a genuine Long Branch
- * photo for appear here — prices mirror the live Clover menu (src/data/menu.ts).
+ * photo for appear here. `menuName` is the exact Clover item name; the price is read from
+ * the menu at render time (FanFavorites.tsx) so this file can never quote a stale number.
  * Add more cards as the owner supplies more real dish photography. */
 export const FAVORITES = [
   {
     src: sliceFull,
     webp: `${sliceFullW900} 900w, ${sliceFullW480} 480w`,
     name: "Classic NY Cheese Pie",
-    price: "$17.68",
+    menuName: "Plain Pie",
     blurb: "Hand-stretched dough, house tomato sauce, fresh mozzarella — that perfect foldable New York slice.",
     alt: "Hand lifting a New York style cheese slice from a whole pie at Gigi's Long Branch",
   },
@@ -151,7 +152,7 @@ export const FAVORITES = [
     src: fanzFull,
     webp: `${fanzFullW900} 900w, ${fanzFullW480} 480w`,
     name: "The Fonz",
-    price: "$26.00",
+    menuName: "The Fonz",
     blurb: "The specialty square everyone on Brighton Ave asks for by name.",
     alt: "The Fonz specialty pizza from Gigi's NY Style Pizza, Long Branch",
   },

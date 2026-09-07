@@ -4,6 +4,7 @@ import { fetchLiveInventory, pruneMenu, REMOVAL_GUARD_SHARE } from "../lib/menuS
 import { alertStaff } from "../lib/notify.js";
 import { sweepQueuedPrints } from "../lib/printSweep.js";
 import { HALF_TOPPING_CHARGE_CENTS, TOPPING_CHARGE_CENTS } from "../../src/data/menuToppings.js";
+import { menuPriceCents } from "../lib/cardPricing.mjs";
 
 /**
  * Nightly menu refresh (Vercel Cron — see vercel.json).
@@ -78,14 +79,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
     // Reported, not applied: the order API charges toppings from the constant, so a
     // silent reprice here would show one price and charge another.
+    // Clover stores the register (card) rate — $3.12 — and the site's constant is the cash rate
+    // it shows, so the register figure is brought onto the same footing before comparing.
+    const liveTopping = inv.toppingChargeCents != null ? menuPriceCents(inv.toppingChargeCents) : null;
+    const liveHalfTopping = inv.halfToppingChargeCents != null ? menuPriceCents(inv.halfToppingChargeCents) : null;
     const toppingChargeDrift =
-      inv.toppingChargeCents != null && inv.toppingChargeCents !== TOPPING_CHARGE_CENTS
-        ? { site: TOPPING_CHARGE_CENTS, clover: inv.toppingChargeCents }
+      liveTopping != null && liveTopping !== TOPPING_CHARGE_CENTS
+        ? { site: TOPPING_CHARGE_CENTS, clover: liveTopping }
         : undefined;
     if (toppingChargeDrift) console.warn("[cron/refresh-menu] topping charge drift", toppingChargeDrift);
     const halfToppingChargeDrift =
-      inv.halfToppingChargeCents != null && inv.halfToppingChargeCents !== HALF_TOPPING_CHARGE_CENTS
-        ? { site: HALF_TOPPING_CHARGE_CENTS, clover: inv.halfToppingChargeCents }
+      liveHalfTopping != null && liveHalfTopping !== HALF_TOPPING_CHARGE_CENTS
+        ? { site: HALF_TOPPING_CHARGE_CENTS, clover: liveHalfTopping }
         : undefined;
     if (halfToppingChargeDrift) console.warn("[cron/refresh-menu] HALF topping charge drift", halfToppingChargeDrift);
     // Same promotion priceDrift got: these rates bill on every pie, and a console.warn in a

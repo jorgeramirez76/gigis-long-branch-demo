@@ -2,9 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { MenuItem, OptionGroup } from "../data/menu";
 import { MAX_LINE_QTY, money, parsePrice, useCart, type CartOption } from "./CartContext";
 import {
-  HALF_TOPPING_DISPLAY_CENTS,
+  HALF_TOPPING_CHARGE_CENTS,
   TOPPING_CHARGE_CENTS,
-  TOPPING_DISPLAY_CENTS,
   isToppingsGroup,
   placementDelta,
   type ToppingPlacement,
@@ -15,16 +14,14 @@ function canPlace(group: OptionGroup, choiceDelta?: string): boolean {
   return isToppingsGroup(group.group) && parsePrice(choiceDelta) === TOPPING_CHARGE_CENTS;
 }
 
-/** What a topping SHOWS here ("+$3"); the 12¢ card-pricing remainder is itemized at
- *  checkout (Tommy's spec, 2026-08-19). The charged delta stays TOPPING_CHARGE_CENTS. */
-const TOPPING_DISPLAY_LABEL = `+$${TOPPING_DISPLAY_CENTS / 100}`;
+/** What a topping shows here ("+$3") — the cash price, which is also what the cart line is
+ *  priced at; the 4% card pricing is one line at checkout (api/lib/cardPricing.mjs). */
+const TOPPING_DISPLAY_LABEL = `+$${TOPPING_CHARGE_CENTS / 100}`;
 
-// Placement pills show the flat display rates; the stored cart delta still comes from
-// placementDelta() on the real charge values below.
 const PLACEMENTS: { value: ToppingPlacement; label: string; price: number }[] = [
-  { value: "whole", label: "Whole pie", price: TOPPING_DISPLAY_CENTS },
-  { value: "left", label: "Left half", price: HALF_TOPPING_DISPLAY_CENTS },
-  { value: "right", label: "Right half", price: HALF_TOPPING_DISPLAY_CENTS },
+  { value: "whole", label: "Whole pie", price: TOPPING_CHARGE_CENTS },
+  { value: "left", label: "Left half", price: HALF_TOPPING_CHARGE_CENTS },
+  { value: "right", label: "Right half", price: HALF_TOPPING_CHARGE_CENTS },
 ];
 
 /** Parse a human rule string into selection constraints. */
@@ -132,7 +129,7 @@ function GroupField({
         // NJ card-surcharge rules require the adjustment disclosed BEFORE checkout, so this
         // note rides with the prices it applies to.
         <p className="mt-2 text-xs text-[var(--color-ink)]/50">
-          Card pricing adds 12¢ per topping (8¢ per half) at checkout.
+          Cash prices shown — 4% card pricing is added at checkout.
         </p>
       )}
     </fieldset>
@@ -208,9 +205,8 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
     return required && !(selected[gi] && selected[gi].size > 0);
   });
 
-  // What the button SHOWS: toppings at their flat display rate. The 12¢/8¢ card-pricing
-  // remainder is itemized at checkout; the cart line is priced from the real deltas when
-  // it is added (placementDelta below), so charged amounts are untouched by this.
+  // What the button SHOWS — the same cash-price deltas the cart line is priced from when it
+  // is added (placementDelta below). The 4% card pricing is one line at checkout.
   const displayDeltaCents = useMemo(() => {
     let d = 0;
     groups.forEach((g, gi) => {
@@ -218,11 +214,7 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
       if (!sel) return;
       g.choices.forEach((c) => {
         if (!sel.has(c.name)) return;
-        if (canPlace(g, c.delta)) {
-          d += (placements[c.name] ?? "whole") === "whole" ? TOPPING_DISPLAY_CENTS : HALF_TOPPING_DISPLAY_CENTS;
-        } else {
-          d += parsePrice(c.delta);
-        }
+        d += canPlace(g, c.delta) ? placementDelta(parsePrice(c.delta), placements[c.name] ?? "whole") : parsePrice(c.delta);
       });
     });
     return d;
@@ -287,6 +279,7 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
               <p className="mt-1 text-sm text-[var(--color-ink-soft)]">{item.description}</p>
             )}
             <p className="mt-1 font-bold text-[var(--color-brand-red)]">{money(basePrice)}</p>
+            <p className="mt-1 text-xs text-[var(--color-ink)]/50">Cash price — 4% card pricing is added at checkout.</p>
           </div>
           <button
             type="button"

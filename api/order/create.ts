@@ -92,6 +92,7 @@ async function sendOrderReceipt(o: {
       })),
       subtotal: money(o.totals.subtotal),
       discount: o.totals.discount ? `\u2212${money(o.totals.discount)}` : undefined,
+      cardPricing: o.totals.cardPricing ? money(o.totals.cardPricing) : undefined,
       deliveryFee: o.totals.deliveryFee ? money(o.totals.deliveryFee) : undefined,
       tax: money(o.totals.tax),
       tip: o.totals.tip ? money(o.totals.tip) : undefined,
@@ -533,6 +534,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     customer: cust,
     items: kitchenLines,
     subtotal: totals.subtotal,
+    cardPricing: totals.cardPricing,
     tax: totals.tax,
     tip: totals.tip,
     total: totals.total,
@@ -624,6 +626,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         lines: kitchenLines,
         fulfillment,
         deliveryFee: totals.deliveryFee,
+        cardPricing: totals.cardPricing,
         note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", orderNote }),
       });
       draftId = draft.id;

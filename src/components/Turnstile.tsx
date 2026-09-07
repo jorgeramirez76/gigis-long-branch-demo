@@ -63,10 +63,30 @@ export function Turnstile({
   };
 
   // Initial mount only — the widget is rendered once and then reset in place.
+  // The Cloudflare challenge bundle is ~420 KB, the single heaviest request on the home page
+  // (Lighthouse, 2026-09-06), and it was fetched on every visit because the VIP form is on the
+  // home page. Defer the load until the widget's container is about to scroll into view; a
+  // browser without IntersectionObserver falls back to loading immediately.
   useEffect(() => {
     if (!turnstileEnabled()) return;
-    mount.current();
+    let io: IntersectionObserver | null = null;
+    if (ref.current && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io?.disconnect();
+            io = null;
+            mount.current();
+          }
+        },
+        { rootMargin: "400px 0px" },
+      );
+      io.observe(ref.current);
+    } else {
+      mount.current();
+    }
     return () => {
+      io?.disconnect();
       const ts = (window as { turnstile?: { remove: (id: string) => void } }).turnstile;
       if (ts && widgetId.current) {
         try {

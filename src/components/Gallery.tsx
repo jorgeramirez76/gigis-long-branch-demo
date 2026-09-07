@@ -31,14 +31,23 @@ export function Gallery() {
                   i === 0 ? "col-span-2 row-span-2 md:col-span-2 md:row-span-2" : ""
                 }`}
               >
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  loading={i < 2 ? "eager" : "lazy"}
-                  decoding="async"
-                  sizes={i === 0 ? "(min-width: 768px) 66vw, 100vw" : "(min-width: 768px) 33vw, 50vw"}
-                  className="h-full w-full object-cover transition-transform duration-[900ms] ease-out will-change-transform group-hover:scale-[1.06]"
-                />
+                <picture>
+                  {img.webp && (
+                    <source
+                      type="image/webp"
+                      srcSet={img.webp}
+                      sizes={i === 0 ? "(min-width: 768px) 66vw, 100vw" : "(min-width: 768px) 33vw, 50vw"}
+                    />
+                  )}
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    loading={i < 2 ? "eager" : "lazy"}
+                    decoding="async"
+                    sizes={i === 0 ? "(min-width: 768px) 66vw, 100vw" : "(min-width: 768px) 33vw, 50vw"}
+                    className="h-full w-full object-cover transition-transform duration-[900ms] ease-out will-change-transform group-hover:scale-[1.06]"
+                  />
+                </picture>
                 <div
                   aria-hidden="true"
                   className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-95 transition-opacity duration-500 group-hover:opacity-90"

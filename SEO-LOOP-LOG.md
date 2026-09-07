@@ -939,3 +939,49 @@ Optional in the same session: consider whether the profile name should be
   "4.3 Restaurant Guru (130)". These predate this loop. Worth confirming they're still accurate,
   since stale third-party rating counts are a real liability on a live business site.
 - Five Unsplash placeholder images remain instead of real dish photos.
+
+---
+
+## Cycle 10 — 2026-09-06 (new M3 Ultra workstation, first pass)
+
+### Measured first
+
+- Lighthouse 12 (local, mobile emulation, `/`): performance 91, accessibility 91,
+  best-practices 100, SEO 100. LCP 3.2 s, CLS 0.015, TBT 0 ms. Total page weight 2.77 MB
+  (flagged). Heaviest requests: the Cloudflare Turnstile challenge bundle (420 KB, fetched on
+  every home-page visit because the VIP form lives there), `slice-hero-portrait` (407 KB JPEG),
+  `inside-wide` (231 KB), `slice-tile` (224 KB). No WebP existed anywhere in `src/assets/brand/`.
+- All 15 sitemap URLs: 200, `index, follow`, self-canonical. Today's Search Console
+  "Excluded by noindex" notice is exactly the pages that are noindex on purpose —
+  `/admin.html`, `/vip-verify/`, `/privacy-policy/`, `/sms-terms/`. Nothing to fix.
+- JSON-LD parses on `/` and `/menu/`. Two cross-document `@id` references (Wikipedia entity,
+  `#restaurant` from the menu page) are by design.
+- `build-menu-index.py` regenerates with zero diff — prices have not drifted.
+- Google listing, read first-hand, signed out: **"Gigi's Pizza Long Branch" · 4.3 · 128 Google
+  reviews**, Menu link → gigislongbranch.com, site ranks #1 for the brand query. Reviews-from-
+  the-web tiles: Slice 4.3 (310), Grubhub 4.7 (228), Facebook 4.9 (31).
+
+### Shipped in this cycle
+
+- WebP (900w/480w, q80) generated for all nine brand JPEGs and wired through `<picture>` in
+  Hero, Gallery and About. Hero portrait drops 397 KB → 93 KB at the 480w candidate.
+- Turnstile now loads when its container is within 400 px of the viewport (IntersectionObserver),
+  not on page load. A retry after a failed load still mounts immediately. Checkout and the inline
+  VIP join use the same component and inherit the behaviour.
+- "★ 4.3 on Google (128 reviews)" tile added beside Restaurantji, score and count read together
+  from the Google listing — the pair the 7/29 note asked for. Restaurant Guru stays removed.
+- IndexNow: all 15 sitemap URLs submitted, HTTP 200 (`.indexnow-key` recreated locally from the
+  committed public key file).
+
+### Still needs the owner (unchanged from cycle 9, still the biggest levers)
+
+1. Google Business Profile ordering links → make gigislongbranch.com the preferred provider.
+2. GBP name ("Gigi's Pizza Long Branch") vs site name — pick one.
+3. Search Console "Request Indexing" on the four landing pages; needs a login.
+
+### Tooling note (2026-09)
+
+- Google Search Console MCP (`AminForou/mcp-gsc`) — direct query/index data in the assistant;
+  needs a one-time OAuth client from the account owner.
+- Bing Webmaster Tools: import from Search Console, then use the AI Performance report for
+  Copilot citation data.

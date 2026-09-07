@@ -13,7 +13,11 @@ export function Hero() {
       {/* Background — portrait on mobile, wide on md+; slow Ken-Burns for life */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <picture>
+          {/* WebP first; the JPEG <img> stays as the fallback. The 397 KB portrait JPEG was the
+              LCP image on phones (Lighthouse 2026-09-06). */}
+          <source media="(min-width: 768px)" type="image/webp" srcSet={HERO_IMAGE.webpWide} sizes="100vw" />
           <source media="(min-width: 768px)" srcSet={HERO_IMAGE.srcWide} />
+          <source type="image/webp" srcSet={HERO_IMAGE.webpPortrait} sizes="100vw" />
           <img
             src={HERO_IMAGE.srcPortrait}
             alt={HERO_IMAGE.alt}

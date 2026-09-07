@@ -11,14 +11,17 @@ export function About() {
     >
       {/* Dining room as darkened background */}
       <div className="absolute inset-0 -z-10">
-        <img
-          src={BRAND_INSIDE.wide}
-          alt=""
-          role="presentation"
-          className="h-full w-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
+        <picture>
+          <source type="image/webp" srcSet={BRAND_INSIDE.webpWide} sizes="100vw" />
+          <img
+            src={BRAND_INSIDE.wide}
+            alt=""
+            role="presentation"
+            className="h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
         <div
           className="absolute inset-0"
           style={{
@@ -115,13 +118,16 @@ export function About() {
             <div className="relative aspect-square w-full max-w-md">
               <div className="absolute inset-0 rounded-full bg-[var(--color-brand-red)]/25 blur-3xl" aria-hidden="true" />
               <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-gold-bright)]/20 bg-white/5 p-3 backdrop-blur-sm">
-                <img
-                  src={BRAND_INSIDE.tile}
-                  alt="Gigi's Long Branch dining room"
-                  className="h-full w-full rounded-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture>
+                  <source type="image/webp" srcSet={BRAND_INSIDE.webpTile} sizes="(min-width: 768px) 28rem, 100vw" />
+                  <img
+                    src={BRAND_INSIDE.tile}
+                    alt="Gigi's Long Branch dining room"
+                    className="h-full w-full rounded-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 {/* Italian tricolor accent — inside the medallion, no overflow risk */}
                 <div aria-hidden="true" className="absolute right-4 top-6 hidden h-14 w-2 rounded-full md:block" style={{
                   background: "linear-gradient(180deg, var(--color-italy-green) 0 33%, var(--color-italy-white) 33% 66%, var(--color-italy-red) 66% 100%)",

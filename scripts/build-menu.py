@@ -74,6 +74,19 @@ BLURBS = {
     "special": "The rotating house specials board — daily favorites and Gigi's originals.",
 }
 
+# Toppings the owner pulled from the online menu (2026-09-08): Brazil Ricotta, Corn, Hard Egg.
+# Dropped HERE, at generation, for the same reason the categories above are: the classified
+# files mirror Clover, so a re-pull would put them straight back. Matched by Clover modifier
+# name inside a toppings group only ("Toppings", or the raw "TOPPING" one item still carries)
+# — the same test src/data/menuToppings.ts uses to price them.
+EXCLUDED_TOPPINGS = {"brazil ricotta", "corn", "hard egg"}
+TOPPINGS_GROUP_RE = re.compile(r"^toppings?$", re.I)
+
+
+def is_toppings_group(name: str) -> bool:
+    return bool(TOPPINGS_GROUP_RE.match((name or "").strip()))
+
+
 # `popular` flags — house signatures called out on the site.
 POPULAR = {
     "grandma",
@@ -122,6 +135,7 @@ def main() -> int:
 
     total_items = 0
     total_choices = 0
+    dropped_toppings = 0
     for slug in CATEGORY_ORDER:
         if slug not in files:
             continue
@@ -162,6 +176,9 @@ def main() -> int:
                 for g in opts:
                     choices = []
                     for ch in g.get("choices", []):
+                        if is_toppings_group(g["groupName"]) and ch["name"].strip().lower() in EXCLUDED_TOPPINGS:
+                            dropped_toppings += 1
+                            continue
                         total_choices += 1
                         delta = ch.get("priceDelta") or 0
                         if delta:
@@ -182,7 +199,8 @@ def main() -> int:
     lines.append("];")
     lines.append("")
     OUT.write_text("\n".join(lines))
-    print(f"wrote {OUT.relative_to(ROOT)} — {total_items} items, {total_choices} option choices")
+    print(f"wrote {OUT.relative_to(ROOT)} — {total_items} items, {total_choices} option choices"
+          f" ({dropped_toppings} excluded topping choices dropped)")
     return 0
 
 

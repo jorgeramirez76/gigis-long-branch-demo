@@ -3,7 +3,9 @@ import type { MenuItem, OptionGroup } from "../data/menu";
 import { MAX_LINE_QTY, money, parsePrice, useCart, type CartOption } from "./CartContext";
 import {
   HALF_TOPPING_CHARGE_CENTS,
+  TOPPING_CHARGE_CAP_CENTS,
   TOPPING_CHARGE_CENTS,
+  capToppingCharges,
   isToppingsGroup,
   placementDelta,
   type ToppingPlacement,
@@ -127,9 +129,12 @@ function GroupField({
       )}
       {group.choices.some((c) => canPlace(group, c.delta)) && (
         // NJ card-surcharge rules require the adjustment disclosed BEFORE checkout, so this
-        // note rides with the prices it applies to.
+        // note rides with the prices it applies to — as does the topping cap, so a $0 third
+        // topping in the cart reads as the deal it is rather than a glitch.
         <p className="mt-2 text-xs text-[var(--color-ink)]/50">
-          Cash prices shown — 4% card pricing is added at checkout.
+          Toppings are {money(TOPPING_CHARGE_CENTS)} each ({money(HALF_TOPPING_CHARGE_CENTS)} on a half) and cap at{" "}
+          {money(TOPPING_CHARGE_CAP_CENTS)} — after two, the rest are free. Cash prices shown — 4% card pricing is
+          added at checkout.
         </p>
       )}
     </fieldset>
@@ -208,16 +213,21 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
   // What the button SHOWS — the same cash-price deltas the cart line is priced from when it
   // is added (placementDelta below). The 4% card pricing is one line at checkout.
   const displayDeltaCents = useMemo(() => {
-    let d = 0;
+    const chosen: { delta: number; charge: boolean }[] = [];
     groups.forEach((g, gi) => {
       const sel = selected[gi];
       if (!sel) return;
       g.choices.forEach((c) => {
         if (!sel.has(c.name)) return;
-        d += canPlace(g, c.delta) ? placementDelta(parsePrice(c.delta), placements[c.name] ?? "whole") : parsePrice(c.delta);
+        const charge = canPlace(g, c.delta);
+        chosen.push({
+          charge,
+          delta: charge ? placementDelta(parsePrice(c.delta), placements[c.name] ?? "whole") : parsePrice(c.delta),
+        });
       });
     });
-    return d;
+    // The same $6-a-pie topping cap add() puts on the cart line, so the button never overstates.
+    return capToppingCharges(chosen, (o) => o.charge).reduce((s, o) => s + o.delta, 0);
   }, [groups, selected, placements]);
   const displayUnit = basePrice + displayDeltaCents;
 
@@ -251,7 +261,11 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
         }
       });
     });
-    cart.addLine({ itemName: item.name, categoryId, basePrice, options, quantity, notes: notes.trim() || undefined });
+    // Placement is set on exactly the charge-priced toppings (canPlace above), so it doubles as
+    // the "counts toward the $6 cap" flag. The cart re-caps on restore and the order API re-caps
+    // from its own catalog; this is the customer-facing copy of the same rule.
+    const priced = capToppingCharges(options, (o) => o.placement != null);
+    cart.addLine({ itemName: item.name, categoryId, basePrice, options: priced, quantity, notes: notes.trim() || undefined });
     onClose();
   }
 

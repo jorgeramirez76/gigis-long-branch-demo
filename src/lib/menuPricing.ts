@@ -13,7 +13,7 @@
 // where @vercel/node compiles each file to ESM and Node's loader will not resolve an
 // extensionless path. Vite maps it back to the .ts source for the browser build.
 import { MENU_PRICED } from "../data/menuPriced.js";
-import { TOPPING_CHARGE_CENTS, isToppingsGroup, placementDelta } from "../data/menuToppings.js";
+import { TOPPING_CHARGE_CENTS, capToppingCharges, isToppingsGroup, placementDelta } from "../data/menuToppings.js";
 
 const SEP = "\u0000"; // NUL separator — collision-free (ids/names never contain it)
 
@@ -112,4 +112,11 @@ export function placementEligible(item: CatalogItem, opt: { group?: string; name
   const group = resolveOptionGroup(item, opt);
   if (!isToppingsGroup(group)) return false;
   return item.optByGroupName.get(group + SEP + opt.name) === TOPPING_CHARGE_CENTS;
+}
+
+/** The $6-a-pie cap on extra-topping charges (menuToppings.ts), applied with the catalog's own
+ * notion of which options are charge-priced. Both the browser cart and the order API run every
+ * line through this, so a $0 third topping is $0 on both sides — one definition, no drift. */
+export function capLineOptions<T extends { group?: string; name: string; delta: number }>(item: CatalogItem, options: T[]): T[] {
+  return capToppingCharges(options, (o) => placementEligible(item, o));
 }

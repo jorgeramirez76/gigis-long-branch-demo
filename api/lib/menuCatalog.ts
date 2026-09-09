@@ -11,7 +11,7 @@
  * Built from src/data/menuGenerated.ts (type-only imports → safe to bundle into
  * a serverless function; no runtime deps travel with it).
  */
-import { findCatalogItem, optionDelta, placementEligible, resolveOptionGroup } from "../../src/lib/menuPricing.js";
+import { capLineOptions, findCatalogItem, optionDelta, placementEligible, resolveOptionGroup } from "../../src/lib/menuPricing.js";
 import { availabilityKey, QUALIFIED_MARKER } from "./menuAvailability.js";
 import { isToppingPlacement, isToppingsGroup, type ToppingPlacement } from "../../src/data/menuToppings.js";
 
@@ -79,10 +79,15 @@ export function priceLines(clientLines: ClientLine[], available?: Set<string> | 
       if (delta == null) return { ok: false, reason: `Unknown option "${o.name}" on ${line.itemName}` };
       options.push({ group, name: o.name, delta, placement });
     }
+    // Extra-topping charges cap at $6 a pie (menuToppings.ts). Applied here, after every
+    // option has been resolved against the catalog, so it can only ever lower what a line
+    // pays — never raise it — and the stored deltas the ticket, the receipt and a refire
+    // all print still sum to the unit price actually charged.
+    const priced = capLineOptions(item, options);
 
     // Quote-by-call items (e.g. market-price catering) carry no price and would
     // otherwise enter the order at $0 — they must be ordered by phone.
-    const unitPrice = item.basePrice + options.reduce((sum, o) => sum + o.delta, 0);
+    const unitPrice = item.basePrice + priced.reduce((sum, o) => sum + o.delta, 0);
     if (unitPrice <= 0) {
       return { ok: false, reason: `"${line.itemName}" is priced by quote — call (732) 377-2468 to order it` };
     }
@@ -91,7 +96,7 @@ export function priceLines(clientLines: ClientLine[], available?: Set<string> | 
       itemName: line.itemName,
       categoryId: line.categoryId ?? "",
       basePrice: item.basePrice,
-      options,
+      options: priced,
       quantity: line.quantity,
       notes: line.notes,
     });

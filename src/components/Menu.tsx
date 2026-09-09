@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MENU, PRICING_DISCLAIMER, MENU_VERIFIED } from "../data/menu";
-import type { MenuItem } from "../data/menu";
+import type { MenuCategory, MenuItem } from "../data/menu";
 import { LOCATION } from "../data/location";
 import { PhoneIcon } from "./Icons";
 import { useOrderingUI } from "../ordering/OrderingProvider";
@@ -70,6 +70,24 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
   );
 }
 
+/** The snapshot decides WHICH items are on the menu (reconciled against Clover nightly); the
+ * build decides what can be chosen on them. Options ride along in the snapshot only because it
+ * is a copy of the menu as of its last write, so between a deploy that changes a topping list
+ * and the next 4 AM refresh it would still offer choices the order API — which prices from the
+ * static catalog — no longer knows: a topping pulled from the menu could be ticked here and then
+ * refused at checkout as unknown. Items the build has never seen keep the snapshot's options. */
+function withStaticOptions(live: MenuCategory[]): MenuCategory[] {
+  const byKey = new Map<string, MenuItem>();
+  for (const c of MENU) for (const it of c.items) byKey.set(c.id + "\0" + it.name, it);
+  return live.map((c) => ({
+    ...c,
+    items: c.items.map((it) => {
+      const built = byKey.get(c.id + "\0" + it.name);
+      return built ? { ...it, options: built.options } : it;
+    }),
+  }));
+}
+
 export function Menu() {
   // Static menuGenerated.ts renders instantly; the live menu from /api/menu
   // (reconciled against Clover nightly, so items the shop pulled off the POS
@@ -81,7 +99,7 @@ export function Menu() {
     fetch("/api/menu")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (alive && d?.categories?.length) setMenu(d.categories as typeof MENU);
+        if (alive && d?.categories?.length) setMenu(withStaticOptions(d.categories as MenuCategory[]));
       })
       .catch(() => {});
     return () => {

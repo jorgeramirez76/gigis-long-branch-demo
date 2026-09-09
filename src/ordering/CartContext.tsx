@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { findCatalogItem, optionDelta, placementEligible } from "../lib/menuPricing";
+import { capLineOptions, findCatalogItem, optionDelta, placementEligible } from "../lib/menuPricing";
 import { isToppingPlacement } from "../data/menuToppings";
 import { cardPricingCents } from "../../api/lib/cardPricing.mjs";
 export { CARD_PRICING_LABEL } from "../../api/lib/cardPricing.mjs";
@@ -122,8 +122,10 @@ function repriceStoredLine(l: CartLine): CartLine | null {
     if (delta == null) return null;
     options.push({ ...o, placement, delta });
   }
-  if (item.basePrice + options.reduce((s, o) => s + o.delta, 0) <= 0) return null;
-  return { ...l, basePrice: item.basePrice, options };
+  // The $6-a-pie topping cap, from the same catalog the server applies it with.
+  const priced = capLineOptions(item, options);
+  if (item.basePrice + priced.reduce((s, o) => s + o.delta, 0) <= 0) return null;
+  return { ...l, basePrice: item.basePrice, options: priced };
 }
 
 let lineCounter = 0;

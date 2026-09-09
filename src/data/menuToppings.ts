@@ -52,6 +52,33 @@ export const TOPPING_CHARGE_CENTS = 300;
 export const HALF_TOPPING_CHARGE_CENTS = 200;
 
 /**
+ * Owner's rule (2026-09-08): extra-topping charges on one pie are capped at $6 — the first
+ * topping is $3, the second brings it to $6, and every topping after that is free. The cap
+ * covers the folded charge rate only (whole $3 / half $2): a topping with its own Clover price
+ * (Penne Pasta) is billed as a modifier, not as an extra-topping charge, and sits outside it.
+ * The register has no such cap — staff ringing a walk-in pie charge per topping as before.
+ */
+export const TOPPING_CHARGE_CAP_CENTS = 600;
+
+/**
+ * Apply the cap to one line's resolved options, in order. `chargePriced` says which options
+ * bill at the folded topping rate — the caller knows (placementEligible() against the catalog,
+ * or the item sheet's canPlace()). Deltas past the cap are cut to whatever room is left, then
+ * to $0, so the itemized option prices always sum to what the line is charged: the cart, the
+ * receipt, the kitchen ticket and a refire all print those deltas. Idempotent — a capped list
+ * re-caps to itself — so a line can pass through here on every hop (sheet → cart → server).
+ */
+export function capToppingCharges<T extends { delta: number }>(options: T[], chargePriced: (o: T) => boolean): T[] {
+  let charged = 0;
+  return options.map((o) => {
+    if (!chargePriced(o) || o.delta <= 0) return o;
+    const delta = Math.min(o.delta, Math.max(0, TOPPING_CHARGE_CAP_CENTS - charged));
+    charged += delta;
+    return delta === o.delta ? o : { ...o, delta };
+  });
+}
+
+/**
  * Where a topping goes on the pie. Only toppings priced by the folded charge
  * (i.e. delta === TOPPING_CHARGE_CENTS) offer a choice — a topping with its own
  * Clover price (Penne Pasta $1.04) has no half-pie rate on the POS, so it stays
@@ -84,7 +111,7 @@ const display = (cents: number) => `+$${(cents / 100).toFixed(2)}`;
 function fixBlurb(blurb?: string): string | undefined {
   return blurb?.replace(
     "Toppings and half-pie options under each pie.",
-    "Toppings can go on the whole pie or either half — pick per topping.",
+    "Toppings can go on the whole pie or either half — pick per topping. $3 each, capped at $6 a pie.",
   );
 }
 

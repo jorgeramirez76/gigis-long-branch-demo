@@ -199,3 +199,31 @@ toppings-only split is gone; it is the same idea applied to everything.
   and at checkout. Note for Jorge: card-network rules (Visa in particular) cap a stated
   surcharge at 3%; the register's cash-discount framing sidestepped that, an itemized 4% line
   does not. Worth a word with the processor before this goes live.
+
+## Extra toppings: $3 each, capped at $6 a pie (2026-09-08)
+
+Per Jorge: one extra topping is $3, two are $6, and anything past two stays at $6 — the third,
+fourth, seventh topping are free. The register does NOT do this; staff ringing a walk-in pie still
+charge per topping, so a phoned-in "same as my online order" can come out higher at the counter.
+
+- **One rule:** `TOPPING_CHARGE_CAP_CENTS` + `capToppingCharges()` in `src/data/menuToppings.ts`;
+  `capLineOptions()` in `src/lib/menuPricing.ts` binds it to the catalog's own charge-priced test
+  (`placementEligible`). Applied on every hop — the item sheet's button and `add()`
+  (`ItemModal.tsx`), the cart's restore re-price (`CartContext.repriceStoredLine`) and the order
+  API (`menuCatalog.priceLines`) — and idempotent, so the same line re-caps to itself.
+- **What counts:** the folded charge rate only — $3 whole / $2 half. Half toppings share the same
+  $6 (three halves = $6, a fourth is free; $3 + $2 + $2 bills $3 + $2 + $1). A topping with its
+  own Clover price (Penne Pasta $1) is a modifier, not an extra-topping charge, and is outside the
+  cap; so is everything that isn't in a Toppings group.
+- **How it shows:** the cap comes off the LATER toppings' deltas (first two full price, then
+  whatever room is left, then $0), never as a separate discount line — so the itemized cart,
+  receipt, kitchen ticket and refire all still sum to the unit price charged, and `expectedTotal`
+  matches to the cent. The item sheet says so next to the toppings ("cap at $6.00 — after two,
+  the rest are free") and the pizza blurb carries it too.
+- **Removed toppings (same day):** Brazil Ricotta, Corn and Hard Egg are off the online menu —
+  `EXCLUDED_TOPPINGS` in `scripts/build-menu.py` drops them at generation so a Clover re-pull can't
+  put them back. They are still in Clover; only the website stops offering them. The nightly
+  snapshot copies the menu as of its last write, so `Menu.tsx` now takes each item's options from
+  the build rather than the snapshot — otherwise a pulled topping would stay tickable until the
+  next 4 AM refresh and then be refused at checkout as unknown.
+- **Tests:** `tests/topping-cap.test.ts`.

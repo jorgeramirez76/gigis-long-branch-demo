@@ -105,6 +105,13 @@ the debugger — use the REST API (`curl`, key in `.env.crm.local`).
 `printf '+1<store manager cell>' | npx vercel env add STAFF_ALERT_PHONE production`
 (use Tommy/Ken's line, not a customer-facing number).
 
+### 4b) New-member alerts — ✅ TEXT to Tommy (2026-09-09)
+When a VIP signup is verified, the store gets a text (name, phone, email, free-pie code)
+at `VIP_SIGNUP_ALERT_PHONE` — Tommy's cell, set in the Vercel prod env per Jorge. The
+email to `STAFF_ALERT_EMAIL` is now only a fallback, sent (and flagged) if the text
+could not go out. Code: `api/lib/vipStaffNotify.ts`; `/api/admin/stats` → `config`
+shows whether the number is set.
+
 ### 5) Real dish photos — OWNER
 Gallery still has 5 Unsplash placeholders; breakfast photos are the poster's
 stock shots. Swap as real photos arrive.

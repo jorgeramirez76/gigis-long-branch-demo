@@ -51,10 +51,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       broadcasts: broadcasts.rows[0],
       channels: { sms: smsConfigured(), email: emailConfigured() },
       // Env sanity for ops (admin-gated): the base URL baked into email unsub links,
-      // and whether staff lost-order alerts are armed.
+      // whether staff lost-order alerts are armed, and whether new-member texts go to the store.
       config: {
         publicBaseUrl: process.env.PUBLIC_BASE_URL || null,
         staffAlertPhone: !!process.env.STAFF_ALERT_PHONE,
+        vipSignupAlertPhone: !!process.env.VIP_SIGNUP_ALERT_PHONE,
       },
     });
   } catch (err) {

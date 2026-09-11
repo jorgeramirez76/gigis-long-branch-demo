@@ -141,16 +141,29 @@ export function Menu() {
         <div className="mx-auto max-w-2xl text-center" data-reveal>
           <span className="eyebrow">The full menu</span>
           <h2 className="mt-3 text-2xl md:text-3xl">Recognized for our pizza</h2>
+              <div className="mt-5 grid gap-4 md:grid-cols-2">
+              <a
+                href="https://www.nj.com/life-and-culture/g66l-2019/10/abdd9e70a07436/njs-best-new-pizzerias-20-delicious-spots-you-need-to-try.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-full flex-col rounded-2xl border border-[var(--color-brand-red)]/60 bg-[var(--color-panel)] px-5 py-5 transition hover:border-[var(--color-action-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+              >
+                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-action-text)]">Featured in NJ.com</span>
+                <span className="mt-2 block font-serif text-xl font-semibold text-[var(--color-copy)] md:text-2xl">N.J.’s best new pizzerias: 20 delicious spots you need to try</span>
+                <span className="mt-3 block text-xs text-[var(--color-copy-muted)]">Sea Bright location · Peter Genovese · October 2019</span>
+                <span className="mt-auto block pt-3 text-sm font-semibold text-[var(--color-action-text)]">Read the feature ↗</span>
+              </a>
               <a
                 href="https://thelocalgirl.com/jerseyshore/pizza-restaurants-jersey-shore-nj/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 block rounded-2xl border border-[var(--color-brand-red)]/60 bg-[var(--color-panel)] px-5 py-5 transition hover:border-[var(--color-action-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                className="flex h-full flex-col rounded-2xl border border-[var(--color-brand-red)]/60 bg-[var(--color-panel)] px-5 py-5 transition hover:border-[var(--color-action-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
               >
                 <span className="block text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-action-text)]">Featured in The Jersey Shore Girl</span>
                 <span className="mt-2 block font-serif text-xl font-semibold text-[var(--color-copy)] md:text-2xl">The Best Pizza Spots at the Jersey Shore</span>
-                <span className="mt-3 block text-sm font-semibold text-[var(--color-action-text)]">Read the feature ↗</span>
+                <span className="mt-auto block pt-3 text-sm font-semibold text-[var(--color-action-text)]">Read the feature ↗</span>
               </a>
+              </div>
           <p className="mt-4 text-base text-[var(--color-copy-soft)] md:text-lg">
             NY pies, Grandma squares, specialty pizzas, heroes, pasta, and Italian
             dinners — plus all-day breakfast and gluten-free &amp; vegan pizza. Straight

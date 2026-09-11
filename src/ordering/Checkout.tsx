@@ -688,13 +688,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       <Shell onClose={onClose} title={confirmed.routingIssue ? "Please call the store" : confirmed.duplicate ? "Order already placed" : "Order received"}>
         <div className="flex-1 space-y-4 overflow-y-auto p-6 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-brand-red)]/10">
-            <svg viewBox="0 0 24 24" className="h-8 w-8 text-[var(--color-brand-red)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" className="h-8 w-8 text-[var(--color-action-text)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               {confirmed.routingIssue ? <path d="M12 8v5M12 17h.01M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" /> : <path d="M20 6 9 17l-5-5" />}
             </svg>
           </div>
           <div>
-            <h3 className="font-display text-3xl text-[var(--color-ink)]">Thanks, {name.split(" ")[0] || "friend"}!</h3>
-            <p className="mt-2 text-[var(--color-ink-soft)]">
+            <h3 className="font-display text-3xl text-[var(--color-copy)]">Thanks, {name.split(" ")[0] || "friend"}!</h3>
+            <p className="mt-2 text-[var(--color-copy-soft)]">
               {confirmed.routingIssue
                 ? confirmed.paid
                   ? `We have your payment, but we couldn't confirm the kitchen received your ${confirmed.fulfillment} order.`
@@ -709,25 +709,25 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               replay gets none either — the original order's clock ran long ago. */}
           {!confirmed.routingIssue && !confirmed.duplicate && (
             <div className="rounded-2xl border-2 border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3.5">
-              <p className="text-base font-bold text-[var(--color-ink)]">
+              <p className="text-base font-bold text-[var(--color-copy)]">
                 ⏱ {readyMessage(confirmed.units, confirmed.fulfillment)}
               </p>
             </div>
           )}
-          <div className="rounded-2xl bg-white p-4 text-sm shadow-[var(--shadow-sm)]">
+          <div className="rounded-2xl bg-[var(--color-panel)] p-4 text-sm shadow-[var(--shadow-sm)]">
             {confirmed.discount ? (
-              <div className="mb-1 flex justify-between"><span className="text-[var(--color-ink-soft)]">VIP free pie</span><span className="font-semibold">−{money(confirmed.discount)}</span></div>
+              <div className="mb-1 flex justify-between"><span className="text-[var(--color-copy-soft)]">VIP free pie</span><span className="font-semibold">−{money(confirmed.discount)}</span></div>
             ) : null}
-            <div className="flex justify-between"><span className="text-[var(--color-ink-soft)]">Total</span><span className="font-bold">{money(confirmed.total)}</span></div>
-            {confirmed.orderId && <div className="mt-1 flex justify-between"><span className="text-[var(--color-ink-soft)]">Order #</span><span className="font-mono text-xs">{confirmed.orderId.slice(-8).toUpperCase()}</span></div>}
+            <div className="flex justify-between"><span className="text-[var(--color-copy-soft)]">Total</span><span className="font-bold">{money(confirmed.total)}</span></div>
+            {confirmed.orderId && <div className="mt-1 flex justify-between"><span className="text-[var(--color-copy-soft)]">Order #</span><span className="font-mono text-xs">{confirmed.orderId.slice(-8).toUpperCase()}</span></div>}
           </div>
           {confirmed.routingIssue && (
-            <p className="rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
+            <p className="rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-copy)]">
               {/* Never assert the payment landed on our own authority: the uncertain-payment
                   branch returns paid:false precisely because Clover may or may not hold the
                   capture. Say what the server said, and only fall back when it said nothing. */}
               {confirmed.message ?? "Your payment went through."} Please call{" "}
-              <a className="font-semibold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
+              <a className="font-semibold text-[var(--color-action-text)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
               to confirm we received it.
             </p>
           )}
@@ -771,12 +771,12 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               initialConsents={vipSms || vipEmail ? { sms: vipSms, email: vipEmail } : undefined}
             />
           ) : null}
-          <p className="text-xs text-[var(--color-ink)]/50">
+          <p className="text-xs text-[var(--color-copy-muted)]">
             Questions? Call the shop at{" "}
-            <a className="font-semibold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>.
+            <a className="font-semibold text-[var(--color-action-text)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>.
           </p>
         </div>
-        <div className="border-t border-[var(--color-ink)]/10 bg-white p-5">
+        <div className="border-t border-[var(--color-line)] bg-[var(--color-panel)] p-5">
           <button type="button" onClick={onClose} className="w-full rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)]">
             Done
           </button>
@@ -824,7 +824,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     <Shell onClose={onClose} title="Checkout" closeDisabled={frozen}>
       <div className="flex-1 space-y-5 overflow-y-auto p-5">
         {storeClosed && (
-          <div className="rounded-2xl border border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
+          <div className="rounded-2xl border border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-copy)]">
             <span className="font-bold">Online ordering is closed right now.</span> We take web orders daily from
             10 AM to 11 PM. The counter stays open later on Thursday through Sunday — call{" "}
             {LOCATION.phone} and we'll take care of you. Your cart will be saved!
@@ -840,7 +840,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           disabled={frozen}
         />
         {!deliveryOpen && !storeClosed && (
-          <p className="-mt-1 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-2.5 text-sm text-[var(--color-ink)]">
+          <p className="-mt-1 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-2.5 text-sm text-[var(--color-copy)]">
             {deliveryClosedReason()}
           </p>
         )}
@@ -854,8 +854,8 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             <>
               <Field label="Delivery address" value={address} onChange={setAddress} placeholder="Street and apt" required disabled={frozen} maxLength={120} />
               <label className="block">
-                <span className="text-sm font-semibold text-[var(--color-ink-soft)]">
-                  Town<span className="text-[var(--color-brand-red)]"> *</span>
+                <span className="text-sm font-semibold text-[var(--color-copy-soft)]">
+                  Town<span className="text-[var(--color-action-text)]"> *</span>
                 </span>
                 <select
                   value={town}
@@ -863,7 +863,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   required
                   aria-required
                   disabled={frozen}
-                  className="mt-1 w-full rounded-xl border border-[var(--color-ink)]/15 bg-white px-4 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                  className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
                 >
                   <option value="">Choose your town…</option>
                   {DELIVERY_TOWNS.map((t) => (
@@ -872,7 +872,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                     </option>
                   ))}
                 </select>
-                <span className="mt-1 block text-xs text-[var(--color-ink)]/55">
+                <span className="mt-1 block text-xs text-[var(--color-copy-muted)]">
                   Don't see your town? Give us a call — we may still be able to help.
                 </span>
               </label>
@@ -886,12 +886,12 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             A2P/TCPA require an affirmative opt-in. Nothing in this block ever gates the
             pay button. Long Branch households dedupe on street+city+state+ZIP, so the
             block asks for exactly what that rule needs and nothing more. */}
-        <div className="rounded-2xl border border-[var(--color-gold,#c89441)]/50 bg-white p-4 shadow-sm">
-          <p className="text-sm font-bold text-[var(--color-ink)]">🍕 Get a FREE Plain Pie on your next pickup order</p>
-          <p className="mt-0.5 text-xs text-[var(--color-ink-soft)]">
+        <div className="rounded-2xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-panel)] p-4 shadow-sm">
+          <p className="text-sm font-bold text-[var(--color-copy)]">🍕 Get a FREE Plain Pie on your next pickup order</p>
+          <p className="mt-0.5 text-xs text-[var(--color-copy-soft)]">
             Join Gigi's VIP Club — we'll email your free-pie code right after this order.
           </p>
-          <div className="mt-2.5 space-y-2 text-sm text-[var(--color-ink)]">
+          <div className="mt-2.5 space-y-2 text-sm text-[var(--color-copy)]">
             <label className="flex items-start gap-2.5">
               <input type="checkbox" checked={vipSms} disabled={frozen} onChange={(e) => setVipSms(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0" />
               <span>Text me deals</span>
@@ -914,7 +914,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                       autoComplete="street-address"
                       disabled={frozen}
                       maxLength={160}
-                      className="mt-1 w-full rounded-xl border border-[var(--color-ink)]/15 bg-white px-4 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                      className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
                     />
                     <input
                       type="text"
@@ -924,7 +924,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                       autoComplete="address-line2"
                       disabled={frozen}
                       maxLength={40}
-                      className="mt-1 w-20 shrink-0 rounded-xl border border-[var(--color-ink)]/15 bg-white px-4 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                      className="mt-1 w-20 shrink-0 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
                     />
                   </div>
                   <input
@@ -935,7 +935,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                     autoComplete="address-level2"
                     disabled={frozen}
                     maxLength={60}
-                    className="mt-1 w-full rounded-xl border border-[var(--color-ink)]/15 bg-white px-4 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                    className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
                   />
                 </>
               )}
@@ -948,18 +948,18 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 autoComplete="postal-code"
                 disabled={frozen}
                 maxLength={10}
-                className="mt-1 w-full rounded-xl border border-[var(--color-ink)]/15 bg-white px-4 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
               />
             </div>
           )}
           {/* The disclosure at the point of consent — the same pinned CONSENT_TEXT every other
               signup surface shows unconditionally, and the server verifies was attested. */}
-          <p className="mt-2 text-[10px] leading-relaxed text-[var(--color-ink)]/55">{CONSENT_TEXT}</p>
+          <p className="mt-2 text-[10px] leading-relaxed text-[var(--color-copy-muted)]">{CONSENT_TEXT}</p>
         </div>
 
         {/* Tip */}
         <div>
-          <p className="mb-2 text-sm font-bold text-[var(--color-ink)]">Add a tip</p>
+          <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Add a tip</p>
           <div className="grid grid-cols-4 gap-2">
             {TIP_PCTS.map((p) => (
               <button
@@ -974,7 +974,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   setTipPct(p);
                 }}
                 className={`rounded-xl border py-2.5 text-sm font-semibold transition disabled:opacity-60 ${
-                  tipPct === p ? "border-[var(--color-brand-red)] bg-[var(--color-brand-red)] text-white" : "border-[var(--color-ink)]/15 bg-white text-[var(--color-ink)]"
+                  tipPct === p ? "border-[var(--color-brand-red)] bg-[var(--color-brand-red)] text-white" : "border-[var(--color-line)] bg-[var(--color-panel)] text-[var(--color-copy)]"
                 }`}
               >
                 {p === 0 ? "None" : `${p}%`}
@@ -988,9 +988,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             order is now charged before it reaches the kitchen, and api/order/create.ts refuses any
             other payment method, so this is not merely a hidden option. */}
         <div>
-          <p className="mb-2 text-sm font-bold text-[var(--color-ink)]">Payment</p>
+          <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Payment</p>
           {CARD_ENABLED ? (
-            <div className="mt-1 space-y-2.5 rounded-2xl bg-white p-4 shadow-[var(--shadow-sm)]">
+            <div className="mt-1 space-y-2.5 rounded-2xl bg-[var(--color-panel)] p-4 shadow-[var(--shadow-sm)]">
               {applePayOk && (
                 <div className="space-y-2">
                   {/* The button is a Clover-hosted iframe, so it can't be
@@ -998,17 +998,17 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   <div className={applePayBlocked ? "pointer-events-none opacity-40" : ""}>
                     <div ref={applePayMountRef} className="h-[46px] w-full overflow-hidden rounded-xl" />
                   </div>
-                  <p className="text-center text-[11px] text-[var(--color-ink)]/60">
+                  <p className="text-center text-[11px] text-[var(--color-copy-muted)]">
                     {applePayBlocked
                       ? "Fill in your details above to use Apple Pay."
                       : "One tap — no card typing."}
                   </p>
                   <div className="flex items-center gap-3 pt-1">
-                    <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                    <span className="h-px flex-1 bg-[var(--color-chrome)]/10" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-copy-muted)]">
                       or pay by card
                     </span>
-                    <span className="h-px flex-1 bg-[var(--color-ink)]/10" />
+                    <span className="h-px flex-1 bg-[var(--color-chrome)]/10" />
                   </div>
                 </div>
               )}
@@ -1018,15 +1018,15 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 <CardField label="CVV" innerRef={cvvRef} />
               </div>
               <CardField label="ZIP" innerRef={postalRef} />
-              {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-ink)]/60">Loading secure card fields…</p>}
+              {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-copy-muted)]">Loading secure card fields…</p>}
               {cardInitFailed && (
-                <div role="alert" className="rounded-xl bg-[var(--color-brand-red)]/8 px-3 py-2.5 text-xs text-[var(--color-ink)]">
+                <div role="alert" className="rounded-xl bg-[var(--color-brand-red)]/8 px-3 py-2.5 text-xs text-[var(--color-copy)]">
                   Card payment isn't loading right now. Please reload the page, or call{" "}
-                  <a className="font-bold text-[var(--color-brand-red)] underline" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
+                  <a className="font-bold text-[var(--color-action-text)] underline" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
                   and we'll take your order over the phone.
                 </div>
               )}
-              <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-ink)]/60">
+              <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-copy-muted)]">
                 <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                 Encrypted &amp; processed securely. We never see your card number.
               </p>
@@ -1034,9 +1034,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           ) : (
             /* Card payments not configured — with no pay-later path left, the phone is the only
                honest thing to offer. */
-            <div role="alert" className="rounded-2xl bg-white p-4 text-sm text-[var(--color-ink-soft)] shadow-[var(--shadow-sm)]">
+            <div role="alert" className="rounded-2xl bg-[var(--color-panel)] p-4 text-sm text-[var(--color-copy-soft)] shadow-[var(--shadow-sm)]">
               Online payment isn't available right now, and website orders are prepaid. Please call{" "}
-              <a className="font-bold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
+              <a className="font-bold text-[var(--color-action-text)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
               and we'll take your order.
             </div>
           )}
@@ -1044,7 +1044,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
 
         {/* Order note */}
         <div>
-          <label htmlFor="order-note" className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/55">
+          <label htmlFor="order-note" className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-copy-muted)]">
             Anything else? (optional)
           </label>
           <input
@@ -1054,19 +1054,19 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             onChange={(e) => setOrderNote(e.target.value)}
             maxLength={130}
             placeholder="Allergies, utensils, pickup notes…"
-            className="w-full rounded-xl border border-[var(--color-cream-darker)] bg-white px-4 py-3 text-sm focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-sm focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
           />
         </div>
 
         {/* VIP free-pie code */}
         <div>
-          <p className="mb-2 text-sm font-bold text-[var(--color-ink)]">VIP free-pie code</p>
+          <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">VIP free-pie code</p>
           {fulfillment === "delivery" ? (
-            <p className="rounded-xl bg-[var(--color-cream)] px-4 py-3 text-sm text-[var(--color-ink-soft)]">
+            <p className="rounded-xl bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy-soft)]">
               Free-pie codes are good on <strong>pickup orders only</strong> — switch to pickup to redeem yours.
             </p>
           ) : promo ? (
-            <div className="rounded-xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-cream)] px-4 py-3 text-sm text-[var(--color-ink)]">
+            <div className="rounded-xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy)]">
               <div className="flex items-center justify-between gap-3">
                 <span>
                   ✓ <strong className="font-mono">{promo.code}</strong> — free {FREE_PIE_ITEM}
@@ -1079,13 +1079,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                     setPromo(null);
                     setPromoMsg("");
                   }}
-                  className="shrink-0 text-xs font-bold text-[var(--color-brand-red)] underline"
+                  className="shrink-0 text-xs font-bold text-[var(--color-action-text)] underline"
                 >
                   Remove
                 </button>
               </div>
               {!hasFreePie && (
-                <p className="mt-1.5 text-xs text-[var(--color-brand-red)]">
+                <p className="mt-1.5 text-xs text-[var(--color-action-text)]">
                   Add a {FREE_PIE_ITEM} to your cart and it comes off the total here.
                 </p>
               )}
@@ -1108,23 +1108,23 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   autoCapitalize="characters"
                   autoCorrect="off"
                   spellCheck={false}
-                  className="w-full rounded-xl border border-[var(--color-cream-darker)] bg-white px-4 py-3 font-mono text-sm uppercase focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
+                  className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 font-mono text-sm uppercase focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
                 />
                 <button
                   type="button"
                   onClick={() => void applyPromo()}
                   disabled={frozen || promoChecking || !promoInput.trim()}
-                  className="shrink-0 rounded-xl border border-[var(--color-brand-red)] px-4 py-3 text-sm font-bold text-[var(--color-brand-red)] transition hover:bg-[var(--color-brand-red)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                  className="shrink-0 rounded-xl border border-[var(--color-brand-red)] px-4 py-3 text-sm font-bold text-[var(--color-action-text)] transition hover:bg-[var(--color-brand-red)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {promoChecking ? "Checking…" : "Apply"}
                 </button>
               </div>
               {promoMsg && (
-                <p role="alert" className="mt-1.5 text-xs text-[var(--color-brand-red)]">
+                <p role="alert" className="mt-1.5 text-xs text-[var(--color-action-text)]">
                   {promoMsg}
                 </p>
               )}
-              <p className="mt-1.5 text-xs text-[var(--color-ink)]/55">
+              <p className="mt-1.5 text-xs text-[var(--color-copy-muted)]">
                 Got a VIP welcome code? Redeem your free {FREE_PIE_ITEM} here — pickup orders only.
               </p>
             </>
@@ -1132,20 +1132,20 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Review */}
-        <div className="rounded-2xl bg-white p-4 shadow-[var(--shadow-sm)]">
-          <p className="mb-2 text-sm font-bold text-[var(--color-ink)]">Your order</p>
+        <div className="rounded-2xl bg-[var(--color-panel)] p-4 shadow-[var(--shadow-sm)]">
+          <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Your order</p>
           <ul className="space-y-1.5 text-sm">
             {cart.lines.map((l) => (
-              <li key={l.lineId} className="flex justify-between gap-3 text-[var(--color-ink-soft)]">
+              <li key={l.lineId} className="flex justify-between gap-3 text-[var(--color-copy-soft)]">
                 <span className="min-w-0">
                   {l.quantity}× {l.itemName}
-                  {l.options.length > 0 && <span className="text-[var(--color-ink)]/60"> — {l.options.map((o) => o.name + placementSuffix(o.placement)).join(", ")}</span>}
+                  {l.options.length > 0 && <span className="text-[var(--color-copy-muted)]"> — {l.options.map((o) => o.name + placementSuffix(o.placement)).join(", ")}</span>}
                 </span>
                 <span className="shrink-0">{money(lineUnitPrice(l) * l.quantity)}</span>
               </li>
             ))}
           </ul>
-          <dl className="mt-3 space-y-1 border-t border-[var(--color-ink)]/8 pt-3 text-sm">
+          <dl className="mt-3 space-y-1 border-t border-[var(--color-line)] pt-3 text-sm">
             <Row label="Subtotal" value={money(cart.subtotal)} />
             {promoDiscount > 0 && promo && <Row label={`VIP free pie (${promo.code})`} value={`−${money(promoDiscount)}`} />}
             <Row label={CARD_PRICING_LABEL} value={money(cardPricing)} />
@@ -1157,20 +1157,20 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               ))}
             <Row label="NJ tax (6.625%)" value={money(tax)} />
             {tip > 0 && <Row label={`Tip (${tipPct}%)`} value={money(tip)} />}
-            <div className="flex justify-between pt-1 text-base font-bold text-[var(--color-ink)]">
+            <div className="flex justify-between pt-1 text-base font-bold text-[var(--color-copy)]">
               <dt>Total</dt><dd>{money(grandTotal)}</dd>
             </div>
           </dl>
         </div>
 
         {status === "error" && (
-          <p role="alert" className="rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
-            {errorMsg} You can also call <a className="font-semibold text-[var(--color-brand-red)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>.
+          <p role="alert" className="rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-copy)]">
+            {errorMsg} You can also call <a className="font-semibold text-[var(--color-action-text)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>.
           </p>
         )}
       </div>
 
-      <div className="border-t border-[var(--color-ink)]/10 bg-white p-5">
+      <div className="border-t border-[var(--color-line)] bg-[var(--color-panel)] p-5">
         {TURNSTILE_ON && (
           <Turnstile onToken={setTurnstileToken} resetSignal={turnstileReset} onLoadFailed={setTurnstileFailed} />
         )}
@@ -1183,7 +1183,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               setTurnstileFailed(false);
               setTurnstileReset((n) => n + 1);
             }}
-            className="mb-2 w-full rounded-full border border-[var(--color-ink)]/15 px-4 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-ink)]/70"
+            className="mb-2 w-full rounded-full border border-[var(--color-line)] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-copy-muted)]"
           >
             Retry security check
           </button>
@@ -1206,19 +1206,19 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           <span>{money(grandTotal)}</span>
         </button>
         {blockReason && (
-          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-brand-red)]">{blockReason}</p>
+          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-action-text)]">{blockReason}</p>
         )}
         {submitting && (
-          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-brand-red)]">
+          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-action-text)]">
             Hang tight — sending your order. Please don&apos;t close this window.
           </p>
         )}
         {attemptUncertain && !submitting && (
-          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-brand-red)]">
+          <p className="mt-2 text-center text-xs font-semibold text-[var(--color-action-text)]">
             Your order details are locked while we check the earlier attempt. Tap Pay &amp; place order again, or call the store.
           </p>
         )}
-        <p className="mt-2 text-center text-[11px] text-[var(--color-ink)]/60">
+        <p className="mt-2 text-center text-[11px] text-[var(--color-copy-muted)]">
           {payment === "card"
             ? "Your card is charged securely. Order goes straight to Gigi's kitchen."
             : "Order goes straight to Gigi's kitchen once your card is charged."}
@@ -1301,11 +1301,11 @@ function Shell({ onClose, title, children, closeDisabled = false }: { onClose: (
     >
       <div
         ref={panelRef}
-        className="flex max-h-[94vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bg-[var(--color-cream)] shadow-[var(--shadow-lg)] sm:rounded-3xl"
+        className="flex max-h-[94vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bg-[var(--color-page)] shadow-[var(--shadow-lg)] sm:rounded-3xl"
       >
-        <header className="flex items-center justify-between border-b border-[var(--color-ink)]/10 bg-white px-5 py-4">
-          <h2 className="font-display text-2xl text-[var(--color-ink)]">{title}</h2>
-          <button type="button" onClick={onClose} disabled={closeDisabled} aria-label="Close" className="rounded-full p-2 text-[var(--color-ink)]/50 hover:bg-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-30">
+        <header className="flex items-center justify-between border-b border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-4">
+          <h2 className="font-display text-2xl text-[var(--color-copy)]">{title}</h2>
+          <button type="button" onClick={onClose} disabled={closeDisabled} aria-label="Close" className="rounded-full p-2 text-[var(--color-copy-muted)] hover:bg-[var(--color-page)] disabled:cursor-not-allowed disabled:opacity-30">
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
           </button>
         </header>
@@ -1330,7 +1330,7 @@ function Segmented({
   disabled?: boolean;
 }) {
   return (
-    <div role="group" aria-label="Fulfillment method" className="grid grid-cols-2 gap-2 rounded-full bg-white p-1 shadow-[var(--shadow-sm)]">
+    <div role="group" aria-label="Fulfillment method" className="grid grid-cols-2 gap-2 rounded-full bg-[var(--color-panel)] p-1 shadow-[var(--shadow-sm)]">
       {options.map((f) => {
         const off = disabled || f === disabledOption;
         return (
@@ -1344,10 +1344,10 @@ function Segmented({
             title={off ? "Delivery stops at 10 PM" : undefined}
             className={`rounded-full py-2.5 text-sm font-bold capitalize transition ${
               off
-                ? "cursor-not-allowed text-[var(--color-ink)]/35"
+                ? "cursor-not-allowed text-[var(--color-copy)]/35"
                 : value === f
                   ? "bg-[var(--color-brand-red)] text-white"
-                  : "text-[var(--color-ink)]"
+                  : "text-[var(--color-copy)]"
             }`}
           >
             {f}
@@ -1362,14 +1362,14 @@ function Segmented({
 function CardField({ label, innerRef }: { label: string; innerRef: React.RefObject<HTMLDivElement> }) {
   return (
     <div>
-      <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/55">{label}</label>
+      <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-copy-muted)]">{label}</label>
       {/* Clover mounts a ~150px iframe in here. With min-h and vertical padding the box grew to
           ~176px, so the card section rendered about three times its intended height. Fix the box
           and clip it — never style the height from inside via the SDK's own style object: doing
           that on the Sea Bright site stopped clover.createToken() responding at all. */}
       <div
         ref={innerRef}
-        className="h-[46px] overflow-hidden rounded-xl border border-[var(--color-cream-darker)] bg-white px-3"
+        className="secure-card-field h-[46px] overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-3"
       />
     </div>
   );
@@ -1381,8 +1381,8 @@ function Field({
   const id = "checkout-" + label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/55">
-        {label}{required && <span className="text-[var(--color-brand-red)]"> *</span>}
+      <label htmlFor={id} className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-copy-muted)]">
+        {label}{required && <span className="text-[var(--color-action-text)]"> *</span>}
       </label>
       <input
         id={id}
@@ -1394,7 +1394,7 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-[var(--color-cream-darker)] bg-white px-4 py-3 text-sm focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
+        className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-sm focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
       />
     </div>
   );
@@ -1402,7 +1402,7 @@ function Field({
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between text-[var(--color-ink-soft)]">
+    <div className="flex justify-between text-[var(--color-copy-soft)]">
       <dt>{label}</dt><dd>{value}</dd>
     </div>
   );

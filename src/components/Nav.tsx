@@ -50,7 +50,7 @@ export function Nav() {
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
         scrolled
-          ? "bg-[var(--color-cream)]/95 shadow-[0_4px_20px_rgba(0,0,0,0.06)] backdrop-blur-md"
+          ? "bg-[var(--color-chrome)]/95 shadow-[0_4px_20px_rgba(0,0,0,0.06)] backdrop-blur-md"
           : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
     >
@@ -71,8 +71,8 @@ export function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className={`text-sm font-semibold uppercase tracking-[0.18em] transition hover:text-[var(--color-brand-red)] ${
-                scrolled ? "text-[var(--color-ink-soft)]" : "text-white/95 drop-shadow"
+              className={`text-sm font-semibold uppercase tracking-[0.18em] transition hover:text-[var(--color-action-text)] ${
+                scrolled ? "text-[var(--color-copy-soft)]" : "text-white/95 drop-shadow"
               }`}
             >
               {l.label}
@@ -101,7 +101,7 @@ export function Nav() {
             aria-expanded={mobileOpen}
             className={`inline-flex items-center justify-center rounded-full border p-3 transition ${
               scrolled
-                ? "border-[var(--color-ink)]/15 bg-white text-[var(--color-ink)]"
+                ? "border-[var(--color-line)] bg-[var(--color-panel)] text-[var(--color-copy)]"
                 : "border-white/40 bg-black/25 text-white backdrop-blur"
             }`}
           >
@@ -123,7 +123,7 @@ export function Nav() {
         />
         {/* sheet */}
         <div
-          className={`absolute inset-x-0 top-0 origin-top bg-[var(--color-cream)] px-6 pb-8 pt-6 shadow-[var(--shadow-lg)] transition-transform duration-300 ease-out ${
+          className={`absolute inset-x-0 top-0 origin-top bg-[var(--color-chrome)] px-6 pb-8 pt-6 shadow-[var(--shadow-lg)] transition-transform duration-300 ease-out ${
             mobileOpen ? "translate-y-0" : "-translate-y-full"
           }`}
         >
@@ -133,7 +133,7 @@ export function Nav() {
               type="button"
               onClick={() => setMobileOpen(false)}
               aria-label="Close menu"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-ink)]/15 bg-white"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)]"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M6 6l12 12M18 6L6 18" />
@@ -147,7 +147,7 @@ export function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setMobileOpen(false)}
-                className="border-b border-[var(--color-ink)]/10 py-4 font-display text-3xl text-[var(--color-ink)] transition hover:text-[var(--color-brand-red)]"
+                className="border-b border-[var(--color-line)] py-4 font-display text-3xl text-[var(--color-copy)] transition hover:text-[var(--color-action-text)]"
               >
                 {l.label}
               </a>

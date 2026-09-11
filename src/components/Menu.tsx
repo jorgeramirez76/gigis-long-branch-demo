@@ -17,23 +17,23 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
   const info = (
     <div className="min-w-0 flex-1">
       {categoryLabel && (
-        <p className="mb-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-brand-red)]/70">
+        <p className="mb-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-copy-muted)]">
           {categoryLabel}
         </p>
       )}
-      <p className="font-serif text-[17px] font-semibold text-[var(--color-ink)] md:text-lg">
+      <p className="font-serif text-[17px] font-semibold text-[var(--color-copy)] md:text-lg">
         {item.name}
         {item.popular && (
-          <span className="ml-2 inline-flex items-center rounded-full bg-[var(--color-brand-red)]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-brand-red)]">
+          <span className="ml-2 inline-flex items-center rounded-full bg-[var(--color-brand-red)]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-action-text)]">
             Popular
           </span>
         )}
       </p>
       {item.description && (
-        <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{item.description}</p>
+        <p className="mt-1 text-sm leading-relaxed text-[var(--color-copy-soft)]">{item.description}</p>
       )}
       {hasOptions && orderable && (
-        <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-brand-red)]/60">
+        <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-copy-muted)]">
           Customizable · toppings &amp; options
         </p>
       )}
@@ -42,9 +42,9 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
 
   if (!orderable) {
     return (
-      <li className="flex items-baseline justify-between gap-4 border-b border-dotted border-[var(--color-ink)]/15 pb-4">
+      <li className="flex items-baseline justify-between gap-4 border-b border-dotted border-[var(--color-line)] pb-4">
         {info}
-        <span className="shrink-0 text-xs font-medium uppercase tracking-wider text-[var(--color-ink)]/50">
+        <span className="shrink-0 text-xs font-medium uppercase tracking-wider text-[var(--color-copy-muted)]">
           Call to confirm
         </span>
       </li>
@@ -52,7 +52,7 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
   }
 
   return (
-    <li className="border-b border-dotted border-[var(--color-ink)]/15">
+    <li className="border-b border-dotted border-[var(--color-line)]">
       <button
         type="button"
         onClick={() => configureItem(item, categoryId)}
@@ -60,7 +60,7 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
       >
         {info}
         <span className="flex shrink-0 flex-col items-end gap-1.5">
-          <span className="font-display text-xl text-[var(--color-brand-red)]">{item.price}</span>
+          <span className="font-display text-xl text-[var(--color-copy)]">{item.price}</span>
           <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-brand-red)] px-3.5 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition group-hover/item:bg-[var(--color-brand-red-bright)]">
             Add +
           </span>
@@ -135,20 +135,20 @@ export function Menu() {
   return (
     <section
       id="menu"
-      className="scroll-mt-20 overflow-hidden bg-[var(--color-cream-dark)] py-20 md:py-28"
+      className="scroll-mt-20 overflow-hidden bg-[var(--color-page)] py-20 md:py-28"
     >
       <div className="container-x">
         <div className="mx-auto max-w-2xl text-center" data-reveal>
           <span className="eyebrow">The full menu</span>
           <h2 className="mt-3 text-4xl md:text-6xl">Our full Long Branch menu</h2>
-          <p className="mt-4 text-base text-[var(--color-ink-soft)] md:text-lg">
+          <p className="mt-4 text-base text-[var(--color-copy-soft)] md:text-lg">
             NY pies, Grandma squares, specialty pizzas, heroes, pasta, and Italian
             dinners — plus all-day breakfast and gluten-free &amp; vegan pizza. Straight
             from our kitchen, updated July 2026.
           </p>
           {/* NJ requires a card-price adjustment to be disclosed before checkout, so it is
               stated here, at the prices it applies to, and again in the item sheet and cart. */}
-          <p className="mt-3 text-sm text-[var(--color-ink)]/60">
+          <p className="mt-3 text-sm text-[var(--color-copy-muted)]">
             Prices shown are our cash prices. Online orders are paid by card, so 4% card
             pricing is added at checkout.
           </p>
@@ -163,13 +163,13 @@ export function Menu() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search the menu — “grandma”, “buffalo”, “parm”…"
               aria-label="Search the menu"
-              className="w-full rounded-full border border-[var(--color-cream-darker)] bg-white py-3 pl-11 pr-4 text-sm shadow-[var(--shadow-sm)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+              className="w-full rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] py-3 pl-11 pr-4 text-sm shadow-[var(--shadow-sm)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
             />
             <svg
               aria-hidden="true"
               viewBox="0 0 20 20"
               fill="none"
-              className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-ink-mute)]"
+              className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-copy-muted)]"
             >
               <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="2" />
               <path d="m14 14 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -197,7 +197,7 @@ export function Menu() {
                   className={`min-h-[44px] shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-200 md:px-5 md:py-2.5 ${
                     on
                       ? "bg-[var(--color-brand-red)] text-white shadow-[var(--shadow-red)]"
-                      : "bg-white text-[var(--color-ink)] hover:bg-[var(--color-brand-red)]/10 hover:text-[var(--color-brand-red)]"
+                      : "bg-[var(--color-panel)] text-[var(--color-copy)] hover:bg-[var(--color-brand-red)]/10 hover:text-[var(--color-action-text)]"
                   }`}
                 >
                   {c.name}
@@ -210,20 +210,20 @@ export function Menu() {
         {/* Panel */}
         <div
           ref={panelRef}
-          className="mt-10 rounded-3xl bg-white p-6 shadow-[var(--shadow-lg)] md:p-10"
+          className="mt-10 rounded-3xl bg-[var(--color-panel)] p-6 shadow-[var(--shadow-lg)] md:p-10"
           data-reveal
         >
           <div key={fadeKey} className="hero-in" style={{ animationDuration: "0.4s" }}>
             {searching ? (
               <>
-                <div className="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-b border-[var(--color-ink)]/8 pb-6">
+                <div className="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-b border-[var(--color-line)] pb-6">
                   <h3 className="font-display text-3xl md:text-4xl">
                     {results.length} {results.length === 1 ? "result" : "results"}
                   </h3>
                   <button
                     type="button"
                     onClick={() => setQuery("")}
-                    className="text-sm font-semibold text-[var(--color-brand-red)] underline"
+                    className="text-sm font-semibold text-[var(--color-action-text)] underline"
                   >
                     Clear search
                   </button>
@@ -235,7 +235,7 @@ export function Menu() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="py-6 text-center text-[var(--color-ink-soft)]">
+                  <p className="py-6 text-center text-[var(--color-copy-soft)]">
                     Nothing matches “{query.trim()}”. Try another word, browse the categories, or call{" "}
                     {LOCATION.phone}.
                   </p>
@@ -243,10 +243,10 @@ export function Menu() {
               </>
             ) : (
               <>
-                <div className="mb-8 border-b border-[var(--color-ink)]/8 pb-6">
+                <div className="mb-8 border-b border-[var(--color-line)] pb-6">
                   <h3 className="font-display text-3xl md:text-4xl">{active.name}</h3>
                   {active.blurb && (
-                    <p className="mt-2 text-sm text-[var(--color-ink-soft)] md:text-base">{active.blurb}</p>
+                    <p className="mt-2 text-sm text-[var(--color-copy-soft)] md:text-base">{active.blurb}</p>
                   )}
                 </div>
                 <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
@@ -259,7 +259,7 @@ export function Menu() {
           </div>
 
           {!MENU_VERIFIED && (
-            <p className="mt-10 rounded-xl bg-[var(--color-cream-dark)] p-5 text-center text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            <p className="mt-10 rounded-xl bg-[var(--color-page)] p-5 text-center text-sm leading-relaxed text-[var(--color-copy-soft)]">
               {PRICING_DISCLAIMER}
             </p>
           )}
@@ -280,7 +280,7 @@ export function Menu() {
           </button>
         </div>
         {MENU_VERIFIED && (
-          <p className="mt-6 text-center text-xs text-[var(--color-ink)]/50">{PRICING_DISCLAIMER}</p>
+          <p className="mt-6 text-center text-xs text-[var(--color-copy-muted)]">{PRICING_DISCLAIMER}</p>
         )}
       </div>
     </section>

@@ -11,7 +11,7 @@ export function ServiceArea() {
   return (
     <section
       aria-label="Service area"
-      className="relative overflow-hidden bg-[var(--color-cream-darker)] py-14 md:py-20"
+      className="relative overflow-hidden bg-[var(--color-chrome)] py-14 md:py-20"
     >
       {/* Italian tricolor hairline */}
       <div className="absolute inset-x-0 top-0 tricolor opacity-90" aria-hidden="true" />
@@ -24,12 +24,12 @@ export function ServiceArea() {
           </span>
           <h2 className="mt-3 text-3xl md:text-5xl">
             Long Branch and the
-            <span className="text-[var(--color-brand-red)]"> Jersey Shore neighborhood</span>
+            <span className="text-[var(--color-action-text)]"> Jersey Shore neighborhood</span>
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-soft)] md:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-[var(--color-copy-soft)] md:text-lg">
             Hot pies, fresh heroes, and full Italian dinners for pickup or
             delivery to{" "}
-            <span className="font-semibold text-[var(--color-ink)]">Long Branch</span>{" "}
+            <span className="font-semibold text-[var(--color-copy)]">Long Branch</span>{" "}
             and the surrounding 5-mile shore neighborhoods — order direct online,
             or call ahead and pick up at the counter.
           </p>
@@ -43,7 +43,7 @@ export function ServiceArea() {
           {SERVICE_AREAS.map((town) => (
             <li
               key={town}
-              className="rounded-full border border-[var(--color-ink)]/10 bg-white px-4 py-2 text-sm font-semibold text-[var(--color-ink-soft)] shadow-[var(--shadow-sm)]"
+              className="rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-2 text-sm font-semibold text-[var(--color-copy-soft)] shadow-[var(--shadow-sm)]"
             >
               {town}
             </li>

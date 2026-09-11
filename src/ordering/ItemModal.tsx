@@ -59,12 +59,12 @@ function GroupField({
   // chips — the kitchen ticket prints whatever is chosen here.
   const placeable = group.choices.filter((c) => selected.has(c.name) && canPlace(group, c.delta));
   return (
-    <fieldset className="border-t border-[var(--color-ink)]/8 pt-4">
+    <fieldset className="border-t border-[var(--color-line)] pt-4">
       <legend className="flex items-baseline gap-2 pb-2">
-        <span className="text-sm font-bold text-[var(--color-ink)]">{group.group}</span>
-        <span className="text-xs text-[var(--color-ink)]/60">
+        <span className="text-sm font-bold text-[var(--color-copy)]">{group.group}</span>
+        <span className="text-xs text-[var(--color-copy-muted)]">
           {group.rule ?? "Optional"}
-          {required && <span className="ml-1 font-semibold text-[var(--color-brand-red)]">*</span>}
+          {required && <span className="ml-1 font-semibold text-[var(--color-action-text)]">*</span>}
         </span>
       </legend>
       <div className="flex flex-wrap gap-2">
@@ -82,13 +82,13 @@ function GroupField({
                 on
                   ? "border-[var(--color-brand-red)] bg-[var(--color-brand-red)] text-white"
                   : disabled
-                    ? "cursor-not-allowed border-[var(--color-ink)]/10 text-[var(--color-ink)]/30"
-                    : "border-[var(--color-ink)]/15 text-[var(--color-ink)] hover:border-[var(--color-brand-red)]/50"
+                    ? "cursor-not-allowed border-[var(--color-line)] text-[var(--color-copy)]/30"
+                    : "border-[var(--color-line)] text-[var(--color-copy)] hover:border-[var(--color-brand-red)]/50"
               }`}
             >
               {c.name}
               {c.delta && (
-                <span className={on ? "text-white/80" : "font-semibold text-[var(--color-brand-red)]"}>
+                <span className={on ? "text-white/80" : "font-semibold text-[var(--color-action-text)]"}>
                   {canPlace(group, c.delta) ? TOPPING_DISPLAY_LABEL : c.delta}
                 </span>
               )}
@@ -97,13 +97,13 @@ function GroupField({
         })}
       </div>
       {placeable.length > 0 && (
-        <div className="mt-3 space-y-2 rounded-xl bg-[var(--color-cream)]/60 p-3">
+        <div className="mt-3 space-y-2 rounded-xl bg-[var(--color-page)]/60 p-3">
           {placeable.map((c) => {
             const current = placements[c.name] ?? "whole";
             return (
               <div key={c.name} className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-sm font-semibold text-[var(--color-ink)]">{c.name}</span>
-                <div className="flex rounded-full border border-[var(--color-ink)]/15 bg-white p-0.5" role="radiogroup" aria-label={`Where does ${c.name} go?`}>
+                <span className="text-sm font-semibold text-[var(--color-copy)]">{c.name}</span>
+                <div className="flex rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] p-0.5" role="radiogroup" aria-label={`Where does ${c.name} go?`}>
                   {PLACEMENTS.map((p) => {
                     const on = current === p.value;
                     return (
@@ -114,7 +114,7 @@ function GroupField({
                         aria-checked={on}
                         onClick={() => onPlacement(c.name, p.value)}
                         className={`rounded-full px-2.5 py-1 text-xs font-semibold transition ${
-                          on ? "bg-[var(--color-brand-red)] text-white" : "text-[var(--color-ink)]/70 hover:text-[var(--color-ink)]"
+                          on ? "bg-[var(--color-brand-red)] text-white" : "text-[var(--color-copy-muted)] hover:text-[var(--color-copy)]"
                         }`}
                       >
                         {p.label} {money(p.price).replace(".00", "")}
@@ -131,7 +131,7 @@ function GroupField({
         // NJ card-surcharge rules require the adjustment disclosed BEFORE checkout, so this
         // note rides with the prices it applies to — as does the topping cap, so a $0 third
         // topping in the cart reads as the deal it is rather than a glitch.
-        <p className="mt-2 text-xs text-[var(--color-ink)]/50">
+        <p className="mt-2 text-xs text-[var(--color-copy-muted)]">
           Toppings are {money(TOPPING_CHARGE_CENTS)} each ({money(HALF_TOPPING_CHARGE_CENTS)} on a half) and cap at{" "}
           {money(TOPPING_CHARGE_CAP_CENTS)} — after two, the rest are free. Cash prices shown — 4% card pricing is
           added at checkout.
@@ -284,22 +284,22 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
     >
       <div
         ref={panelRef}
-        className="flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bg-white shadow-[var(--shadow-lg)] sm:rounded-3xl"
+        className="flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bg-[var(--color-panel)] shadow-[var(--shadow-lg)] sm:rounded-3xl"
       >
-        <div className="flex items-start justify-between gap-4 border-b border-[var(--color-ink)]/8 p-5">
+        <div className="flex items-start justify-between gap-4 border-b border-[var(--color-line)] p-5">
           <div>
-            <h3 className="font-display text-2xl text-[var(--color-ink)]">{item.name}</h3>
+            <h3 className="font-display text-2xl text-[var(--color-copy)]">{item.name}</h3>
             {item.description && (
-              <p className="mt-1 text-sm text-[var(--color-ink-soft)]">{item.description}</p>
+              <p className="mt-1 text-sm text-[var(--color-copy-soft)]">{item.description}</p>
             )}
-            <p className="mt-1 font-bold text-[var(--color-brand-red)]">{money(basePrice)}</p>
-            <p className="mt-1 text-xs text-[var(--color-ink)]/50">Cash price — 4% card pricing is added at checkout.</p>
+            <p className="mt-1 font-bold text-[var(--color-action-text)]">{money(basePrice)}</p>
+            <p className="mt-1 text-xs text-[var(--color-copy-muted)]">Cash price — 4% card pricing is added at checkout.</p>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="shrink-0 rounded-full p-2 text-[var(--color-ink)]/50 hover:bg-[var(--color-cream)]"
+            className="shrink-0 rounded-full p-2 text-[var(--color-copy-muted)] hover:bg-[var(--color-page)]"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M18 6 6 18M6 6l12 12" />
@@ -318,8 +318,8 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
               onPlacement={(name, placement) => setPlacements((prev) => ({ ...prev, [name]: placement }))}
             />
           ))}
-          <div className="border-t border-[var(--color-ink)]/8 pt-4">
-            <label htmlFor="item-notes" className="mb-1.5 block text-sm font-bold text-[var(--color-ink)]">
+          <div className="border-t border-[var(--color-line)] pt-4">
+            <label htmlFor="item-notes" className="mb-1.5 block text-sm font-bold text-[var(--color-copy)]">
               Special instructions
             </label>
             <textarea
@@ -329,18 +329,18 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
               maxLength={500}
               rows={2}
               placeholder="e.g. well done, cut in squares, no onions…"
-              className="w-full resize-none rounded-xl border border-[var(--color-cream-darker)] bg-[var(--color-cream)]/40 px-3 py-2 text-sm focus:border-[var(--color-brand-red)] focus:outline-none"
+              className="w-full resize-none rounded-xl border border-[var(--color-line)] bg-[var(--color-page)]/40 px-3 py-2 text-sm focus:border-[var(--color-brand-red)] focus:outline-none"
             />
           </div>
         </div>
 
-        <div className="flex items-center gap-3 border-t border-[var(--color-ink)]/8 p-5">
-          <div className="flex items-center rounded-full border border-[var(--color-ink)]/15">
+        <div className="flex items-center gap-3 border-t border-[var(--color-line)] p-5">
+          <div className="flex items-center rounded-full border border-[var(--color-line)]">
             <button
               type="button"
               aria-label="Decrease quantity"
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="px-3.5 py-2 text-lg text-[var(--color-ink)] disabled:opacity-30"
+              className="px-3.5 py-2 text-lg text-[var(--color-copy)] disabled:opacity-30"
               disabled={quantity <= 1}
             >
               −
@@ -351,7 +351,7 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
               aria-label="Increase quantity"
               onClick={() => setQuantity((q) => Math.min(MAX_LINE_QTY, q + 1))}
               disabled={quantity >= MAX_LINE_QTY}
-              className="px-3.5 py-2 text-lg text-[var(--color-ink)] disabled:opacity-30"
+              className="px-3.5 py-2 text-lg text-[var(--color-copy)] disabled:opacity-30"
             >
               +
             </button>

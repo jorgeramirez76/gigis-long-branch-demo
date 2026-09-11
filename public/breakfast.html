@@ -30,7 +30,7 @@
       { "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://gigislongbranch.com/" }, { "@type": "ListItem", "position": 2, "name": "Breakfast Menu", "item": "https://gigislongbranch.com/breakfast" } ] }
     ] }
     </script>
-    <meta name="theme-color" content="#f5eddc" />
+    <meta name="theme-color" content="#232323" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,15 +40,15 @@
     />
     <style>
       :root {
-        --red: #b0281f;
-        --red-dark: #8f1e17;
-        --green: #1f5136;
-        --green-bright: #2c6b48;
-        --cream: #f5eddc;
-        --cream-2: #efe4cd;
-        --ink: #2a211b;
-        --ink-soft: #5a4d42;
-        --gold: #c8941f;
+        --red: #b8202a;
+        --red-dark: #981a23;
+        --green: #f5f5f5;
+        --green-bright: #f5f5f5;
+        --cream: #2b2b2b;
+        --cream-2: #383838;
+        --ink: #f5f5f5;
+        --ink-soft: #d5d5d5;
+        --gold: #e7b15e;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html { -webkit-text-size-adjust: 100%; }
@@ -73,7 +73,7 @@
 
       header.hero { text-align: center; padding: 18px 34px 14px; }
       .hero .logo { display: block; width: 118px; height: auto; margin: 0 auto 8px; }
-      .hero .g { font-family: "Anton", sans-serif; color: var(--red); font-size: clamp(48px, 15vw, 96px); line-height: 0.86; letter-spacing: 0.02em; }
+      .hero .g { font-family: "Anton", sans-serif; color:#ff9098; font-size: clamp(48px, 15vw, 96px); line-height: 0.86; letter-spacing: 0.02em; }
       .hero .b { font-family: "Anton", sans-serif; color: var(--green); font-size: clamp(40px, 12.5vw, 82px); line-height: 0.9; letter-spacing: 0.01em; margin-top: 2px; }
       .served { display: inline-block; margin-top: 12px; background: var(--red); color: #fff; font-family: "Bebas Neue", sans-serif; letter-spacing: 0.22em; font-size: 15px; padding: 6px 20px; border-radius: 3px; }
       .tagline { margin-top: 14px; color: var(--ink-soft); font-size: 13.5px; }
@@ -85,32 +85,32 @@
         font-size: 27px; letter-spacing: 0.05em; line-height: 1;
         display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
       }
-      .cat-h.red { color: var(--red); }
-      .cat-h.green { color: var(--green); }
+      .cat-h.red { color:#ff9098; }
+      .cat-h.green { color: #e7b15e; }
       .cat-h::after { content: ""; flex: 1; height: 2px; border-radius: 2px; background: currentColor; opacity: 0.28; }
       .cat-note { font-size: 12.5px; color: var(--ink-soft); font-style: italic; margin-bottom: 12px; }
-      .cat-note b { font-style: normal; color: var(--red); font-weight: 700; }
+      .cat-note b { font-style: normal; color:#ff9098; font-weight: 700; }
 
       .item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; padding: 7px 0; border-bottom: 1px dashed rgba(42,33,27,0.14); }
       .item:last-child { border-bottom: 0; }
       .item .n { font-weight: 700; font-size: 15px; }
       .item .d { flex: 1 0 100%; font-weight: 400; font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
       .item .dots { flex: 0 0 2rem; border-bottom: 1.5px dotted rgba(42,33,27,0.28); transform: translateY(-4px); }
-      .item .p { font-family: "Bebas Neue", sans-serif; font-size: 20px; color: var(--red); letter-spacing: 0.03em; white-space: nowrap; }
+      .item .p { font-family: "Bebas Neue", sans-serif; font-size: 20px; color:#ff9098; letter-spacing: 0.03em; white-space: nowrap; }
 
       /* Featured cards (skillet + pizza) */
-      .feature { background: #fff; border: 1px solid rgba(42,33,27,0.1); border-radius: 14px; padding: 16px 18px; margin-top: 14px; box-shadow: 0 6px 20px rgba(42,33,27,0.06); }
+      .feature { background: #383838; border: 1px solid rgba(42,33,27,0.1); border-radius: 14px; padding: 16px 18px; margin-top: 14px; box-shadow: 0 6px 20px rgba(42,33,27,0.06); }
       .feature h3 { font-family: "Bebas Neue", sans-serif; font-size: 24px; letter-spacing: 0.04em; color: var(--green); }
-      .feature .price-big { font-family: "Anton", sans-serif; color: var(--red); font-size: 30px; line-height: 1; margin: 4px 0 6px; }
+      .feature .price-big { font-family: "Anton", sans-serif; color:#ff9098; font-size: 30px; line-height: 1; margin: 4px 0 6px; }
       .feature p { font-size: 13.5px; color: var(--ink-soft); }
-      .feature .meats { color: var(--red); font-weight: 700; }
+      .feature .meats { color:#ff9098; font-weight: 700; }
       .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
       @media (max-width: 460px) { .two { grid-template-columns: 1fr; } }
       .pizza-card { text-align: center; }
       .pizza-card h4 { font-family: "Bebas Neue", sans-serif; font-size: 21px; letter-spacing: 0.05em; color: var(--green-bright); }
-      .pizza-card .pc-price { font-family: "Anton", sans-serif; color: var(--red); font-size: 26px; line-height: 1; margin: 2px 0 6px; }
+      .pizza-card .pc-price { font-family: "Anton", sans-serif; color:#ff9098; font-size: 26px; line-height: 1; margin: 2px 0 6px; }
 
-      footer { background: var(--ink); color: var(--cream); text-align: center; padding: 22px 34px; }
+      footer { background: #232323; color:#f5f5f5; text-align: center; padding: 22px 34px; }
       footer .fl { font-family: "Bebas Neue", sans-serif; font-size: 22px; letter-spacing: 0.06em; }
       footer .fa { font-size: 13px; opacity: 0.85; margin-top: 4px; }
       footer a { color: var(--gold); text-decoration: none; font-weight: 700; }

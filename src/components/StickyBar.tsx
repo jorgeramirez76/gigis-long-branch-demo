@@ -42,7 +42,7 @@ export function StickyBar() {
       // the transition gets STUCK — the custom property updates but the transitioned `translate`
       // froze at 100% (verified live), leaving the bar parked below the fold on desktop and
       // floating mid-screen on iOS as the visual viewport moved (Tommy's report, 2026-08-19).
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-white/97 backdrop-blur transition-transform duration-300 md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-[var(--color-panel)] backdrop-blur transition-transform duration-300 md:hidden"
       style={{
         paddingBottom: "env(safe-area-inset-bottom)",
         transform: show && !typing ? "translateY(0)" : "translateY(100%)",
@@ -51,7 +51,7 @@ export function StickyBar() {
       <div className="mx-auto grid max-w-md grid-cols-4">
         <a
           href={`tel:${LOCATION.phoneTel}`}
-          className="flex flex-col items-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-brand-red)] transition active:bg-[var(--color-brand-red)]/5"
+          className="flex flex-col items-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-action-text)] transition active:bg-[var(--color-brand-red)]/5"
           aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}
         >
           <PhoneIcon className="h-[22px] w-[22px]" />
@@ -62,7 +62,7 @@ export function StickyBar() {
           // The mobile bar is where most orders start, and this said "Order" while opening an
           // empty cart — the dead end Tommy hit. Nothing to review means: show them the food.
           onClick={cart.count > 0 ? cart.openCart : goToMenu}
-          className="relative flex flex-col items-center gap-1 border-l border-black/10 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-brand-red)] transition active:bg-[var(--color-brand-red)]/5"
+          className="relative flex flex-col items-center gap-1 border-l border-[var(--color-line)] py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-action-text)] transition active:bg-[var(--color-brand-red)]/5"
           aria-label={cart.count > 0 ? `Open your order, ${cart.count} item${cart.count === 1 ? "" : "s"}` : "Browse the menu"}
         >
           <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -80,7 +80,7 @@ export function StickyBar() {
         </button>
         <a
           href="#menu"
-          className="flex flex-col items-center gap-1 border-l border-black/10 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-ink)] transition active:bg-black/5"
+          className="flex flex-col items-center gap-1 border-l border-[var(--color-line)] py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-copy)] transition active:bg-black/5"
         >
           <MenuIcon className="h-[22px] w-[22px]" />
           Menu
@@ -89,7 +89,7 @@ export function StickyBar() {
           href={DIRECTIONS_URL}
           target="_blank"
           rel="noreferrer"
-          className="flex flex-col items-center gap-1 border-l border-black/10 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-ink)] transition active:bg-black/5"
+          className="flex flex-col items-center gap-1 border-l border-[var(--color-line)] py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-copy)] transition active:bg-black/5"
         >
           <PinIcon className="h-[22px] w-[22px]" />
           Directions

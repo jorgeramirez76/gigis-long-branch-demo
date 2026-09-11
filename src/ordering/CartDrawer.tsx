@@ -83,19 +83,19 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
         aria-hidden={!cart.isOpen}
         role="dialog"
         aria-modal={cart.isOpen || undefined}
-        className={`fixed inset-y-0 right-0 z-[56] flex w-full max-w-md flex-col bg-[var(--color-cream)] shadow-[var(--shadow-lg)] transition-transform duration-300 ease-out ${
+        className={`fixed inset-y-0 right-0 z-[56] flex w-full max-w-md flex-col bg-[var(--color-page)] shadow-[var(--shadow-lg)] transition-transform duration-300 ease-out ${
           cart.isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <header className="flex items-center justify-between border-b border-[var(--color-ink)]/10 bg-white px-5 py-4">
-          <h2 className="font-display text-2xl text-[var(--color-ink)]">
-            Your order{cart.count > 0 && <span className="text-[var(--color-brand-red)]"> · {cart.count}</span>}
+        <header className="flex items-center justify-between border-b border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-4">
+          <h2 className="font-display text-2xl text-[var(--color-copy)]">
+            Your order{cart.count > 0 && <span className="text-[var(--color-action-text)]"> · {cart.count}</span>}
           </h2>
           <button
             type="button"
             onClick={cart.closeCart}
             aria-label="Close cart"
-            className="rounded-full p-2 text-[var(--color-ink)]/50 hover:bg-[var(--color-cream)]"
+            className="rounded-full p-2 text-[var(--color-copy-muted)] hover:bg-[var(--color-page)]"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M18 6 6 18M6 6l12 12" />
@@ -104,14 +104,14 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
         </header>
 
         {uncertainHold && (
-          <p role="status" className="mx-5 mt-4 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
+          <p role="status" className="mx-5 mt-4 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-copy)]">
             We're still confirming your earlier payment attempt, so your order can't be changed
             right now. Go to checkout and tap Pay &amp; place order again to check on it — you
             won't be charged twice — or call (732) 377-2468.
           </p>
         )}
         {cart.droppedOnLoad > 0 && (
-          <p role="status" className="mx-5 mt-4 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-ink)]">
+          <p role="status" className="mx-5 mt-4 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-copy)]">
             {cart.droppedOnLoad === 1 ? "An item" : `${cart.droppedOnLoad} items`} from your saved order{" "}
             {cart.droppedOnLoad === 1 ? "is" : "are"} no longer on the menu, so {cart.droppedOnLoad === 1 ? "it was" : "they were"} removed.
           </p>
@@ -120,8 +120,8 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
         {cart.lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
             <div className="text-5xl">🍕</div>
-            <p className="font-display text-2xl text-[var(--color-ink)]">Your cart is empty</p>
-            <p className="text-sm text-[var(--color-ink-soft)]">
+            <p className="font-display text-2xl text-[var(--color-copy)]">Your cart is empty</p>
+            <p className="text-sm text-[var(--color-copy-soft)]">
               Browse the menu and tap an item to build your order.
             </p>
             <button
@@ -133,38 +133,38 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                 cart.closeCart();
                 goToMenu();
               }}
-              className="mt-2 rounded-full border-2 border-[var(--color-ink)]/15 px-6 py-3 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)] transition hover:border-[var(--color-brand-red)]"
+              className="mt-2 rounded-full border-2 border-[var(--color-line)] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[var(--color-copy)] transition hover:border-[var(--color-brand-red)]"
             >
               Browse the menu
             </button>
           </div>
         ) : (
           <>
-            <ul className="flex-1 divide-y divide-[var(--color-ink)]/8 overflow-y-auto px-5">
+            <ul className="flex-1 divide-y divide-[var(--color-line)] overflow-y-auto px-5">
               {cart.lines.map((l) => (
                 <li key={l.lineId} className="py-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="font-serif text-base font-semibold text-[var(--color-ink)]">{l.itemName}</p>
+                      <p className="font-serif text-base font-semibold text-[var(--color-copy)]">{l.itemName}</p>
                       {l.options.length > 0 && (
-                        <p className="mt-0.5 text-xs leading-relaxed text-[var(--color-ink-soft)]">
+                        <p className="mt-0.5 text-xs leading-relaxed text-[var(--color-copy-soft)]">
                           {l.options.map((o) => o.name + placementSuffix(o.placement)).join(", ")}
                         </p>
                       )}
-                      {l.notes && <p className="mt-0.5 text-xs italic text-[var(--color-ink)]/50">“{l.notes}”</p>}
+                      {l.notes && <p className="mt-0.5 text-xs italic text-[var(--color-copy-muted)]">“{l.notes}”</p>}
                     </div>
-                    <span className="shrink-0 font-semibold text-[var(--color-ink)]">
+                    <span className="shrink-0 font-semibold text-[var(--color-copy)]">
                       {money(lineUnitPrice(l) * l.quantity)}
                     </span>
                   </div>
                   <div className="mt-2 flex items-center justify-between">
-                    <div className="flex items-center rounded-full border border-[var(--color-ink)]/15 bg-white">
+                    <div className="flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)]">
                       <button
                         type="button"
                         aria-label="Decrease"
                         disabled={uncertainHold}
                         onClick={() => cart.updateQty(l.lineId, l.quantity - 1)}
-                        className="px-3 py-1 text-[var(--color-ink)] disabled:opacity-30"
+                        className="px-3 py-1 text-[var(--color-copy)] disabled:opacity-30"
                       >
                         −
                       </button>
@@ -174,7 +174,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                         aria-label="Increase"
                         disabled={uncertainHold}
                         onClick={() => cart.updateQty(l.lineId, l.quantity + 1)}
-                        className="px-3 py-1 text-[var(--color-ink)] disabled:opacity-30"
+                        className="px-3 py-1 text-[var(--color-copy)] disabled:opacity-30"
                       >
                         +
                       </button>
@@ -183,7 +183,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                       type="button"
                       disabled={uncertainHold}
                       onClick={() => cart.removeLine(l.lineId)}
-                      className="text-xs font-semibold uppercase tracking-wide text-[var(--color-ink)]/40 hover:text-[var(--color-brand-red)] disabled:opacity-40 disabled:hover:text-[var(--color-ink)]/40"
+                      className="text-xs font-semibold uppercase tracking-wide text-[var(--color-copy-muted)] hover:text-[var(--color-action-text)] disabled:opacity-40 disabled:hover:text-[var(--color-copy-muted)]"
                     >
                       Remove
                     </button>
@@ -195,21 +195,21 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
             {/* Adding an upsell also changes the idempotency signature — held with the rest. */}
             {!uncertainHold && <Upsell />}
 
-            <footer className="border-t border-[var(--color-ink)]/10 bg-white px-5 py-4">
+            <footer className="border-t border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-4">
               <dl className="space-y-1.5 text-sm">
-                <div className="flex justify-between text-[var(--color-ink-soft)]">
+                <div className="flex justify-between text-[var(--color-copy-soft)]">
                   <dt>Subtotal</dt>
                   <dd>{money(cart.subtotal)}</dd>
                 </div>
-                <div className="flex justify-between text-[var(--color-ink-soft)]">
+                <div className="flex justify-between text-[var(--color-copy-soft)]">
                   <dt>{CARD_PRICING_LABEL}</dt>
                   <dd>{money(cart.cardPricing)}</dd>
                 </div>
-                <div className="flex justify-between text-[var(--color-ink-soft)]">
+                <div className="flex justify-between text-[var(--color-copy-soft)]">
                   <dt>NJ tax (6.625%)</dt>
                   <dd>{money(cart.tax)}</dd>
                 </div>
-                <div className="flex justify-between border-t border-[var(--color-ink)]/8 pt-1.5 text-base font-bold text-[var(--color-ink)]">
+                <div className="flex justify-between border-t border-[var(--color-line)] pt-1.5 text-base font-bold text-[var(--color-copy)]">
                   <dt>Total</dt>
                   <dd>{money(cart.total)}</dd>
                 </div>
@@ -221,7 +221,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
               >
                 Checkout · {money(cart.total)}
               </button>
-              <p className="mt-2 text-center text-[11px] text-[var(--color-ink)]/40">
+              <p className="mt-2 text-center text-[11px] text-[var(--color-copy-muted)]">
                 Tip and pickup time added at checkout. Final total confirmed by our register.
               </p>
             </footer>

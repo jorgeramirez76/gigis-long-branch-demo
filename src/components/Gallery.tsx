@@ -10,7 +10,7 @@ export function Gallery() {
             <span className="eyebrow">Straight from the oven</span>
             <h2 className="mt-3 text-4xl md:text-5xl">A quick taste</h2>
           </div>
-          <p className="hidden max-w-sm text-right text-sm text-[var(--color-ink-soft)] md:block">
+          <p className="hidden max-w-sm text-right text-sm text-[var(--color-copy-soft)] md:block">
             Real New York slices, specialty pies, heroes, pasta — full neighborhood
             kitchen on Brighton Ave.
           </p>
@@ -27,7 +27,7 @@ export function Gallery() {
                 key={img.src}
                 data-reveal={i % 2 === 0 ? "left" : "right"}
                 style={style}
-                className={`group relative overflow-hidden rounded-2xl bg-[var(--color-char)] shadow-[var(--shadow-md)] transition-shadow duration-300 hover:shadow-[var(--shadow-lg)] ${
+                className={`group relative overflow-hidden rounded-2xl bg-[var(--color-chrome)] shadow-[var(--shadow-md)] transition-shadow duration-300 hover:shadow-[var(--shadow-lg)] ${
                   i === 0 ? "col-span-2 row-span-2 md:col-span-2 md:row-span-2" : ""
                 }`}
               >

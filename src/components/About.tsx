@@ -7,7 +7,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-[var(--color-ink)] py-20 text-cream md:py-28"
+      className="relative overflow-hidden bg-[var(--color-chrome)] py-20 text-[var(--color-copy)] md:py-28"
     >
       {/* Dining room as darkened background */}
       <div className="absolute inset-0 -z-10">
@@ -42,7 +42,7 @@ export function About() {
               <span className="text-[var(--color-gold-bright)]">Brighton Ave.</span>
             </h2>
 
-            <div className="mt-8 space-y-5 text-lg leading-relaxed text-cream/90" data-reveal style={{ ["--delay" as string]: "160ms" }}>
+            <div className="mt-8 space-y-5 text-lg leading-relaxed text-[var(--color-copy)]/90" data-reveal style={{ ["--delay" as string]: "160ms" }}>
               <p>
                 Gigi's NY Style Pizza &amp; Restaurant is a family-run pizzeria at
                 140 Brighton Avenue in the West End of Long Branch. We make real New

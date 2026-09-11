@@ -229,14 +229,14 @@ export function VipJoinInline({
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border-2 border-[var(--color-gold-bright)] bg-white p-5 text-center" data-vip-inline="success">
-        <p className="text-lg font-extrabold text-[var(--color-ink)]">🎉 You're in the VIP Club!</p>
+      <div className="rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-panel)] p-5 text-center" data-vip-inline="success">
+        <p className="text-lg font-extrabold text-[var(--color-copy)]">🎉 You're in the VIP Club!</p>
         {code && (
-          <p className="mx-auto mt-3 max-w-xs rounded-xl border-2 border-dashed border-[var(--color-gold-bright)] bg-[var(--color-cream)] px-4 py-3 font-display text-3xl tracking-widest text-[var(--color-brand-red)]">
+          <p className="mx-auto mt-3 max-w-xs rounded-xl border-2 border-dashed border-[var(--color-gold-bright)] bg-[var(--color-page)] px-4 py-3 font-display text-3xl tracking-widest text-[var(--color-action-text)]">
             {code}
           </p>
         )}
-        <p className="mt-3 text-sm text-[var(--color-ink-soft)]">
+        <p className="mt-3 text-sm text-[var(--color-copy-soft)]">
           Redeem it at final checkout on your next <strong>pickup</strong> order — there's a
           VIP code box right above the total — or show it at the counter. Pickup orders only,
           good for 90 days. We've also sent it to you.
@@ -247,7 +247,7 @@ export function VipJoinInline({
 
   if (status === "already") {
     return (
-      <div className="rounded-2xl bg-white p-4 text-sm text-[var(--color-ink-soft)]" data-vip-inline="already">
+      <div className="rounded-2xl bg-[var(--color-panel)] p-4 text-sm text-[var(--color-copy-soft)]" data-vip-inline="already">
         You're already in the VIP Club — watch for our weekly deals! (The free welcome pie is one
         per new member.)
       </div>
@@ -271,7 +271,7 @@ export function VipJoinInline({
           onChange={(e) => setJoinEmail(e.target.value)}
           autoComplete="email"
           placeholder="you@email.com"
-          className="mt-1 w-full rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+          className="mt-1 w-full rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
         />
       </label>
 
@@ -286,7 +286,7 @@ export function VipJoinInline({
             onChange={(e) => setAddr(e.target.value)}
             placeholder="Home address (for your one-per-household pie)"
             autoComplete="street-address"
-            className="w-full rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+            className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
           />
           <input
             type="text"
@@ -294,7 +294,7 @@ export function VipJoinInline({
             onChange={(e) => setApt(e.target.value)}
             placeholder="Apt"
             autoComplete="address-line2"
-            className="w-20 shrink-0 rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+            className="w-20 shrink-0 rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
           />
         </div>
         <div className="flex gap-2">
@@ -304,7 +304,7 @@ export function VipJoinInline({
             onChange={(e) => setCity(e.target.value)}
             placeholder="City"
             autoComplete="address-level2"
-            className="w-full rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+            className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
           />
           <input
             type="text"
@@ -313,7 +313,7 @@ export function VipJoinInline({
             maxLength={2}
             placeholder="NJ"
             autoComplete="address-level1"
-            className="w-16 shrink-0 rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+            className="w-16 shrink-0 rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
           />
           <input
             type="text"
@@ -323,7 +323,7 @@ export function VipJoinInline({
             inputMode="numeric"
             placeholder="ZIP"
             autoComplete="postal-code"
-            className="w-24 shrink-0 rounded-xl border-0 bg-white/95 px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+            className="w-24 shrink-0 rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
           />
         </div>
         </div>
@@ -353,7 +353,7 @@ export function VipJoinInline({
         type="button"
         onClick={join}
         disabled={status === "submitting"}
-        className="mt-3 w-full rounded-full bg-[var(--color-gold-bright)] px-5 py-3 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)] transition hover:brightness-105 disabled:opacity-60"
+        className="mt-3 w-full rounded-full bg-[var(--color-gold-bright)] px-5 py-3 text-sm font-bold uppercase tracking-wide text-[var(--color-on-gold)] transition hover:brightness-105 disabled:opacity-60"
       >
         {status === "submitting" ? "Joining…" : "Join & claim my free pie"}
       </button>

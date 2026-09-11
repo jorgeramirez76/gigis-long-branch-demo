@@ -11,7 +11,7 @@ export function Location() {
   return (
     <section
       id="location"
-      className="scroll-mt-20 bg-[var(--color-ink)] py-20 text-cream md:py-28"
+      className="scroll-mt-20 bg-[var(--color-chrome)] py-20 text-[var(--color-copy)] md:py-28"
     >
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
@@ -23,7 +23,7 @@ export function Location() {
             <h2 className="mt-3 text-4xl text-white md:text-6xl" data-reveal style={{ ["--delay" as string]: "80ms" }}>
               140 Brighton Ave.
             </h2>
-            <p className="mt-4 max-w-md text-lg text-cream/85" data-reveal style={{ ["--delay" as string]: "140ms" }}>
+            <p className="mt-4 max-w-md text-lg text-[var(--color-copy)]/85" data-reveal style={{ ["--delay" as string]: "140ms" }}>
               Right on Brighton Ave in Long Branch — easy parking, easy pickup,
               easy to order by phone.
             </p>
@@ -53,7 +53,7 @@ export function Location() {
                     ))}
                   </div>
                 ) : (
-                  <span className="text-sm text-cream/75">
+                  <span className="text-sm text-[var(--color-copy)]/75">
                     Call <a href={`tel:${LOCATION.phoneTel}`} className="text-[var(--color-gold-bright)] underline-offset-4 hover:underline">{LOCATION.phone}</a> for today's hours.
                   </span>
                 )}

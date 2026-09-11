@@ -326,7 +326,7 @@ export function VipClub() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+              className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-3 text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
               placeholder="Your name"
             />
           </div>
@@ -342,7 +342,7 @@ export function VipClub() {
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-3 text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                 placeholder="(732) 555-0100"
               />
             </div>
@@ -356,7 +356,7 @@ export function VipClub() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-3 text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                 placeholder="you@email.com"
               />
             </div>
@@ -374,7 +374,7 @@ export function VipClub() {
                 autoComplete="street-address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-3 text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                 placeholder="140 Brighton Ave"
               />
             </div>
@@ -387,7 +387,7 @@ export function VipClub() {
                 type="text"
                 value={apt}
                 onChange={(e) => setApt(e.target.value)}
-                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-3 text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                 placeholder="3B"
               />
             </div>
@@ -405,7 +405,7 @@ export function VipClub() {
                 autoComplete="address-level2"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-3 text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                 placeholder="Long Branch"
               />
             </div>
@@ -421,7 +421,7 @@ export function VipClub() {
                 autoComplete="address-level1"
                 value={stateCode}
                 onChange={(e) => setStateCode(e.target.value.toUpperCase())}
-                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-3 text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                 placeholder="NJ"
               />
             </div>
@@ -438,7 +438,7 @@ export function VipClub() {
                 autoComplete="postal-code"
                 value={zip}
                 onChange={(e) => setZip(e.target.value.replace(/\D/g, ""))}
-                className="w-full rounded-xl border-0 bg-white/95 px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-3 text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                 placeholder="07740"
               />
             </div>
@@ -471,7 +471,7 @@ export function VipClub() {
           <button
             type="submit"
             disabled={status === "submitting" || (TURNSTILE_ON && !turnstileToken)}
-            className="w-full rounded-full bg-[var(--color-gold-bright)] px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)] transition hover:brightness-95 disabled:opacity-60"
+            className="w-full rounded-full bg-[var(--color-gold-bright)] px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-on-gold)] transition hover:brightness-95 disabled:opacity-60"
           >
             {status === "submitting" ? "Joining…" : "Get My Free Pie"}
           </button>
@@ -538,13 +538,13 @@ export function VipClub() {
                       }}
                       placeholder="Email you joined with"
                       autoComplete="email"
-                      className="w-full rounded-xl border-0 bg-white/95 px-4 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
+                      className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-4 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
                     />
                     <button
                       type="button"
                       onClick={recoverCode}
                       disabled={recoverStatus === "submitting" || (TURNSTILE_ON && !turnstileToken)}
-                      className="shrink-0 rounded-full bg-white/90 px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--color-brand-red)] transition hover:bg-white disabled:opacity-60"
+                      className="shrink-0 rounded-full bg-[var(--color-panel)] px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--color-action-text)] transition hover:bg-[var(--color-panel)] disabled:opacity-60"
                     >
                       {recoverStatus === "submitting" ? "Sending…" : "Email my code"}
                     </button>

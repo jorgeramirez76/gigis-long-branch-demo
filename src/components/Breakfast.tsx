@@ -32,7 +32,7 @@ export function Breakfast() {
     <section
       id="breakfast"
       aria-label="All-day breakfast"
-      className="scroll-mt-20 bg-[var(--color-cream)] py-14 md:py-24"
+      className="scroll-mt-20 bg-[var(--color-page)] py-14 md:py-24"
     >
       <div className="container-x">
         <div className="mb-8 flex items-end justify-between gap-6 md:mb-10" data-reveal>
@@ -40,7 +40,7 @@ export function Breakfast() {
             <span className="eyebrow">Served all day &middot; dine-in</span>
             <h2 className="mt-3 text-4xl md:text-5xl">Gigi's Breakfast</h2>
           </div>
-          <p className="hidden max-w-sm text-right text-sm text-[var(--color-ink-soft)] md:block">
+          <p className="hidden max-w-sm text-right text-sm text-[var(--color-copy-soft)] md:block">
             Pancakes, skillets, omelettes &amp; breakfast pizza — cooked to order all day long at
             140 Brighton Ave.
           </p>
@@ -52,9 +52,9 @@ export function Breakfast() {
               key={f.name}
               data-reveal
               style={{ ["--delay" as string]: `${(i % 4) * 70}ms` }}
-              className="group overflow-hidden rounded-2xl bg-white shadow-[var(--shadow-md)] transition-shadow duration-300 hover:shadow-[var(--shadow-lg)]"
+              className="group overflow-hidden rounded-2xl bg-[var(--color-panel)] shadow-[var(--shadow-md)] transition-shadow duration-300 hover:shadow-[var(--shadow-lg)]"
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[var(--color-char)]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[var(--color-chrome)]">
                 <img
                   src={f.src}
                   alt={`${f.name} at Gigi's Long Branch`}
@@ -67,9 +67,9 @@ export function Breakfast() {
               <div className="p-4 md:p-5">
                 <div className="flex items-baseline justify-between gap-3">
                   <h3 className="font-display text-2xl leading-none">{f.name}</h3>
-                  <span className="shrink-0 font-bold text-[var(--color-brand-red)]">{f.price}</span>
+                  <span className="shrink-0 font-bold text-[var(--color-action-text)]">{f.price}</span>
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">{f.blurb}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-copy-soft)]">{f.blurb}</p>
               </div>
             </article>
           ))}
@@ -82,7 +82,7 @@ export function Breakfast() {
           >
             View the full breakfast menu
           </a>
-          <span className="text-sm text-[var(--color-ink-soft)]">
+          <span className="text-sm text-[var(--color-copy-soft)]">
             Or scan the QR at your table to browse.
           </span>
         </div>

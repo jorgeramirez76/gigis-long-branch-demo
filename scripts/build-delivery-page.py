@@ -169,7 +169,7 @@ def main():
 <meta name="description" content="Gigi's delivers to {len(town_list)} towns near Long Branch. Flat fee: {tier_summary}. Delivery until {DELIVERY_LAST}, pickup until close.">
 <link rel="canonical" href="{BASE}/delivery/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
-<meta name="theme-color" content="#9b121a">
+<meta name="theme-color" content="#232323">
 <link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website"><meta property="og:title" content="Where Gigi's delivers, and what it costs">
 <meta property="og:description" content="Flat delivery fee by town. Delivery until {DELIVERY_LAST}, pickup until close.">
@@ -181,40 +181,40 @@ def main():
 @font-face{{font-family:"Bebas Neue";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/bebas-neue-400.woff2) format("woff2")}}
 @font-face{{font-family:"Inter Fallback";font-weight:400;src:local("Arial");size-adjust:107.8%;ascent-override:89.9%;descent-override:22.4%;line-gap-override:0%}}
 @font-face{{font-family:"Bebas Fallback";src:local("Impact");size-adjust:84.6%;ascent-override:106.4%;descent-override:35.5%;line-gap-override:0%}}
-:root{{--red:#9b121a;--red-dark:#6e0b12;--cream:#faf2e1;--cream-dark:#f0e5c8;--ink:#1a1210;--ink-soft:#3c2f2a;--ink-mute:#6a5a52;--gold:#c89441;
+:root{{--red:#b8202a;--red-dark:#981a23;--cream:#2b2b2b;--cream-dark:#383838;--ink:#f5f5f5;--ink-soft:#d5d5d5;--ink-mute:#bdbdbd;--gold:#e7b15e;
 --disp:"Bebas Neue","Bebas Fallback",Impact,sans-serif;--sans:"Inter","Inter Fallback",ui-sans-serif,system-ui,Arial,sans-serif}}
 *{{box-sizing:border-box}}html{{-webkit-text-size-adjust:100%}}
 body{{margin:0;font-family:var(--sans);background:var(--cream);color:var(--ink);line-height:1.6;font-size:17px}}
 img{{max-width:100%;height:auto;display:block}}
 .wrap{{max-width:760px;margin:0 auto;padding:0 20px}}
-header.site{{background:var(--red);color:#fff;position:sticky;top:0;z-index:20}}
+header.site{{background:#232323;color:#fff;position:sticky;top:0;z-index:20}}
 header.site .row{{display:flex;align-items:center;gap:12px;padding:10px 20px;max-width:900px;margin:0 auto}}
 header.site img{{height:40px;width:auto;border-radius:6px}}
 header.site .name{{font-family:var(--disp);font-size:1.35rem;letter-spacing:.02em;line-height:1;flex:1}}
 header.site .name small{{display:block;font-family:var(--sans);font-size:.6rem;letter-spacing:.14em;opacity:.85;margin-top:2px}}
 .btn{{display:inline-flex;align-items:center;justify-content:center;font-family:var(--disp);letter-spacing:.04em;font-size:1.05rem;
 padding:.62em 1.1em;border-radius:9px;text-decoration:none;white-space:nowrap;background:var(--gold);color:#1a1210}}
-.hero{{background:linear-gradient(160deg,#6e0b12,#9b121a 60%);color:var(--cream);padding:36px 0 30px}}
+.hero{{background:linear-gradient(160deg,#6e0b12,#9b121a 60%);color:#f5f5f5;padding:36px 0 30px}}
 .hero h1{{font-family:var(--disp);font-weight:400;font-size:clamp(2.2rem,8vw,3.4rem);line-height:.98;margin:.2em 0 .3em}}
-.hero p{{font-size:1.06rem;color:#fbe6d6;margin:0;max-width:34em}}
-main section{{padding:28px 0;border-bottom:1px solid var(--cream-dark)}}
-h2{{font-family:var(--disp);font-weight:400;font-size:clamp(1.6rem,5vw,2.1rem);letter-spacing:.02em;color:var(--red-dark);margin:0 0 .5em}}
-table{{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--cream-dark);border-radius:12px;overflow:hidden}}
+.hero p{{font-size:1.06rem;color:#d5d5d5;margin:0;max-width:34em}}
+main section{{padding:28px 0;border-bottom:1px solid #616161}}
+h2{{font-family:var(--disp);font-weight:400;font-size:clamp(1.6rem,5vw,2.1rem);letter-spacing:.02em;color:#f5f5f5;margin:0 0 .5em}}
+table{{width:100%;border-collapse:collapse;background:#383838;border:1px solid #616161;border-radius:12px;overflow:hidden}}
 caption{{text-align:left;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;padding:0 0 8px}}
-th,td{{padding:11px 14px;border-bottom:1px solid var(--cream-dark);text-align:left;font-weight:400}}
+th,td{{padding:11px 14px;border-bottom:1px solid #616161;text-align:left;font-weight:400}}
 thead th{{background:var(--cream-dark);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}}
-td.fee{{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--red-dark);white-space:nowrap}}
+td.fee{{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:#f5f5f5;white-space:nowrap}}
 tr:last-child th,tr:last-child td{{border-bottom:none}}
 .note{{font-size:.9rem;color:var(--ink-mute);margin:12px 0 0}}
-details{{background:#fff;border:1px solid var(--cream-dark);border-radius:10px;padding:2px 16px;margin:10px 0}}
-summary{{font-weight:700;color:var(--red-dark);cursor:pointer;padding:12px 0;list-style:none}}
+details{{background:#383838;border:1px solid #616161;border-radius:10px;padding:2px 16px;margin:10px 0}}
+summary{{font-weight:700;color:#f5f5f5;cursor:pointer;padding:12px 0;list-style:none}}
 summary::-webkit-details-marker{{display:none}}
 summary::after{{content:"+";float:right;color:var(--gold);font-weight:700}}
 details[open] summary::after{{content:"\\2013"}}
-.cta{{background:var(--ink);color:var(--cream);text-align:center;padding:30px 20px}}
+.cta{{background:#232323;color:#f5f5f5;text-align:center;padding:30px 20px}}
 .cta h2{{color:var(--gold)}}
 .cta a{{margin:6px 6px 0}}
-footer{{background:var(--red-dark);color:#fbe9d6;font-size:.9rem;padding:26px 0 40px}}
+footer{{background:var(--red-dark);color:#d5d5d5;font-size:.9rem;padding:26px 0 40px}}
 footer a{{color:var(--gold)}}
 .links{{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0}}
 </style>

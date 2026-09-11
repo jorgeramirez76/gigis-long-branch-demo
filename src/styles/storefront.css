@@ -1,0 +1,15 @@
+/* Customer-facing theme. Kept separate from the staff admin entry point. */
+@layer base {
+  html { color-scheme: dark; }
+  body { background-color: var(--color-page); color: var(--color-copy); }
+  :focus-visible { outline-color: var(--color-gold-bright); }
+  input::placeholder, textarea::placeholder { color: var(--color-copy-muted); opacity: 1; }
+}
+@layer components {
+  .btn-gold { color: var(--color-on-gold); }
+  .btn-ghost { background: var(--color-panel); color: var(--color-copy); border-color: var(--color-line); }
+  .btn-ghost:hover { color: var(--color-action-text); border-color: var(--color-action-text); }
+  .eyebrow { color: var(--color-gold-bright); }
+}
+/* The Clover-hosted inputs use their own dark text styles and keep a white field. */
+.secure-card-field { color-scheme: light; background-color: #fff; }

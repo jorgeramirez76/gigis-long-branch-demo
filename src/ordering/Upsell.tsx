@@ -32,20 +32,20 @@ export function Upsell() {
   if (picks.length === 0) return null;
 
   return (
-    <div className="border-t border-[var(--color-ink)]/10 bg-[var(--color-cream-dark)] px-5 py-4">
-      <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/55">
+    <div className="border-t border-[var(--color-line)] bg-[var(--color-page)] px-5 py-4">
+      <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-copy-muted)]">
         Add these to your order
       </p>
       <div className="space-y-2">
         {picks.map((s) => (
           <div
             key={s.itemName}
-            className="flex items-center justify-between gap-3 rounded-xl bg-white px-3.5 py-2.5 shadow-[var(--shadow-sm)]"
+            className="flex items-center justify-between gap-3 rounded-xl bg-[var(--color-panel)] px-3.5 py-2.5 shadow-[var(--shadow-sm)]"
           >
             <div className="min-w-0">
-              <p className="truncate font-serif text-sm font-semibold text-[var(--color-ink)]">{s.itemName}</p>
-              <p className="text-[11px] text-[var(--color-ink)]/45">
-                {s.tag} · <span className="font-semibold text-[var(--color-brand-red)]">{money(s.basePrice)}</span>
+              <p className="truncate font-serif text-sm font-semibold text-[var(--color-copy)]">{s.itemName}</p>
+              <p className="text-[11px] text-[var(--color-copy-muted)]">
+                {s.tag} · <span className="font-semibold text-[var(--color-action-text)]">{money(s.basePrice)}</span>
               </p>
             </div>
             <button
@@ -54,7 +54,7 @@ export function Upsell() {
                 cart.addLine({ itemName: s.itemName, categoryId: s.categoryId, basePrice: s.basePrice, options: [], quantity: 1 })
               }
               aria-label={`Add ${s.itemName}`}
-              className="shrink-0 rounded-full border border-[var(--color-brand-red)] px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-brand-red)] transition hover:bg-[var(--color-brand-red)] hover:text-white"
+              className="shrink-0 rounded-full border border-[var(--color-brand-red)] px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-action-text)] transition hover:bg-[var(--color-brand-red)] hover:text-white"
             >
               + Add
             </button>

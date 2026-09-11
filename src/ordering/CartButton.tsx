@@ -14,12 +14,12 @@ export function CartButton({
   const cart = useCart();
   const styles =
     variant === "gold"
-      ? "bg-[var(--color-gold-bright)] text-[var(--color-ink)] hover:bg-[var(--color-gold)]"
+      ? "bg-[var(--color-gold-bright)] text-[var(--color-on-gold)] hover:bg-[var(--color-gold)]"
       : "bg-[var(--color-brand-red)] text-white shadow-[var(--shadow-red)] hover:bg-[var(--color-brand-red-bright)]";
   const badge =
     variant === "gold"
       ? "bg-[var(--color-brand-red)] text-white"
-      : "bg-[var(--color-gold-bright)] text-[var(--color-ink)]";
+      : "bg-[var(--color-gold-bright)] text-[var(--color-on-gold)]";
 
   return (
     <button

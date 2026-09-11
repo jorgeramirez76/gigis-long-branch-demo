@@ -10,7 +10,7 @@ export function FAQ() {
         <div className="mx-auto max-w-2xl text-center" data-reveal>
           <span className="eyebrow">Quick answers</span>
           <h2 className="mt-3 text-4xl md:text-5xl">Frequently asked</h2>
-          <p className="mt-4 text-base text-[var(--color-ink-soft)] md:text-lg">
+          <p className="mt-4 text-base text-[var(--color-copy-soft)] md:text-lg">
             Hours, delivery, reservations — the things people ask before they
             order.
           </p>
@@ -22,19 +22,19 @@ export function FAQ() {
             return (
               <div
                 key={f.q}
-                className="overflow-hidden rounded-2xl border border-[var(--color-ink)]/10 bg-white shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)]"
+                className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)] shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)]"
               >
                 <button
                   type="button"
                   onClick={() => setOpenIdx(isOpen ? null : i)}
                   aria-expanded={isOpen}
                   aria-controls={`faq-panel-${i}`}
-                  className="flex min-h-[56px] w-full items-center justify-between gap-4 px-5 py-4 text-left font-serif text-base font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-cream)] md:text-lg"
+                  className="flex min-h-[56px] w-full items-center justify-between gap-4 px-5 py-4 text-left font-serif text-base font-semibold text-[var(--color-copy)] transition hover:bg-[var(--color-page)] md:text-lg"
                 >
                   <span>{f.q}</span>
                   <span
                     aria-hidden="true"
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-red)]/10 text-[var(--color-brand-red)] transition-transform duration-300 ${
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-red)]/10 text-[var(--color-action-text)] transition-transform duration-300 ${
                       isOpen ? "rotate-45" : ""
                     }`}
                   >
@@ -51,14 +51,14 @@ export function FAQ() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-5 pb-5 text-sm leading-relaxed text-[var(--color-ink-soft)] md:text-base">
+                    <p className="px-5 pb-5 text-sm leading-relaxed text-[var(--color-copy-soft)] md:text-base">
                       {f.a}
                       {/* Deeper page for this topic. The FAQPage JSON-LD answers stay plain text —
                           only the visible answer carries the anchor. */}
                       {f.link && (
                         <>
                           {" "}
-                          <a href={f.link.href} className="font-semibold text-[var(--color-brand-red)] underline underline-offset-2">
+                          <a href={f.link.href} className="font-semibold text-[var(--color-action-text)] underline underline-offset-2">
                             {f.link.label} →
                           </a>
                         </>

@@ -5,7 +5,7 @@ import logoPng from "../assets/brand/logo.png";
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="relative bg-[var(--color-char)] pb-12 pt-14 text-cream md:pt-16">
+    <footer className="relative bg-[var(--color-chrome)] pb-12 pt-14 text-[var(--color-copy)] md:pt-16">
       {/* Italian tricolor — 3px accent stripe at very top */}
       <div className="absolute inset-x-0 top-0 tricolor opacity-90" aria-hidden="true" />
 
@@ -13,7 +13,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div>
             <img src={logoPng} alt="Gigi's NY Style Pizza & Restaurant logo" className="h-14 w-auto" width={70} height={76} />
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/75">
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--color-copy)]/75">
               Real NY-style pizza, specialty pies, heroes, pasta, and Italian
               classics — served on Brighton Ave in Long Branch.
             </p>
@@ -47,7 +47,7 @@ export function Footer() {
             <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-gold-bright)]">
               Long Branch
             </p>
-            <address className="mt-3 not-italic text-sm leading-relaxed text-cream/85">
+            <address className="mt-3 not-italic text-sm leading-relaxed text-[var(--color-copy)]/85">
               {ADDRESS_ONE_LINE}
               <br />
               <a href={`tel:${LOCATION.phoneTel}`} className="text-white hover:text-[var(--color-gold-bright)]">
@@ -63,7 +63,7 @@ export function Footer() {
             <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-gold-bright)]">
               Hours
             </p>
-            <p className="mt-3 text-sm text-cream/85">{HOURS_ONE_LINE}</p>
+            <p className="mt-3 text-sm text-[var(--color-copy)]/85">{HOURS_ONE_LINE}</p>
             <a href="#menu" className="mt-3 inline-block text-sm font-semibold text-[var(--color-gold-bright)] hover:underline">
               Order online →
             </a>
@@ -73,7 +73,7 @@ export function Footer() {
             <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-gold-bright)]">
               Jump to
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-cream/85">
+            <ul className="mt-3 space-y-2 text-sm text-[var(--color-copy)]/85">
               <li><a href="#menu" className="hover:text-white">Menu</a></li>
               <li><a href="#about" className="hover:text-white">About</a></li>
               <li><a href="#reviews" className="hover:text-white">Reviews</a></li>
@@ -84,7 +84,7 @@ export function Footer() {
 
         <nav className="mt-10 border-t border-white/10 pt-6" aria-label="Popular pages">
           <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-gold-bright)]">Explore</p>
-          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-cream/75">
+          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[var(--color-copy)]/75">
             <a href="/menu/" className="hover:text-white">Full Menu &amp; Prices</a>
             <a href="/square-pizza-long-branch/" className="hover:text-white">Square Pizza</a>
             <a href="/pizza-delivery-west-long-branch/" className="hover:text-white">West Long Branch Delivery</a>
@@ -103,7 +103,7 @@ export function Footer() {
           </div>
         </nav>
 
-        <div className="mt-10 border-t border-white/10 pt-6 text-xs leading-relaxed text-cream/55">
+        <div className="mt-10 border-t border-white/10 pt-6 text-xs leading-relaxed text-[var(--color-copy-muted)]">
           <p>
             © {year} Gigi's NY Style Pizza — Long Branch. This website represents the
             Long Branch location only. Menu items, pricing, hours, and availability

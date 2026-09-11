@@ -64,7 +64,7 @@ export function Hero() {
 
       {/* Content */}
       <div className="container-x flex flex-1 flex-col justify-end pb-14 pt-8 md:justify-center md:pb-24 md:pt-24">
-        <div className="max-w-3xl text-cream">
+        <div className="max-w-3xl text-[var(--color-copy)]">
           <div className="flex flex-wrap items-center gap-2">
             <span className="hero-in hero-in-1 inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--color-gold-bright)]/60 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-gold-bright)] backdrop-blur sm:tracking-[0.22em] md:text-xs">
               <StarIcon className="h-3.5 w-3.5 shrink-0" />
@@ -74,7 +74,7 @@ export function Hero() {
             {/* Sends Sea Bright locals to their own shop rather than losing the order. */}
             <a
               href="https://gigisnystylepizza.com/sea-bright"
-              className="hero-in hero-in-1 inline-flex items-center gap-2 rounded-full bg-[var(--color-gold-bright)] px-4 py-2.5 text-[11px] font-bold text-[var(--color-ink)] shadow-[var(--shadow-gold)] transition hover:-translate-y-0.5 hover:bg-[var(--color-gold)] active:scale-[0.97] md:px-5 md:text-sm"
+              className="hero-in hero-in-1 inline-flex items-center gap-2 rounded-full bg-[var(--color-gold-bright)] px-4 py-2.5 text-[11px] font-bold text-[var(--color-on-gold)] shadow-[var(--shadow-gold)] transition hover:-translate-y-0.5 hover:bg-[var(--color-gold)] active:scale-[0.97] md:px-5 md:text-sm"
             >
               Closer to Sea Bright? Order from our Sea Bright location
               <ArrowIcon className="h-3.5 w-3.5 shrink-0" />
@@ -87,13 +87,13 @@ export function Hero() {
             <span className="text-[var(--color-gold-bright)]">in Long Branch.</span>
           </h1>
 
-          <p className="hero-in hero-in-3 mt-5 max-w-xl text-base leading-relaxed text-cream/90 md:text-lg">
+          <p className="hero-in hero-in-3 mt-5 max-w-xl text-base leading-relaxed text-[var(--color-copy)]/90 md:text-lg">
             Fresh dough, big slices, loaded specialty pies, classic Italian
             favorites — the kind of neighborhood pizza shop people come back to.
           </p>
 
           {/* Hours + address strip */}
-          <div className="hero-in hero-in-4 mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-cream/85 md:text-sm">
+          <div className="hero-in hero-in-4 mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-copy)]/85 md:text-sm">
             <OpenStatusPill className="text-[var(--color-gold-bright)]" />
             <span className="hidden h-1 w-1 rounded-full bg-white/25 md:inline-block" />
             <span>{HOURS_ONE_LINE}</span>
@@ -118,7 +118,7 @@ export function Hero() {
               <ArrowIcon className="h-5 w-5" />
             </a>
             <div className="flex gap-2.5">
-              <a href="#menu" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)] transition hover:bg-[var(--color-cream)] active:scale-[0.97] sm:flex-initial">
+              <a href="#menu" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[var(--color-panel)] px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-copy)] transition hover:bg-[var(--color-page)] active:scale-[0.97] sm:flex-initial">
                 <MenuIcon className="h-4 w-4" />
                 Menu
               </a>
@@ -130,8 +130,8 @@ export function Hero() {
           </div>
 
           {/* Soft urgency line — no fake claims */}
-          <p className="hero-in hero-in-5 mt-5 text-xs text-cream/70 md:text-[13px]">
-            Tip: <span className="text-cream/90">call ahead for pickup</span> — pies come out fast at the counter.
+          <p className="hero-in hero-in-5 mt-5 text-xs text-[var(--color-copy-muted)] md:text-[13px]">
+            Tip: <span className="text-[var(--color-copy)]/90">call ahead for pickup</span> — pies come out fast at the counter.
           </p>
         </div>
       </div>
@@ -139,7 +139,7 @@ export function Hero() {
       {/* Cream bleed into next section */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-[var(--color-cream)] md:h-24"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-[var(--color-page)] md:h-24"
       />
     </section>
   );

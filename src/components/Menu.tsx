@@ -150,7 +150,7 @@ export function Menu() {
               >
                 <span className="block text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-action-text)]">Featured in NJ.com</span>
                 <span className="mt-2 block font-serif text-xl font-semibold text-[var(--color-copy)] md:text-2xl">N.J.’s best new pizzerias: 20 delicious spots you need to try</span>
-                <span className="mt-3 block text-xs text-[var(--color-copy-muted)]">Sea Bright location · Peter Genovese · October 2019</span>
+                <span className="mt-3 block text-xs text-[var(--color-copy-muted)]">Sea Bright location · Peter Genovese</span>
                 <span className="mt-auto block pt-3 text-sm font-semibold text-[var(--color-action-text)]">Read the feature ↗</span>
               </a>
               <a

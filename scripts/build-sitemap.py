@@ -81,6 +81,11 @@ def content_hash(path: Path) -> str:
     change unless a human changed copy, data or markup.
     """
     t = path.read_text(errors="ignore")
+    if path == ROOT / "index.html":
+        # The app's visible menu links and menu data also change its content.
+        t += (ROOT / "src/components/Menu.tsx").read_text()
+        for source in sorted((ROOT / "src/data").glob("*.ts")):
+            t += source.read_text()
     t = re.sub(r"<!--.*?-->", "", t, flags=re.S)      # build comments
     t = re.sub(r"\s+", " ", t).strip()                # whitespace/reflow
     return hashlib.sha256(t.encode()).hexdigest()[:16]

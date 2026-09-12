@@ -140,6 +140,12 @@ export function Menu() {
       <div className="container-x">
         <div className="mx-auto max-w-2xl text-center" data-reveal>
           <span className="eyebrow">The full menu</span>
+          <nav aria-label="Menu guides" className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm font-semibold text-[var(--color-action-text)]">
+            <a href="/menu/" className="py-2 underline underline-offset-4">Full menu &amp; prices</a>
+            <a href="/gluten-free-pizza-long-branch/" className="py-2 underline underline-offset-4">Gluten-free pizza options</a>
+            <a href="/vegan-pizza-long-branch/" className="py-2 underline underline-offset-4">Vegan pizza options</a>
+            <a href="/delivery/" className="py-2 underline underline-offset-4">Delivery information</a>
+          </nav>
           <h2 className="mt-3 text-2xl md:text-3xl">Recognized for our pizza</h2>
               <div className="mt-5 grid gap-4 md:grid-cols-2">
               <a

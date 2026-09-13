@@ -80,3 +80,14 @@ test('admin report requires configured authentication before querying metrics', 
   try {await admin({method:'GET',headers:{}} as never,res as never); assert.equal(code,503);assert.deepEqual(body,{error:'admin_not_configured'});}
   finally {if(old===undefined)delete process.env.ADMIN_TOKEN;else process.env.ADMIN_TOKEN=old;}
 });
+
+
+test('ledger report converts Eastern midnight from an explicit local timestamp', async () => {
+  process.env.DATABASE_URL='postgres://test:test@fake-neon.test/db';
+  const {readMetrics}=await import('../api/lib/metrics.js');const original=globalThis.fetch;const queries:string[]=[];
+  globalThis.fetch=(async(_url,init)=>{queries.push(JSON.parse(String(init?.body)).query);return new Response(JSON.stringify({command:'SELECT',rowCount:0,fields:[],rows:[]}));}) as typeof fetch;
+  try {await readMetrics('gigis_long_branch');const ledger=queries.find(q=>q.includes('FROM web_orders'))!;
+    assert.match(ledger,/::date - 28\)::timestamp AT TIME ZONE 'America\/New_York'/);
+    assert.ok(ledger.includes('routing_uncertain'));}
+  finally {globalThis.fetch=original;}
+});

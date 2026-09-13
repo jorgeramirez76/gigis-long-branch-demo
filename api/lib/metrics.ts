@@ -24,7 +24,7 @@ export async function readMetrics(business: string) {
     COUNT(*) FILTER (WHERE status IN ('placed','paid','paid_print_queued','paid_print_failed'))::int AS accepted_orders,
     COUNT(*) FILTER (WHERE charge_id IS NOT NULL)::int AS recorded_captures,
     COUNT(*) FILTER (WHERE status IN ('capture_uncertain','routing_uncertain','charged','paid_unrouted','refire_pending'))::int AS unresolved_orders
-    FROM web_orders WHERE business=${business} AND created_at >= ((now() AT TIME ZONE 'America/New_York')::date - 28) AT TIME ZONE 'America/New_York'
+    FROM web_orders WHERE business=${business} AND created_at >= ((now() AT TIME ZONE 'America/New_York')::date - 28)::timestamp AT TIME ZONE 'America/New_York'
     GROUP BY 1 ORDER BY 1`;
   return { events: events.rows, orders: orders.rows,
     definitions: { events: "At most one action of each type per document; best effort, not people or sessions.",

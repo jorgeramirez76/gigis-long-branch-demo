@@ -35,7 +35,7 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
       )}
       {hasOptions && orderable && (
         <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-copy-muted)]">
-          Customizable · toppings &amp; options
+          Toppings &amp; options
         </p>
       )}
     </div>

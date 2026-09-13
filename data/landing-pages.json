@@ -73,10 +73,6 @@
           "label": "Gourmet slice"
         },
         {
-          "item": "Hangover Slice",
-          "what": "The late-night one, built to soak up the evening"
-        },
-        {
           "item": "Plain Pie",
           "label": "Plain pie (whole)"
         },
@@ -257,11 +253,6 @@
         },
         {
           "item": "Veggie Bolognese",
-          "what": "Vegetarian — made with dairy cheese"
-        },
-        {
-          "item": "Stuffed Veggie",
-          "label": "Stuffed veggie pie",
           "what": "Vegetarian — made with dairy cheese"
         }
       ]

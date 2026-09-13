@@ -32,7 +32,7 @@ export function Hero() {
             <p className="mb-1 flex flex-wrap items-center gap-2"><span>Counter:</span><OpenStatusPill className="text-[var(--color-gold-bright)]" /></p>
             <p>Online pickup until 11 PM. Delivery until 10 PM. Counter open until 11 PM Mon–Wed / midnight Thu–Sun.</p>
           </div>
-          <p className="mt-5 text-sm"><a href="/account/?join=1" className="font-semibold text-[var(--color-gold-bright)] underline underline-offset-4">Join VIP for a free plain cheese pie →</a></p>
+          <p className="mt-5 text-sm"><a href="/account/?join=1" className="font-semibold text-[var(--color-gold-bright)] underline underline-offset-4">Join VIP: free pizza pie + exclusive deals →</a></p>
           <p className="mt-5 text-xs text-white/80">Looking for our other shop? <a href="https://gigisnystylepizza.com/sea-bright" className="font-semibold text-white underline underline-offset-4">Visit Sea Bright →</a></p>
         </div>
       </div>

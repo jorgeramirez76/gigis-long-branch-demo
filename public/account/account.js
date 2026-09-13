@@ -30,9 +30,9 @@
     $('access-form').elements.password.autocomplete = confirm ? 'new-password' : 'current-password';
     $('forgot').hidden = !['login','confirm'].includes(mode); $('forgot').textContent = confirm ? 'Request a new password link' : 'Forgot password?'; $('challenge').hidden = confirm;
     if (!confirm) ensureChallenge();
-    $('form-title').textContent = {login:'Welcome back',signup:'Make it your Gigi’s',claim:'Keep your VIP benefits',reset:'Get back into your account',confirm:'Choose your password'}[mode];
-    $('form-detail').textContent = signup ? 'Use your email as your username. We’ll email a secure link where you can choose a password and activate your account.' : confirm ? 'Choose at least 12 characters. Your email is your username.' : mode === 'claim' ? 'Enter the email you used for the VIP Club. Your existing free-pie code stays with you.' : 'Use the email associated with your account.';
-    $('submit').textContent = {login:'Sign in',signup:'Create my account',claim:'Email my secure link',reset:'Send reset link',confirm:'Save password & sign in'}[mode];
+    $('form-title').textContent = {login:'Welcome back',signup:'Join VIP. Get a free pie.',claim:'Keep your VIP benefits',reset:'Get back into your account',confirm:'Choose your password'}[mode];
+    $('form-detail').textContent = signup ? 'Your free plain cheese pizza pie starts here. Use your email as your username; we’ll send a secure link to choose your password and activate your account. Choose email or text updates below for exclusive discounts and food deals.' : confirm ? 'Choose at least 12 characters. Your email is your username.' : mode === 'claim' ? 'Enter the email you used for the VIP Club. Your existing free-pie code stays with you.' : 'Use the email associated with your account.';
+    $('submit').textContent = {login:'Sign in',signup:'Join VIP & get my free pie',claim:'Email my secure link',reset:'Send reset link',confirm:'Save password & sign in'}[mode];
     document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('selected',b.dataset.mode === mode));
   }
   function renderOrders(orders, append = false) {

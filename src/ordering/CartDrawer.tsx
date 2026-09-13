@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-import { lineUnitPrice, money, useCart, CARD_PRICING_LABEL } from "./CartContext";
+import { lineUnitPrice, money, useCart, CARD_PRICING_LABEL, type CartLine } from "./CartContext";
 import { savedAttemptUncertain } from "./Checkout";
 import { placementSuffix } from "../data/menuToppings";
 import { Upsell } from "./Upsell";
 import { goToMenu } from "../lib/goToMenu";
 
-export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
+export function CartDrawer({ onCheckout, onEdit, editingId, notice }: { onCheckout: () => void; onEdit: (line: CartLine) => void; editingId?: string | null; notice?: string }) {
   const cart = useCart();
   const { closeCart } = cart;
   // Display split only — cart.subtotal/tax/total (the charged figures) are untouched.
@@ -104,6 +104,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
           </button>
         </header>
 
+        {notice && <p role="status" className="mx-5 mt-4 text-sm font-semibold text-[var(--color-action-text)]">{notice}</p>}
         {uncertainHold && (
           <p role="status" className="mx-5 mt-4 rounded-xl bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-copy)]">
             We're still confirming your earlier payment attempt, so your order can't be changed
@@ -180,6 +181,11 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                         +
                       </button>
                     </div>
+                    <div className="flex items-center gap-4">
+                    <button type="button" data-edit-line={l.lineId} aria-label={`Edit ${l.itemName}`} disabled={uncertainHold || !!editingId}
+                      onClick={() => onEdit(l)} className="text-xs font-bold uppercase tracking-wide text-[var(--color-action-text)] disabled:cursor-not-allowed disabled:opacity-40">
+                      {editingId === l.lineId ? "Loading…" : "Edit"}
+                    </button>
                     <button
                       type="button"
                       disabled={uncertainHold}
@@ -188,6 +194,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                     >
                       Remove
                     </button>
+                    </div>
                   </div>
                 </li>
               ))}

@@ -1,3 +1,5 @@
+import { withStaticOptions } from "../src/hooks/useMenu.ts";
+import { MENU } from "../src/data/menu.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
@@ -89,6 +91,11 @@ test("Brazil Ricotta, Corn and Hard Egg are off the menu, and stay off after a C
   const builder = src("../scripts/build-menu.py");
   assert.match(builder, /EXCLUDED_TOPPINGS = \{"brazil ricotta", "corn", "hard egg"\}/);
   // The live snapshot copies options as of its last write; the page must take them from the build.
-  const menu = src("../src/components/Menu.tsx");
-  assert.match(menu, /setMenu\(withStaticOptions\(/);
+  const category = MENU.find(c => c.items.some(item => item.options?.length))!;
+  const item = category.items.find(item => item.options?.length)!;
+  const stale = [{ ...category, items: [{ ...item, options: [{ group: "Toppings", choices: [
+    { name: "Brazil Ricotta" }, { name: "Corn" }, { name: "Hard Egg" },
+  ] }] }] }];
+  assert.deepEqual(withStaticOptions(stale)[0].items[0].options, item.options,
+    "The live snapshot must not restore toppings removed from the current build");
 });

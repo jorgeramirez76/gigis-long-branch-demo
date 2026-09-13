@@ -1,6 +1,7 @@
+import { useMenu } from "../hooks/useMenu";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MENU, PRICING_DISCLAIMER } from "../data/menu";
-import type { MenuCategory, MenuItem } from "../data/menu";
+import type { MenuItem } from "../data/menu";
 import { LOCATION } from "../data/location";
 import { PhoneIcon } from "./Icons";
 import { useOrderingUI } from "../ordering/OrderingProvider";
@@ -70,48 +71,30 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
   );
 }
 
-/** The snapshot decides WHICH items are on the menu (reconciled against Clover nightly); the
- * build decides what can be chosen on them. Options ride along in the snapshot only because it
- * is a copy of the menu as of its last write, so between a deploy that changes a topping list
- * and the next 4 AM refresh it would still offer choices the order API — which prices from the
- * static catalog — no longer knows: a topping pulled from the menu could be ticked here and then
- * refused at checkout as unknown. Items the build has never seen keep the snapshot's options. */
-function withStaticOptions(live: MenuCategory[]): MenuCategory[] {
-  const byKey = new Map<string, MenuItem>();
-  for (const c of MENU) for (const it of c.items) byKey.set(c.id + "\0" + it.name, it);
-  return live.map((c) => ({
-    ...c,
-    items: c.items.map((it) => {
-      const built = byKey.get(c.id + "\0" + it.name);
-      return built ? { ...it, options: built.options } : it;
-    }),
-  }));
-}
-
 export function Menu() {
-  // Static menuGenerated.ts renders instantly; the live menu from /api/menu
-  // (reconciled against Clover nightly, so items the shop pulled off the POS
-  // are gone) swaps in when available. If the fetch fails, the static baseline
-  // stays — the menu never goes blank.
-  const [menu, setMenu] = useState(MENU);
-  useEffect(() => {
-    let alive = true;
-    fetch("/api/menu")
-      .then((r) => (r.ok && r.status !== 204 ? r.json() : null))
-      .then((d) => {
-        if (alive && d?.categories?.length) setMenu(withStaticOptions(d.categories as MenuCategory[]));
-      })
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
-  }, []);
+  const menu = useMenu();
 
   const [activeId, setActiveId] = useState<string>(MENU[0]?.id ?? "pizza");
   const [query, setQuery] = useState("");
+  useEffect(() => {
+    const category = new URLSearchParams(window.location.search).get("category");
+    if (category && menu.some(c => c.id === category)) setActiveId(category);
+  }, [menu]);
+
   const active = menu.find((c) => c.id === activeId) ?? menu[0];
   const panelRef = useRef<HTMLDivElement>(null);
   const cart = useCart();
+
+  function chooseCategory(id: string) {
+    if (!menu.some(category => category.id === id)) return;
+    setActiveId(id);
+    setQuery("");
+    const url = new URL(window.location.href);
+    url.searchParams.set("category", id);
+    url.hash = "menu";
+    window.history.replaceState(null, "", url);
+  }
+
 
   const q = query.trim().toLowerCase();
   const searching = q.length >= 2;
@@ -135,33 +118,17 @@ export function Menu() {
   return (
     <section
       id="menu"
-      className="scroll-mt-20 overflow-hidden bg-[var(--color-page)] py-20 md:py-28"
+      className="scroll-mt-20 overflow-hidden bg-[var(--color-page)] py-8 md:scroll-mt-28 md:py-16"
     >
       <div className="container-x">
-        <div className="mx-auto max-w-2xl text-center" data-reveal>
-          <span className="eyebrow">The full menu</span>
-          <nav aria-label="Menu guides" className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm font-semibold text-[var(--color-action-text)]">
-            <a href="/menu/" className="py-2 underline underline-offset-4">Full menu &amp; prices</a>
-            <a href="/gluten-free-pizza-long-branch/" className="py-2 underline underline-offset-4">Gluten-free pizza options</a>
-            <a href="/vegan-pizza-long-branch/" className="py-2 underline underline-offset-4">Vegan pizza options</a>
-            <a href="/delivery/" className="py-2 underline underline-offset-4">Delivery information</a>
-          </nav>
-          <h2 className="mt-3 text-2xl md:text-3xl">Explore the menu</h2>
-          <p className="mt-4 text-base text-[var(--color-copy-soft)] md:text-lg">
-            NY pies, Grandma squares, specialty pizzas, heroes, pasta, and Italian
-            dinners — plus all-day breakfast and gluten-free &amp; vegan pizza. Straight
-            from our kitchen, updated July 2026.
-          </p>
-          {/* NJ requires a card-price adjustment to be disclosed before checkout, so it is
-              stated here, at the prices it applies to, and again in the item sheet and cart. */}
-          <p className="mt-3 text-sm text-[var(--color-copy-muted)]">
-            Prices shown are our cash prices. Online orders are paid by card, so 4% card
-            pricing is added at checkout.
-          </p>
-        </div>
+        <h2 className="text-center text-3xl md:text-4xl">Explore the menu</h2>
+        <p className="mx-auto mt-2 max-w-xl text-center text-xs leading-relaxed text-[var(--color-copy-muted)] md:text-sm">
+          Prices shown are our cash prices. Online orders are paid by card, so 4% card
+          pricing is added at checkout.
+        </p>
 
         {/* Search */}
-        <div className="mx-auto mt-8 max-w-md" data-reveal>
+        <div className="mx-auto mt-4 max-w-md" data-reveal>
           <div className="relative">
             <input
               type="search"
@@ -183,10 +150,18 @@ export function Menu() {
           </div>
         </div>
 
+        <div className="mx-auto mt-3 max-w-md md:hidden">
+          <label htmlFor="menu-category" className="mb-1 block text-xs font-semibold text-[var(--color-copy-soft)]">All categories</label>
+          <select id="menu-category" value={active.id} onChange={event => chooseCategory(event.target.value)}
+            className="min-h-[44px] w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-3 py-2 text-base text-[var(--color-copy)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-brand-red)]">
+            {menu.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
+          </select>
+        </div>
+
         {/* Category tabs — hidden while searching */}
         {!searching && (
           <div
-            className="scrollbar-none relative mt-8 -mx-5 flex w-[calc(100%+2.5rem)] min-w-0 max-w-[calc(100%+2.5rem)] gap-2 overflow-x-auto px-5 pb-2 md:mx-0 md:w-auto md:min-w-0 md:max-w-none md:flex-wrap md:justify-center md:overflow-visible md:px-0"
+            className="scrollbar-none relative mt-4 -mx-5 hidden md:flex w-[calc(100%+2.5rem)] min-w-0 max-w-[calc(100%+2.5rem)] gap-2 overflow-x-auto px-5 pb-2 md:mx-0 md:w-auto md:min-w-0 md:max-w-none md:flex-wrap md:justify-center md:overflow-visible md:px-0"
             role="tablist"
             aria-label="Menu categories"
             data-reveal
@@ -199,7 +174,7 @@ export function Menu() {
                   type="button"
                   role="tab"
                   aria-selected={on}
-                  onClick={() => setActiveId(c.id)}
+                  onClick={() => chooseCategory(c.id)}
                   className={`min-h-[44px] shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-200 md:px-5 md:py-2.5 ${
                     on
                       ? "bg-[var(--color-brand-red)] text-white shadow-[var(--shadow-red)]"
@@ -216,13 +191,13 @@ export function Menu() {
         {/* Panel */}
         <div
           ref={panelRef}
-          className="mt-10 rounded-3xl bg-[var(--color-panel)] p-6 shadow-[var(--shadow-lg)] md:p-10"
+          className="mt-5 rounded-2xl bg-[var(--color-panel)] p-4 shadow-[var(--shadow-lg)] md:mt-6 md:p-8"
           data-reveal
         >
           <div key={fadeKey} className="hero-in" style={{ animationDuration: "0.4s" }}>
             {searching ? (
               <>
-                <div className="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-b border-[var(--color-line)] pb-6">
+                <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3 border-b border-[var(--color-line)] pb-3">
                   <h3 className="font-display text-3xl md:text-4xl">
                     {results.length} {results.length === 1 ? "result" : "results"}
                   </h3>
@@ -249,7 +224,7 @@ export function Menu() {
               </>
             ) : (
               <>
-                <div className="mb-8 border-b border-[var(--color-line)] pb-6">
+                <div className="mb-4 border-b border-[var(--color-line)] pb-3">
                   <h3 className="font-display text-3xl md:text-4xl">{active.name}</h3>
                   {active.blurb && (
                     <p className="mt-2 text-sm text-[var(--color-copy-soft)] md:text-base">{active.blurb}</p>
@@ -265,6 +240,16 @@ export function Menu() {
           </div>
 
         </div>
+
+        <details className="mt-5 rounded-xl border border-[var(--color-line)] px-4 py-3 text-sm">
+          <summary className="cursor-pointer font-semibold text-[var(--color-copy-soft)]">Menu guides &amp; more information</summary>
+          <nav aria-label="Menu guides" className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-[var(--color-action-text)]">
+            <a href="/menu/" className="py-2 underline underline-offset-4">Full menu &amp; prices</a>
+            <a href="/gluten-free-pizza-long-branch/" className="py-2 underline underline-offset-4">Gluten-free pizza options</a>
+            <a href="/vegan-pizza-long-branch/" className="py-2 underline underline-offset-4">Vegan pizza options</a>
+            <a href="/delivery/" className="py-2 underline underline-offset-4">Delivery information</a>
+          </nav>
+        </details>
 
         {/* CTA row below the menu */}
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row" data-reveal>

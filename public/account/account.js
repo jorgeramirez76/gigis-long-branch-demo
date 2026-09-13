@@ -1,6 +1,6 @@
 (() => {
   const $ = id => document.getElementById(id);
-  let submitting = false;
+  let submitting = false, challengeLoading = false;
   let mode = 'login', siteConfig, challengeToken = '', widget, current, orderPage = 0;
   const linkToken = new URLSearchParams(location.hash.slice(1)).get('token');
   const message = value => { $('message').textContent = value || ''; };
@@ -9,6 +9,15 @@
     const data = await r.json().catch(()=>{throw new Error("Rewards is temporarily unavailable. Please try again shortly.");});
     if (!r.ok) throw new Error(data.message || (r.status === 401 ? 'Please sign in to continue.' : 'Please try again shortly.'));
     return data;
+  }
+  function ensureChallenge() {
+    if (!siteConfig || challengeLoading || widget !== undefined) return;
+    challengeLoading = true;
+    const script=document.createElement('script');
+    script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.onload=()=>{challengeLoading=false;widget=window.turnstile.render('#challenge',{sitekey:siteConfig.siteKey,theme:'dark',size:window.innerWidth<380?'compact':'normal',callback:t=>{challengeToken=t;},'expired-callback':()=>{challengeToken='';}});};
+    script.onerror=()=>{challengeLoading=false;message('Verification could not load. Check your connection and try again.');};
+    document.head.append(script);
   }
   function setMode(value) {
     mode = value; message('');
@@ -19,7 +28,8 @@
     $('password-label').hidden = !['login','confirm'].includes(mode);
     $('access-form').elements.password.required = ['login','confirm'].includes(mode);
     $('access-form').elements.password.autocomplete = confirm ? 'new-password' : 'current-password';
-    $('forgot').hidden = mode !== 'login'; $('challenge').hidden = confirm;
+    $('forgot').hidden = !['login','confirm'].includes(mode); $('forgot').textContent = confirm ? 'Request a new password link' : 'Forgot password?'; $('challenge').hidden = confirm;
+    if (!confirm) ensureChallenge();
     $('form-title').textContent = {login:'Welcome back',signup:'Make it your Gigi’s',claim:'Keep your VIP benefits',reset:'Get back into your account',confirm:'Choose your password'}[mode];
     $('form-detail').textContent = signup ? 'Use your email as your username. We’ll email a secure link where you can choose a password and activate your account.' : confirm ? 'Choose at least 12 characters. Your email is your username.' : mode === 'claim' ? 'Enter the email you used for the VIP Club. Your existing free-pie code stays with you.' : 'Use the email associated with your account.';
     $('submit').textContent = {login:'Sign in',signup:'Create my account',claim:'Email my secure link',reset:'Send reset link',confirm:'Save password & sign in'}[mode];
@@ -74,6 +84,6 @@
   (async()=>{try{
     siteConfig=await api('config');$('consent-copy').textContent=siteConfig.consentText;$('account-consent-copy').textContent=siteConfig.consentText;
     if(linkToken)setMode('confirm');else{try{await dashboard();return;}catch{setMode(new URLSearchParams(location.search).has('join')?'signup':'login'); try {const draft=JSON.parse(sessionStorage.getItem('gigis_rewards_profile')||'null');if(draft){for(const key of ['name','phone','email','address','city','state'])$('access-form').elements[key].value=draft[key]|| (key==='state'?'NJ':'');sessionStorage.removeItem('gigis_rewards_profile');}}catch{ /* Optional prefill. */ }}}
-    if(!linkToken){const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.onload=()=>{widget=window.turnstile.render('#challenge',{sitekey:siteConfig.siteKey,theme:'dark',size:window.innerWidth<380?'compact':'normal',callback:t=>{challengeToken=t;},'expired-callback':()=>{challengeToken='';}});};document.head.append(script);}
+
   }catch(e){message(e.message);$('submit').disabled=true;}})();
 })();

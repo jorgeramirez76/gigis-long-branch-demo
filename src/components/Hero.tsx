@@ -1,146 +1,41 @@
 import { LOCATION, DIRECTIONS_URL } from "../data/location";
-import { HOURS_ONE_LINE } from "../data/hours";
 import { HERO_IMAGE } from "../data/gallery";
-import { PhoneIcon, MenuIcon, PinIcon, ArrowIcon, StarIcon } from "./Icons";
+import { PhoneIcon, PinIcon, ArrowIcon } from "./Icons";
 import { OpenStatusPill } from "./OpenStatusPill";
 
 export function Hero() {
   return (
-    <section
-      id="top"
-      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-20 md:pt-28"
-    >
-      {/* Background — portrait on mobile, wide on md+; slow Ken-Burns for life */}
+    <section id="top" className="relative isolate overflow-hidden pt-20 md:pt-24">
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <picture>
-          {/* WebP first; the JPEG <img> stays as the fallback. The 397 KB portrait JPEG was the
-              LCP image on phones (Lighthouse 2026-09-06). */}
           <source media="(min-width: 768px)" type="image/webp" srcSet={HERO_IMAGE.webpWide} sizes="100vw" />
           <source media="(min-width: 768px)" srcSet={HERO_IMAGE.srcWide} />
           <source type="image/webp" srcSet={HERO_IMAGE.webpPortrait} sizes="100vw" />
-          <img
-            src={HERO_IMAGE.srcPortrait}
-            alt={HERO_IMAGE.alt}
-            className="ken-burns h-full w-full object-cover object-center"
-            loading="eager"
-            decoding="async"
-          />
+          <img src={HERO_IMAGE.srcPortrait} alt={HERO_IMAGE.alt} className="h-full w-full object-cover object-center" loading="eager" {...{ fetchpriority: "high" }} decoding="async" />
         </picture>
-        {/* Strong bottom overlay so text stays legible over busy food background */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(10,6,5,0.55) 0%, rgba(10,6,5,0.65) 40%, rgba(10,6,5,0.92) 95%)",
-          }}
-        />
-        {/* Left-side darken on desktop so pizza stays visible on the right */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 hidden md:block"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(10,6,5,0.88) 0%, rgba(10,6,5,0.55) 42%, rgba(10,6,5,0) 72%)",
-          }}
-        />
+        <div className="absolute inset-0 bg-black/65" />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(10,6,5,.85), rgba(10,6,5,.1))" }} />
       </div>
-
-      {/* Free-pie VIP CTA — floats toward the top-right of the hero */}
-      <a
-        href="#vip-club"
-        className="hero-in hero-in-2 group z-20 mx-4 mt-4 flex items-center gap-3 self-start rounded-2xl border-2 border-[var(--color-gold-bright)]/80 bg-[var(--color-brand-red)]/90 px-5 py-3.5 text-white shadow-[var(--shadow-red)] ring-1 ring-black/20 backdrop-blur transition hover:-translate-y-0.5 hover:bg-[var(--color-brand-red-bright)] active:scale-[0.98] md:absolute md:right-8 md:top-32 md:mx-0 md:mt-0 md:px-7 md:py-5"
-        aria-label="Join the Gigi's VIP Club and get a free plain cheese pizza pie"
-      >
-        <span className="text-2xl md:text-4xl" aria-hidden="true">🍕</span>
-        <span className="leading-tight">
-          <span className="block text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--color-gold-bright)] md:text-base">
-            Free Pizza Pie
-          </span>
-          <span className="block text-sm font-bold md:text-lg">
-            Join the VIP Club →
-          </span>
-        </span>
-      </a>
-
-      {/* Content */}
-      <div className="container-x flex flex-1 flex-col justify-end pb-14 pt-8 md:justify-center md:pb-24 md:pt-24">
-        <div className="max-w-3xl text-[var(--color-copy)]">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="hero-in hero-in-1 inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--color-gold-bright)]/60 bg-black/40 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-gold-bright)] backdrop-blur sm:tracking-[0.22em] md:text-xs">
-              <StarIcon className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate sm:whitespace-normal">A West End neighborhood favorite · Brighton Ave</span>
-            </span>
-
-            {/* Sends Sea Bright locals to their own shop rather than losing the order. */}
-            <a
-              href="https://gigisnystylepizza.com/sea-bright"
-              className="hero-in hero-in-1 inline-flex items-center gap-2 rounded-full bg-[var(--color-gold-bright)] px-4 py-2.5 text-[11px] font-bold text-[var(--color-on-gold)] shadow-[var(--shadow-gold)] transition hover:-translate-y-0.5 hover:bg-[var(--color-gold)] active:scale-[0.97] md:px-5 md:text-sm"
-            >
-              Closer to Sea Bright? Order from our Sea Bright location
-              <ArrowIcon className="h-3.5 w-3.5 shrink-0" />
-            </a>
-          </div>
-
-          <h1 className="hero-in hero-in-2 mt-5 text-[2.6rem] leading-[0.95] text-white sm:text-[3.25rem] md:text-[4.25rem] lg:text-[5.5rem] xl:text-[6.5rem]">
-            Real NY Style Pizza
-            <br />
-            <span className="text-[var(--color-gold-bright)]">in Long Branch.</span>
+      <div className="container-x py-8 md:py-16">
+        <div className="max-w-2xl text-white">
+          <p className="text-sm font-semibold text-[var(--color-gold-bright)]">{LOCATION.street} · Long Branch</p>
+          <h1 className="mt-4 text-[2.6rem] leading-[1] sm:text-5xl lg:text-7xl">
+            Real NY Style Pizza<br /><span className="text-[var(--color-gold-bright)]">in Long Branch.</span>
           </h1>
-
-          <p className="hero-in hero-in-3 mt-5 max-w-xl text-base leading-relaxed text-[var(--color-copy)]/90 md:text-lg">
-            Fresh dough, big slices, loaded specialty pies, classic Italian
-            favorites — the kind of neighborhood pizza shop people come back to.
-          </p>
-
-          {/* Hours + address strip */}
-          <div className="hero-in hero-in-4 mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-copy)]/85 md:text-sm">
-            <OpenStatusPill className="text-[var(--color-gold-bright)]" />
-            <span className="hidden h-1 w-1 rounded-full bg-white/25 md:inline-block" />
-            <span>{HOURS_ONE_LINE}</span>
-            <span className="hidden h-1 w-1 rounded-full bg-white/25 md:inline-block" />
-            <span className="text-[var(--color-gold-bright)]">{LOCATION.street}, Long Branch</span>
+          <p className="mt-4 max-w-lg text-base leading-relaxed text-white/90">Your favorite pies, big slices, and Italian classics. Choose your meal for pickup or delivery.</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href="#menu" className="btn-gold w-full text-base sm:w-auto">Order Online<ArrowIcon className="h-5 w-5" /></a>
+            <a href={`tel:${LOCATION.phoneTel}`} className="btn-outline flex-1 text-sm sm:flex-none" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}><PhoneIcon className="h-4 w-4" />Call the shop</a>
+            <a href={DIRECTIONS_URL} target="_blank" rel="noreferrer" className="btn-outline flex-1 text-sm sm:flex-none"><PinIcon className="h-4 w-4" />Directions</a>
           </div>
-
-          <div className="hero-in hero-in-5 mt-7 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
-            <a
-              href={`tel:${LOCATION.phoneTel}`}
-              className="btn-primary w-full text-base sm:w-auto"
-              aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}
-            >
-              <PhoneIcon className="h-5 w-5" />
-              Call {LOCATION.phone}
-            </a>
-            <a
-              href="#menu"
-              className="btn-gold w-full text-base sm:w-auto"
-            >
-              Order Online
-              <ArrowIcon className="h-5 w-5" />
-            </a>
-            <div className="flex gap-2.5">
-              <a href="#menu" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[var(--color-panel)] px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-copy)] transition hover:bg-[var(--color-page)] active:scale-[0.97] sm:flex-initial">
-                <MenuIcon className="h-4 w-4" />
-                Menu
-              </a>
-              <a href={DIRECTIONS_URL} target="_blank" rel="noreferrer" className="btn-outline flex-1 px-5 py-3.5 text-sm sm:flex-initial">
-                <PinIcon className="h-4 w-4" />
-                Directions
-              </a>
-            </div>
+          <div className="mt-5 max-w-xl text-xs leading-relaxed text-white/85">
+            <p className="mb-1 flex flex-wrap items-center gap-2"><span>Counter:</span><OpenStatusPill className="text-[var(--color-gold-bright)]" /></p>
+            <p>Online pickup until 11 PM. Delivery until 10 PM. Counter open until 11 PM Mon–Wed / midnight Thu–Sun.</p>
           </div>
-
-          {/* Soft urgency line — no fake claims */}
-          <p className="hero-in hero-in-5 mt-5 text-xs text-[var(--color-copy-muted)] md:text-[13px]">
-            Tip: <span className="text-[var(--color-copy)]/90">call ahead for pickup</span> — pies come out fast at the counter.
-          </p>
+          <p className="mt-5 text-sm"><a href="/account/?join=1" className="font-semibold text-[var(--color-gold-bright)] underline underline-offset-4">Join VIP for a free plain cheese pie →</a></p>
+          <p className="mt-5 text-xs text-white/80">Looking for our other shop? <a href="https://gigisnystylepizza.com/sea-bright" className="font-semibold text-white underline underline-offset-4">Visit Sea Bright →</a></p>
         </div>
       </div>
-
-      {/* Cream bleed into next section */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-[var(--color-page)] md:h-24"
-      />
     </section>
   );
 }

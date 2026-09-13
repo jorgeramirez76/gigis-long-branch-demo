@@ -57,6 +57,9 @@ def load_hours():
 
 def main():
     load_hours()
+    ordering_src = (ROOT / "src" / "lib" / "openStatus.ts").read_text()
+    if not re.search(r"ORDER_LAST_HOUR = 23\b", ordering_src):
+        raise SystemExit("Update online pickup cutoff copy to match ORDER_LAST_HOUR before publishing.")
     fees = load_fees()
     by_fee = {}
     for town, cents in fees:
@@ -79,8 +82,9 @@ def main():
          str(tiers[-1][0] // 100) + " to every other town we cover. It's a flat fee, the same whether "
          "you order online or over the phone."),
         (f"How late do you deliver?",
-         f"Delivery runs until {DELIVERY_LAST}. The kitchen keeps going after that — pickup is "
-         "available until we close, 11 PM Monday through Wednesday and midnight Thursday through Sunday."),
+         f"Online delivery orders close at {DELIVERY_LAST}; online pickup orders close at 11 PM daily. "
+         "The counter stays open until 11 PM Monday through Wednesday and midnight Thursday through Sunday. "
+         "After online ordering closes, call (732) 377-2468 or order at the counter."),
         ("Is there a delivery minimum?",
          "Call (732) 377-2468 and we'll tell you — it isn't set on the website."),
     ]
@@ -166,13 +170,13 @@ def main():
     OUT.write_text(f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pizza Delivery Areas &amp; Fees &mdash; Long Branch &amp; Nearby | Gigi's</title>
-<meta name="description" content="Gigi's delivers to {len(town_list)} towns near Long Branch. Flat fee: {tier_summary}. Delivery until {DELIVERY_LAST}, pickup until close.">
+<meta name="description" content="Gigi's delivers to {len(town_list)} towns near Long Branch. Flat fee: {tier_summary}. Online delivery until {DELIVERY_LAST}; online pickup until 11 PM. Counter open until 11 PM Mon–Wed, midnight Thu–Sun.">
 <link rel="canonical" href="{BASE}/delivery/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#232323">
 <link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website"><meta property="og:title" content="Where Gigi's delivers, and what it costs">
-<meta property="og:description" content="Flat delivery fee by town. Delivery until {DELIVERY_LAST}, pickup until close.">
+<meta property="og:description" content="Flat delivery fee by town. Online delivery until {DELIVERY_LAST}; online pickup until 11 PM. Counter open until 11 PM Mon–Wed, midnight Thu–Sun.">
 <meta property="og:url" content="{BASE}/delivery/"><meta property="og:image" content="{BASE}/og-image.jpg">
 <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -247,9 +251,9 @@ it's the same whether you order online or call us.</p>
 
   <section class="wrap">
     <h2>Delivery hours</h2>
-    <p><strong>Delivery runs until {DELIVERY_LAST}, seven days a week.</strong> After that the
-    kitchen is still going &mdash; pickup is available right up to closing: 11 PM Monday through
-    Wednesday, midnight Thursday through Sunday.</p>
+    <p><strong>Online delivery orders close at {DELIVERY_LAST}; online pickup orders close at 11 PM daily.</strong>
+    The counter stays open until 11 PM Monday through Wednesday and midnight Thursday through Sunday.
+    After online ordering closes, call <a href="tel:+17323772468">(732) 377-2468</a> or order at the counter.</p>
   </section>
 
   <section class="wrap">

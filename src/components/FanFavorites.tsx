@@ -1,81 +1,41 @@
 import { FAVORITES } from "../data/gallery";
-import { MENU } from "../data/menu";
+import { useMenu } from "../hooks/useMenu";
+import { useOrderingUI } from "../ordering/OrderingProvider";
 
-/** Price straight from the Clover-synced menu, so the homepage can never quote a price the
- *  register won't honor. An item renamed in Clover shows no price rather than a stale one. */
-const priceOf = (menuName: string): string | undefined => {
-  for (const cat of MENU) {
-    const hit = cat.items.find((i) => i.name === menuName);
-    if (hit) return hit.price;
-  }
-  return undefined;
-};
 
-/** Signature pies with real photos — the conversion bridge between the
- * gallery vibe and the (very long) full menu. */
 export function FanFavorites() {
+  const menu = useMenu();
+  const { configureItem, isOrderable } = useOrderingUI();
   return (
-    <section
-      id="fan-favorites"
-      aria-label="Fan favorite pies"
-      className="scroll-mt-20 bg-[var(--color-page)] py-14 md:py-24"
-    >
+    <section id="fan-favorites" aria-label="Fan favorites" className="scroll-mt-20 bg-[var(--color-page)] py-8 md:py-12">
       <div className="container-x">
-        <div className="mb-8 flex items-end justify-between gap-6 md:mb-10" data-reveal>
-          <div>
-            <span className="eyebrow">Ask anyone in Long Branch</span>
-            <h2 className="mt-3 text-4xl md:text-5xl">Fan favorites</h2>
-          </div>
-          <p className="hidden max-w-sm text-right text-sm text-[var(--color-copy-soft)] md:block">
-            The pies people drive down Brighton Ave for — photographed exactly as they
-            come out of the oven.
-          </p>
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+          <div><span className="eyebrow">Start with a favorite</span><h2 className="mt-2 text-3xl md:text-4xl">What sounds good?</h2></div>
+          <a href="#menu" className="py-2 text-sm font-semibold text-[var(--color-action-text)] underline underline-offset-4">See the full menu →</a>
         </div>
-
-        <div className="mx-auto grid max-w-3xl gap-5 sm:grid-cols-2">
-          {FAVORITES.map((f, i) => (
-            <article
-              key={f.name}
-              data-reveal
-              style={{ ["--delay" as string]: `${(i % 4) * 70}ms` }}
-              className="group overflow-hidden rounded-2xl bg-[var(--color-panel)] shadow-[var(--shadow-md)] transition-shadow duration-300 hover:shadow-[var(--shadow-lg)]"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[var(--color-chrome)]">
-                <img
-                  src={f.src}
-                  alt={f.alt}
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                  className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
-                />
-              </div>
-              <div className="p-4 md:p-5">
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="font-display text-2xl leading-none">{f.name}</h3>
-                  {priceOf(f.menuName) && (
-                    <span className="shrink-0 font-bold text-[var(--color-action-text)]">{priceOf(f.menuName)}</span>
-                  )}
+        <div className="grid grid-flow-col auto-cols-[80%] gap-4 overflow-x-auto pb-3 sm:auto-cols-[45%] lg:grid-flow-row lg:grid-cols-2 lg:max-w-3xl">
+          {FAVORITES.map(f => {
+            const category = menu.find(cat => cat.items.some(item => item.name === f.menuName));
+            const item = category?.items.find(item => item.name === f.menuName);
+            return (
+              <article key={f.menuName} className="flex flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)]">
+                <picture>
+                  <source type="image/webp" srcSet={f.webp} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 45vw, 80vw" />
+                  <img src={f.src} alt={f.alt} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover" />
+                </picture>
+                <div className="flex flex-1 flex-col p-4">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="font-display text-2xl leading-tight">{f.name}</h3>
+                    {item && <span className="font-bold text-[var(--color-action-text)]">{item.price}</span>}
+                  </div>
+                  <p className="mb-4 mt-2 text-sm leading-relaxed text-[var(--color-copy-soft)]">{f.blurb}</p>
+                  {item && category && isOrderable(item) ? (
+                    <button type="button" onClick={() => configureItem(item, category.id)} className="btn-primary mt-auto w-full text-sm" aria-label={`Customize ${f.name}`}>Customize &amp; add</button>
+                  ) : <a href="#menu" className="mt-auto py-3 text-sm font-semibold underline underline-offset-4">Browse available items</a>}
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--color-copy-soft)]">{f.blurb}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3" data-reveal>
-          <a
-            href="#menu"
-            className="rounded-full bg-[var(--color-brand-red)] px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)]"
-          >
-            Order one now
-          </a>
-          <a
-            href="#menu"
-            className="rounded-full border-2 border-[var(--color-line)] px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-copy)] transition hover:border-[var(--color-line)]"
-          >
-            See the full menu
-          </a>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

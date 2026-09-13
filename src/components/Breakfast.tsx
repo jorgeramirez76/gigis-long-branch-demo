@@ -77,10 +77,10 @@ export function Breakfast() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-3" data-reveal>
           <a
-            href="/breakfast"
+            href="/?category=breakfast#menu"
             className="rounded-full bg-[var(--color-brand-red)] px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)]"
           >
-            View the full breakfast menu
+            Order breakfast
           </a>
           <span className="text-sm text-[var(--color-copy-soft)]">
             Or scan the QR at your table to browse.

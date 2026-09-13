@@ -1,6 +1,9 @@
+import { initialEditSelections } from "./cartEdit";
+import { savedAttemptUncertain } from "./Checkout";
+import type { CartLine } from "./CartContext";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MenuItem, OptionGroup } from "../data/menu";
-import { MAX_LINE_QTY, money, parsePrice, useCart, type CartOption } from "./CartContext";
+import { money, parsePrice, useCart, type CartOption } from "./CartContext";
 import {
   HALF_TOPPING_CHARGE_CENTS,
   TOPPING_CHARGE_CAP_CENTS,
@@ -141,16 +144,18 @@ function GroupField({
   );
 }
 
-export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categoryId: string; onClose: () => void }) {
+export function ItemModal({ item, categoryId, existingLine, onClose }: { item: MenuItem; categoryId: string; existingLine?: CartLine; onClose: () => void }) {
   const cart = useCart();
   const basePrice = parsePrice(item.price);
   const groups = useMemo(() => item.options ?? [], [item.options]);
   // selected choice names per group index
-  const [selected, setSelected] = useState<Record<number, Set<string>>>({});
+  const [selected, setSelected] = useState<Record<number, Set<string>>>(() => initialEditSelections(groups, existingLine));
   // topping name → where it goes (only charge-priced toppings; default whole pie)
-  const [placements, setPlacements] = useState<Record<string, ToppingPlacement>>({});
-  const [quantity, setQuantity] = useState(1);
-  const [notes, setNotes] = useState("");
+  const [placements, setPlacements] = useState<Record<string, ToppingPlacement>>(() => Object.fromEntries((existingLine?.options ?? []).filter(option => option.placement).map(option => [option.name, option.placement as ToppingPlacement])));
+  const [quantity, setQuantity] = useState(existingLine?.quantity ?? 1);
+  const [notes, setNotes] = useState(existingLine?.notes ?? "");
+  const [saveError, setSaveError] = useState("");
+  const maxQuantity = Math.max(1, Math.min(50, 100 - cart.lines.filter(line => line.lineId !== existingLine?.lineId).reduce((sum, line) => sum + line.quantity, 0)));
   const panelRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   // Same modal contract as checkout: focus stays inside, Escape exits, and the
@@ -247,6 +252,8 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
   }
 
   function add() {
+    if (savedAttemptUncertain()) { setSaveError("Your payment is still being checked. Return to checkout before changing this order."); return; }
+
     const options: CartOption[] = [];
     groups.forEach((g, gi) => {
       const sel = selected[gi];
@@ -265,7 +272,10 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
     // the "counts toward the $6 cap" flag. The cart re-caps on restore and the order API re-caps
     // from its own catalog; this is the customer-facing copy of the same rule.
     const priced = capToppingCharges(options, (o) => o.placement != null);
-    cart.addLine({ itemName: item.name, categoryId, basePrice, options: priced, quantity, notes: notes.trim() || undefined });
+    const replacement = { itemName: item.name, categoryId, basePrice, options: priced, quantity, notes: notes.trim() || undefined };
+    if (existingLine) {
+      if (!cart.updateLine(existingLine.lineId, replacement)) { setSaveError("This cart item can no longer be changed. Return to your order and try again."); return; }
+    } else cart.addLine(replacement);
     onClose();
   }
 
@@ -275,7 +285,7 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
       className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
-      aria-label={`Add ${item.name}`}
+      aria-label={`${existingLine ? "Edit" : "Add"} ${item.name}`}
       // Backdrop mousedown only — an onClick here closed the modal when a drag
       // that began on the option list happened to end outside it.
       onMouseDown={(e) => {
@@ -308,6 +318,10 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
         </div>
 
         <div className="flex-1 space-y-4 overflow-y-auto p-5">
+          {saveError && <p role="alert" className="text-sm font-semibold text-[var(--color-action-text)]">{saveError}</p>}
+          {existingLine && <p className="text-sm text-[var(--color-copy-muted)]">Update your choices below. Current menu prices apply.</p>}
+          {existingLine?.options.some(option => !(item.options ?? []).some(group => group.group === option.group && group.choices.some(choice => choice.name === option.name))) &&
+            <p role="status" className="text-sm text-[var(--color-action-text)]">Some previous choices are no longer offered. Please review your options before saving.</p>}
           {groups.map((g, gi) => (
             <GroupField
               key={g.group + gi}
@@ -349,8 +363,8 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
             <button
               type="button"
               aria-label="Increase quantity"
-              onClick={() => setQuantity((q) => Math.min(MAX_LINE_QTY, q + 1))}
-              disabled={quantity >= MAX_LINE_QTY}
+              onClick={() => setQuantity((q) => Math.min(maxQuantity, q + 1))}
+              disabled={quantity >= maxQuantity}
               className="px-3.5 py-2 text-lg text-[var(--color-copy)] disabled:opacity-30"
             >
               +
@@ -362,7 +376,7 @@ export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categ
             disabled={unmetRequired}
             className="flex flex-1 items-center justify-between rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <span>{unmetRequired ? "Choose required options" : "Add to order"}</span>
+            <span>{unmetRequired ? "Choose required options" : existingLine ? "Save changes" : "Add to order"}</span>
             <span>{money(displayUnit * quantity)}</span>
           </button>
         </div>

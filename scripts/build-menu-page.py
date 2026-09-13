@@ -126,7 +126,7 @@ def main():
 <section class="wrap"><h2>Jump to a section</h2><p>{toc}</p></section>
 {"".join(sections)}
 <section class="wrap"><h2>Ready to order?</h2>
-<p>Order pickup or delivery at <a href="{BASE}/#menu">gigislongbranch.com</a> — the online menu prices every topping and option as you build your order — or call <a href="{TEL}">{PHONE}</a>. Delivery runs until 10 PM; pickup until close (midnight Thu–Sun, 11 PM Mon–Wed).</p>
+<p>Order pickup or delivery at <a href="{BASE}/#menu">gigislongbranch.com</a> — the online menu prices every topping and option as you build your order — or call <a href="{TEL}">{PHONE}</a>. Online delivery orders close at 10 PM; online pickup orders close at 11 PM daily. The counter stays open until 11 PM Mon–Wed and midnight Thu–Sun. After online ordering closes, call or order at the counter.</p>
 <p>More: <a href="/square-pizza-long-branch/">square pizza</a> · <a href="/gluten-free-pizza-long-branch/">gluten-free</a> · <a href="/vegan-pizza-long-branch/">vegan</a> · <a href="/catering-long-branch/">catering</a> · <a href="/delivery/">delivery areas &amp; fees</a> · <a href="/vip-club/">VIP club (free pie)</a></p>
 </section>
 </main>

@@ -1,3 +1,4 @@
+import { replaceCartLine } from "./cartEdit";
 import { savedAttemptUncertain } from "./Checkout";
 import { useCallback, createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { capLineOptions, findCatalogItem, optionDelta, placementEligible } from "../lib/menuPricing";
@@ -38,6 +39,7 @@ export function lineTotal(line: CartLine): number {
 type CartState = {
   lines: CartLine[];
   addLine: (line: Omit<CartLine, "lineId">) => void;
+  updateLine: (lineId: string, line: Omit<CartLine, "lineId">) => boolean;
   updateQty: (lineId: string, quantity: number) => void;
   removeLine: (lineId: string) => void;
   clear: () => void;
@@ -210,6 +212,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
         });
         setIsOpen(true);
         setDropped(0);
+      },
+      updateLine: (lineId, line) => {
+        if (savedAttemptUncertain()) { setIsOpen(true); return false; }
+        if (!lines.some(existing => existing.lineId === lineId)) return false;
+        setLines(previous => replaceCartLine(previous, lineId, line, savedAttemptUncertain()));
+        setDropped(0);
+        return true;
       },
       updateQty: (lineId, quantity) =>
         setLines((prev) =>

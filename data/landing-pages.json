@@ -3,9 +3,9 @@
     "slug": "late-night-pizza-long-branch",
     "keyword": "late night pizza Long Branch",
     "titleTag": "Late Night Food in Long Branch — Open Til Midnight Thu-Sun | Gigi's",
-    "metaDescription": "Open until 11 PM Mon-Wed and midnight Thu-Sun. Delivery until 10 PM, pickup until close. 140 Brighton Ave, West End. (732) 377-2468.",
+    "metaDescription": "Online delivery until 10 PM; online pickup until 11 PM daily. Counter open until 11 PM Mon-Wed, midnight Thu-Sun. 140 Brighton Ave. (732) 377-2468.",
     "h1": "Late-Night Pizza in Long Branch",
-    "dek": "Craving late-night pizza in Long Branch? Gigi's NY Style Pizza on Brighton Avenue keeps hot slices and the full menu going till midnight Thursday through Sunday, and 11 PM Monday through Wednesday. Open 7 days — delivery until 10 PM, pickup until close. Order online or call (732) 377-2468.",
+    "dek": "Craving late-night pizza in Long Branch? Gigi's NY Style Pizza on Brighton Avenue keeps hot slices and the full menu going till midnight Thursday through Sunday, and 11 PM Monday through Wednesday. Online delivery orders close at 10 PM; online pickup orders close at 11 PM daily. For later pickup Thursday through Sunday, call (732) 377-2468 or order at the counter before midnight.",
     "sections": [
       {
         "h2": "How Late Is Gigi's Open?",
@@ -36,7 +36,7 @@
       },
       {
         "q": "How late can I get pizza delivered in Long Branch?",
-        "a": "Delivery runs until 10 PM. After that the kitchen is still going — pickup is available until we close, 11 PM Monday through Wednesday and midnight Thursday through Sunday. Order at gigislongbranch.com or call (732) 377-2468."
+        "a": "Online delivery orders close at 10 PM, and online pickup orders close at 11 PM daily. The counter stays open until 11 PM Monday through Wednesday and midnight Thursday through Sunday. For later pickup, call (732) 377-2468 or order at the counter."
       },
       {
         "q": "Do you sell pizza by the slice late night?",
@@ -48,7 +48,7 @@
       },
       {
         "q": "Is the full menu available late, or only slices?",
-        "a": "The full menu runs right up to closing. The online menu stays open for orders until closing time, so heroes, pasta, dinners and salads are still orderable late, not just slices."
+        "a": "The full menu is available at the counter until closing. Online pickup orders close at 11 PM daily, and online delivery orders close at 10 PM. On Thursday through Sunday, call (732) 377-2468 or order at the counter for pickup after 11 PM and before midnight."
       },
       {
         "q": "Is it cheaper to order on the website than on a delivery app?",
@@ -92,6 +92,7 @@
   },
   {
     "slug": "gluten-free-pizza-long-branch",
+    "orderHref": "/?category=pizza#menu",
     "keyword": "gluten free pizza Long Branch",
     "titleTag": "Gluten-Free Pizza, Pasta & Bread — Long Branch NJ | Gigi's",
     "metaDescription": "GF crust pie $17.68, the same price as our plain pie. Plus a GF pasta swap and GF bread on breakfast sandwiches. Shared kitchen, so call (732) 377-2468 and we'll take extra care.",
@@ -180,6 +181,7 @@
   },
   {
     "slug": "vegan-pizza-long-branch",
+    "orderHref": "/?category=pizza#menu",
     "keyword": "vegan pizza Long Branch",
     "titleTag": "Vegan & Dairy-Free Pizza in Long Branch, NJ | Gigi's",
     "metaDescription": "Our Vegan Pizza Pie ($20.79) is its own menu item, not a plain pie with the cheese left off. Delivery until 10 PM, pickup until close.",
@@ -268,6 +270,7 @@
   },
   {
     "slug": "catering-long-branch",
+    "orderHref": "/?category=catering#menu",
     "keyword": "pizza catering Long Branch",
     "titleTag": "Pizza Catering in Long Branch | Gigi's Long Branch",
     "metaDescription": "Pizza catering in Long Branch from Gigi's NY Style Pizza — pies, heroes, pasta & salads for offices, parties & gatherings. Call (732) 377-2468 to plan.",
@@ -623,6 +626,7 @@
   },
   {
     "slug": "square-pizza-long-branch",
+    "orderHref": "/?category=pizza#menu",
     "keyword": "square pizza Long Branch",
     "titleTag": "Grandma & Sicilian Square Pizza in Long Branch | Gigi's",
     "metaDescription": "Square pizza in Long Branch: thin Grandma pies from $26 and thick Sicilian squares at Gigi's on Brighton Ave. Pickup & delivery until 10 PM. (732) 377-2468.",

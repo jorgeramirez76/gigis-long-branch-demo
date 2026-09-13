@@ -30,15 +30,15 @@ export default function App() {
       <Nav />
       <main className="overflow-x-clip pb-24 md:pb-0">
         <Hero />
-        <Gallery />
-        <About />
         <FanFavorites />
-        <Breakfast />
         <Menu />
+        <VipClub />
+        <About />
         <Reviews />
+        <Gallery />
+        <Breakfast />
         <ServiceArea />
         <FAQ />
-        <VipClub />
         <Location />
       </main>
       <Footer />

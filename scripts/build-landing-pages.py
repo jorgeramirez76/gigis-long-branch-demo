@@ -277,7 +277,8 @@ def render_delivery_block(page):
     return (
         '<section class="wrap"><h2>What delivery costs</h2>'
         '<p>Gigi\u2019s runs its own delivery. The fee is flat and the same whether you order online '
-        'or call \u2014 and it stops at 10 PM, with pickup available right up to closing.</p>'
+        'or call. Online delivery orders close at 10 PM; online pickup orders close at 11 PM daily. '
+        'The counter stays open until 11 PM Mon–Wed and midnight Thu–Sun.</p>'
         f'<table class="ptable"><caption>Delivery fee by town</caption>'
         '<thead><tr><th scope="col">Town</th><th scope="col" style="text-align:right">Fee</th></tr></thead>'
         f'<tbody>{rows}</tbody></table>'
@@ -290,7 +291,7 @@ def render_hours(page):
         return ""
     rows = "".join(f"<tr><th scope=\"row\">{E(d)}</th><td class=\"t\">{E(t)}</td></tr>"
                    for d, t, _, _, _ in HOURS)
-    return (f"<section class=\"wrap\"><h2>Hours &amp; Where to Find Us</h2>"
+    return (f"<section class=\"wrap\"><h2>Counter Hours &amp; Where to Find Us</h2>"
             f"<table class=\"hours\"><tbody>{rows}</tbody></table>"
             f"<p style=\"margin-top:14px\">Gigi's is at <strong>{E(BIZ['street'])}, {E(BIZ['city'])}, "
             f"{E(BIZ['state'])} {E(BIZ['zip'])}</strong>, in the West End. Open seven days. "
@@ -361,7 +362,7 @@ def head(page):
 </head>"""
 
 def body(page, others, price_html):
-    order = order_url()
+    order = (BASE + page["orderHref"]) if page.get("orderHref") else order_url()
     tel = f"tel:{BIZ['phone_tel']}"
     sections = "".join(
         f"<section class=\"wrap\"><h2>{E(s['h2'])}</h2>{''.join(f'<p>{E(p)}</p>' for p in s['paragraphs'])}</section>"

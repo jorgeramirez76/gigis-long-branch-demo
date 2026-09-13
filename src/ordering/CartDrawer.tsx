@@ -224,7 +224,7 @@ export function CartDrawer({ onCheckout, onEdit, editingId, notice }: { onChecko
               </dl>
               <button
                 type="button"
-                onClick={onCheckout}
+                data-metric="checkout_start" onClick={onCheckout}
                 className="mt-4 w-full rounded-full bg-[var(--color-brand-red)] px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[var(--shadow-red)] transition hover:bg-[var(--color-brand-red-bright)]"
               >
                 Checkout · {money(cart.total)}

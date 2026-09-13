@@ -1,3 +1,4 @@
+import { pruneMetrics } from "../lib/metrics.js";
 import { isVercelCron, menuRefreshWindow } from "../lib/menuSchedule.js";
 import { cronAuthorized } from "../lib/cronAuth.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
@@ -50,6 +51,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (isVercelCron(req.headers["user-agent"]) && !menuRefreshWindow(new Date(),7).shouldRun) {
     return void res.status(200).json({ok:true,skipped:"outside_7am_eastern"});
   }
+  await pruneMetrics("gigis_long_branch").catch(() => console.warn("[metrics] retention cleanup unavailable"));
   if (!DIGEST_TO || !(process.env.DIGEST_FROM || process.env.EMAIL_FROM)) return void res.status(503).json({ error: "digest_not_configured" });
 
   const sections: Section[] = [];

@@ -1,3 +1,4 @@
+import { MetricsReport } from "./MetricsReport";
 import { useCallback, useEffect, useState } from "react";
 import {
   api,
@@ -188,6 +189,7 @@ function Overview({ stats, business, onRefresh }: { stats: Stats | null; busines
   return (
     <div className="space-y-4">
       <Operations />
+      <MetricsReport />
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard label="VIP members" value={stats.members.total} sub={`+${stats.members.new_7d} this week`} />
         <StatCard label="Text list" value={stats.members.sms_ok} sub={`${stats.members.sms_pending} awaiting YES`} />

@@ -1,3 +1,4 @@
+import "./metrics";
 import "./styles/index.css";
 import "./styles/storefront.css";
 import { ViteReactSSG } from "vite-react-ssg/single-page";

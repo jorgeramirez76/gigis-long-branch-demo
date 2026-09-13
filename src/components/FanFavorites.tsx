@@ -13,6 +13,7 @@ export function FanFavorites() {
           <div><span className="eyebrow">Start with a favorite</span><h2 className="mt-2 text-3xl md:text-4xl">What sounds good?</h2></div>
           <a href="#menu" className="py-2 text-sm font-semibold text-[var(--color-action-text)] underline underline-offset-4">See the full menu →</a>
         </div>
+        <p className="mb-4 text-sm text-[var(--color-copy-soft)]">Prefer a square pie? Explore our <a href="/square-pizza-long-branch/" className="font-semibold underline underline-offset-4">Grandma and Sicilian square pizza options</a>.</p>
         <div className="grid grid-flow-col auto-cols-[80%] gap-4 overflow-x-auto pb-3 sm:auto-cols-[45%] lg:grid-flow-row lg:grid-cols-2 lg:max-w-3xl">
           {FAVORITES.map(f => {
             const category = menu.find(cat => cat.items.some(item => item.name === f.menuName));
@@ -20,7 +21,7 @@ export function FanFavorites() {
             return (
               <article key={f.menuName} className="flex flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)]">
                 <picture>
-                  <source type="image/webp" srcSet={f.webp} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 45vw, 80vw" />
+                  <source type="image/webp" srcSet={f.webp} sizes="(min-width: 1024px) 376px, (min-width: 640px) 45vw, 80vw" />
                   <img src={f.src} alt={f.alt} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover" />
                 </picture>
                 <div className="flex flex-1 flex-col p-4">

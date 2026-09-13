@@ -223,6 +223,7 @@ footer a{{color:var(--gold)}}
 .links{{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0}}
 </style>
 <script type="application/ld+json">{json.dumps(graph, separators=(',', ':'))}</script>
+<script type="module" src="/metrics.js"></script>
 </head><body>
 
 <header class="site"><div class="row">
@@ -231,7 +232,7 @@ footer a{{color:var(--gold)}}
 <a class="btn" href="{BASE}/#menu">Order Now</a></div></header>
 
 <section class="hero"><div class="wrap">
-<h1>Where We Deliver</h1>
+<h1>Pizza Delivery in Long Branch &amp; Nearby Towns</h1>
 <p>Gigi's runs its own delivery &mdash; no app in the middle. The fee below is the whole fee, and
 it's the same whether you order online or call us.</p>
 </div></section>
@@ -254,6 +255,20 @@ it's the same whether you order online or call us.</p>
     <p><strong>Online delivery orders close at {DELIVERY_LAST}; online pickup orders close at 11 PM daily.</strong>
     The counter stays open until 11 PM Monday through Wednesday and midnight Thursday through Sunday.
     After online ordering closes, call <a href="tel:+17323772468">(732) 377-2468</a> or order at the counter.</p>
+  </section>
+
+  <section class="wrap">
+    <h2>How to order delivery from Gigi’s</h2>
+    <p>Browse the <a href="/menu/">Long Branch menu with prices</a>, then choose your food in the
+    <a href="{BASE}/#menu">online ordering menu</a>. At checkout, select delivery and enter your street
+    address, town, apartment or unit, and a phone number where we can reach you. Add entrance or
+    handoff instructions when they would help the driver find you.</p>
+    <p>The town determines the flat delivery fee shown above. Menu prices are cash prices;
+    card orders add 4% card pricing, plus tax and any tip you choose. Review the complete total before paying.
+    An address outside the listed towns cannot be placed as an online delivery order; call us about alternatives.</p>
+    <p>Picking up instead? Choose pickup and collect your order at <strong>140 Brighton Avenue, Long Branch</strong>.
+    Pickup has no delivery fee. Online orders are paid by card; to arrange payment at the counter, call
+    <a href="tel:+17323772468">(732) 377-2468</a>.</p>
   </section>
 
   <section class="wrap">

@@ -17,6 +17,9 @@ import insideWide from "../assets/brand/inside-wide.jpg";
 import sliceHeroWideW900 from "../assets/brand/slice-hero-wide-900.webp";
 import sliceHeroWideW480 from "../assets/brand/slice-hero-wide-480.webp";
 import sliceHeroPortraitW900 from "../assets/brand/slice-hero-portrait-900.webp";
+import sliceHeroPortraitW768 from "../assets/brand/slice-hero-portrait-768.webp";
+import sliceFullW640 from "../assets/brand/slice-full-640.webp";
+import fanzFullW640 from "../assets/brand/fanz-full-640.webp";
 import sliceHeroPortraitW480 from "../assets/brand/slice-hero-portrait-480.webp";
 import sliceFullW900 from "../assets/brand/slice-full-900.webp";
 import sliceFullW480 from "../assets/brand/slice-full-480.webp";
@@ -46,7 +49,7 @@ export type GalleryImage = {
 export const HERO_IMAGE = {
   srcPortrait: sliceHeroPortrait,
   srcWide: sliceHeroWide,
-  webpPortrait: `${sliceHeroPortraitW900} 900w, ${sliceHeroPortraitW480} 480w`,
+  webpPortrait: `${sliceHeroPortraitW900} 900w, ${sliceHeroPortraitW768} 768w, ${sliceHeroPortraitW480} 480w`,
   webpWide: `${sliceHeroWideW900} 900w, ${sliceHeroWideW480} 480w`,
   alt: "Hand lifting a generous New York style cheese slice from a whole pie at Gigi's Long Branch",
   credit: "Gigi's NY Style Pizza — Long Branch",
@@ -103,7 +106,7 @@ export const GALLERY: GalleryImage[] = [
 export const FAVORITES = [
   {
     src: sliceFull,
-    webp: `${sliceFullW900} 900w, ${sliceFullW480} 480w`,
+    webp: `${sliceFullW900} 900w, ${sliceFullW640} 640w, ${sliceFullW480} 480w`,
     name: "Classic NY Cheese Pie",
     menuName: "Plain Pie",
     blurb: "Hand-stretched dough, house tomato sauce, fresh mozzarella — that perfect foldable New York slice.",
@@ -111,7 +114,7 @@ export const FAVORITES = [
   },
   {
     src: fanzFull,
-    webp: `${fanzFullW900} 900w, ${fanzFullW480} 480w`,
+    webp: `${fanzFullW900} 900w, ${fanzFullW640} 640w, ${fanzFullW480} 480w`,
     name: "The Fonz",
     menuName: "The Fonz",
     blurb: "The specialty square everyone on Brighton Ave asks for by name.",

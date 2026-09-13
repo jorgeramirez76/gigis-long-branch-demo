@@ -129,7 +129,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Order from Gigi's on Slice (opens in a new tab)"
-              className="inline-flex items-center transition hover:opacity-80"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center transition hover:opacity-80"
             >
               <img
                 src="/img/slice-logo.png"
@@ -140,7 +140,7 @@ export function Footer() {
                    lazy heuristic never fired — the image stayed unloaded (currentSrc empty) so the
                    logo simply never appeared. */
                 decoding="async"
-                className="h-7 w-7 rounded-[6px]"
+                className="h-6 w-6 rounded-[5px]"
               />
             </a>
           </p>

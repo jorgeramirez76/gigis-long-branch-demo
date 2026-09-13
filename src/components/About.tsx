@@ -85,7 +85,10 @@ export function About() {
               Call Long Branch · {LOCATION.phone}
             </a>
 
-            <dl className="mt-10 grid grid-cols-3 gap-5 border-t border-white/10 pt-8" data-reveal>
+            <p className="mt-5 text-sm text-[var(--color-copy-soft)]">
+            Planning a celebration? Explore <a href="/pizza-party-long-branch/" className="font-semibold underline underline-offset-4">kids’ pizza parties</a> or <a href="/catering-long-branch/" className="font-semibold underline underline-offset-4">catering trays for your gathering</a>.
+          </p>
+          <dl className="mt-10 grid grid-cols-3 gap-5 border-t border-white/10 pt-8" data-reveal>
               <div>
                 <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-action-text)]">
                   Style

@@ -50,6 +50,10 @@ export function Reviews() {
           ))}
         </div>
 
+        <p className="mt-8 text-center text-sm text-[var(--color-copy-soft)]">
+          Visited Gigi’s? <a href="https://www.google.com/maps/place/Gigi's+Pizza+Long+Branch+140+Brighton+Ave/data=!4m2!3m1!1s0x89c22561a2f0aca7:0x6b9bac50456e132f" target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-4">Share your honest experience on Google</a>.
+        </p>
+
         <p className="mt-10 text-center text-xs text-[var(--color-copy-muted)]">
           Ratings verified July 2026. Themes paraphrased from publicly visible reviews; individual reviews belong to their authors.
         </p>

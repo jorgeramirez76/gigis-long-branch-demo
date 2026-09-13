@@ -229,7 +229,7 @@ def render_prices(page):
              f"<table class=\"ptable\"><caption>{E(pb.get('caption', 'Current prices'))}</caption>"
              f"<thead><tr><th scope=\"col\">Item</th><th scope=\"col\" style=\"text-align:right\">Price</th></tr></thead>"
              f"<tbody>{''.join(rows)}</tbody></table>"
-             f"<p class=\"pnote\">Straight from Gigi's register. "
+             f"<p class=\"pnote\">Cash menu prices. Card orders add 4% card pricing at checkout, plus tax and any delivery fee. "
              f"Prices can change &mdash; your total is confirmed before you pay.</p>"
              f"</section>")
     return table, ld
@@ -359,6 +359,7 @@ def head(page):
 <link rel="preload" href="/fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin>
 <style>{STYLE}</style>
 <script type="application/ld+json">{json.dumps(graph, separators=(',', ':'))}</script>
+<script type="module" src="/metrics.js"></script>
 </head>"""
 
 def body(page, others, price_html):
@@ -367,6 +368,8 @@ def body(page, others, price_html):
     sections = "".join(
         f"<section class=\"wrap\"><h2>{E(s['h2'])}</h2>{''.join(f'<p>{E(p)}</p>' for p in s['paragraphs'])}</section>"
         for s in page["sections"])
+    if page["slug"] == "catering-long-branch":
+        sections += '<section class="wrap"><h2>Planning a child’s birthday?</h2><p>For a hands-on celebration at the restaurant, explore our <a href="/pizza-party-long-branch/">kids’ make-your-own-pizza parties</a>. Call the team about dates and arrangements.</p></section>'
     faq = "".join(f"<details><summary>{E(q['q'])}</summary><p>{E(q['a'])}</p></details>" for q in page["faq"])
     # internal links to EVERY sibling landing page. Google reported /pizza-delivery-elberon/
     # and /pizza-delivery-pier-village/ as "Discovered - currently not indexed" with no

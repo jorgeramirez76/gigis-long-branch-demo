@@ -30,8 +30,11 @@ export function ServiceArea() {
             Hot pies, fresh heroes, and full Italian dinners for pickup or
             delivery to{" "}
             <span className="font-semibold text-[var(--color-copy)]">Long Branch</span>{" "}
-            and the surrounding 5-mile shore neighborhoods — order direct online,
+            and nearby towns on our delivery list — order direct online,
             or call ahead and pick up at the counter.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-[var(--color-copy-soft)]">
+            <a href="/delivery/" className="font-semibold underline underline-offset-4">See delivery areas, fees and hours</a>, including <a href="/pizza-delivery-pier-village/" className="underline underline-offset-4">delivery to Pier Village</a> and <a href="/pizza-delivery-elberon/" className="underline underline-offset-4">delivery to Elberon</a>.
           </p>
         </div>
 

@@ -62,13 +62,39 @@
       "source": "/vip-club/",
       "destination": "/account/?join=1&source=menu-qr",
       "permanent": false
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/breakfast.html",
+      "destination": "/breakfast",
+      "permanent": true
+    },
+    {
+      "source": "/breakfast/",
+      "destination": "/breakfast",
+      "permanent": true
+    },
+    {
+      "source": "/:slug(menu|delivery|late-night-pizza-long-branch|gluten-free-pizza-long-branch|vegan-pizza-long-branch|catering-long-branch|pizza-delivery-pier-village|pizza-delivery-west-end-long-branch|pizza-delivery-elberon|square-pizza-long-branch|pizza-delivery-west-long-branch|pizza-party-long-branch|privacy-policy|sms-terms)",
+      "destination": "/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/vip-club",
+      "destination": "/account/?join=1&source=menu-qr",
+      "permanent": false
+    },
+    {
+      "source": "/vip-club/index.html",
+      "destination": "/account/?join=1&source=menu-qr",
+      "permanent": false
     }
   ],
   "rewrites": [
-    {
-      "source": "/breakfast/",
-      "destination": "/breakfast.html"
-    },
     {
       "source": "/breakfast",
       "destination": "/breakfast.html"

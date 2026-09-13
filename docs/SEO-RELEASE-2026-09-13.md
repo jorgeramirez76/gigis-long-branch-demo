@@ -1,0 +1,17 @@
+# Long Branch SEO release — September 13, 2026
+
+Prepared locally; production deployment and Google indexing are separate verification steps.
+
+- Editorial price FAQs now point to catalog-derived tables and explain cash prices plus 4% card pricing. No charge calculations changed.
+- Online delivery/online pickup/counter cutoffs are distinguished. Existing slice and full-menu answers retain their actual service information.
+- Delivery hub adds ordering/address/handoff instructions, pickup distinction, and contextual menu/Pier Village/Elberon links. Elberon copy foregrounds its $3 zone and clarifies the actual Brighton Avenue shop location.
+- Homepage service-area, favorites and About sections link to useful delivery, square-pizza and party/catering pages. Static menu categories link to their matching ordering categories.
+- Title changes: menu “Gigi’s Long Branch Menu & Prices — Pizza, Heroes, Pasta & Breakfast” → “Pizza Menu & Prices in Long Branch | Gigi’s”; party “Kids’ Pizza Party in Long Branch, NJ | Gigi’s Make-Your-Own Pizza Birthday” → “Kids’ Pizza Parties in Long Branch | Gigi’s”; Pier Village “Pizza in Pier Village — Delivery & Pickup | Gigi’s Long Branch” → “Pizza Delivery to Pier Village | Gigi’s Long Branch”. Existing party details/starting price are retained; no capacity or booking promises added.
+- Removed redirected VIP page from sitemap; accounts remain noindex. Canonical breakfast remains `/breakfast`; `.html`, trailing slash, menu and index aliases gain permanent redirects. Production must verify breakfast does not loop after Vercel routing.
+- `npm run generate:seo` runs the page generators, sitemap generation, and offline contract checks. Standard build invokes it, then checks the built HTML. It fails on invalid canonical/indexability, JSON-LD, category links, or incorrect cutoff configuration. This makes missing generation visible instead of publishing stale output silently.
+- Gallery images are lazy. Responsive WebP sources were already present, contrary to the earlier asset report’s inference from fallback `<img>` tags. Favorites get 640px candidates and a corrected desktop size. Hero retains the genuine image with lighter 480/900 variants and a new 768 candidate. The 900px file falls from 212,550 to 164,450 bytes; 768px is 134,704 bytes. This is an asset reduction, not a measured production LCP result. Optional regeneration: `python3 scripts/optimize-seo-images.py` with Pillow installed.
+- Neutral Google review invitation is separate from rewards, without incentives or screening. Existing genuine Slice footer icon is 24px within a 44px target, keeping direct ordering primary.
+
+Analytics is being implemented separately as first-party aggregate events; no vendor tracker has been added by this release. Existing orders/account history and signup-source counts remain intact. Google Business Profile work is explicitly excluded at the user’s request. Domain consolidation, third-party listing control, additional original photography, verified catering operating details and future matched-period SEO reporting remain outside these source edits.
+
+Before release: `npm run lint`, `npm test`, `npm run build`. After release: check canonical URLs and redirects, static category order links, 14 sitemap content URLs, private noindex behavior, and first-party metrics script availability. Compare mobile Lighthouse under the same configuration; do not promise indexing or ranking gains.

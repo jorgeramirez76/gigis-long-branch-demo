@@ -34,7 +34,7 @@ MANIFEST = ROOT / "sitemap-manifest.json"
 # Routes that exist but must never be advertised to search engines.
 # vip-verify holds one-time verification landing pages (?t=<token>) — noindex'd, and it must never
 # be advertised to a crawler.
-EXCLUDE_DIRS = {"img", "fonts", "assets", "vip-verify", "account"}
+EXCLUDE_DIRS = {"img", "fonts", "assets", "vip-verify", "vip-club", "account"}
 EXCLUDE_FILES = {"admin.html", "llms.txt", "robots.txt", "sitemap.xml"}
 # Search-engine ownership-verification stubs. These MUST stay on disk — deleting
 # public/googlececb096098599354.html un-verifies Search Console — but they are not content and
@@ -74,7 +74,7 @@ def routes():
     return found
 
 
-def content_hash(path: Path) -> str:
+def content_hash(path: Path, legacy=False) -> str:
     """Hash the page's meaningful markup.
 
     Deliberately excludes the <lastmod>-irrelevant noise a rebuild churns: nothing here should
@@ -83,9 +83,11 @@ def content_hash(path: Path) -> str:
     t = path.read_text(errors="ignore")
     if path == ROOT / "index.html":
         # The app's visible menu links and menu data also change its content.
-        t += (ROOT / "src/components/Menu.tsx").read_text()
+        t += ((ROOT / "src/components/Menu.tsx").read_text() if legacy else "".join(source.read_text() for source in sorted((ROOT / "src/components").glob("*.tsx"))))
         for source in sorted((ROOT / "src/data").glob("*.ts")):
             t += source.read_text()
+    if not legacy:
+        t = re.sub(r"<style\b[^>]*>.*?</style>", "", t, flags=re.S)
     t = re.sub(r"<!--.*?-->", "", t, flags=re.S)      # build comments
     t = re.sub(r"\s+", " ", t).strip()                # whitespace/reflow
     return hashlib.sha256(t.encode()).hexdigest()[:16]
@@ -109,7 +111,7 @@ def main():
             problems.append(f"{route}: canonical is {canon}, not {url}")
         h = content_hash(src)
         prev = manifest.get(url)
-        if prev and prev.get("hash") == h:
+        if prev and prev.get("hash") in (h, content_hash(src, legacy=True)):
             lastmod = prev["lastmod"]           # content unchanged — do not move the date
         else:
             lastmod = today

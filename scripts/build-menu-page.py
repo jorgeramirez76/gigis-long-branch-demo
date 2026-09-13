@@ -78,6 +78,7 @@ def main():
         blurb_html = f"<p>{E(blurb)}</p>" if blurb else ""
         sections.append(
             f'<section class="wrap" id="{cid}"><h2>{E(name)}</h2>{blurb_html}'
+            f'<p><a href="{BASE}/?category={cid}#menu">Order from {E(name)}</a></p>'
             f'<table class="ptable"><caption>{E(name)} — prices</caption>'
             '<thead><tr><th scope="col">Item</th><th scope="col" style="text-align:right">Price</th></tr></thead>'
             f"<tbody>{rows}</tbody></table></section>"
@@ -100,13 +101,14 @@ def main():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gigi's Long Branch Menu &amp; Prices — Pizza, Heroes, Pasta &amp; Breakfast</title>
-<meta name="description" content="The full Gigi's menu with prices — {total} items straight from the register: NY pies, Grandma &amp; Sicilian squares, heroes, pasta, all-day breakfast &amp; more. 140 Brighton Ave, Long Branch.">
+<title>Pizza Menu &amp; Prices in Long Branch | Gigi's</title>
+<meta name="description" content="Browse Gigi's Long Branch menu: pizza, heroes, pasta and all-day breakfast. See menu prices and choose pickup or delivery when ordering.">
 <link rel="canonical" href="{BASE}/menu/">
 <meta name="robots" content="index, follow, max-snippet:-1">
 <link rel="icon" href="/favicon.ico">
 {ld}
 <style>{css}</style>
+<script type="module" src="/metrics.js"></script>
 </head>
 <body>
 <header class="site"><div class="row">
@@ -118,6 +120,7 @@ def main():
 <p class="eyebrow">Full menu &amp; prices · Long Branch, NJ</p>
 <h1>Gigi's Long Branch Menu with Prices</h1>
 <p class="dek">Every item and every price below comes straight from the register — {total} items across {len([c for c in cats if c[3]])} categories: hand-stretched NY pies, Grandma and Sicilian squares, heroes, pasta, all-day breakfast, and more. Order pickup or delivery online, or call {PHONE}.</p>
+<p class="pnote">Cash menu prices shown. Card orders add 4% card pricing, plus tax and any delivery fee. Your total is shown before you pay.</p>
 <div class="cta"><a class="btn btn-gold" href="{BASE}/#menu">Order Online</a>
 <a class="btn btn-ghost" href="{TEL}">Call {PHONE}</a></div>
 </div></section>
@@ -127,7 +130,7 @@ def main():
 {"".join(sections)}
 <section class="wrap"><h2>Ready to order?</h2>
 <p>Order pickup or delivery at <a href="{BASE}/#menu">gigislongbranch.com</a> — the online menu prices every topping and option as you build your order — or call <a href="{TEL}">{PHONE}</a>. Online delivery orders close at 10 PM; online pickup orders close at 11 PM daily. The counter stays open until 11 PM Mon–Wed and midnight Thu–Sun. After online ordering closes, call or order at the counter.</p>
-<p>More: <a href="/square-pizza-long-branch/">square pizza</a> · <a href="/gluten-free-pizza-long-branch/">gluten-free</a> · <a href="/vegan-pizza-long-branch/">vegan</a> · <a href="/catering-long-branch/">catering</a> · <a href="/delivery/">delivery areas &amp; fees</a> · <a href="/vip-club/">VIP club (free pie)</a></p>
+<p>More: <a href="/square-pizza-long-branch/">square pizza</a> · <a href="/gluten-free-pizza-long-branch/">gluten-free</a> · <a href="/vegan-pizza-long-branch/">vegan</a> · <a href="/catering-long-branch/">catering</a> · <a href="/delivery/">delivery areas &amp; fees</a> · <a href="/account/?join=1&amp;source=menu-qr">VIP club (free pie)</a></p>
 </section>
 </main>
 

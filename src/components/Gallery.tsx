@@ -42,7 +42,7 @@ export function Gallery() {
                   <img
                     src={img.src}
                     alt={img.alt}
-                    loading={i < 2 ? "eager" : "lazy"}
+                    loading="lazy"
                     decoding="async"
                     sizes={i === 0 ? "(min-width: 768px) 66vw, 100vw" : "(min-width: 768px) 33vw, 50vw"}
                     className="h-full w-full object-cover transition-transform duration-[900ms] ease-out will-change-transform group-hover:scale-[1.06]"

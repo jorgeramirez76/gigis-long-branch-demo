@@ -3,16 +3,19 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Gigi's NY Style Pizza — Long Branch location website",
+  "description": "Gigi's NY Style Pizza \u2014 Long Branch location website",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/prune-static-menu.mjs && python3 scripts/build-menu-page.py",
+    "prebuild": "node scripts/build-metrics.mjs && node scripts/prune-static-menu.mjs && npm run generate:seo",
     "prune-menu": "node scripts/prune-static-menu.mjs",
-    "build": "python3 scripts/verify-prices.py && tsc -b && tsc -p tsconfig.api.json --noEmit && vite-react-ssg build && node scripts/verify-csp-build.mjs",
+    "build": "python3 scripts/verify-prices.py && tsc -b && tsc -p tsconfig.api.json --noEmit && vite-react-ssg build && node scripts/verify-csp-build.mjs && python3 scripts/verify-seo.py --dist",
     "preview": "vite preview --host",
     "lint": "eslint . && tsc -p tsconfig.json --noEmit && tsc -p tsconfig.api.json --noEmit",
     "test": "tsx --test --test-concurrency=1 tests/*.test.ts",
-    "verify:prices": "python3 scripts/verify-prices.py"
+    "verify:prices": "python3 scripts/verify-prices.py",
+    "generate:seo": "python3 scripts/build-landing-pages.py && python3 scripts/build-delivery-page.py && python3 scripts/build-menu-page.py && python3 scripts/build-sitemap.py && python3 scripts/verify-seo.py",
+    "verify:seo": "python3 scripts/verify-seo.py",
+    "build:metrics": "node scripts/build-metrics.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",

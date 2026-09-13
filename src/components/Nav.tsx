@@ -21,6 +21,16 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
+  // Keep the compact controls through tablet widths. On expansion, release the
+  // drawer's scroll lock rather than hiding an open modal behind desktop navigation.
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1280px)");
+    const closeOnDesktop = () => { if (desktop.matches) setMobileOpen(false); };
+    closeOnDesktop();
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+
   // The closed drawer stays in the DOM for its slide animation. pointer-events
   // hides it from the mouse but not from the keyboard, so its links stayed in the
   // tab order — 21 invisible stops before the page content, and focusable nodes
@@ -55,8 +65,8 @@ export function Nav() {
           : "bg-gradient-to-b from-black/40 to-transparent"
       }`}
     >
-      <div className="container-x flex h-20 items-center justify-between md:h-28">
-        <a href="#top" className="flex items-center gap-2" aria-label="Gigi's NY Style Pizza — Long Branch home">
+      <div className="container-x flex h-20 items-center justify-between gap-4 md:h-28">
+        <a href="#top" className="flex shrink-0 items-center gap-2" aria-label="Gigi's NY Style Pizza — Long Branch home">
           <img
             src={logoPng}
             alt="Gigi's NY Style Pizza & Restaurant logo"
@@ -67,12 +77,12 @@ export function Nav() {
           <span className="sr-only">Gigi's NY Style Pizza — Long Branch</span>
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden shrink-0 items-center gap-4 xl:flex">
           {LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className={`text-sm font-semibold uppercase tracking-[0.18em] transition hover:text-[var(--color-action-text)] ${
+              className={`whitespace-nowrap text-xs font-semibold uppercase tracking-[0.1em] transition hover:text-[var(--color-action-text)] ${
                 scrolled ? "text-[var(--color-copy-soft)]" : "text-white/95 drop-shadow"
               }`}
             >
@@ -81,16 +91,16 @@ export function Nav() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden shrink-0 items-center gap-2 xl:flex">
           <CartButton variant="gold" label="Order" />
-          <a href={`tel:${LOCATION.phoneTel}`} className="inline-flex items-center gap-2 rounded-full bg-[var(--color-brand-red)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(155,18,26,0.35)] transition hover:bg-[var(--color-brand-red-dark)]" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}>
+          <a href={`tel:${LOCATION.phoneTel}`} className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-[var(--color-brand-red)] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(155,18,26,0.35)] transition hover:bg-[var(--color-brand-red-dark)]" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}>
             <PhoneIcon className="h-4 w-4" />
             {LOCATION.phone}
           </a>
         </div>
 
         {/* Mobile: cart + hamburger */}
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex shrink-0 items-center gap-2 xl:hidden">
           <CartButton label="" className="!px-3" />
           <a href={`tel:${LOCATION.phoneTel}`} className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-red)] p-3 text-white shadow-[var(--shadow-red)]" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}>
             <PhoneIcon className="h-4 w-4" />
@@ -114,7 +124,7 @@ export function Nav() {
       {/* Mobile drawer */}
       <div
         ref={drawerRef}
-        className={`fixed inset-0 z-50 md:hidden ${mobileOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-50 xl:hidden ${mobileOpen ? "pointer-events-auto" : "pointer-events-none"}`}
         aria-hidden={!mobileOpen}
       >
         {/* backdrop */}
@@ -124,7 +134,7 @@ export function Nav() {
         />
         {/* sheet */}
         <div
-          className={`absolute inset-x-0 top-0 origin-top bg-[var(--color-chrome)] px-6 pb-8 pt-6 shadow-[var(--shadow-lg)] transition-transform duration-300 ease-out ${
+          className={`absolute inset-x-0 top-0 max-h-dvh origin-top overflow-y-auto bg-[var(--color-chrome)] px-6 pb-8 pt-6 shadow-[var(--shadow-lg)] transition-transform duration-300 ease-out ${
             mobileOpen ? "translate-y-0" : "-translate-y-full"
           }`}
         >

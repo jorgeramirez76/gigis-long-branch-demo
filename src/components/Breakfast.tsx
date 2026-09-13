@@ -23,7 +23,7 @@ const ITEMS = [
     src: "/img/breakfast-sandwich.jpg",
     name: "Egg Sandwiches",
     price: "from $4.00",
-    blurb: "Egg & cheese your way on a Kaiser roll, bagel, or wrap. Add pork roll, bacon, or sausage.",
+    blurb: "Start with a classic egg sandwich on a Kaiser roll, bagel, or wrap. Cheese and breakfast meats cost extra.",
   },
 ];
 

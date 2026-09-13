@@ -37,7 +37,12 @@
       date.textContent = `${new Date(order.created_at).toLocaleDateString()} · ${order.fulfillment}`;
       info.append(title,date,detail); row.append(info);
       const button = document.createElement('button'); button.textContent='Reorder';
-      button.onclick=async()=>{button.disabled=true;try {const r=await api('reorder',{orderId:order.id});sessionStorage.setItem('gigis_rewards_reorder',JSON.stringify(r.lines));location.href='/#menu';}catch(e){message(e.message);button.disabled=false;}};
+      button.onclick=async()=>{button.disabled=true;try {const r=await api('reorder',{orderId:order.id});
+        let cartHasItems = false;
+        try { const saved = JSON.parse(localStorage.getItem('gigis_cart_v1') || '[]'); cartHasItems = Array.isArray(saved) && saved.length > 0; }
+        catch { cartHasItems = true; /* If storage is unavailable, ask before replacing anything. */ }
+        if (cartHasItems && !window.confirm('You already have items in your cart. Replace them with this past order?')) { button.disabled=false; return; }
+        sessionStorage.setItem('gigis_rewards_reorder',JSON.stringify(r.lines));location.href='/#menu';}catch(e){message(e.message);button.disabled=false;}};
       row.append(button);$('orders').append(row);
     }
     $('more-orders').hidden = orders.length < 10;

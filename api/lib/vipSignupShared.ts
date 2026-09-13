@@ -240,16 +240,6 @@ export async function storePendingSignup(
   secretHash: string,
   pollId: string,
 ): Promise<void> {
-  // ONE live pending signup per phone. Without this, correcting a mistyped email would leave the
-  // first link alive in a stranger's inbox: the replacement row is keyed on the NEW address, so the
-  // wrong-address row survived with a working token, and whoever owns that mailbox could activate a
-  // membership carrying the real person's phone and home address. Cleared before the upsert so a
-  // resubmit genuinely retires the previous attempt.
-  await sql`
-    DELETE FROM vip_email_verifications
-    WHERE business = ${business} AND payload->>'phone' = ${p.phone} AND email <> ${p.email}
-      AND verified_at IS NULL
-  `;
   await sql`
     INSERT INTO vip_email_verifications (business, email, secret_hash, payload, poll_id, expires_at)
     VALUES (${business}, ${p.email}, ${secretHash}, ${JSON.stringify(p)}::jsonb, ${pollId},
@@ -423,8 +413,7 @@ export type ParkOutcome =
  * Long Branch specifics preserved deliberately:
  *  - The token rides as a BARE query string (no `t=`): quoted-printable encoders
  *    were observed (2026-08-13) garbling the `=` in `?t=` for ~1 in 5 messages.
- *  - Any earlier pending link for this email is retired inside storePendingSignup
- *    (row replaced wholesale) — no separate retire step exists or is needed here.
+ *  - Other pending links for a corrected email are retired only after delivery.
  *
  * Callers do their OWN validation and rate limiting first. Nothing is created
  * here: the member + code exist only once the emailed link is tapped
@@ -456,6 +445,13 @@ export async function parkPendingSignupAndSendLink(
     console.error("[vip-signup] verification email failed:", mail.error);
     return { status: "send_failed" };
   }
+
+  // Keep the previous address's link if delivery of the correction fails.
+  await sql`
+    DELETE FROM vip_email_verifications
+    WHERE business = ${business} AND payload->>'phone' = ${p.phone} AND email <> ${p.email}
+      AND verified_at IS NULL
+  `;
 
   return { status: "verify_sent", email: p.email, pollId, ttlHours: VERIFY_TTL_HOURS };
 }

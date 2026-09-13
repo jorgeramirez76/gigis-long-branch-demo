@@ -1,3 +1,4 @@
+import { clientIp } from "./lib/requestIp.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { checkPromoCode, normalizePromoCode, FREE_PIE_ITEM } from "./lib/promo.js";
 import { priceLines } from "./lib/menuCatalog.js";
@@ -14,10 +15,6 @@ import { rateLimitAll } from "./lib/rateLimit.js";
  */
 
 /** Same trusted-IP rule as order/create: x-real-ip only, never x-forwarded-for. */
-function clientIp(req: VercelRequest): string | undefined {
-  const real = req.headers["x-real-ip"];
-  return typeof real === "string" && real ? real : undefined;
-}
 
 /** Today's catalog price of the free item — what the checkout previews as the discount. */
 function freeItemPriceCents(): number | null {

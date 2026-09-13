@@ -21,7 +21,13 @@ const APPLE_PAY_ON = (import.meta.env.VITE_CLOVER_APPLE_PAY as string | undefine
 const SDK_URL =
   (import.meta.env.VITE_CLOVER_SDK_URL as string | undefined) || "https://checkout.clover.com/sdk.js";
 
+/** The server also enforces this switch; this build-time flag removes card and wallet UI. */
+export function cardPaymentsKilled(): boolean {
+  return (import.meta.env.VITE_CARD_PAYMENTS_OFF as string | undefined) === "1";
+}
+
 export function cardPaymentEnabled(): boolean {
+  if (cardPaymentsKilled()) return false;
   return typeof PUBLIC_KEY === "string" && PUBLIC_KEY.trim().length > 0;
 }
 
@@ -120,7 +126,15 @@ export async function initCloverCard(): Promise<CloverCard> {
       postal.mount(bySelector(m.postal, "clv-card-postal"));
     },
     tokenize: async () => {
-      const result = await clover.createToken();
+      // A blocked hosted challenge can leave Clover's promise pending forever. No
+      // payment request has been sent yet, so return control with a clear retry message.
+      let timeout: ReturnType<typeof setTimeout> | undefined;
+      const result = await Promise.race([
+        clover.createToken(),
+        new Promise<never>((_, reject) => {
+          timeout = setTimeout(() => reject(new Error("The card form didn't respond. Please try again, or call (732) 377-2468 to order.")), 10000);
+        }),
+      ]).finally(() => clearTimeout(timeout));
       if (result?.errors) {
         const first = Object.values(result.errors).find((v) => typeof v === "string");
         throw new Error((first as string) || "Please check your card details.");

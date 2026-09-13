@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql, isVipBusiness, type VipBusiness } from "../lib/db.js";
 import { requireAdmin } from "../lib/adminAuth.js";
@@ -24,7 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { business, message, subject, channels, promoCode, promoDescription, expiresAt, dryRun } =
+  const { business, message, subject, channels, promoCode, promoDescription, expiresAt, dryRun, requestId } =
     req.body ?? {};
 
   if (!isVipBusiness(business)) return void res.status(400).json({ error: "invalid_business" });
@@ -37,6 +38,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return void res.status(400).json({ error: "subject_required_for_email" });
   if (wantSms && message.length > 1200)
     return void res.status(400).json({ error: "sms_too_long" });
+
+  if (!dryRun && (typeof requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId)))
+    return void res.status(400).json({ error: "request_id_required" });
 
   const codeRequested = typeof promoCode === "string" && promoCode.trim().length > 0;
   const code = codeRequested ? normalizeBroadcastPromoCode(promoCode) : null;
@@ -98,6 +102,40 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (wantEmail && !emailConfigured())
       return void res.status(409).json({ error: "email_not_configured" });
 
+    await sql`ALTER TABLE broadcasts ADD COLUMN IF NOT EXISTS request_id UUID`;
+    await sql`ALTER TABLE broadcasts ADD COLUMN IF NOT EXISTS content_key TEXT`;
+    await sql`ALTER TABLE broadcasts ADD COLUMN IF NOT EXISTS delivery_started_at TIMESTAMPTZ`;
+    await sql`ALTER TABLE broadcasts ADD COLUMN IF NOT EXISTS completed_at TIMESTAMPTZ`;
+    await sql`CREATE UNIQUE INDEX IF NOT EXISTS broadcasts_request_id_uidx ON broadcasts(request_id)`;
+    await sql`CREATE UNIQUE INDEX IF NOT EXISTS broadcasts_active_content_uidx ON broadcasts(content_key) WHERE completed_at IS NULL`;
+    const contentKey = createHash("sha256").update(JSON.stringify([
+      business, message.trim(), wantEmail ? subject.trim() : null, wantSms, wantEmail,
+      code, codeDesc, expiry?.toISOString() ?? null,
+    ])).digest("hex");
+
+    async function priorRunSummary() {
+      const prior = await sql`
+        SELECT b.id, b.content_key, b.delivery_started_at, b.completed_at,
+          COUNT(*) FILTER (WHERE s.channel='sms' AND s.status='sent')::int AS sms_sent,
+          COUNT(*) FILTER (WHERE s.channel='sms' AND s.status='failed')::int AS sms_failed,
+          COUNT(*) FILTER (WHERE s.channel='email' AND s.status='sent')::int AS email_sent,
+          COUNT(*) FILTER (WHERE s.channel='email' AND s.status='failed')::int AS email_failed
+        FROM broadcasts b LEFT JOIN vip_sends s ON s.broadcast_id=b.id
+        WHERE b.request_id=${requestId} GROUP BY b.id
+      `;
+      return prior.rows[0];
+    }
+    function replay(row: Record<string, unknown>) {
+      return { ok:true, duplicate:true, broadcastId:row.id,
+        inProgress:!row.completed_at, smsSent:row.sms_sent, smsFailed:row.sms_failed,
+        emailSent:row.email_sent, emailFailed:row.email_failed };
+    }
+    const prior = await priorRunSummary();
+    if (prior && prior.content_key !== contentKey)
+      return void res.status(409).json({error:"request_id_conflict"});
+    if (prior?.delivery_started_at)
+      return void res.status(200).json(replay(prior));
+
     // A retry after an ambiguous failure (client timeout, tab reload mid-send) must not
     // text the whole list twice — an identical message that already DELIVERED something in
     // the last 15 minutes is refused. The EXISTS matters: the broadcasts row is inserted
@@ -110,7 +148,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         AND EXISTS (SELECT 1 FROM vip_sends s WHERE s.broadcast_id = b.id AND s.status = 'sent')
       LIMIT 1
     `;
-    if (recent.rows[0]) {
+    if (!prior && recent.rows[0]) {
       return void res.status(409).json({ error: "duplicate_broadcast", broadcastId: recent.rows[0].id });
     }
 
@@ -130,14 +168,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const broadcast = await sql`
-      INSERT INTO broadcasts (business, subject, message, channels, promo_code_id, sms_total, email_total)
+      INSERT INTO broadcasts (business, subject, message, channels, promo_code_id, sms_total, email_total, request_id, content_key)
       VALUES (${business}, ${wantEmail ? subject.trim() : null}, ${message.trim()},
               ${[wantSms && "sms", wantEmail && "email"].filter(Boolean).join(",")},
-              ${promoCodeId}, ${smsAudience.length}, ${emailAudience.length})
+              ${promoCodeId}, ${smsAudience.length}, ${emailAudience.length}, ${requestId}, ${contentKey})
+      ON CONFLICT DO NOTHING
       RETURNING id
     `;
-    const broadcastId = broadcast.rows[0].id as number;
+    const reserved = prior ?? broadcast.rows[0] ?? await priorRunSummary();
+    if (!reserved) return void res.status(409).json({error:"broadcast_in_progress"});
+    const broadcastId = reserved.id as number;
+    // The durable transition happens BEFORE any provider call. A timeout, lost audit
+    // write, or crashed worker can never license a second send under this action.
+    const started = await sql`
+      UPDATE broadcasts SET delivery_started_at=now()
+      WHERE id=${broadcastId} AND request_id=${requestId} AND delivery_started_at IS NULL
+      RETURNING id
+    `;
+    if (!started.rows[0]) {
+      const running = await priorRunSummary();
+      return void res.status(200).json(running ? replay(running) : {ok:true,duplicate:true,inProgress:true});
+    }
 
+    let auditLost = false;
     const counts = { smsSent: 0, smsFailed: 0, emailSent: 0, emailFailed: 0 };
 
     async function record(
@@ -154,6 +207,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                   ${result.sent ? "sent" : "failed"}, ${result.providerId ?? null}, ${result.error ?? null})
         `;
       } catch (e) {
+        auditLost = true;
         console.error(`[admin/broadcast] vip_sends row lost (${channel}, member ${memberId}, broadcast ${broadcastId})`, e);
       }
     }
@@ -194,7 +248,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       await new Promise((r) => setTimeout(r, 600));
     }, 1);
 
-    res.status(200).json({ ok: true, broadcastId, ...counts });
+    // Failed/unknown provider outcomes or missing audit rows remain reserved for
+    // staff reconciliation. A different request ID cannot bypass that reservation.
+    const needsReview = auditLost || counts.smsFailed > 0 || counts.emailFailed > 0;
+    if (!needsReview) await sql`UPDATE broadcasts SET completed_at=now() WHERE id=${broadcastId}`;
+    res.status(200).json({ ok: true, broadcastId, inProgress: needsReview, ...counts });
   } catch (err) {
     console.error("[admin/broadcast] error", err);
     res.status(500).json({ error: "internal_error" });

@@ -1,4 +1,4 @@
-import { timingSafeEqual } from "node:crypto";
+import { cronAuthorized } from "../lib/cronAuth.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { remindStrandedOrders, sweepQueuedPrints } from "../lib/printSweep.js";
 
@@ -19,13 +19,6 @@ import { remindStrandedOrders, sweepQueuedPrints } from "../lib/printSweep.js";
  * Auth: fail CLOSED, same shape as refresh-menu — Vercel Cron sends
  * `Authorization: Bearer $CRON_SECRET`; safe to hit manually with that header.
  */
-/** Constant-time compare for the cron secret. Byte lengths first: timingSafeEqual throws on a
- *  size mismatch, and a multibyte header would turn a wrong token into a 500. */
-function cronAuthorized(header: unknown, secret: string): boolean {
-  const got = typeof header === "string" ? Buffer.from(header) : null;
-  const want = Buffer.from(`Bearer ${secret}`);
-  return !!got && got.length === want.length && timingSafeEqual(got, want);
-}
 
 export const config = { maxDuration: 60 };
 

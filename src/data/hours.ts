@@ -10,8 +10,6 @@ export type DayHours = {
   label: string;
 };
 
-export const HOURS_VERIFIED = true;
-
 const EARLY = "10:00 AM – 11:00 PM";
 const LATE = "10:00 AM – 12:00 AM";
 

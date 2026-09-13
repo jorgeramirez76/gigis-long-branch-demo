@@ -27,8 +27,7 @@ Repository: `~/Projects/gigis-long-branch-demo`. Deployment runs through the exi
 | `VITE_CLOVER_SDK_URL` | Optional Clover SDK URL override; must also be allowed by CSP |
 
 Confirmed digest address: `gigispizzalb@gmail.com`. Lost-order phone: Tommy (configured in Vercel).
-Contact environment updates were submitted during this task; deployment is still required
-for the release to use them. Do not confuse a configured SMS number with confirmed carrier
+Contact environment updates are active in the September 12 production release. Do not confuse a configured SMS number with confirmed carrier
 registration or proof of receipt. Test delivery only with the owner's explicit authorization.
 
 Neon integration variables such as `DATABASE_URL_UNPOOLED`, `NEON_AUTH_BASE_URL`,
@@ -45,3 +44,19 @@ implementation's credentials. Leave integration-managed settings alone; never pu
 - Record actual deployment URL/commit and any remaining staff hardware checks.
 
 
+
+## September 12 release verification
+
+- Production release `65df7d0` reached READY; rewards page: https://gigislongbranch.com/account/
+- Numbered migrations 001–007 applied transactionally to this location's production database. Six account tables, the order-history trigger and one-welcome-code index were verified. Existing customer rows were preserved.
+- Accounts enabled in production. Public account configuration returns 200 with a site key; unauthenticated account access returns 401 and no-store headers. Account HTML and forms render in the live browser.
+- Test branches also passed fresh-schema creation, migration replay and rollback-only database tests covering welcome uniqueness, reservation ownership, redemption, history capture and session invalidation.
+- Final suites: Sea Bright 190 tests; Long Branch 89 tests. Both lint, TypeScript and build gates passed, including pricing/editorial and CSP checks.
+- No live customer account, email, SMS, payment or printer job was created for verification. Carrier delivery and physical printer behavior still need an owner-supervised test.
+- Old Wix domain redirect and the Clover public website listing require access to their external account settings. Shared-package consolidation remains a future architecture project.
+
+## Remaining maintenance
+
+Cross-repository shared-package consolidation remains a future architecture task. Site-specific address/brand constants and compatibility schema setup remain separate; avoid changing their behavior merely to make the code identical.
+
+The follow-up release adds durable broadcast request/content reservations, a Clover tokenization timeout, and the browser payment kill switch. Migration 007 was applied to the test and production branches; a rollback-only database check verified duplicate active content is rejected. No broadcast was sent.

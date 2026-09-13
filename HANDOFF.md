@@ -1,6 +1,6 @@
 > Current operation and release status: see `README.md` and `OPERATIONS-2026-09-12.md`.
 > The dated audit below is retained as history; provider status and rollout claims require
-> current verification. The September 12 account changes are not yet recorded as deployed.
+> current verification. The September 12 account release is deployed (65df7d0); see OPERATIONS-2026-09-12.md for verification.
 
 # Gigi's Long Branch — Handoff (updated 2026-07-20; supersedes 2026-07-12)
 

@@ -1,3 +1,5 @@
+import { EMAIL_RE } from "./lib/emailAddress.js";
+import { clientIp } from "./lib/requestIp.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { isVipBusiness } from "./lib/db.js";
 import { addressDedupeKey, legacyAddressDedupeKey } from "./lib/address.js";
@@ -12,14 +14,7 @@ import {
   type ValidatedSignup,
 } from "./lib/vipSignupShared.js";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function clientIp(req: VercelRequest): string | undefined {
-  // Vercel-set trusted IP only — no x-forwarded-for fallback (its leftmost hop is
-  // client-spoofable off-platform, which would let one IP evade the signup limit).
-  const real = req.headers["x-real-ip"];
-  return typeof real === "string" && real ? real : undefined;
-}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {

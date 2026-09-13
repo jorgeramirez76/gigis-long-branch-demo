@@ -358,7 +358,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
   const [promoDescription, setPromoDescription] = useState("");
   const [phase, setPhase] = useState<"compose" | "confirm" | "sending" | "done">("compose");
   const [preview, setPreview] = useState<{ smsCount: number; emailCount: number; smsPreview: string | null; channelsReady: { sms: boolean; email: boolean } } | null>(null);
-  const [result, setResult] = useState<{ smsSent: number; smsFailed: number; emailSent: number; emailFailed: number } | null>(null);
+  const [result, setResult] = useState<{ smsSent: number; smsFailed: number; emailSent: number; emailFailed: number; inProgress?: boolean; duplicate?: boolean } | null>(null);
   const [error, setError] = useState("");
 
   const body = {
@@ -371,7 +371,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
   };
   // What "Send it" sends is the exact body that was previewed — never the live
   // form state, which could have been edited after the dry run.
-  const [previewedBody, setPreviewedBody] = useState<typeof body | null>(null);
+  const [previewedBody, setPreviewedBody] = useState<(typeof body & {requestId:string}) | null>(null);
   const composing = phase === "compose";
 
   async function doDryRun(e: React.FormEvent) {
@@ -382,7 +382,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
         method: "POST",
         body: JSON.stringify({ ...body, dryRun: true }),
       });
-      setPreviewedBody(body);
+      setPreviewedBody({...body, requestId: crypto.randomUUID()});
       setPreview(data);
       setPhase("confirm");
     } catch (err) {
@@ -407,8 +407,8 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
       setError(
         err instanceof ApiError && err.message.endsWith("not_configured")
           ? "A selected channel isn't configured on the server yet — see Overview."
-          : err instanceof ApiError && err.message === "duplicate_broadcast"
-            ? "A blast with this exact message already delivered messages in the last 15 minutes — check History. Nothing was sent again."
+          : err instanceof ApiError && ["duplicate_broadcast", "broadcast_in_progress"].includes(err.message)
+            ? "This broadcast is already running, was recently delivered, or needs review. Check History; it was not sent again."
             : "Send failed — nothing may have gone out. Check History before retrying.",
       );
     }
@@ -417,7 +417,8 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
   if (phase === "done" && result) {
     return (
       <div className="rounded-2xl bg-white p-6 shadow-[var(--shadow-md)]">
-        <h3 className="text-2xl">Blast sent</h3>
+        <h3 className="text-2xl">{result.inProgress ? "Broadcast needs review" : result.duplicate ? "Broadcast status" : "Blast sent"}</h3>
+        {result.inProgress && <p className="mt-2 text-sm">This action is reserved. It may still be running, or a delivery could not be confirmed. Check History and provider records before sending again.</p>}
         <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           Texts: {result.smsSent} sent{result.smsFailed ? `, ${result.smsFailed} failed` : ""}. Emails:{" "}
           {result.emailSent} sent{result.emailFailed ? `, ${result.emailFailed} failed` : ""}.

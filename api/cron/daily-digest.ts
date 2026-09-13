@@ -1,5 +1,5 @@
 import { isVercelCron, menuRefreshWindow } from "../lib/menuSchedule.js";
-import { timingSafeEqual } from "node:crypto";
+import { cronAuthorized } from "../lib/cronAuth.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
 import { getOrderSummary, listOpenWebsiteOrders } from "../lib/clover.js";
@@ -19,11 +19,6 @@ import { sendEmail } from "../lib/notify.js";
 const DIGEST_TO = process.env.DIGEST_EMAIL || "";
 const SHOP = "Gigi's Long Branch";
 
-function cronAuthorized(header: unknown, secret: string): boolean {
-  const got = typeof header === "string" ? Buffer.from(header) : null;
-  const want = Buffer.from(`Bearer ${secret}`);
-  return !!got && got.length === want.length && timingSafeEqual(got, want);
-}
 
 const money = (c: number) => `$${(c / 100).toFixed(2)}`;
 

@@ -1,14 +1,8 @@
+import { clientIp } from "./requestIp.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { rateLimitAllStrict } from "./rateLimit.js";
 import { adminTokenMatches } from "./adminAuthToken.js";
 
-/** Trusted client IP. Vercel sets x-real-ip to the true client IP; deliberately NOT falling back to
- * x-forwarded-for, whose leftmost hop is client-spoofable off-platform (which would let an attacker
- * rotate past the IP limit below). Mirrors clientIp() in api/order/create.ts. */
-function clientIp(req: VercelRequest): string {
-  const real = req.headers["x-real-ip"];
-  return typeof real === "string" && real ? real : "unknown";
-}
 
 const IP_MAX = 10; // attempts per IP per 5 minutes
 const IP_WINDOW = 300;
@@ -51,7 +45,7 @@ export async function requireAdmin(req: VercelRequest, res: VercelResponse): Pro
 
   // Only failed comparisons consume the guessing limits. Attack traffic remains throttled, while
   // a valid token can still get in to inspect or stop an incident during a distributed attack.
-  const ip = clientIp(req);
+  const ip = clientIp(req) ?? "unknown";
   let allowed: boolean;
   try {
     allowed = await rateLimitAllStrict([

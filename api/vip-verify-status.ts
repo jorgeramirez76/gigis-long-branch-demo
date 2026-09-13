@@ -1,3 +1,4 @@
+import { clientIp } from "./lib/requestIp.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { rateLimitAll } from "./lib/rateLimit.js";
 import { pollVerifyStatus } from "./lib/vipSignupShared.js";
@@ -14,10 +15,6 @@ import { pollVerifyStatus } from "./lib/vipSignupShared.js";
  * it is safe to hold in a browser. Nothing here mutates state.
  */
 
-function clientIp(req: VercelRequest): string | undefined {
-  const real = req.headers["x-real-ip"];
-  return typeof real === "string" && real ? real : undefined;
-}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {

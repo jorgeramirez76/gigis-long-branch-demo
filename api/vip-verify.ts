@@ -1,3 +1,4 @@
+import { clientIp } from "./lib/requestIp.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { rateLimitAll } from "./lib/rateLimit.js";
 import { hashSecret } from "./lib/vipSignupShared.js";
@@ -32,10 +33,6 @@ import {
  * No Turnstile: the signup step already passed it, and a 32-byte token is not guessable.
  */
 
-function clientIp(req: VercelRequest): string | undefined {
-  const real = req.headers["x-real-ip"];
-  return typeof real === "string" && real ? real : undefined;
-}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {

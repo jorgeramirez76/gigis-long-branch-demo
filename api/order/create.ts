@@ -1,3 +1,4 @@
+import { clientIp } from "../lib/requestIp.js";
 import { readSession } from "../lib/session.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import {
@@ -31,7 +32,7 @@ import { verifyTurnstile } from "../lib/turnstile.js";
 import { isVipMember } from "../lib/vipLookup.js";
 import { parseVipJoinWith } from "../lib/vipCheckoutJoin.js";
 import { addressDedupeKey, legacyAddressDedupeKey } from "../lib/address.js";
-import { normalizePhone } from "../lib/phone.js";
+import { normalizePhone, US_PHONE_RE } from "../lib/phone.js";
 import { validateVipConsentAndLocality } from "../lib/vipValidation.js";
 import { CANONICAL_CONSENT_TEXT, parkPendingSignupAndSendLink, type ValidatedSignup } from "../lib/vipSignupShared.js";
 import { countUnits, readyMessage } from "../../src/lib/readyTime.js";
@@ -110,7 +111,6 @@ async function sendOrderReceipt(o: {
   }
 }
 
-const US_PHONE_RE = /^\+?1?[\s.-]?\(?(\d{3})\)?[\s.-]?(\d{3})[\s.-]?(\d{4})$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CARD_MIN_TOTAL = 100; // $1.00 — thin anti-card-testing floor
 const MAX_OPTS_PER_LINE = 25;
@@ -156,13 +156,6 @@ function validShape(input: unknown): input is ClientLine[] {
   );
 }
 
-/** Trusted client IP. Vercel sets x-real-ip to the true client IP; we deliberately
- * do NOT fall back to x-forwarded-for, whose leftmost hop is client-spoofable
- * off-platform (which would let an attacker rotate past the IP rate limit). */
-function clientIp(req: VercelRequest): string | undefined {
-  const real = req.headers["x-real-ip"];
-  return typeof real === "string" && real ? real : undefined;
-}
 
 /** What the checkout opt-in produced, for the confirmation screen. Absent (null)
  *  means "nothing started" — invalid block, rate-limited, send failure, or leg

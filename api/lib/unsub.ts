@@ -26,6 +26,6 @@ export function verifyUnsubToken(email: string, token: string): boolean {
 }
 
 export function unsubscribeUrl(email: string): string {
-  const base = process.env.PUBLIC_BASE_URL || "https://gigis-long-branch-site.vercel.app";
+  const base = process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com";
   return `${base}/api/unsubscribe?e=${encodeURIComponent(email.toLowerCase())}&t=${unsubToken(email)}`;
 }

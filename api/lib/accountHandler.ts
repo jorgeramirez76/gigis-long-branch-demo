@@ -1,3 +1,4 @@
+import { EMAIL_RE } from "./emailAddress.js";
 import { randomBytes } from "node:crypto";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "./db.js";
@@ -66,7 +67,7 @@ export function accountHandler(action: string) {
       if (action === "signup") {
         const name = text(body.name,100), phone = normalizePhone(text(body.phone));
         const street = text(body.address), apt = text(body.apt,40), city = text(body.city,60), state = text(body.state,2).toUpperCase(), zip = text(body.zip,10);
-        if (!name || !phone || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || street.length<4 || city.length<2 || !/^[A-Z]{2}$/.test(state) || !/^\d{5}(?:-\d{4})?$/.test(zip)) return void res.status(400).json({error:"invalid_profile",message:"Fill in your name, email, phone and complete address."});
+        if (!name || !phone || !EMAIL_RE.test(email) || street.length<4 || city.length<2 || !/^[A-Z]{2}$/.test(state) || !/^\d{5}(?:-\d{4})?$/.test(zip)) return void res.status(400).json({error:"invalid_profile",message:"Fill in your name, email, phone and complete address."});
         if (typeof body.smsConsent !== "boolean" || typeof body.emailConsent !== "boolean" || body.consentText !== CANONICAL_CONSENT_TEXT) return void res.status(400).json({error:"invalid_consent"});
         const payload = {name,phone,email,fullAddress:`${street}, ${city}, ${state} ${zip}`,apt:apt || null,
           addrKey:addressDedupeKey(street,apt,city,state,zip),legacyAddrKey:legacyAddressDedupeKey(street,apt),smsConsent:body.smsConsent,emailConsent:body.emailConsent,source:body.source === "menu-qr" ? "menu-qr" : "rewards-account",street,city,state,zip};

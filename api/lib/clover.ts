@@ -169,27 +169,6 @@ export class CloverError extends Error {
 }
 
 /**
- * Did Clover actually take the money?
- *
- * Clover answers HTTP 200 with a charge body whose `status` is "failed" when its
- * risk engine blocks or reverses a transaction — `{"status":"failed",
- * "outcome":{"network_status":"reversed_after_approval","type":"blocked"}}` — so
- * `res.ok` is not a capture. Checking only `res.ok && data.id` is exactly how
- * order #24 (2026-08-06, $18.85) was recorded as paid, printed on a "PAID w/ CC"
- * kitchen chit and confirmed to the customer while the POS order sat OPEN with
- * no tender and no money moved.
- *
- * Treated as captured ONLY on an explicit success signal. Anything ambiguous
- * fails closed: refusing a good order costs one phone call, accepting a dead one
- * gives the food away.
- */
-/** True only for an explicit capture. NOTE: false is NOT "declined" — it can also mean
- *  "uncertain". Never use this to decide the cleanup-and-retry path; use classifyCharge. */
-export function isConfirmedCapture(data: ChargeBody): boolean {
-  return classifyCharge(data) === "captured";
-}
-
-/**
  * Charge a tokenized card via the Ecommerce API. `amount` is the full amount to
  * capture in cents (subtotal + tax + tip). `idempotencyKey` (a UUID) makes a
  * retry after a lost response return the SAME charge instead of double-charging.

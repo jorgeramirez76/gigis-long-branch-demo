@@ -1,3 +1,5 @@
+import { EMAIL_RE } from "./lib/emailAddress.js";
+import { clientIp } from "./lib/requestIp.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql, isVipBusiness } from "./lib/db.js";
 import { sendEmail } from "./lib/notify.js";
@@ -5,7 +7,6 @@ import { issueWelcomePie } from "./lib/promo.js";
 import { claimWindow, rateLimitAll, releaseWindow } from "./lib/rateLimit.js";
 import { verifyTurnstile } from "./lib/turnstile.js";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
  * "Lost your code?" — email a member their own free-pie code again.
@@ -52,11 +53,6 @@ const WEB_SOURCES = ["website", "checkout", "receipt", "menu-qr", "winback"];
 const HOW_TO =
   "Pickup orders only — redeem it in the promo code box at final checkout on gigislongbranch.com, or show it at the counter.";
 
-function clientIp(req: VercelRequest): string | undefined {
-  // Vercel-set trusted IP only — no x-forwarded-for fallback (client-spoofable off-platform).
-  const real = req.headers["x-real-ip"];
-  return typeof real === "string" && real ? real : undefined;
-}
 
 async function emailCode(to: string, code: string, description: string): Promise<void> {
   const mail = await sendEmail(

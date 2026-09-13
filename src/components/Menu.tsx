@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MENU, PRICING_DISCLAIMER, MENU_VERIFIED } from "../data/menu";
+import { MENU, PRICING_DISCLAIMER } from "../data/menu";
 import type { MenuCategory, MenuItem } from "../data/menu";
 import { LOCATION } from "../data/location";
 import { PhoneIcon } from "./Icons";
@@ -264,11 +264,6 @@ export function Menu() {
             )}
           </div>
 
-          {!MENU_VERIFIED && (
-            <p className="mt-10 rounded-xl bg-[var(--color-page)] p-5 text-center text-sm leading-relaxed text-[var(--color-copy-soft)]">
-              {PRICING_DISCLAIMER}
-            </p>
-          )}
         </div>
 
         {/* CTA row below the menu */}
@@ -285,9 +280,7 @@ export function Menu() {
             {cart.count > 0 ? `View your order · ${cart.count}` : "Start your order"}
           </button>
         </div>
-        {MENU_VERIFIED && (
-          <p className="mt-6 text-center text-xs text-[var(--color-copy-muted)]">{PRICING_DISCLAIMER}</p>
-        )}
+        <p className="mt-6 text-center text-xs text-[var(--color-copy-muted)]">{PRICING_DISCLAIMER}</p>
       </div>
     </section>
   );

@@ -4,7 +4,7 @@ import {
   LOCATION,
   MAP_EMBED_URL,
 } from "../data/location";
-import { HOURS, HOURS_VERIFIED } from "../data/hours";
+import { HOURS } from "../data/hours";
 import { ArrowIcon, ClockIcon, PhoneIcon, PinIcon } from "./Icons";
 
 export function Location() {
@@ -43,7 +43,6 @@ export function Location() {
               </InfoRow>
 
               <InfoRow icon={<ClockIcon className="h-5 w-5" />} label="Hours">
-                {HOURS_VERIFIED ? (
                   <div className="grid w-full max-w-sm grid-cols-2 gap-x-6 gap-y-1.5 text-sm">
                     {HOURS.map((h) => (
                       <div key={h.day} className="flex justify-between">
@@ -52,11 +51,6 @@ export function Location() {
                       </div>
                     ))}
                   </div>
-                ) : (
-                  <span className="text-sm text-[var(--color-copy)]/75">
-                    Call <a href={`tel:${LOCATION.phoneTel}`} className="text-[var(--color-gold-bright)] underline-offset-4 hover:underline">{LOCATION.phone}</a> for today's hours.
-                  </span>
-                )}
               </InfoRow>
             </dl>
 

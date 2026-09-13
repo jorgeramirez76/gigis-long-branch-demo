@@ -62,7 +62,7 @@ export function Nav() {
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
         scrolled
           ? "bg-[var(--color-chrome)]/95 shadow-[0_4px_20px_rgba(0,0,0,0.06)] backdrop-blur-md"
-          : "bg-gradient-to-b from-black/40 to-transparent"
+          : "bg-white/95 border-b border-[var(--color-line)]"
       }`}
     >
       <div className="container-x flex h-20 items-center justify-between gap-4 md:h-28">
@@ -70,7 +70,7 @@ export function Nav() {
           <img
             src={logoPng}
             alt="Gigi's NY Style Pizza & Restaurant logo"
-            className={`h-14 w-auto md:h-20 ${scrolled ? "" : "drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]"}`}
+            className={`h-14 w-auto md:h-20 ${scrolled ? "" : ""}`}
             width={96}
             height={104}
           />
@@ -83,7 +83,7 @@ export function Nav() {
               key={l.href}
               href={l.href}
               className={`whitespace-nowrap text-xs font-semibold uppercase tracking-[0.1em] transition hover:text-[var(--color-action-text)] ${
-                scrolled ? "text-[var(--color-copy-soft)]" : "text-white/95 drop-shadow"
+                scrolled ? "text-[var(--color-copy-soft)]" : "text-[var(--color-copy-soft)]"
               }`}
             >
               {l.label}
@@ -113,7 +113,7 @@ export function Nav() {
             className={`inline-flex items-center justify-center rounded-full border p-3 transition ${
               scrolled
                 ? "border-[var(--color-line)] bg-[var(--color-panel)] text-[var(--color-copy)]"
-                : "border-white/40 bg-black/25 text-white backdrop-blur"
+                : "border-[var(--color-line)] bg-white text-[var(--color-copy)]"
             }`}
           >
             <MenuIcon className="h-4 w-4" />

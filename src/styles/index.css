@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* Storefront palette approved September 2026: lighter charcoal + red. */
-  --color-page: #2b2b2b;
-  --color-panel: #383838;
-  --color-chrome: #232323;
-  --color-copy: #f5f5f5;
-  --color-copy-soft: #d5d5d5;
-  --color-copy-muted: #bdbdbd;
-  --color-line: #616161;
-  --color-action-text: #ff9098;
+  /* Storefront palette approved September 2026: white + red. */
+  --color-page: #ffffff;
+  --color-panel: #f7f7f7;
+  --color-chrome: #ffffff;
+  --color-copy: #222222;
+  --color-copy-soft: #454545;
+  --color-copy-muted: #606060;
+  --color-line: #d3d3d3;
+  --color-action-text: #b8202a;
   --color-on-gold: #181818;
 
   /* Shared brand accents; legacy light tokens remain available to the staff admin. */

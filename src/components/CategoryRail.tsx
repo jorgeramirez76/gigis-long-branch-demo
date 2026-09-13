@@ -63,9 +63,9 @@ export function CategoryRail({ categories, activeId, onSelect }: {
         {categories.map(category => {
           const selected = category.id === activeId;
           return <button type="button" key={category.id} aria-pressed={selected} onClick={() => onSelect(category.id)}
-            className="group flex w-[84px] shrink-0 flex-col items-center gap-2 rounded-lg px-1 py-1 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-gold-bright)] md:w-[96px]">
+            className="group flex w-[84px] shrink-0 flex-col items-center gap-2 rounded-lg px-1 py-1 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-brand-red)] md:w-[96px]">
             <span aria-hidden="true" className={`flex h-[72px] w-[72px] items-center justify-center rounded-full border-2 text-3xl transition-colors md:h-20 md:w-20 ${selected ? "border-[var(--color-gold-bright)] bg-[var(--color-brand-red)]" : "border-[var(--color-line)] bg-[var(--color-panel)] group-hover:border-[var(--color-gold-bright)]"}`}>{categoryIcon(category.name)}</span>
-            <span className={`text-xs font-semibold leading-tight ${selected ? "text-[var(--color-gold-bright)]" : "text-[var(--color-copy)]"}`}>{category.name}</span>
+            <span className={`text-xs font-semibold leading-tight ${selected ? "text-[var(--color-action-text)]" : "text-[var(--color-copy)]"}`}>{category.name}</span>
           </button>;
         })}
       </div>

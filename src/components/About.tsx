@@ -9,7 +9,7 @@ export function About() {
       id="about"
       className="relative overflow-hidden bg-[var(--color-chrome)] py-20 text-[var(--color-copy)] md:py-28"
     >
-      {/* Dining room as darkened background */}
+      {/* Dining room detail behind the white surface */}
       <div className="absolute inset-0 -z-10">
         <picture>
           <source type="image/webp" srcSet={BRAND_INSIDE.webpWide} sizes="100vw" />
@@ -26,7 +26,7 @@ export function About() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(26,18,16,0.88) 0%, rgba(26,18,16,0.94) 50%, rgba(26,18,16,0.97) 100%)",
+              "linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.97) 50%, rgba(255,255,255,1) 100%)",
           }}
         />
       </div>
@@ -34,12 +34,12 @@ export function About() {
       <div className="container-x relative">
         <div className="grid items-center gap-10 md:grid-cols-[1.15fr_1fr] md:gap-16">
           <div>
-            <span className="eyebrow text-[var(--color-gold-bright)]" data-reveal>
+            <span className="eyebrow text-[var(--color-action-text)]" data-reveal>
               About the shop
             </span>
-            <h2 className="mt-3 text-4xl text-white md:text-6xl" data-reveal style={{ ["--delay" as string]: "80ms" }}>
+            <h2 className="mt-3 text-4xl text-[var(--color-copy)] md:text-6xl" data-reveal style={{ ["--delay" as string]: "80ms" }}>
               Neighborhood pizza on{" "}
-              <span className="text-[var(--color-gold-bright)]">Brighton Ave.</span>
+              <span className="text-[var(--color-action-text)]">Brighton Ave.</span>
             </h2>
 
             <div className="mt-8 space-y-5 text-lg leading-relaxed text-[var(--color-copy)]/90" data-reveal style={{ ["--delay" as string]: "160ms" }}>
@@ -59,16 +59,16 @@ export function About() {
 
             {/* Recognition callout — real, verified rating (no unverified award claims) */}
             <div
-              className="mt-8 inline-flex items-center gap-3 rounded-xl border border-[var(--color-gold-bright)]/30 bg-black/40 px-5 py-4 backdrop-blur"
+              className="mt-8 inline-flex items-center gap-3 rounded-xl border border-[var(--color-gold-bright)]/30 bg-[var(--color-panel)] px-5 py-4 backdrop-blur"
               data-reveal="scale"
               style={{ ["--delay" as string]: "220ms" }}
             >
-              <StarIcon className="h-6 w-6 shrink-0 text-[var(--color-gold-bright)]" />
+              <StarIcon className="h-6 w-6 shrink-0 text-[var(--color-action-text)]" />
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-action-text)]">
                   Loved locally
                 </p>
-                <p className="font-display text-xl text-white md:text-2xl">
+                <p className="font-display text-xl text-[var(--color-copy)] md:text-2xl">
                   Rated 4.4 out of 5 on Restaurantji
                 </p>
               </div>
@@ -87,26 +87,26 @@ export function About() {
 
             <dl className="mt-10 grid grid-cols-3 gap-5 border-t border-white/10 pt-8" data-reveal>
               <div>
-                <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+                <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-action-text)]">
                   Style
                 </dt>
-                <dd className="mt-2 font-display text-2xl text-white md:text-3xl">
+                <dd className="mt-2 font-display text-2xl text-[var(--color-copy)] md:text-3xl">
                   NY Slice
                 </dd>
               </div>
               <div>
-                <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+                <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-action-text)]">
                   Menu
                 </dt>
-                <dd className="mt-2 font-display text-2xl text-white md:text-3xl">
+                <dd className="mt-2 font-display text-2xl text-[var(--color-copy)] md:text-3xl">
                   {MENU.length} cats.
                 </dd>
               </div>
               <div>
-                <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+                <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-action-text)]">
                   Where
                 </dt>
-                <dd className="mt-2 font-display text-2xl text-white md:text-3xl">
+                <dd className="mt-2 font-display text-2xl text-[var(--color-copy)] md:text-3xl">
                   Long Branch
                 </dd>
               </div>

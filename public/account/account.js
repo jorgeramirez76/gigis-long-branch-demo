@@ -15,7 +15,7 @@
     challengeLoading = true;
     const script=document.createElement('script');
     script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-    script.onload=()=>{challengeLoading=false;widget=window.turnstile.render('#challenge',{sitekey:siteConfig.siteKey,theme:'dark',size:window.innerWidth<380?'compact':'normal',callback:t=>{challengeToken=t;},'expired-callback':()=>{challengeToken='';}});};
+    script.onload=()=>{challengeLoading=false;widget=window.turnstile.render('#challenge',{sitekey:siteConfig.siteKey,theme:'light',size:window.innerWidth<380?'compact':'normal',callback:t=>{challengeToken=t;},'expired-callback':()=>{challengeToken='';}});};
     script.onerror=()=>{challengeLoading=false;message('Verification could not load. Check your connection and try again.');};
     document.head.append(script);
   }

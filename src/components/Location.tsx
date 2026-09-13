@@ -17,10 +17,10 @@ export function Location() {
         <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
           {/* Info column */}
           <div>
-            <span className="eyebrow text-[var(--color-gold-bright)]" data-reveal>
+            <span className="eyebrow text-[var(--color-action-text)]" data-reveal>
               Find us
             </span>
-            <h2 className="mt-3 text-4xl text-white md:text-6xl" data-reveal style={{ ["--delay" as string]: "80ms" }}>
+            <h2 className="mt-3 text-4xl text-[var(--color-copy)] md:text-6xl" data-reveal style={{ ["--delay" as string]: "80ms" }}>
               140 Brighton Ave.
             </h2>
             <p className="mt-4 max-w-md text-lg text-[var(--color-copy)]/85" data-reveal style={{ ["--delay" as string]: "140ms" }}>
@@ -36,18 +36,18 @@ export function Location() {
               <InfoRow icon={<PhoneIcon className="h-5 w-5" />} label="Phone">
                 <a
                   href={`tel:${LOCATION.phoneTel}`}
-                  className="border-b border-dashed border-[var(--color-gold-bright)]/40 transition hover:text-[var(--color-gold-bright)]"
+                  className="border-b border-dashed border-[var(--color-gold-bright)]/40 transition hover:text-[var(--color-action-text)]"
                 >
                   {LOCATION.phone}
                 </a>
               </InfoRow>
 
               <InfoRow icon={<ClockIcon className="h-5 w-5" />} label="Hours">
-                  <div className="grid w-full max-w-sm grid-cols-2 gap-x-6 gap-y-1.5 text-sm">
+                  <div className="grid w-full max-w-sm grid-cols-1 gap-x-6 gap-y-1.5 text-sm sm:grid-cols-2">
                     {HOURS.map((h) => (
-                      <div key={h.day} className="flex justify-between">
-                        <span className="text-[var(--color-gold-bright)]/80">{h.day}</span>
-                        <span className="text-white">{h.label}</span>
+                      <div key={h.day} className="flex justify-between gap-3">
+                        <span className="shrink-0 text-[var(--color-action-text)]">{h.day}</span>
+                        <span className="text-[var(--color-copy)]">{h.label}</span>
                       </div>
                     ))}
                   </div>
@@ -101,14 +101,14 @@ function InfoRow({
 }) {
   return (
     <div className="flex gap-4">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-red)]/20 text-[var(--color-gold-bright)]">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-red)]/20 text-[var(--color-action-text)]">
         {icon}
       </div>
       <div className="w-full">
-        <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+        <dt className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-action-text)]">
           {label}
         </dt>
-        <dd className="mt-1 text-[17px] text-white">{children}</dd>
+        <dd className="mt-1 text-[17px] text-[var(--color-copy)]">{children}</dd>
       </div>
     </div>
   );

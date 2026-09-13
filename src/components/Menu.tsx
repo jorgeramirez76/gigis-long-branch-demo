@@ -1,3 +1,4 @@
+import { CategoryRail } from "./CategoryRail";
 import { useMenu } from "../hooks/useMenu";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MENU, PRICING_DISCLAIMER } from "../data/menu";
@@ -150,43 +151,7 @@ export function Menu() {
           </div>
         </div>
 
-        <div className="mx-auto mt-3 max-w-md md:hidden">
-          <label htmlFor="menu-category" className="mb-1 block text-xs font-semibold text-[var(--color-copy-soft)]">All categories</label>
-          <select id="menu-category" value={active.id} onChange={event => chooseCategory(event.target.value)}
-            className="min-h-[44px] w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-3 py-2 text-base text-[var(--color-copy)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-brand-red)]">
-            {menu.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
-          </select>
-        </div>
-
-        {/* Category tabs — hidden while searching */}
-        {!searching && (
-          <div
-            className="scrollbar-none relative mt-4 -mx-5 hidden md:flex w-[calc(100%+2.5rem)] min-w-0 max-w-[calc(100%+2.5rem)] gap-2 overflow-x-auto px-5 pb-2 md:mx-0 md:w-auto md:min-w-0 md:max-w-none md:flex-wrap md:justify-center md:overflow-visible md:px-0"
-            role="tablist"
-            aria-label="Menu categories"
-            data-reveal
-          >
-            {menu.map((c) => {
-              const on = c.id === activeId;
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={on}
-                  onClick={() => chooseCategory(c.id)}
-                  className={`min-h-[44px] shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-200 md:px-5 md:py-2.5 ${
-                    on
-                      ? "bg-[var(--color-brand-red)] text-white shadow-[var(--shadow-red)]"
-                      : "bg-[var(--color-panel)] text-[var(--color-copy)] hover:bg-[var(--color-brand-red)]/10 hover:text-[var(--color-action-text)]"
-                  }`}
-                >
-                  {c.name}
-                </button>
-              );
-            })}
-          </div>
-        )}
+        <CategoryRail categories={menu} activeId={searching ? "" : active.id} onSelect={chooseCategory} />
 
         {/* Panel */}
         <div

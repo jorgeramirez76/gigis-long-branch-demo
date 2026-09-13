@@ -144,7 +144,7 @@ function GroupField({
 export function ItemModal({ item, categoryId, onClose }: { item: MenuItem; categoryId: string; onClose: () => void }) {
   const cart = useCart();
   const basePrice = parsePrice(item.price);
-  const groups = item.options ?? [];
+  const groups = useMemo(() => item.options ?? [], [item.options]);
   // selected choice names per group index
   const [selected, setSelected] = useState<Record<number, Set<string>>>({});
   // topping name → where it goes (only charge-priced toppings; default whole pie)

@@ -1,11 +1,12 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "./lib/db.js";
+import { MENU_PRICING_VERSION } from "./lib/cardPricing.mjs";
 
 /**
- * Serves the latest Clover-reconciled menu (written by api/cron/refresh-menu).
+ * Serves the latest Clover-synced menu (written by api/cron/refresh-menu).
  * The site fetches this and falls back to the static build-time menu if it's
  * empty or unavailable, so the page always renders. Cached at the edge — the
- * menu changes at most nightly.
+ * menu changes at most daily.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
@@ -22,7 +23,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return;
     }
     const row = rows.rows[0];
-    res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=86400");
+    if (row.data?.pricing !== MENU_PRICING_VERSION) {
+      // Pre-cash-price snapshot (see api/lib/menuLive.ts) — the static menu is the right one.
+      res.status(204).end();
+      return;
+    }
+    res.setHeader("Cache-Control", "public, max-age=60, s-maxage=600, stale-while-revalidate=86400");
     res.status(200).json({
       categories: row.data.categories,
       itemCount: row.item_count,

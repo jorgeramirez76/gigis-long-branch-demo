@@ -7,6 +7,7 @@ import { goToMenu } from "../lib/goToMenu";
 import logoPng from "../assets/brand/logo.png";
 
 const LINKS = [
+  { href: "/account/", label: "My rewards" },
   { href: "#menu", label: "Menu" },
   { href: "#breakfast", label: "Breakfast" },
   // Real page (not an in-page anchor) — the kids' pizza-party landing page.

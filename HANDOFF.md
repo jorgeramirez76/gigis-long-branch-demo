@@ -1,3 +1,7 @@
+> Current operation and release status: see `README.md` and `OPERATIONS-2026-09-12.md`.
+> The dated audit below is retained as history; provider status and rollout claims require
+> current verification. The September 12 account changes are not yet recorded as deployed.
+
 # Gigi's Long Branch — Handoff (updated 2026-07-20; supersedes 2026-07-12)
 
 Full-stack site for Gigi's NY Style Pizza, 140 Brighton Ave, Long Branch NJ.
@@ -5,10 +9,10 @@ Full-stack site for Gigi's NY Style Pizza, 140 Brighton Ave, Long Branch NJ.
 real customer orders** — 3 genuine orders 7/17–7/18 ($21.50, $48.52, $40.81
 delivery), all routed to the Clover POS automatically.
 
-- **Local:** `~/Desktop/gigis-long-branch-site/` · **Repo:** `jorgeramirez76/gigis-long-branch-demo`
+- **Local:** `~/Projects/gigis-long-branch-demo/` · **Repo:** `jorgeramirez76/gigis-long-branch-demo`
 - **Stack:** React 18 + Vite 6 + TS + Tailwind v4, vite-react-ssg prerender, Vercel serverless `/api`
-- **DB:** isolated Neon `neon-crimson-queen` (7 tables — never shared with Sea Bright)
-- **Secrets:** `.env` (Clover), `.env.crm.local` (admin/webhook/unsub), Vercel prod env
+- **DB:** isolated Neon `neon-crimson-queen` (separate database; see numbered migrations)
+- **Secrets:** `.env.local` locally; Vercel production environment
 - **⚠ Never delete** `public/googlececb096098599354.html` — Google Search Console verification.
 
 ## What's DONE and verified live (2026-07-20 audit)
@@ -33,7 +37,7 @@ delivery), all routed to the Clover POS automatically.
   staff-alert hook, strict CSP/HSTS headers, generic decline messages, PII
   masking, admin token timing-safe, Turnstile on signup + checkout.
 - **VIP CRM** — signup (TCPA/CAN-SPAM consent capture) → Neon → welcome promo
-  `GIGIVIP10` (10% off) → env-gated welcome SMS/email with full send audit in
+  a member-specific `PIE-` welcome code → env-gated welcome SMS/email with full send audit in
   `vip_sends`. STOP/START/HELP webhook, HMAC one-click unsubscribe (+ RFC 8058),
   admin dashboard at `/admin.html` (stats, members + CSV, broadcast composer
   with dry-run). **Verified end-to-end on prod 7/20** via real browser signup
@@ -80,7 +84,7 @@ webhook live → STOP/START/HELP works now. Own messaging service
 key "Gigis Long Branch site SMS" (`SK09f4e5f2…`, Messaging>messages
 read/list/create only — verified working against the v2010 Messages API);
 `TWILIO_ACCOUNT_SID` + `TWILIO_API_KEY_SID` + `TWILIO_API_KEY_SECRET` set in
-Vercel prod, mirrored in `.env.crm.local`.
+Vercel prod, mirrored in `.env.local`.
 REMAINING: **A2P 10DLC brand + campaign** — must be a **Standard business
 brand under Gigi's EIN** (the account's one sole-prop slot is already used by
 Jorge's brand; console warns "Limit of one sole proprietor Brand reached").
@@ -99,7 +103,7 @@ DNS, waiting only on Resend's re-check** (watcher running). `RESEND_API_KEY` +
 prod. Order-receipt emails (`receiptHtml`/`sendReceiptEmail`) wired for every
 order with an email. Once the Resend dashboard shows Verified: send a test
 blast to yourself from the admin composer. Resend dashboard also breaks under
-the debugger — use the REST API (`curl`, key in `.env.crm.local`).
+the debugger — use the REST API (`curl`, key in `.env.local`).
 
 ### 4) Staff lost-order alerts — 1 min once SMS is armed
 `printf '+1<store manager cell>' | npx vercel env add STAFF_ALERT_PHONE production`
@@ -123,7 +127,7 @@ stock shots. Swap as real photos arrive.
   diff → `npm run build` → commit/push. `data/clover/classified/*.json` is the
   editable source of truth; `menuGenerated.ts` is generated — never hand-edit.
 - **Admin:** `https://gigislongbranch.com/admin.html`, token = `ADMIN_TOKEN` in
-  `.env.crm.local`. Broadcast composer: always dry-run first.
+  `.env.local`. Broadcast composer: always dry-run first.
 - **Env gotcha:** `vercel env pull` masks ALL values as `""` — check real
   runtime config via `/api/admin/stats` → `config`.
-- Welcome promo `GIGIVIP10` — register staff must know it.
+- Welcome offer uses member-specific `PIE-` codes. Shared broadcast codes are register-only.

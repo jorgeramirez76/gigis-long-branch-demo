@@ -100,7 +100,10 @@
         });
       })
       .then(function (r) {
-        if (r.ok) return showDone(r.data);
+        if (r.ok) {
+          try { window.history.replaceState({}, document.title, window.location.pathname); } catch (_) { /* harmless */ }
+          return showDone(r.data);
+        }
         // 429 is a THROTTLE, not a verdict on the link — offering "link didn't work" there would
         // push the customer into resubmitting, which retires the perfectly good link they hold.
         // The server marks transient answers with retryable:true.
@@ -121,12 +124,6 @@
     showBad("This link is missing its verification code. Please open the button straight from the email we sent you.");
     return;
   }
-
-  // Strip ?t= from the URL before doing anything else: keeps the one-time token out of browser
-  // history and out of the Referer sent to any link this page offers.
-  try {
-    window.history.replaceState({}, document.title, window.location.pathname);
-  } catch (e) { /* non-fatal — verification still proceeds */ }
 
   // Only a real, user-generated click verifies. isTrusted is false for any click a script
   // synthesises, which is the cheap half of the defence; the expensive half is that automated

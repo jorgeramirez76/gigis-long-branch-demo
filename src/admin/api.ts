@@ -12,13 +12,18 @@ export type Member = {
   phone: string | null;
   email: string | null;
   sms_consent: boolean;
+  sms_requested: boolean;
+  account_id?: number; lifetime_orders: number; last_order: string | null; favorites: string | null;
   email_consent: boolean;
   source: string;
   created_at: string;
 };
 
 export type Stats = {
-  members: { total: number; sms_ok: number; email_ok: number; new_7d: number };
+  rewards: {accounts:number;shown_7d:number;adds_7d:number};
+  membersBySource: Record<string,number>;
+  config: {publicBaseUrl:string|null;staffAlertPhone:boolean;vipSignupAlertPhone:boolean;digest:boolean;accountsEnabled:boolean};
+  members: { total: number; sms_ok: number; sms_pending: number; email_ok: number; new_7d: number };
   sends: { sent: number; failed: number };
   broadcasts: { total: number };
   channels: { sms: boolean; email: boolean };

@@ -270,7 +270,8 @@ export function VipJoinInline({
           value={joinEmail}
           onChange={(e) => setJoinEmail(e.target.value)}
           autoComplete="email"
-          placeholder="you@email.com"
+          aria-label="Email for your welcome code"
+            placeholder="you@email.com"
           className="mt-1 w-full rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
         />
       </label>
@@ -284,6 +285,7 @@ export function VipJoinInline({
             type="text"
             value={addr}
             onChange={(e) => setAddr(e.target.value)}
+            aria-label="Home street address"
             placeholder="Home address (for your one-per-household pie)"
             autoComplete="street-address"
             className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
@@ -292,6 +294,7 @@ export function VipJoinInline({
             type="text"
             value={apt}
             onChange={(e) => setApt(e.target.value)}
+            aria-label="Apartment or unit"
             placeholder="Apt"
             autoComplete="address-line2"
             className="w-20 shrink-0 rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
@@ -302,6 +305,7 @@ export function VipJoinInline({
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            aria-label="City"
             placeholder="City"
             autoComplete="address-level2"
             className="w-full rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
@@ -311,6 +315,7 @@ export function VipJoinInline({
             value={stateCode}
             onChange={(e) => setStateCode(e.target.value.toUpperCase())}
             maxLength={2}
+            aria-label="State"
             placeholder="NJ"
             autoComplete="address-level1"
             className="w-16 shrink-0 rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"
@@ -321,6 +326,7 @@ export function VipJoinInline({
             onChange={(e) => setZip(e.target.value.replace(/\D/g, ""))}
             maxLength={5}
             inputMode="numeric"
+            aria-label="ZIP code"
             placeholder="ZIP"
             autoComplete="postal-code"
             className="w-24 shrink-0 rounded-xl border-0 bg-[var(--color-panel)] px-3 py-2.5 text-sm text-[var(--color-copy)] placeholder:text-[var(--color-copy-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold-bright)]"

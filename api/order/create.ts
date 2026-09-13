@@ -1,3 +1,4 @@
+import { readSession } from "../lib/session.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import {
   buildOrderNote,
@@ -22,9 +23,9 @@ import { priceLines, type ClientLine } from "../lib/menuCatalog.js";
 import { liveItemNames } from "../lib/menuLive.js";
 import { isOrderingOpen, isDeliveryOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
-import { peekOrder, releaseOrder, reserveOrder, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
+import { peekOrder, releaseOrder, reserveOrder, settleQueuedPrint, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
 import { applyFreePie, checkPromoCode, claimPromoCode, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
-import { alertStaff, sendReceiptEmail } from "../lib/notify.js";
+import { alertStaffOnce, alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
 import { isVipMember } from "../lib/vipLookup.js";
@@ -280,7 +281,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   // Email is REQUIRED so every website order gets an emailed receipt.
-  if (typeof customer.email !== "string" || customer.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email.trim())) {
+  if (typeof customer.email !== "string" || customer.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email.trim().toLowerCase())) {
     res.status(400).json({ error: "valid_email_required", message: "Please enter a valid email so we can send your receipt." });
     return;
   }
@@ -352,7 +353,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const replayAlertOk = () =>
     rateLimitAll([{ bucket: `alert:replay:${idempotencyKey}`, max: 1, windowSec: 1800 }]);
   if (prior && replayOrder(prior).kind === "routing_issue") {
-    if (await replayAlertOk()) await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${prior?.cloverOrderId ?? "?"} charge ${prior?.chargeId ?? "?"}; open it in the POS.`);
+    if (await replayAlertOk()) await alertStaffOnce(`order:${idempotencyKey}`, `PAID WEB ORDER NOT FIRED — retry seen for Clover order ${prior?.cloverOrderId ?? "?"} charge ${prior?.chargeId ?? "?"}; open it in the POS.`);
     // These states only occur after a confirmed capture, so the customer must not
     // submit another payment while staff recovers the kitchen routing.
     res.status(200).json({
@@ -370,7 +371,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   if (prior && replayOrder(prior).kind === "uncertain") {
-    if (await replayAlertOk()) await alertStaff(`UNCERTAIN WEB ORDER — retry seen for Clover order ${prior.cloverOrderId ?? "?"}; verify payment and order state before remaking.`);
+    if (await replayAlertOk()) await alertStaffOnce(`order:${idempotencyKey}`, `UNCERTAIN WEB ORDER — retry seen for Clover order ${prior.cloverOrderId ?? "?"}; verify payment and order state before remaking.`);
     res.status(409).json({ error: "uncertain", message: "We couldn't confirm your previous attempt. Please call the store before re-ordering so you aren't charged twice." });
     return;
   }
@@ -389,7 +390,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Capped small: each row costs a Clover GET (+ alerts when stuck) in front of THIS customer's
   // order, whose own charge still needs most of the 60s budget. The nightly cron takes the
   // backlog at full width.
-  await sweepQueuedPrints(3);
 
   const ip = clientIp(req);
 
@@ -410,6 +410,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(429).json({ error: "rate_limited", message: "Too many orders in a row. Please wait a moment or call the store." });
     return;
   }
+
+  await sweepQueuedPrints(3);
 
   // ---- authoritative pricing from the server catalog (NEVER trust client prices) ----
   // Items pulled off Clover since this build are rejected here too, so a page
@@ -512,7 +514,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const cust = {
     name: customer.name.trim(),
     phone: customer.phone.trim(),
-    email: customer.email?.trim(),
+    email: customer.email?.trim().toLowerCase(),
     address: customer.address?.trim().slice(0, ADDR_MAX),
     town: isDeliveryTown(customer.town) ? customer.town : undefined,
   };
@@ -528,11 +530,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // ---- idempotent reservation: atomically claim the key so a retry can't
   //      double-charge or double-fire. Replay/short-circuit if already seen. ----
+  const signedInAccount = process.env.ACCOUNTS_ENABLED === "true" ? await readSession(req) : null;
   const reservation = await reserveOrder({
+    accountId: signedInAccount?.id,
     idempotencyKey,
     fulfillment,
     customer: cust,
     items: kitchenLines,
+    fee: totals.deliveryFee, discount: totals.discount, town: cust.town, promoCode: promoCode ?? undefined,
     subtotal: totals.subtotal,
     cardPricing: totals.cardPricing,
     tax: totals.tax,
@@ -547,7 +552,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const ex = reservation.existing;
     const replay = replayOrder(ex);
     if (replay.kind === "routing_issue") {
-      await alertStaff(`PAID WEB ORDER NOT FIRED — retry seen for Clover order ${ex.cloverOrderId ?? "?"} charge ${ex.chargeId ?? "?"}; open it in the POS.`);
+      await alertStaffOnce(`order:${idempotencyKey}`, `PAID WEB ORDER NOT FIRED — retry seen for Clover order ${ex.cloverOrderId ?? "?"} charge ${ex.chargeId ?? "?"}; open it in the POS.`);
       // These states only occur after a confirmed capture, so the customer must not
       // submit another payment while staff recovers the kitchen routing.
       res.status(200).json({
@@ -573,7 +578,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // posted). Draft creation itself is not idempotent, so starting over could create
     // a second order or ticket. Do NOT re-create — flag staff to verify and ask the
     // customer to call, rather than risk making the food twice.
-    await alertStaff(`UNCERTAIN WEB ORDER — ${cust.name} ${maskPhone(cust.phone)} idem ${idempotencyKey.slice(0, 8)} — verify in POS before it is remade.`);
+    await alertStaffOnce(`order:${idempotencyKey}`, `UNCERTAIN WEB ORDER — ${cust.name} ${maskPhone(cust.phone)} idem ${idempotencyKey.slice(0, 8)} — verify in POS before it is remade.`);
     res.status(409).json({ error: "uncertain", message: "We couldn't confirm your previous attempt went through. Please call the store to check before re-ordering." });
     return;
   }
@@ -581,7 +586,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Failing closed is deliberate — ordering without the double-charge ledger is how the
     // Aug-15 incident happened. But every customer is being turned away, so a human must
     // hear about it: alertStaff reaches Resend/Twilio, which don't share Neon's fate.
-    await alertStaff(`ONLINE ORDERING IS DOWN — the order database is unreachable, every web order is being refused with "call the store". Check Neon/Vercel.`);
+    await alertStaffOnce("order-database-unavailable", `ONLINE ORDERING IS DOWN — the order database is unreachable, every web order is being refused with "call the store". Check Neon/Vercel.`);
     res.status(503).json({ error: "ordering_temporarily_unavailable", message: "Online ordering is temporarily unavailable. Please call the store to order." });
     return;
   }
@@ -639,8 +644,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     } catch (err) {
       console.error("[order/create] single-order setup failed before payment", err instanceof Error ? err.message : err);
-      if (draftId) await deleteDraftOrder(draftId).catch(() => {});
-      if (reservedId != null) await releaseOrder(reservedId, { draftDiscarded: !!draftId });
+      const discarded = !draftId || await deleteDraftOrder(draftId).then(() => true, () => false);
+      if (discarded && reservedId != null) await releaseOrder(reservedId, { draftDiscarded: !!draftId });
       await releasePromo();
       res.status(502).json({
         error: "order_routing_failed",
@@ -676,8 +681,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const definitelyDeclined = isDefinitelyDeclined(err);
       if (!definitelyDeclined) {
         console.error("[order/create] pay-for-order UNCERTAIN — preserving order", status, err instanceof Error ? err.message : err);
-        if (reservedId != null) await updateOrder(reservedId, { status: "capture_uncertain", cloverOrderId: draftId });
-        await alertStaff(
+        if (reservedId != null) await updateOrder(reservedId, { status: chargeId ? "charged" : "capture_uncertain", ...(chargeId ? { chargeId } : {}), cloverOrderId: draftId });
+        await alertStaffOnce(`order:${idempotencyKey}`,
           `UNCERTAIN CARD RESULT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
           `Clover order ${draftId} may hold a payment but we never got a confirmation. ` +
           `Open it in the POS: if it is paid, make the order; if not, it can be voided.` +
@@ -686,16 +691,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         res.status(200).json({
           ok: true,
           orderId: draftId,
-          paid: false,
+          paid: !!chargeId,
           routingIssue: true,
-          message: "We couldn't confirm your payment. Please call the store before re-ordering so we don't charge you twice.",
+          message: chargeId ? "Your payment went through. Please call the store to confirm your order was received before ordering again." : "We couldn't confirm your payment. Please call the store before re-ordering so we don't charge you twice.",
         });
         return;
       }
 
       // A definite decline moved no money, so deleting this one draft and releasing the key is safe.
-      await deleteDraftOrder(draftId).catch(() => {});
-      if (reservedId != null) await releaseOrder(reservedId, { draftDiscarded: true });
+      const discarded = await deleteDraftOrder(draftId).then(() => true, () => false);
+      if (discarded && reservedId != null) await releaseOrder(reservedId, { draftDiscarded: true });
       await releasePromo();
       console.error("[order/create] pay-for-order declined", status, err instanceof Error ? err.message : err);
       res.status(402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
@@ -708,7 +713,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Preserve the reservation because reaching here after a payment call is ambiguous.
     console.error("[order/create] paid order invariant failed");
     if (reservedId != null) await updateOrder(reservedId, { status: "capture_uncertain", cloverOrderId: paidOrderId });
-    await alertStaff(`UNCERTAIN WEB ORDER — paid-order invariant failed for idempotency key ${idempotencyKey.slice(0, 8)}. Check Clover before retrying.`);
+    await alertStaffOnce(`order:${idempotencyKey}`, `UNCERTAIN WEB ORDER — paid-order invariant failed for idempotency key ${idempotencyKey.slice(0, 8)}. Check Clover before retrying.`);
     res.status(200).json({
       ok: true,
       paid: false,
@@ -737,13 +742,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Still moving through Clover's queue. Record it as such rather than as a clean "paid":
         // sweepQueuedPrints comes back later and decides, so a genuinely stuck ticket is still
         // caught without paging staff about every slow one.
-        if (reservedId != null) await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
+        const recorded = reservedId != null && await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
+        if (!recorded) await alertStaffOnce(`print:${paidOrderId}`,
+          `WEB ORDER PRINT UNCONFIRMED — Clover order ${paidOrderId} is PAID; confirm the kitchen received its ticket.`);
       } else if (!ticket.printed) {
-        if (reservedId != null) await updateOrder(reservedId, { status: "paid_print_failed", cloverOrderId: paidOrderId, note });
-        await alertStaff(
+        if (reservedId != null) await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
+        const paged = await alertStaffOnce(`print:${paidOrderId}`,
           `KITCHEN TICKET DID NOT PRINT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
           `Clover order ${paidOrderId} is PAID and open in the POS, but no ticket came out (${ticket.error ?? ticket.state ?? "unknown"}). Print it from the POS.`,
         );
+        if (paged === "sent" && reservedId != null) await settleQueuedPrint(reservedId, "paid_print_failed");
       } else if (reservedId != null) {
         await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
       }
@@ -774,7 +782,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error("[order/create] fire failed after payment", err);
       await redeemPromo(paidOrderId);
       if (reservedId != null) await updateOrder(reservedId, { status: "paid_unrouted", note });
-      await alertStaff(`PAID WEB ORDER NOT FIRED — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — Clover order ${paidOrderId} holds the payment but didn't fire; open it in the POS.`);
+      await alertStaffOnce(`order:${idempotencyKey}`, `PAID WEB ORDER NOT FIRED — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — Clover order ${paidOrderId} holds the payment but didn't fire; open it in the POS.`);
       res.status(200).json({ ok: true, paid: true, chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });
     }
   return;

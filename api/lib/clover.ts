@@ -260,9 +260,9 @@ export async function createCharge(opts: {
 /** One ticket, by id — answers regardless of how far back the list scan reaches. */
 export async function getOrderSummary(orderId: string): Promise<{
   id: string; title?: string; state?: string; paymentState?: string; total?: number;
-  note?: string; paymentCount: number; createdTime?: number;
+  note?: string; paymentCount: number; lineItemCount: number; createdTime?: number;
 }> {
-  const d = await rest(`/orders/${orderId}?expand=payments`, { method: "GET" });
+  const d = await rest(`/orders/${orderId}?expand=payments,lineItems`, { method: "GET" });
   return {
     id: d?.id ?? orderId,
     title: d?.title,
@@ -271,6 +271,7 @@ export async function getOrderSummary(orderId: string): Promise<{
     total: typeof d?.total === "number" ? d.total : undefined,
     note: d?.note,
     paymentCount: Array.isArray(d?.payments?.elements) ? d.payments.elements.length : 0,
+    lineItemCount: Array.isArray(d?.lineItems?.elements) ? d.lineItems.elements.length : 0,
     createdTime: d?.createdTime,
   };
 }
@@ -281,38 +282,47 @@ export async function getOrderSummary(orderId: string): Promise<{
  * 7/26 stranded split carried the legacy title and stayed invisible to a WEBSITE ORDER
  * prefix scan for five weeks).
  */
-export async function listOpenWebsiteOrders(maxPages = 8): Promise<{
-  orders: {
-    id: string; title?: string; state?: string; total?: number;
-    paymentCount: number; createdTime?: number; note?: string;
-  }[];
+export async function listOpenWebsiteOrders(maxPages = 5): Promise<{
+  orders: Awaited<ReturnType<typeof getOrderSummary>>[];
+  /** How many orders of ANY type were examined — the window this answer is true for. */
   scanned: number;
+  oldestScanned?: number;
+  /** True when the scan stopped at the page cap, so older tickets may exist unseen. */
   truncated: boolean;
 }> {
+  // Clover's window is over EVERY ticket the shop rang up — walk-ins included — and website
+  // orders are a small minority of them, so one page of 100 can miss a stranded ticket
+  // entirely. Page through, and report the window so an empty list is never mistaken for proof.
   const PAGE = 100;
   const rows: Record<string, any>[] = [];
   let truncated = false;
   for (let page = 0; page < Math.max(1, maxPages); page++) {
-    const d = await rest(`/orders?limit=${PAGE}&offset=${page * PAGE}&expand=payments`, { method: "GET" });
+    const d = await rest(`/orders?limit=${PAGE}&offset=${page * PAGE}&expand=payments,lineItems`, { method: "GET" });
     const batch: Record<string, any>[] = Array.isArray(d?.elements) ? d.elements : [];
     rows.push(...batch);
     if (batch.length < PAGE) break;
     if (page === Math.max(1, maxPages) - 1) truncated = true;
   }
+  const times = rows.map((o) => (typeof o?.createdTime === "number" ? o.createdTime : Infinity));
   const orders = rows
-    .filter((o) => typeof o?.title === "string" && /^WEBSITE(\s+ORDER)?\s+[•·]/i.test(o.title))
-    .filter((o) => String(o?.state ?? "").toLowerCase() === "open")
+    .filter((o) => typeof o?.title === "string" && WEBSITE_TITLE_RE.test(o.title))
+    .filter((o) => String(o?.state ?? "").toLowerCase() !== "locked")
     .map((o) => ({
       id: o.id,
       title: o.title,
       state: o.state,
+      paymentState: o.paymentState,
       total: typeof o.total === "number" ? o.total : undefined,
-      paymentCount: Array.isArray(o?.payments?.elements) ? o.payments.elements.length : 0,
-      createdTime: o.createdTime,
       note: o.note,
+      paymentCount: Array.isArray(o?.payments?.elements) ? o.payments.elements.length : 0,
+      lineItemCount: Array.isArray(o?.lineItems?.elements) ? o.lineItems.elements.length : 0,
+      createdTime: o.createdTime,
     }))
     .sort((a, b) => (b.createdTime ?? 0) - (a.createdTime ?? 0));
-  return { orders, scanned: rows.length, truncated };
+  // The limit is a window over EVERY order the merchant rang up, not over website orders, so a
+  // busy weekend can push a stranded ticket out of view. Report the window with the answer.
+  const oldest = times.length ? Math.min(...times) : undefined;
+  return { orders, scanned: rows.length, oldestScanned: Number.isFinite(oldest) ? oldest : undefined, truncated };
 }
 
 async function rest(path: string, init: RequestInit): Promise<any> {
@@ -473,28 +483,15 @@ export async function deleteDraftOrder(orderId: string): Promise<void> {
  * Print jobs are short-lived and are discarded once printed, so a failure must
  * be retried promptly (see printOrderTicket) — it cannot be replayed later.
  */
-async function requestPrint(orderId: string): Promise<{ id?: string; state?: string; device?: string }> {
+async function requestPrint(orderId: string, deviceId?: string): Promise<{ id?: string; state?: string; device?: string }> {
   const data = await rest(`/print_event`, {
     method: "POST",
-    body: JSON.stringify({ orderRef: { id: orderId } }),
+    body: JSON.stringify(deviceId ? { orderRef: { id: orderId }, deviceRef: { id: deviceId } } : { orderRef: { id: orderId } }),
   });
   return { id: data?.id, state: data?.state, device: data?.deviceRef?.id };
 }
 
-/** The real payment/tender id on an order. The /v1/orders/{id}/pay response's
- * `id` mirrors the ORDER id (observed live), so refunds need this lookup. */
-export async function getOrderPaymentId(orderId: string): Promise<string | undefined> {
-  try {
-    const d = await rest(`/orders/${orderId}?expand=payments`, { method: "GET" });
-    return d?.payments?.elements?.[0]?.id;
-  } catch {
-    return undefined;
-  }
-}
-
-/** Read a live print job's state (CREATED, PRINTING, or FAILED). Clover deletes
- * the event after a successful print, so callers treat its resulting 404 as
- * completion rather than as a printer failure. */
+/** Read a print job's state ("CREATED" | "PRINTING" | "PRINTED" | "FAILED"). */
 export async function getPrintEventState(eventId: string): Promise<string | undefined> {
   const data = await rest(`/print_event/${eventId}`, { method: "GET" });
   return data?.state;
@@ -515,13 +512,14 @@ async function confirmPrintEvent(
     try {
       lastState = await getPrintEventState(eventId);
       const outcome = classifyPrintPoll(lastState);
+      if (outcome === "printed") return { printed: true, state: lastState };
       if (outcome === "failed") return { printed: false, state: lastState, error: "printer reported FAILED" };
     } catch (err) {
       const status = err instanceof CloverError ? err.status : undefined;
       if (classifyPrintPoll(undefined, status, err instanceof Error ? err.message : undefined) === "printed") {
         return { printed: true, state: "PRINTED" };
       }
-      return { printed: false, state: lastState, error: err instanceof Error ? err.message : "print status check failed" };
+      return { printed: false, queued: true, state: lastState, error: err instanceof Error ? err.message : "print status check failed" };
     }
   }
   // Still CREATED or PRINTING. At this store that is NORMAL, not a failure: a job was measured
@@ -541,13 +539,13 @@ async function confirmPrintEvent(
  * confirmed the first live paper ticket on 2026-07-28. Used only to SUPPRESS a false alarm —
  * never to claim a print we have no evidence for.
  */
-export async function orderLineItemsPrinted(orderId: string): Promise<boolean> {
+export async function orderLineItemsPrinted(orderId: string): Promise<boolean | null> {
   try {
     const data = await rest(`/orders/${orderId}?expand=lineItems`, { method: "GET" });
     const items = data?.lineItems?.elements;
     return Array.isArray(items) && items.length > 0 && items.every((li: { printed?: boolean }) => li?.printed === true);
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -617,17 +615,28 @@ export async function createPosOrder(opts: {
   fulfillment: Fulfillment;
   note: string;
   paid: boolean;
-  /** Cents; forwarded to createDraftOrder as its own taxed line item. */
   deliveryFee?: number;
   /** The "Card pricing (4%)" line, cents — see computeTotals. */
   cardPricing?: number;
+  tipCents?: number;
 }): Promise<{ id: string; href: string }> {
+  // Only an unpaid ticket carries the tip as a line: on a card order it is already captured
+  // with the payment.
   const draft = await createDraftOrder(opts);
   try {
+    // Retitle at fire time so the ticket HEADER carries the payment state —
+    // "• NOT PAID" on a pay-at-pickup chit is what the register reads at a glance.
     await fireOrder(draft.id, { paid: opts.paid, title: ticketTitle(opts.fulfillment, opts.paid) });
   } catch (err) {
-    await deleteDraftOrder(draft.id).catch(() => {});
-    throw err;
+    // Clover 4xx/429 responses explicitly reject the mutation, so this is still
+    // a draft and can be deleted safely. A network failure or 5xx is ambiguous:
+    // the order may already be open, and deleting/retrying could lose or duplicate
+    // a kitchen ticket. Preserve it and make the caller verify the known id.
+    if (err instanceof CloverError && err.status >= 400 && err.status < 500) {
+      await deleteDraftOrder(draft.id).catch(() => {});
+      throw err;
+    }
+    throw new CloverRoutingUncertainError(draft.id, err);
   }
   return draft;
 }
@@ -804,4 +813,154 @@ export function buildOrderNote(opts: {
     `Sub ${money(opts.totals.subtotal)}${opts.totals.discount ? ` FreePie -${money(opts.totals.discount)}` : ""}${opts.totals.deliveryFee ? ` Dlv ${money(opts.totals.deliveryFee)}` : ""} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
   ].filter(Boolean);
   return parts.join(" | ");
+}
+
+export class CloverRoutingUncertainError extends Error {
+  constructor(readonly orderId: string, readonly cause: unknown) {
+    super(`Clover may have opened order ${orderId}; verify it before retrying`);
+    this.name = "CloverRoutingUncertainError";
+  }
+}
+
+
+export async function listCloverDevices(): Promise<{ id: string; name?: string; model?: string; serial?: string }[]> {
+  const data = await rest(`/devices`, { method: "GET" });
+  const els = Array.isArray(data?.elements) ? data.elements : [];
+  return els.map((d: { id: unknown; name?: string; model?: string; serial?: string }) => ({
+    id: String(d.id),
+    name: d.name,
+    model: d.model,
+    serial: d.serial,
+  }));
+}
+
+/**
+ * A $0 ticket whose title AND line item carry the route label, so whoever is
+ * standing at the printers can read WHICH route produced each piece of paper.
+ * Built like a real order (draft → line item → open) so it prints through the
+ * same pipeline; rolled back if any step fails, so a half-built test order
+ * never lingers in the register.
+ */
+export async function createPrinterTestOrder(label: string): Promise<{ id: string }> {
+  const title = `PRINTER TEST — ${label}`.slice(0, 120);
+  const order = await rest(`/orders`, {
+    method: "POST",
+    body: JSON.stringify({
+      title,
+      note: `${title}. $0 test ticket — do NOT make anything. Tell Jorge this label printed.`.slice(0, 490),
+    }),
+  });
+  const orderId = order.id as string;
+  try {
+    // $0 and no taxRates on purpose: nothing to collect, nothing to reconcile.
+    await rest(`/orders/${orderId}/line_items`, {
+      method: "POST",
+      body: JSON.stringify({ name: `** ${title} **`.slice(0, 120), price: 0, note: "do not make — web printer check" }),
+    });
+    await rest(`/orders/${orderId}`, { method: "POST", body: JSON.stringify({ state: "open", title }) });
+  } catch (err) {
+    await rest(`/orders/${orderId}`, { method: "DELETE" }).catch(() => {});
+    throw err;
+  }
+  return { id: orderId };
+}
+
+/**
+ * ONE print_event at ONE device (default routing when deviceId is omitted),
+ * with a short state check — long enough to catch an immediate FAILED (the dead
+ * device answers within a couple of seconds), short enough that testing every
+ * device stays inside one function invocation. A job still CREATED/PRINTING
+ * when we stop looking is fine: the human at the printers is the real verdict.
+ */
+export async function printOnDevice(orderId: string, deviceId?: string): Promise<{ eventId?: string; state?: string; error?: string }> {
+  try {
+    const ev = await requestPrint(orderId, deviceId);
+    if (!ev.id) return { state: ev.state, error: "print event had no id" };
+    let state = ev.state;
+    for (const delay of [1200, 1800]) {
+      await new Promise((r) => setTimeout(r, delay));
+      try {
+        state = await getPrintEventState(ev.id);
+      } catch (err) {
+        // Clover deletes completed print events; a 404/410 on a job it accepted means done.
+        const status = err instanceof CloverError ? err.status : undefined;
+        if (status === 404 || status === 410 || (status === 400 && /print event is missing/i.test(err instanceof Error ? err.message : ""))) return { eventId: ev.id, state: "PRINTED" };
+        break;
+      }
+      const st = state?.trim().toUpperCase();
+      if (st === "PRINTED" || st === "FAILED") break;
+    }
+    return { eventId: ev.id, state };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "print request failed" };
+  }
+}
+
+/** Remove a test order from the register. The caller verifies the order is a
+ *  PRINTER TEST before asking — this helper does not re-check. */
+export async function deleteCloverOrder(orderId: string): Promise<void> {
+  await rest(`/orders/${orderId}`, { method: "DELETE" });
+}
+
+
+
+export async function mirrorProbe(
+  lines: { name: string; price: number }[],
+  pollMs: number[],
+): Promise<{ orderId: string; posted: number; reads: { atMs: number; items: { name?: string; amount?: number }[] }[] }> {
+  const t = ecommToken();
+  if (!t) throw new CloverError("clover_not_configured", 503);
+  const order = await rest(`/orders`, {
+    method: "POST",
+    body: JSON.stringify({ title: "MIRROR PROBE — NOT A REAL ORDER, DO NOT MAKE", note: "diagnostic draft; auto-deleted" }),
+  });
+  const orderId = order.id as string;
+  const reads: { atMs: number; items: { name?: string; amount?: number }[] }[] = [];
+  const started = Date.now();
+  try {
+    for (const line of lines) {
+      await rest(`/orders/${orderId}/line_items`, {
+        method: "POST",
+        body: JSON.stringify({ name: line.name, price: line.price, taxRates: [NJ_TAX_RATE] }),
+      });
+    }
+    for (const ms of pollMs) {
+      const wait = started + ms - Date.now();
+      if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+      const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
+        headers: { Authorization: `Bearer ${t}` },
+      });
+      const data = (await res.json().catch(() => ({}))) as { items?: { name?: string; amount?: number }[] };
+      reads.push({ atMs: Date.now() - started, items: Array.isArray(data.items) ? data.items : [] });
+    }
+  } finally {
+    await rest(`/orders/${orderId}`, { method: "DELETE" }).catch(() => {});
+  }
+  return { orderId, posted: lines.length, reads };
+}
+
+
+export async function closePosOrder(orderId: string): Promise<void> {
+  await rest(`/orders/${orderId}`, {
+    method: "POST",
+    body: JSON.stringify({ state: "locked" }),
+  });
+}
+
+/**
+ * Create an itemized order in the merchant's POS and fire it, atomically.
+ * (Cash/pickup path — card orders use createDraftOrder → payForOrder →
+ * fireOrder so the payment lands on the itemized order itself.)
+ */
+
+export const WEBSITE_TITLE_RE = /^WEBSITE(\s+ORDER)?\s+[•·]/i;
+export function fulfillmentConfigured(f: Fulfillment) { return !!ORDER_TYPES[f]; }
+
+export async function getOrderPaymentId(orderId: string): Promise<string | undefined> {
+  try {
+    const d = await rest(`/orders/${orderId}?expand=payments`, { method: "GET" });
+    return d?.payments?.elements?.[0]?.id;
+  } catch {
+    return undefined;
+  }
 }

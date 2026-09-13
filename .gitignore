@@ -17,3 +17,5 @@ yarn-error.log*
 .env.crm.local
 .vite-react-ssg-temp
 .indexnow-key
+
+*.tsbuildinfo

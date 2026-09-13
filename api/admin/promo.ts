@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql, isVipBusiness } from "../lib/db.js";
 import { requireAdmin } from "../lib/adminAuth.js";
-import { ensurePromoReservationColumns } from "../lib/promo.js";
+import { ensurePromoReservationColumns, normalizePromoCode as normalizeCode } from "../lib/promo.js";
 
 /**
  * Counter tool for the free-pie welcome codes.
@@ -15,14 +15,6 @@ import { ensurePromoReservationColumns } from "../lib/promo.js";
  */
 
 /** Codes are printed/spoken — accept any case and tolerate a missing "PIE-". */
-function normalizeCode(raw: unknown): string | null {
-  if (typeof raw !== "string") return null;
-  const c = raw.trim().toUpperCase().replace(/\s+/g, "");
-  if (!c) return null;
-  const withPrefix = /^PIE-/.test(c) ? c : `PIE-${c.replace(/^PIE/, "")}`;
-  return /^PIE-[A-Z0-9]{4,10}$/.test(withPrefix) ? withPrefix : null;
-}
-
 type Row = {
   id: number;
   code: string;
@@ -142,7 +134,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
       const released = await sql`
         UPDATE vip_promo_codes SET reservation_key = NULL, reserved_at = NULL
-        WHERE id = ${row.id} AND redeemed_at IS NULL AND reservation_key IS NOT NULL
+        WHERE id = ${row.id} AND redeemed_at IS NULL AND reservation_key = ${row.reservation_key}
         RETURNING id
       `;
       if (released.rowCount !== 1) {

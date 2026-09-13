@@ -1,3 +1,8 @@
+> September 12 code audit: the charge-outcome, uncertain-payment and safe retry fixes
+> described here are implemented in `chargeOutcome.ts`, `clover.ts`, `create.ts`,
+> `Checkout.tsx`, and `tests/order-regressions.test.ts`. The dated incident remains an audit
+> record; this note does not assert any new refunds or production checks were performed.
+
 # Refund worksheet — website double-charge incident (Aug 12–15, 2026)
 
 **What happened:** from the evening of Aug 12 until ~5:45 PM Aug 15, the website's payment code

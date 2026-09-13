@@ -10,7 +10,7 @@ import { getCaptureByCloverId, listWorklistCandidates } from "../lib/orderStore.
  * in one direction or the other:
  *   - a split card order: paid ONLINE, standalone charge — ringing it up bills the customer
  *     twice and double-counts the sale (and sales tax);
- *   - an ordinary pay-at-counter order: nothing captured — it is OWED money.
+ *   - an ordinary unverified draft order: payment status needs investigation; never collect again from this list.
  * The only reliable discriminator is whether our ledger holds a charge id for it.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -34,7 +34,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           typeof sum.title === "string" &&
           /^WEBSITE(\s+ORDER)?\s+[•·]/i.test(sum.title)
         ) {
-          orders.push({ id: sum.id, title: sum.title, state: sum.state, total: sum.total, paymentCount: sum.paymentCount, createdTime: sum.createdTime, note: sum.note });
+          orders.push({ id: sum.id, title: sum.title, state: sum.state, total: sum.total, paymentCount: sum.paymentCount, lineItemCount: sum.lineItemCount, paymentState: sum.paymentState, createdTime: sum.createdTime, note: sum.note });
         }
       } catch {
         // A candidate Clover no longer has (deleted ticket) is not an open ticket.
@@ -92,8 +92,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           : "") +
         `${alreadyPaid.length} ticket(s) ($${dollars(alreadyPaid)}) were ALREADY charged online — do NOT ` +
         `take payment on these at the Station; void them once matched to their charge id. ` +
-        `${awaitingPayment.length} ticket(s) ($${dollars(awaitingPayment)}) are pay-at-counter with NO ` +
-        `payment captured — these are owed money. Never treat the two groups alike.`,
+        `${awaitingPayment.length} ticket(s) ($${dollars(awaitingPayment)}) are unverified draft with NO ` +
+        `confirmed payment in this ledger. These may be orphaned drafts or incident leftovers. Check Clover payment records; do NOT collect again from this list.`,
       open,
     });
   } catch (err) {

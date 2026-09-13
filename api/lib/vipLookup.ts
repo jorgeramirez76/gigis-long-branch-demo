@@ -21,7 +21,7 @@ export async function isVipMember(
       WHERE business = ${business}
         AND (
           (${phone}::text IS NOT NULL AND phone = ${phone})
-          OR (${email}::text IS NOT NULL AND email = ${email})
+          OR (${email}::text IS NOT NULL AND LOWER(email) = LOWER(${email}))
         )
       LIMIT 1
     `;

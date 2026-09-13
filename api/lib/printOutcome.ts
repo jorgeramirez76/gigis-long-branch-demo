@@ -13,9 +13,10 @@ export type PrintPollOutcome = "pending" | "printed" | "failed";
  * Ciardullo's 5:11 PM order into a false "DID NOT PRINT" alarm.
  */
 export function classifyPrintPoll(state?: string, httpStatus?: number, body?: string): PrintPollOutcome {
-  if (httpStatus === 404) return "printed";
+  if (httpStatus === 404 || httpStatus === 410) return "printed";
   if (httpStatus === 400 && /print event is missing/i.test(body ?? "")) return "printed";
   const normalized = state?.trim().toUpperCase();
+  if (normalized === "PRINTED") return "printed";
   if (normalized === "FAILED") return "failed";
   return "pending";
 }

@@ -1,3 +1,4 @@
+import { MENU_INDEX } from "../../src/data/menuIndex.js";
 /**
  * Server-side authoritative price catalog.
  *
@@ -24,6 +25,7 @@ export type ClientLine = {
 };
 
 export type PricedLine = {
+  cloverItemId?: string;
   itemName: string;
   categoryId: string;
   basePrice: number; // authoritative cents
@@ -94,6 +96,7 @@ export function priceLines(clientLines: ClientLine[], available?: Set<string> | 
 
     out.push({
       itemName: line.itemName,
+      cloverItemId: MENU_INDEX.find(row => row.name===line.itemName && row.cat===line.categoryId)?.ids[0],
       categoryId: line.categoryId ?? "",
       basePrice: item.basePrice,
       options: priced,

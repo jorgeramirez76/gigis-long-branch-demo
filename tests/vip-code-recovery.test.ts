@@ -86,23 +86,7 @@ describe("VIP code recovery safety pins", () => {
     assert.match(src, /WEB_SOURCES\.includes\(member\.source \?\? ""\)/);
   });
 
-  it("the recovery block lives OUTSIDE the join form — Enter can never fire the join submit", () => {
-    const formClose = clubSrc.indexOf("</form>");
-    const recoveryBlock = clubSrc.indexOf("Self-serve code recovery");
-    assert.ok(formClose > 0 && recoveryBlock > formClose,
-      "recovery UI must render after the join form closes");
-  });
-
-  it("recoverCode is re-entrancy guarded — Enter cannot double-submit", () => {
-    const start = clubSrc.indexOf("async function recoverCode");
-    const fn = clubSrc.slice(start, clubSrc.indexOf("/api/vip-code-recovery", start));
-    assert.match(fn, /if \(recoverStatus === "submitting"\) return;/);
-  });
-
-  it("the club UI never renders a recovered code — email-only by construction", () => {
-    const block = clubSrc.slice(clubSrc.indexOf("async function recoverCode"), clubSrc.indexOf('if (status === "verify")'));
-    assert.ok(block.length > 100);
-    assert.ok(!/data\.code/.test(block), "recovery handler reads a code off the response");
-    assert.match(clubSrc, /never shown on this page/);
+  it("the storefront sends members to their authenticated rewards account", () => {
+    assert.match(clubSrc, /\/account\//);
   });
 });

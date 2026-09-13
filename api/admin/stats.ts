@@ -22,6 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const members = await sql`
       SELECT
         COUNT(*)::int                                   AS total,
+        COUNT(*) FILTER (WHERE sms_requested AND NOT sms_consent)::int AS sms_pending,
         COUNT(*) FILTER (WHERE sms_consent)::int        AS sms_ok,
         COUNT(*) FILTER (WHERE email_consent)::int      AS email_ok,
         COUNT(*) FILTER (WHERE created_at > now() - interval '7 days')::int AS new_7d
@@ -44,8 +45,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       FROM vip_members WHERE business = ${business}
       GROUP BY source ORDER BY n DESC
     `;
+    const rewards = await sql`SELECT
+      (SELECT COUNT(*)::int FROM accounts WHERE business=${business} AND deleted_at IS NULL) AS accounts,
+      COUNT(*)::int AS shown_7d,COUNT(*) FILTER(WHERE i.added)::int AS adds_7d
+      FROM upsell_impressions i JOIN accounts a ON a.id=i.account_id
+      WHERE a.business=${business} AND i.shown_at>now()-interval '7 days'`;
     res.status(200).json({
       members: members.rows[0],
+      rewards: rewards.rows[0],
       membersBySource: Object.fromEntries(bySource.rows.map((r) => [r.source, r.n])),
       sends: sends.rows[0],
       broadcasts: broadcasts.rows[0],
@@ -53,6 +60,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // Env sanity for ops (admin-gated): the base URL baked into email unsub links,
       // whether staff lost-order alerts are armed, and whether new-member texts go to the store.
       config: {
+        digest: !!process.env.DIGEST_EMAIL && !!(process.env.DIGEST_FROM || process.env.EMAIL_FROM),
+        accountsEnabled: process.env.ACCOUNTS_ENABLED === "true",
         publicBaseUrl: process.env.PUBLIC_BASE_URL || null,
         staffAlertPhone: !!process.env.STAFF_ALERT_PHONE,
         vipSignupAlertPhone: !!process.env.VIP_SIGNUP_ALERT_PHONE,

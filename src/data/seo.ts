@@ -21,22 +21,6 @@ export const SERVICE_AREAS = [
   "Shrewsbury",
 ] as const;
 
-/** Cuisine + topical keywords used in copy AND `knowsAbout` schema. */
-export const KEYWORDS = [
-  "New York style pizza",
-  "NY pizza Long Branch NJ",
-  "pizza delivery Long Branch",
-  "pizza near Brighton Ave",
-  "Italian food Long Branch",
-  "specialty pizza",
-  "Sicilian pizza",
-  "Grandma pizza",
-  "heroes and subs",
-  "pasta dinners",
-  "buffalo wings",
-  "mozzarella sticks",
-  "family-friendly Italian restaurant",
-] as const;
 
 /**
  * FAQs surfaced visibly (FAQ.tsx) AND mirrored in the FAQPage JSON-LD in
@@ -91,7 +75,7 @@ export const FAQS: ReadonlyArray<{ q: string; a: string; link?: { href: string; 
   },
   {
     q: "Can I order Gigi's pizza online?",
-    a: "Yes. You can order Gigi's for pickup or delivery right on gigislongbranch.com — browse the full menu, customize toppings, and pay securely by card or Apple Pay. Online orders are prepaid, and go straight to the kitchen once your card is charged. Prefer to pay in person? Call us at (732) 377-2468. Online ordering is open seven days a week during regular hours.",
+    a: "Yes. You can order Gigi's for pickup or delivery right on gigislongbranch.com — browse the full menu, customize toppings, and pay securely by card or Apple Pay. Online orders are prepaid, and go straight to the kitchen once your card is charged. Prefer to pay in person? Call us at (732) 377-2468. Online ordering closes at 11 PM every day. The counter stays open until midnight Thursday–Sunday.",
     link: { href: "/menu/", label: "See the full menu with prices" },
   },
   {
@@ -114,6 +98,3 @@ export const FAQS: ReadonlyArray<{ q: string; a: string; link?: { href: string; 
     link: { href: "/square-pizza-long-branch/", label: "Square pizza prices & details" },
   },
 ];
-
-/** Display-friendly comma-separated string of service areas. */
-export const SERVICE_AREAS_LINE = SERVICE_AREAS.join(" · ");

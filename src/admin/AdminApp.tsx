@@ -46,6 +46,7 @@ export function AdminApp() {
       header={
         <div className="flex flex-wrap items-center gap-3">
           <select
+            aria-label="Location"
             value={business}
             onChange={(e) => setBusiness(e.target.value as Business)}
             className="rounded-lg border border-[var(--color-cream-darker)] bg-white px-3 py-2 text-sm font-semibold"
@@ -151,6 +152,8 @@ function Login({ onSuccess }: { onSuccess: () => void }) {
         <h2 className="text-2xl">Sign in</h2>
         <input
           type="password"
+          aria-label="Admin token"
+          autoComplete="current-password"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Admin token"
@@ -184,17 +187,27 @@ function Overview({ stats, business, onRefresh }: { stats: Stats | null; busines
   if (!stats) return <p className="text-sm text-[var(--color-ink-mute)]">No data yet — is the database provisioned?</p>;
   return (
     <div className="space-y-4">
+      <Operations />
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard label="VIP members" value={stats.members.total} sub={`+${stats.members.new_7d} this week`} />
-        <StatCard label="Text list" value={stats.members.sms_ok} sub="opted in to SMS" />
+        <StatCard label="Text list" value={stats.members.sms_ok} sub={`${stats.members.sms_pending} awaiting YES`} />
         <StatCard label="Email list" value={stats.members.email_ok} sub="opted in to email" />
         <StatCard label="Messages sent" value={stats.sends.sent} sub={stats.sends.failed ? `${stats.sends.failed} failed` : "all delivered to provider"} />
       </div>
+      <div className="grid grid-cols-2 gap-4">
+        <StatCard label="Rewards accounts" value={stats.rewards.accounts} sub="Customers with a sign-in" />
+        <StatCard label="Usual-item adds this week" value={stats.rewards.adds_7d} sub={`${stats.rewards.shown_7d} suggestions shown`} />
+      </div>
       <div className="rounded-2xl bg-white p-5 shadow-[var(--shadow-sm)]">
-        <h3 className="text-lg">Channel status</h3>
+        <h3 className="text-lg">Configuration & channel status</h3>
         <div className="mt-3 space-y-2 text-sm">
           <ChannelRow ok={stats.channels.sms} label="Text messages (Twilio)" />
           <ChannelRow ok={stats.channels.email} label="Email (Resend)" />
+          <ChannelRow ok={stats.config.staffAlertPhone} label="Lost-order text alerts" />
+          <ChannelRow ok={stats.config.vipSignupAlertPhone} label="VIP signup staff alerts" />
+          <ChannelRow ok={stats.config.digest} label="Daily owner digest" />
+          <ChannelRow ok={stats.config.accountsEnabled} label="Customer accounts" />
+          <p>Member sources: {Object.entries(stats.membersBySource).map(([source,n])=>`${source}: ${n}`).join(" · ")}</p>
         </div>
       </div>
     </div>
@@ -257,13 +270,15 @@ function Members({ business }: { business: Business }) {
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
         <input
-          value={q}
+          aria-label="Search members by name, phone or email"
+            value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search name / phone / email"
           className="min-w-52 flex-1 rounded-xl border border-[var(--color-cream-darker)] bg-white px-4 py-2.5 text-sm"
         />
         <select
-          value={consent}
+          aria-label="Member consent filter"
+            value={consent}
           onChange={(e) => setConsent(e.target.value as typeof consent)}
           className="rounded-xl border border-[var(--color-cream-darker)] bg-white px-3 py-2.5 text-sm"
         >
@@ -288,6 +303,7 @@ function Members({ business }: { business: Business }) {
               <th className="px-4 py-3">Phone</th>
               <th className="px-4 py-3">Email</th>
               <th className="px-4 py-3">Lists</th>
+              <th className="px-4 py-3">Rewards & orders</th>
               <th className="px-4 py-3">Joined</th>
             </tr>
           </thead>
@@ -298,8 +314,13 @@ function Members({ business }: { business: Business }) {
                 <td className="px-4 py-3">{m.phone ?? "—"}</td>
                 <td className="px-4 py-3">{m.email ?? "—"}</td>
                 <td className="px-4 py-3">
-                  {m.sms_consent && <Badge>text</Badge>}{" "}
+                  {m.sms_consent && <Badge>text confirmed</Badge>}{m.sms_requested && !m.sms_consent && <Badge>text awaiting YES</Badge>}{" "}
                   {m.email_consent && <Badge>email</Badge>}
+                </td>
+                <td className="px-4 py-3">
+                  <Badge>{m.account_id ? "Account" : "VIP only"}</Badge>
+                  <p>{m.lifetime_orders} orders{m.last_order ? ` · Last ${new Date(m.last_order).toLocaleDateString()}` : ""}</p>
+                  {m.favorites && <p className="text-xs">Favorites: {m.favorites}</p>}
                 </td>
                 <td className="px-4 py-3 text-[var(--color-ink-mute)]">
                   {new Date(m.created_at).toLocaleDateString()}
@@ -308,7 +329,7 @@ function Members({ business }: { business: Business }) {
             ))}
             {!members.length && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-[var(--color-ink-mute)]">
+                <td colSpan={6} className="px-4 py-8 text-center text-[var(--color-ink-mute)]">
                   No members yet — signups from the website's VIP form land here.
                 </td>
               </tr>
@@ -426,6 +447,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
         </div>
         {emailOn && (
           <input
+            aria-label="Broadcast email subject"
             value={subject}
             disabled={!composing}
             onChange={(e) => setSubject(e.target.value)}
@@ -434,7 +456,8 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
           />
         )}
         <textarea
-          value={message}
+          aria-label="Broadcast message"
+            value={message}
           disabled={!composing}
           onChange={(e) => setMessage(e.target.value)}
           rows={4}
@@ -448,14 +471,16 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
         )}
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           <input
+            aria-label="Register-only promotional code"
             value={promoCode}
             disabled={!composing}
             onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-            placeholder="Promo code (optional) — e.g. GAMEDAY30"
+            placeholder="Register-only code (optional) — e.g. GAMEDAY30"
             maxLength={20}
             className="rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm disabled:opacity-60"
           />
           <input
+            aria-label="Promotional code offer"
             value={promoDescription}
             disabled={!composing}
             onChange={(e) => setPromoDescription(e.target.value)}
@@ -624,6 +649,7 @@ function Redeem({ business }: { business: Business }) {
         </p>
         <form onSubmit={check} className="mt-4 flex flex-col gap-2 sm:flex-row">
           <input
+            aria-label="Customer free-pie code"
             value={code}
             onChange={(e) => { setCode(e.target.value); setResult(null); setError(""); }}
             placeholder="PIE-XXXXXX"
@@ -695,4 +721,31 @@ function Redeem({ business }: { business: Business }) {
       )}
     </section>
   );
+}
+
+function Operations() {
+  const [busy,setBusy]=useState(false);
+  const [error,setError]=useState("");
+  const [tickets,setTickets]=useState<{guidance?:string;open?:Array<{orderId:string;customer?:string;ourStatus?:string;ticketTotal?:string;ledgerUnknown?:boolean}>}|null>(null);
+  const [menu,setMenu]=useState<Record<string,unknown>|null>(null);
+  async function check(kind:"tickets"|"menu") {
+    setBusy(true);setError("");
+    try {
+      const result=await api<Record<string,unknown>>(`/api/admin/${kind === "tickets" ? "open-tickets" : "menu-sync-status"}`);
+      if(kind==="tickets") setTickets(result); else setMenu(result);
+    } catch {setError("The check could not complete. Treat the status as unknown and try again.");}
+    finally {setBusy(false);}
+  }
+  return <section className="rounded-2xl bg-white p-5 space-y-3">
+    <h3 className="text-lg">Store operations</h3>
+    <div className="flex gap-3">
+      <button disabled={busy} onClick={()=>void check("tickets")} className="rounded-xl border px-4 py-2">Check open tickets</button>
+      <button disabled={busy} onClick={()=>void check("menu")} className="rounded-xl border px-4 py-2">Check menu sync</button>
+    </div>
+    {busy && <p role="status">Checking Clover…</p>}{error && <p role="alert">{error}</p>}
+    {tickets && <div><p>{tickets.guidance || "Website orders are prepaid. Verify payment records before taking any action."}</p>
+      {tickets.open?.length ? <ul>{tickets.open.map(t=><li key={t.orderId}>{t.orderId} · {t.customer || "Customer not linked"} · {t.ticketTotal} · {t.ledgerUnknown ? "Payment status unknown" : t.ourStatus || "Unverified draft"}</li>)}</ul> : <p>No open website tickets found in the checked window.</p>}
+    </div>}
+    {menu && <div><p>Menu check complete. Review the current snapshot and any proposed removals below.</p><details><summary>Menu sync results</summary><pre className="max-h-80 overflow-auto whitespace-pre-wrap text-xs">{JSON.stringify(menu,null,2)}</pre></details></div>}
+  </section>;
 }

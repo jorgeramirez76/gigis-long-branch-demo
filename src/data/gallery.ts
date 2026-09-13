@@ -1,6 +1,5 @@
 /**
- * Gallery images — owner-provided brand photos first, Unsplash placeholders
- * only for dish categories we don't yet have real photos for.
+ * Gallery images — owner-provided Long Branch brand photos only.
  */
 
 // Owner-provided brand photos — Vite hashes + optimises at build
@@ -44,14 +43,11 @@ export type GalleryImage = {
   aspect?: "portrait" | "landscape" | "square";
 };
 
-export const GALLERY_IS_PLACEHOLDER = false;
-
 export const HERO_IMAGE = {
   srcPortrait: sliceHeroPortrait,
   srcWide: sliceHeroWide,
   webpPortrait: `${sliceHeroPortraitW900} 900w, ${sliceHeroPortraitW480} 480w`,
   webpWide: `${sliceHeroWideW900} 900w, ${sliceHeroWideW480} 480w`,
-  srcFull: sliceFull,
   alt: "Hand lifting a generous New York style cheese slice from a whole pie at Gigi's Long Branch",
   credit: "Gigi's NY Style Pizza — Long Branch",
 };
@@ -63,7 +59,7 @@ export const BRAND_INSIDE = {
   webpWide: `${insideWideW900} 900w, ${insideWideW480} 480w`,
 };
 
-// Gallery tile order — real brand photos lead, Unsplash fills category gaps
+// Gallery tile order — only photographs of this location and its own food.
 export const GALLERY: GalleryImage[] = [
   {
     src: sliceTile,
@@ -95,41 +91,6 @@ export const GALLERY: GalleryImage[] = [
     alt: "Gigi's dining room with string lights, tables and the red accent wall",
     caption: "Dine In",
     credit: "Gigi's NY Style Pizza — Long Branch",
-    aspect: "portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=800&q=70&auto=format&fit=crop",
-    alt: "New York style pepperoni pizza on a wood board — thin crust, crispy pepperoni, bubbled cheese",
-    caption: "NY Pepperoni",
-    credit: "Unsplash (placeholder)",
-    aspect: "portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1608039755401-742074f0548d?w=800&q=70&auto=format&fit=crop",
-    alt: "Bowl of classic buffalo wings tossed in hot sauce with blue cheese dip on the side",
-    caption: "Buffalo Wings",
-    credit: "Unsplash (placeholder)",
-    aspect: "portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1531749668029-2db88e4276c7?w=800&q=70&auto=format&fit=crop",
-    alt: "Breaded mozzarella sticks golden-fried",
-    caption: "Mozzarella Sticks",
-    credit: "Unsplash (placeholder)",
-    aspect: "portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&q=70&auto=format&fit=crop",
-    alt: "Italian hero sandwich with fresh ingredients",
-    caption: "Fresh Heroes",
-    credit: "Unsplash (placeholder)",
-    aspect: "portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800&q=70&auto=format&fit=crop",
-    alt: "Classic Italian pasta dinner with red sauce",
-    caption: "Pasta Dinners",
-    credit: "Unsplash (placeholder)",
     aspect: "portrait",
   },
 ];

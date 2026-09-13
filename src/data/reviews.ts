@@ -17,7 +17,6 @@ export type ReviewTheme = {
   sourceNote?: string;
 };
 
-export const REVIEW_THEMES_VERIFIED = true;
 
 /** Honest headline signal — a real, defensible descriptor, not an award claim. */
 export const ACCOLADE = {

@@ -31,9 +31,12 @@ export async function issueWelcomePie(business: VipBusiness, memberId: number) {
       const r = await sql`
         INSERT INTO vip_promo_codes (business, code, description, member_id, expires_at)
         VALUES (${business}, ${code}, ${description}, ${memberId}, now() + interval '90 days')
+        ON CONFLICT (business,member_id) WHERE member_id IS NOT NULL DO NOTHING
         RETURNING id
       `;
-      return { id: r.rows[0].id as number, code, description };
+      if (r.rowCount) return { id: r.rows[0].id as number, code, description };
+      const prior = await sql`SELECT id,code,description FROM vip_promo_codes WHERE business=${business} AND member_id=${memberId} LIMIT 1`;
+      if (prior.rows[0]) return {id:Number(prior.rows[0].id),code:String(prior.rows[0].code),description:String(prior.rows[0].description)};
     } catch (err) {
       // Astronomically rare code collision (UNIQUE(code)) — retry with a new one.
       if (attempt === 5) throw err;
@@ -144,6 +147,7 @@ export async function claimPromoCode(id: number, idempotencyKey: string): Promis
     SET reservation_key = ${idempotencyKey}, reserved_at = COALESCE(reserved_at, now())
     WHERE id = ${id}
       AND redeemed_at IS NULL
+      AND (expires_at IS NULL OR expires_at > now())
       AND (reservation_key IS NULL OR reservation_key = ${idempotencyKey})
     RETURNING id
   `;

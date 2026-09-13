@@ -186,7 +186,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await runPool(emailAudience, async (m) => {
       const result = await sendEmail(m.email!, subject.trim(), message.trim(), {
         promoCode: code ?? undefined,
-        promoDescription: codeDesc || undefined,
+        promoDescription: codeDesc ? `${codeDesc} — redeem at the register only; not valid in online checkout.` : undefined,
       });
       if (result.sent) counts.emailSent++;
       else counts.emailFailed++;

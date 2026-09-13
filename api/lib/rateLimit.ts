@@ -97,8 +97,9 @@ export async function claimWindow(bucket: string, windowSec: number): Promise<bo
     `;
     return r.rowCount === 1;
   } catch (e) {
-    console.error("[rateLimit] claimWindow fail-open due to error", e);
-    return true;
+    console.error("[rateLimit] claimWindow storage error", e);
+    if (bucket.startsWith("staff-page:")) return true;
+    return false;
   }
 }
 

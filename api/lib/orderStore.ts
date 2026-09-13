@@ -41,10 +41,13 @@ async function ensure() {
   // 2026-09-06: menu prices became cash prices and the 4% moved to its own line, so the row
   // keeps it — subtotal + tax + tip no longer reconciles to total without it.
   await sql`ALTER TABLE web_orders ADD COLUMN IF NOT EXISTS card_pricing INTEGER`;
+  await sql`ALTER TABLE web_orders ADD COLUMN IF NOT EXISTS fee_cents INTEGER,
+    ADD COLUMN IF NOT EXISTS discount_cents INTEGER, ADD COLUMN IF NOT EXISTS town TEXT,
+    ADD COLUMN IF NOT EXISTS promo_code TEXT, ADD COLUMN IF NOT EXISTS member_id BIGINT`;
   ensured = true;
 }
 
-export type OrderStatus = "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "paid_print_queued" | "paid_print_failed" | "capture_uncertain" | "failed";
+export type OrderStatus = "refire_pending" | "pending" | "charged" | "placed" | "paid" | "paid_unrouted" | "paid_print_queued" | "paid_print_failed" | "capture_uncertain" | "routing_uncertain" | "failed";
 
 export type OrderRecord = {
   idempotencyKey: string;
@@ -58,6 +61,8 @@ export type OrderRecord = {
   tip: number;
   total: number;
   paymentMethod: string;
+  accountId?: number;
+  fee?: number; discount?: number; town?: string; promoCode?: string; memberId?: number;
   note?: string;
 };
 
@@ -85,10 +90,10 @@ export async function reserveOrder(o: OrderRecord): Promise<Reservation> {
     const ins = await sql`
       INSERT INTO web_orders
         (idempotency_key, fulfillment, customer_name, customer_phone, customer_email, address,
-         items, subtotal, card_pricing, tax, tip, total, payment_method, status, note)
+         items, subtotal, card_pricing, tax, tip, total, payment_method, status, note, fee_cents, discount_cents, town, promo_code, member_id, account_id, customer_email_lower)
       VALUES
-        (${o.idempotencyKey}, ${o.fulfillment}, ${o.customer.name}, ${o.customer.phone}, ${o.customer.email ?? null}, ${o.customer.address ?? null},
-         ${JSON.stringify(o.items)}, ${o.subtotal}, ${o.cardPricing ?? 0}, ${o.tax}, ${o.tip}, ${o.total}, ${o.paymentMethod}, 'pending', ${o.note ?? null})
+        (${o.idempotencyKey}, ${o.fulfillment}, ${o.customer.name}, ${o.customer.phone}, ${o.customer.email?.trim().toLowerCase() ?? null}, ${o.customer.address ?? null},
+         ${JSON.stringify(o.items)}, ${o.subtotal}, ${o.cardPricing ?? 0}, ${o.tax}, ${o.tip}, ${o.total}, ${o.paymentMethod}, 'pending', ${o.note ?? null}, ${o.fee ?? 0}, ${o.discount ?? 0}, ${o.town ?? null}, ${o.promoCode ?? null}, ${o.memberId ?? null}, ${o.accountId ?? null}, ${o.customer.email?.trim().toLowerCase() ?? null})
       ON CONFLICT (idempotency_key) DO NOTHING
       RETURNING id
     `;
@@ -166,10 +171,10 @@ export async function releaseOrder(id: number, opts?: { draftDiscarded?: boolean
 export async function updateOrder(
   id: number,
   patch: { status?: OrderStatus; chargeId?: string; cloverOrderId?: string; note?: string },
-): Promise<void> {
+): Promise<boolean> {
   try {
     await ensure();
-    await sql`
+    const result = await sql`
       UPDATE web_orders SET
         status = COALESCE(${patch.status ?? null}, status),
         charge_id = COALESCE(${patch.chargeId ?? null}, charge_id),
@@ -178,8 +183,10 @@ export async function updateOrder(
         updated_at = now()
       WHERE id = ${id}
     `;
+    return result.rowCount > 0;
   } catch (e) {
     console.error("[orderStore] updateOrder failed", id, e);
+    return false;
   }
 }
 
@@ -270,7 +277,7 @@ export async function listWorklistCandidates(days = 90): Promise<{ cloverOrderId
       FROM web_orders
       WHERE clover_order_id IS NOT NULL AND clover_order_id != ''
         AND created_at > now() - make_interval(days => ${days})
-        AND status IN ('placed', 'charged', 'paid', 'paid_unrouted', 'paid_print_queued', 'capture_uncertain')
+        AND status IN ('placed', 'charged', 'paid', 'paid_unrouted', 'paid_print_queued', 'capture_uncertain', 'refire_pending')
     `;
     return r.rows.map((row) => ({ cloverOrderId: String(row.clover_order_id) }));
   } catch (e) {
@@ -301,5 +308,138 @@ export async function listQueuedPrints(minAgeSec: number, limit = 20): Promise<A
   } catch (e) {
     console.error("[orderStore] listQueuedPrints failed", e);
     return [];
+  }
+}
+
+export async function listUnresolvedStrands(business = "gigis_long_branch"): Promise<
+  { id: number; status: OrderStatus; chargeId: string | null; cloverOrderId: string | null; customerName: string; total: number }[]
+> {
+  try {
+    await ensure();
+    const r = await sql`
+      SELECT id, status, charge_id, clover_order_id, customer_name, total
+      FROM web_orders
+      WHERE business = ${business}
+        AND status IN ('paid_unrouted', 'charged', 'capture_uncertain', 'refire_pending')
+        AND updated_at < now() - interval '35 minutes'
+        AND created_at > now() - interval '24 hours'
+      ORDER BY created_at ASC LIMIT 25
+    `;
+    return r.rows.map((row: Record<string, unknown>) => ({
+      id: row.id as number,
+      status: row.status as OrderStatus,
+      chargeId: (row.charge_id as string) ?? null,
+      cloverOrderId: (row.clover_order_id as string) ?? null,
+      customerName: (row.customer_name as string) ?? "",
+      total: Number(row.total ?? 0),
+    }));
+  } catch (err) {
+    console.error("[orderStore] listUnresolvedStrands failed", err);
+    return [];
+  }
+}
+
+export const settleQueuedPrint = claimQueuedPrint;
+
+export async function getOrderForRefire(id: number): Promise<{
+  id: number;
+  status: OrderStatus;
+  chargeId: string | null;
+  cloverOrderId: string | null;
+  fulfillment: "pickup" | "delivery";
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string | null;
+  address: string | null;
+  items: unknown;
+  subtotal: number;
+  /** The "Card pricing (4%)" line, cents. 0 on rows written before 2026-09-06. */
+  cardPricing: number;
+  tax: number;
+  tip: number;
+  total: number;
+  note: string | null;
+  business: string;
+  fee: number | null; discount: number; town: string | null; promoCode: string | null;
+} | null> {
+  try {
+    await ensure();
+    const r = await sql`
+      SELECT id, status, charge_id, clover_order_id, fulfillment, customer_name, customer_phone,
+             customer_email, address, items, subtotal, card_pricing, tax, tip, total, note, business, fee_cents, discount_cents, town, promo_code
+      FROM web_orders WHERE id = ${id}
+    `;
+    const row = r.rows[0];
+    if (!row) return null;
+    return {
+      id: row.id as number,
+      status: row.status as OrderStatus,
+      chargeId: (row.charge_id as string) ?? null,
+      cloverOrderId: (row.clover_order_id as string) ?? null,
+      fulfillment: row.fulfillment as "pickup" | "delivery",
+      customerName: (row.customer_name as string) ?? "",
+      customerPhone: (row.customer_phone as string) ?? "",
+      customerEmail: (row.customer_email as string) ?? null,
+      address: (row.address as string) ?? null,
+      items: typeof row.items === "string" ? JSON.parse(row.items as string) : row.items,
+      subtotal: Number(row.subtotal ?? 0),
+      cardPricing: Number(row.card_pricing ?? 0),
+      tax: Number(row.tax ?? 0),
+      tip: Number(row.tip ?? 0),
+      total: Number(row.total ?? 0),
+      note: (row.note as string) ?? null,
+      business: (row.business as string) ?? "",
+      fee: row.fee_cents == null ? null : Number(row.fee_cents), discount: Number(row.discount_cents ?? 0),
+      town: row.town as string | null, promoCode: row.promo_code as string | null,
+    };
+  } catch (e) {
+    console.error("[orderStore] getOrderForRefire failed", id, e);
+    return null;
+  }
+}
+
+
+export async function listStrandedOrders(business: string): Promise<
+  { id: number; status: OrderStatus; chargeId: string | null; total: number; customerName: string; createdAt: string }[]
+> {
+  try {
+    await ensure();
+    const r = await sql`
+      SELECT id, status, charge_id, total, customer_name, created_at
+      FROM web_orders
+      WHERE business = ${business}
+        AND status IN ('paid_unrouted', 'charged', 'refire_pending')
+        AND charge_id IS NOT NULL
+        AND clover_order_id IS NULL
+      ORDER BY created_at DESC LIMIT 50
+    `;
+    return r.rows.map((row: Record<string, unknown>) => ({
+      id: row.id as number,
+      status: row.status as OrderStatus,
+      chargeId: (row.charge_id as string) ?? null,
+      total: Number(row.total ?? 0),
+      customerName: (row.customer_name as string) ?? "",
+      createdAt: String(row.created_at),
+    }));
+  } catch (e) {
+    console.error("[orderStore] listStrandedOrders failed", e);
+    return [];
+  }
+}
+
+
+/** Durable single-use claim: expiration of a rate-limit bucket cannot authorize a second ticket.
+ * Any interruption after this claim requires staff reconciliation before another recovery. */
+export async function claimRefireOrder(id: number, business: string): Promise<boolean> {
+  try {
+    await ensure();
+    const result = await sql`UPDATE web_orders SET status = 'refire_pending', updated_at = now()
+      WHERE id = ${id} AND business = ${business}
+        AND status IN ('paid_unrouted', 'charged')
+        AND charge_id IS NOT NULL AND clover_order_id IS NULL RETURNING id`;
+    return result.rowCount === 1;
+  } catch (error) {
+    console.error('[orderStore] refire claim unavailable', error);
+    return false;
   }
 }

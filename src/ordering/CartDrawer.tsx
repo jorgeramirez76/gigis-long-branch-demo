@@ -7,6 +7,7 @@ import { goToMenu } from "../lib/goToMenu";
 
 export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
   const cart = useCart();
+  const { closeCart } = cart;
   // Display split only — cart.subtotal/tax/total (the charged figures) are untouched.
   // The checkout's uncertainty freeze must also hold the CART still: an edit here changes the
   // idempotency signature, and a repay under the fresh key sails past the server's replay
@@ -34,7 +35,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
 
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        cart.closeCart();
+        closeCart();
         return;
       }
       if (event.key !== "Tab") return;
@@ -63,7 +64,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
       }
       restoreTo?.focus?.();
     };
-  }, [cart.isOpen]);
+  }, [cart.isOpen, closeCart]);
 
   return (
     <>
@@ -130,7 +131,7 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                 // Closing alone left the customer exactly where they were, with the menu
                 // still thousands of pixels away — the button promised the menu and
                 // delivered nothing. Take them there.
-                cart.closeCart();
+                closeCart();
                 goToMenu();
               }}
               className="mt-2 rounded-full border-2 border-[var(--color-line)] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[var(--color-copy)] transition hover:border-[var(--color-brand-red)]"

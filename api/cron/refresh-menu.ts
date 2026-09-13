@@ -1,10 +1,14 @@
+import { badPull, snapshotCategories } from "../lib/menuLive.js";
+import { MENU_GENERATED } from "../../src/data/menuGenerated.js";
+import { timingSafeEqual } from "node:crypto";
+import { isVercelCron, menuRefreshWindow } from "../lib/menuSchedule.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
 import { fetchLiveInventory, pruneMenu, REMOVAL_GUARD_SHARE } from "../lib/menuSync.js";
-import { alertStaff } from "../lib/notify.js";
+import { alertStaff, alertStaffOnce } from "../lib/notify.js";
 import { sweepQueuedPrints } from "../lib/printSweep.js";
 import { HALF_TOPPING_CHARGE_CENTS, TOPPING_CHARGE_CENTS } from "../../src/data/menuToppings.js";
-import { menuPriceCents } from "../lib/cardPricing.mjs";
+import { menuPriceCents, MENU_PRICING_VERSION } from "../lib/cardPricing.mjs";
 
 /**
  * Nightly menu refresh (Vercel Cron — see vercel.json).
@@ -34,10 +38,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(503).json({ error: "cron_not_configured" });
     return;
   }
-  if (req.headers.authorization !== `Bearer ${secret}`) {
+  const got = Buffer.from(String(req.headers.authorization || ""));
+  const want = Buffer.from(`Bearer ${secret}`);
+  if (got.length !== want.length || !timingSafeEqual(got,want)) {
     res.status(401).json({ error: "unauthorized" });
     return;
   }
+  if (isVercelCron(req.headers["user-agent"]) && !menuRefreshWindow(new Date()).shouldRun) return void res.status(200).json({ok:true,skipped:"outside_4am_eastern"});
   try {
     // Backstop for any ticket still sitting in Clover's print queue overnight.
     const swept = await sweepQueuedPrints();
@@ -46,11 +53,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const inv = await fetchLiveInventory();
     const { categories, total, removed, priceDrift } = pruneMenu(inv);
 
-    if (total > 0 && removed.length > total * REMOVAL_GUARD_SHARE) {
-      // A real menu never loses a quarter of itself overnight — treat this as a
-      // bad pull and keep the previous snapshot.
-      await alertStaff(`MENU REFRESH BLOCKED — tonight's Clover pull would remove ${removed.length} of ${total} website items, which looks like a bad pull. The site is serving yesterday's menu until someone checks.`);
-      res.status(422).json({ error: "too_many_removals", removed: removed.length, total });
+    const previous = await snapshotCategories() ?? MENU_GENERATED;
+    const reason = badPull(categories, previous)
+      ?? (process.env.MENU_SYNC_ALLOW_SHRINK !== "1" && total > 0 && removed.length > total * REMOVAL_GUARD_SHARE
+        ? `${removed.length} of ${total} committed website items would be removed` : null);
+    if (reason) {
+      await alertStaffOnce("menu-refresh-blocked", `MENU REFRESH BLOCKED — ${reason}. Keeping the last good menu.`, 3600);
+      res.status(422).json({ error: "bad_menu_pull", reason, removed: removed.length, total });
       return;
     }
 
@@ -65,7 +74,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `;
     await sql`
       INSERT INTO menu_snapshot (business, data, item_count, updated_at)
-      VALUES ('gigis_long_branch', ${JSON.stringify({ categories })}::jsonb, ${kept}, now())
+      VALUES ('gigis_long_branch', ${JSON.stringify({ categories, pricing: MENU_PRICING_VERSION })}::jsonb, ${kept}, now())
       ON CONFLICT (business) DO UPDATE
         SET data = EXCLUDED.data, item_count = EXCLUDED.item_count, updated_at = now()
     `;

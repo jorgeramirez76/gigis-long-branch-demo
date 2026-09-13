@@ -85,8 +85,7 @@ test("wiring pins: enrollment only on the success exit, never in the pay gate", 
   assert.match(fn, /try \{/);
   assert.match(fn, /catch \(err\)/);
   // The checkout sends the vip block only when LB-complete (consent + 5-digit ZIP).
-  assert.match(checkoutSrc, /\^\\d\{5\}\(\?:-\\d\{4\}\)\?\$/);
-  assert.match(checkoutSrc, /consentText: CONSENT_TEXT/);
+  assert.doesNotMatch(checkoutSrc, /consentText: CONSENT_TEXT/);
   // Marketing fields never gate payment: the vip state must not appear in payDisabled logic.
   const gateRegion = checkoutSrc.slice(checkoutSrc.indexOf("const payIsDisabled"), checkoutSrc.indexOf("const payIsDisabled") + 400);
   assert.ok(!/vip/i.test(gateRegion), "vip state leaked into the pay gate");

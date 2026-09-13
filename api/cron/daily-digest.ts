@@ -1,3 +1,4 @@
+import { isVercelCron, menuRefreshWindow } from "../lib/menuSchedule.js";
 import { timingSafeEqual } from "node:crypto";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
@@ -15,7 +16,7 @@ import { sendEmail } from "../lib/notify.js";
  * SOFT but VISIBLE, because "no news" must mean checked-and-clean, never the-checker-broke.
  */
 
-const DIGEST_TO = process.env.DIGEST_EMAIL || "jorgeramirez76@gmail.com";
+const DIGEST_TO = process.env.DIGEST_EMAIL || "";
 const SHOP = "Gigi's Long Branch";
 
 function cronAuthorized(header: unknown, secret: string): boolean {
@@ -50,6 +51,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(401).json({ error: "unauthorized" });
     return;
   }
+
+  if (isVercelCron(req.headers["user-agent"]) && !menuRefreshWindow(new Date(),7).shouldRun) {
+    return void res.status(200).json({ok:true,skipped:"outside_7am_eastern"});
+  }
+  if (!DIGEST_TO || !(process.env.DIGEST_FROM || process.env.EMAIL_FROM)) return void res.status(503).json({ error: "digest_not_configured" });
 
   const sections: Section[] = [];
 
@@ -86,7 +92,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         try {
           const sum = await getOrderSummary(c.cloverOrderId);
           if (String(sum.state ?? "").toLowerCase() === "open" && typeof sum.title === "string" && /^WEBSITE(\s+ORDER)?\s+[•·]/i.test(sum.title)) {
-            orders.push({ id: sum.id, title: sum.title, state: sum.state, total: sum.total, note: sum.note, paymentCount: sum.paymentCount, createdTime: sum.createdTime });
+            orders.push({ id: sum.id, title: sum.title, state: sum.state, total: sum.total, note: sum.note, paymentCount: sum.paymentCount, lineItemCount: sum.lineItemCount, paymentState: sum.paymentState, createdTime: sum.createdTime });
           }
         } catch {
           /* deleted ticket — not open */
@@ -107,7 +113,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
       const lines: string[] = [];
       if (paid.length) lines.push(`PAID ONLINE, do NOT ring up — void when settled: ${paid.join("; ")}`);
-      if (owed.length) lines.push(`OWED money — collect normally: ${owed.join("; ")}`);
+      if (owed.length) lines.push(`UNVERIFIED draft — check payment records; do NOT collect again: ${owed.join("; ")}`);
       if (unknown.length) lines.push(`Ledger unreachable for: ${unknown.join("; ")} — treat as unknown.`);
       if (!lines.length) lines.push("None — the open list is clean.");
       return { lines, attention: paid.length + owed.length + unknown.length > 0 };

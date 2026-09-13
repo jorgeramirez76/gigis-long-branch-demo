@@ -678,11 +678,11 @@ entirely** — one call reaches Bing (and therefore Copilot and DuckDuckGo), Yan
 Bing knew only a fraction of the site, so there was real headroom.
 
 Generated a 32-char key, hosted it at `/a55f036be37024cafee7d006ca74b454.txt`, and wrote
-`scripts/indexnow-submit.py` (reads the sitemap, has a `--dry-run`, explains the 403/202 cases).
+`scripts/indexnow-submit.mjs` (reads the sitemap, has a `--dry-run`, explains the 403/202 cases).
 First submission returned **202** (key pending validation); after confirming the key file served
 `200` with `content-type: text/plain`, the resubmission returned **200 for all 12 URLs**.
 
-To re-notify after any content change: `python3 scripts/indexnow-submit.py`.
+To re-notify after any content change: `python3 scripts/indexnow-submit.mjs`.
 **Google does not participate in IndexNow** — this does nothing for Google, and I am not going to
 imply otherwise. Google still needs Request Indexing in the Search Console UI.
 

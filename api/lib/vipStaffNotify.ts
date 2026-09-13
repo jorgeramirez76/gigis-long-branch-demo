@@ -22,7 +22,7 @@ export async function notifyStaffNewMember(
   code: string,
 ): Promise<void> {
   try {
-    const channels = [p.smsConsent ? "texts" : null, p.emailConsent ? "email" : null]
+    const channels = [p.smsConsent ? "texts requested (awaiting YES reply)" : null, p.emailConsent ? "email" : null]
       .filter(Boolean)
       .join(" + ") || "neither";
 

@@ -1,3 +1,4 @@
+import type { OptionGroup } from "../data/menuTypes.js";
 /**
  * The single price lookup, shared by the browser and the order API.
  *
@@ -26,6 +27,7 @@ export function parsePrice(display?: string | null): number {
 }
 
 export type CatalogItem = {
+  optionGroups: OptionGroup[];
   basePrice: number;
   /** "group\0name" → delta cents (authoritative) */
   optByGroupName: Map<string, number>;
@@ -66,7 +68,7 @@ function build() {
           if (isToppingsGroup(g.group) && delta === TOPPING_CHARGE_CENTS) hasPlaceableToppings = true;
         }
       }
-      const entry: CatalogItem = { basePrice: parsePrice(it.price), optByGroupName, optByName, groupByName, hasPlaceableToppings };
+      const entry: CatalogItem = { optionGroups: it.options ?? [], basePrice: parsePrice(it.price), optByGroupName, optByName, groupByName, hasPlaceableToppings };
       byCatItem.set(cat.id + SEP + it.name, entry);
       byItemName.set(it.name, byItemName.has(it.name) ? null : entry);
     }

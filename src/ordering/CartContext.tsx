@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { savedAttemptUncertain } from "./Checkout";
+import { useCallback, createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { capLineOptions, findCatalogItem, optionDelta, placementEligible } from "../lib/menuPricing";
 import { isToppingPlacement } from "../data/menuToppings";
 import { cardPricingCents } from "../../api/lib/cardPricing.mjs";
@@ -145,7 +146,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const reorder = !savedAttemptUncertain() ? sessionStorage.getItem("gigis_rewards_reorder") : null;
+      let raw = localStorage.getItem(STORAGE_KEY);
+      if (reorder) {
+        const incoming = JSON.parse(reorder);
+        if (Array.isArray(incoming)) raw = JSON.stringify(incoming.map((line, i) => ({...line,lineId:`reorder-${Date.now()}-${i}`})));
+        sessionStorage.removeItem("gigis_rewards_reorder");
+        setIsOpen(true);
+      }
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) {
@@ -174,6 +182,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [lines]);
 
+  const closeCart = useCallback(() => setIsOpen(false), []);
   const value = useMemo<CartState>(() => {
     const subtotal = lines.reduce((s, l) => s + lineTotal(l), 0);
     // Mirrors computeTotals() on the server: menu prices are cash prices, the 4% is one line,
@@ -226,9 +235,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       isOpen,
       droppedOnLoad: dropped,
       openCart: () => setIsOpen(true),
-      closeCart: () => setIsOpen(false),
+      closeCart,
     };
-  }, [lines, isOpen, dropped]);
+  }, [closeCart, lines, isOpen, dropped]);
 
   return <CartCtx.Provider value={value}>{children}</CartCtx.Provider>;
 }

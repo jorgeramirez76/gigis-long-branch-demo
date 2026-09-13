@@ -8,7 +8,6 @@ import { verifyTurnstile } from "./lib/turnstile.js";
 import {
   ALREADY_MEMBER_MESSAGE,
   CANONICAL_CONSENT_TEXT,
-  memberExists,
   parkPendingSignupAndSendLink,
   type ValidatedSignup,
 } from "./lib/vipSignupShared.js";
@@ -150,14 +149,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   };
 
   try {
-    // Existing members get the friendly answer NOW — no verification email is sent
-    // for an address that can't produce a new membership anyway. (Advisory check;
-    // the INSERT's ON CONFLICT at verify time remains the authority.)
-    if (await memberExists(business, validated)) {
-      res.status(200).json({ ok: true, alreadyMember: true, message: ALREADY_MEMBER_MESSAGE });
-      return;
-    }
-
     // ---- email-verification gate ----
     // Nothing is created yet. Stops typo'd emails (a member who'd never get her code)
     // and throwaway addresses farming free pies. The whole park-and-email sequence

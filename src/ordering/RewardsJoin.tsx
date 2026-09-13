@@ -1,0 +1,3 @@
+export function RewardsJoin({name,phone,email,address,city=""}: {name:string;phone:string;email:string;address:string;city?:string}) {
+ return <div className="rounded-2xl border border-[var(--color-line)] p-5"><h3 className="text-xl">Make this your Gigi’s</h3><p className="my-3 text-sm">Save this order to your account, find your welcome pie code, and reorder your favorites.</p><a className="btn-primary" href="/account/?join=1" onClick={()=>{try{sessionStorage.setItem("gigis_rewards_profile",JSON.stringify({name,phone,email,address,city,state:"NJ"}));}catch{/* The form still works without storage. */}}}>Create account / Sign in</a></div>;
+}

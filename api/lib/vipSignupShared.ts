@@ -50,7 +50,7 @@ export async function memberExists(business: VipBusiness, p: ValidatedSignup): P
   const r = await sql`
     SELECT 1 FROM vip_members
     WHERE business = ${business}
-      AND (phone = ${p.phone} OR email = ${p.email}
+      AND (phone = ${p.phone} OR LOWER(email) = LOWER(${p.email})
         OR (addr_key IN (${p.addrKey}, ${p.legacyAddrKey ?? p.addrKey}) AND addr_key <> ''))
     LIMIT 1
   `;
@@ -73,7 +73,7 @@ export async function recoverMemberCode(
     SELECT c.code, c.description
     FROM vip_promo_codes c
     JOIN vip_members m ON m.id = c.member_id
-    WHERE m.business = ${business} AND m.email = ${email} AND c.redeemed_at IS NULL
+    WHERE m.business = ${business} AND LOWER(m.email) = LOWER(${email}) AND c.redeemed_at IS NULL
     ORDER BY c.created_at DESC
     LIMIT 1
   `;
@@ -97,7 +97,7 @@ export async function ensureMemberHasCode(
   const existing = await recoverMemberCode(business, email);
   if (existing) return { ...existing, minted: false };
 
-  const m = await sql`SELECT id FROM vip_members WHERE business = ${business} AND email = ${email} LIMIT 1`;
+  const m = await sql`SELECT id FROM vip_members WHERE business = ${business} AND LOWER(email) = LOWER(${email}) LIMIT 1`;
   const memberId = m.rows[0]?.id as number | undefined;
   if (memberId == null) return null; // matched on phone/address, not this email — nothing to mint against
 
@@ -147,11 +147,11 @@ export async function completeSignup(business: VipBusiness, p: ValidatedSignup):
   // claimed the welcome pie, so no row is inserted and no new pie is issued.
   const inserted = await sql`
     INSERT INTO vip_members (business, name, phone, email, address, apt, addr_key, sms_consent, sms_requested, email_consent, consent_text, source)
-    SELECT ${business}, ${p.name}, ${p.phone}, ${p.email}, ${p.fullAddress}, ${p.apt}, ${p.addrKey}, FALSE, ${p.smsConsent}, ${p.emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${p.source}
+    SELECT ${business}, ${p.name}, ${p.phone}, ${p.email.trim().toLowerCase()}, ${p.fullAddress}, ${p.apt}, ${p.addrKey}, FALSE, ${p.smsConsent}, ${p.emailConsent}, ${CANONICAL_CONSENT_TEXT}, ${p.source}
     WHERE NOT EXISTS (
       SELECT 1 FROM vip_members
       WHERE business = ${business}
-        AND (phone = ${p.phone} OR email = ${p.email}
+        AND (phone = ${p.phone} OR LOWER(email) = LOWER(${p.email})
           OR (addr_key IN (${p.addrKey}, ${p.legacyAddrKey ?? p.addrKey}) AND addr_key <> ''))
     )
     ON CONFLICT DO NOTHING
@@ -346,7 +346,7 @@ export async function memberCreatedSince(
 ): Promise<boolean> {
   const r = await sql`
     SELECT 1 FROM vip_members
-    WHERE business = ${business} AND email = ${email} AND created_at >= ${since}
+    WHERE business = ${business} AND LOWER(email) = LOWER(${email}) AND created_at >= ${since}
     LIMIT 1
   `;
   return r.rowCount > 0;
@@ -404,7 +404,7 @@ export async function sweepExpiredPending(business: VipBusiness): Promise<void> 
 
 /** Burn a pending row outright (used when a signup can't proceed). */
 export async function deletePendingSignup(business: VipBusiness, email: string): Promise<void> {
-  await sql`DELETE FROM vip_email_verifications WHERE business = ${business} AND email = ${email}`;
+  await sql`DELETE FROM vip_email_verifications WHERE business = ${business} AND LOWER(email) = LOWER(${email})`;
 }
 
 /** What became of an attempt to start (park) a signup — branched on by both the
@@ -435,7 +435,7 @@ export async function parkPendingSignupAndSendLink(
   business: VipBusiness,
   p: ValidatedSignup,
 ): Promise<ParkOutcome> {
-  if (await memberExists(business, p)) return { status: "already_member" };
+  // Always verify the inbox before revealing membership or household eligibility.
 
   await sweepExpiredPending(business); // keep abandoned PII rows from accumulating
 

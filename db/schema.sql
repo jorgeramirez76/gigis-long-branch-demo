@@ -12,8 +12,7 @@ CREATE TABLE IF NOT EXISTS vip_members (
   consent_text  TEXT NOT NULL,        -- exact disclosure text shown at signup, stored for compliance record-keeping
   source        TEXT NOT NULL DEFAULT 'website',
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
-  CONSTRAINT at_least_one_contact CHECK (phone IS NOT NULL OR email IS NOT NULL),
-  CONSTRAINT at_least_one_consent CHECK (sms_consent OR email_consent)
+  CONSTRAINT at_least_one_contact CHECK (phone IS NOT NULL OR email IS NOT NULL)
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS vip_members_business_phone_uq
@@ -133,6 +132,20 @@ CREATE TABLE IF NOT EXISTS vip_email_verifications (
   expires_at  TIMESTAMPTZ NOT NULL,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+-- Migration guards: CREATE TABLE IF NOT EXISTS is a NO-OP on a database that already has an older
+-- shape of this table, so it would silently leave the columns below missing (the typed-code era
+-- called secret_hash "code_hash" and had none of poll_id / verified_at / issued_code). Applying
+-- these explicitly is what makes this file safe to run against an existing database.
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = current_schema() AND table_name = 'vip_email_verifications' AND column_name = 'code_hash')
+    AND NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = current_schema() AND table_name = 'vip_email_verifications' AND column_name = 'secret_hash') THEN
+    ALTER TABLE vip_email_verifications RENAME COLUMN code_hash TO secret_hash;
+  END IF;
+END $$;
+ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS poll_id     TEXT;
+ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ;
+ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS issued_code TEXT;
+
 CREATE UNIQUE INDEX IF NOT EXISTS vip_email_verifications_uq
   ON vip_email_verifications (business, email);
 CREATE UNIQUE INDEX IF NOT EXISTS vip_email_verifications_secret_uq
@@ -140,15 +153,114 @@ CREATE UNIQUE INDEX IF NOT EXISTS vip_email_verifications_secret_uq
 CREATE UNIQUE INDEX IF NOT EXISTS vip_email_verifications_poll_uq
   ON vip_email_verifications (poll_id) WHERE poll_id IS NOT NULL;
 
--- Migration guards: CREATE TABLE IF NOT EXISTS is a NO-OP on a database that already has an older
--- shape of this table, so it would silently leave the columns below missing (the typed-code era
--- called secret_hash "code_hash" and had none of poll_id / verified_at / issued_code). Applying
--- these explicitly is what makes this file safe to run against an existing database.
-ALTER TABLE vip_email_verifications RENAME COLUMN code_hash TO secret_hash;
-ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS poll_id     TEXT;
-ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ;
-ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS issued_code TEXT;
--- NOTE the RENAME above has no IF EXISTS in Postgres: on an already-migrated database it errors
--- with "column code_hash does not exist", which is harmless when this file is applied statement by
--- statement (the intended way) but will abort a single-transaction run. Skip that one line if you
--- are re-applying to a database that is already on the link-token shape.
+ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS sms_requested BOOLEAN NOT NULL DEFAULT FALSE;
+
+-- Numbered migration baseline: keep fresh installs and upgrades equivalent.
+
+-- 001_identity.sql
+-- Refuses to silently merge two households; inspect duplicate email rows before retrying.
+ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS sms_requested BOOLEAN NOT NULL DEFAULT FALSE;
+CREATE UNIQUE INDEX IF NOT EXISTS vip_members_business_email_lower_uq
+ ON vip_members (business, LOWER(email)) WHERE email IS NOT NULL;
+UPDATE vip_members SET email = LOWER(TRIM(email)) WHERE email IS NOT NULL;
+CREATE TABLE IF NOT EXISTS rate_counters (
+ bucket TEXT NOT NULL, window_start BIGINT NOT NULL, n INTEGER NOT NULL DEFAULT 0,
+ PRIMARY KEY (bucket, window_start)
+);
+
+-- 002_order_ledger.sql
+CREATE TABLE IF NOT EXISTS web_orders (
+    id BIGSERIAL PRIMARY KEY,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    idempotency_key TEXT UNIQUE,
+    business TEXT NOT NULL DEFAULT 'gigis_long_branch',
+    fulfillment TEXT,
+    customer_name TEXT,
+    customer_phone TEXT,
+    customer_email TEXT,
+    address TEXT,
+    items JSONB,
+    subtotal INTEGER,
+    tax INTEGER,
+    tip INTEGER,
+    total INTEGER,
+    payment_method TEXT,
+    charge_id TEXT,
+    clover_order_id TEXT,
+    status TEXT NOT NULL,
+    note TEXT
+  );
+ALTER TABLE web_orders ADD COLUMN IF NOT EXISTS card_pricing INTEGER;
+ALTER TABLE web_orders ADD COLUMN IF NOT EXISTS fee_cents INTEGER,
+ ADD COLUMN IF NOT EXISTS discount_cents INTEGER, ADD COLUMN IF NOT EXISTS town TEXT,
+ ADD COLUMN IF NOT EXISTS promo_code TEXT, ADD COLUMN IF NOT EXISTS member_id BIGINT;
+
+-- 003_accounts.sql
+CREATE TABLE IF NOT EXISTS accounts (
+ id BIGSERIAL PRIMARY KEY, business TEXT NOT NULL, email TEXT NOT NULL, phone TEXT,
+ password_hash TEXT NOT NULL, name TEXT NOT NULL, email_verified_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+ member_id BIGINT REFERENCES vip_members(id), created_at TIMESTAMPTZ NOT NULL DEFAULT now(), last_login_at TIMESTAMPTZ,
+ deleted_at TIMESTAMPTZ, UNIQUE (business,email)
+);
+CREATE TABLE IF NOT EXISTS account_sessions (
+ id TEXT PRIMARY KEY, account_id BIGINT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+ created_at TIMESTAMPTZ NOT NULL DEFAULT now(), expires_at TIMESTAMPTZ NOT NULL
+);
+CREATE INDEX IF NOT EXISTS account_sessions_expiry ON account_sessions(expires_at);
+CREATE TABLE IF NOT EXISTS account_tokens (
+ token_hash TEXT PRIMARY KEY, business TEXT NOT NULL, email TEXT NOT NULL,
+ purpose TEXT NOT NULL CHECK (purpose IN ('signup','reset','claim')), payload JSONB NOT NULL,
+ expires_at TIMESTAMPTZ NOT NULL, used_at TIMESTAMPTZ, created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS saved_addresses (
+ id BIGSERIAL PRIMARY KEY, account_id BIGINT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+ street TEXT, apt TEXT, city TEXT, state TEXT, zip TEXT, is_default BOOLEAN NOT NULL DEFAULT true
+);
+ALTER TABLE web_orders ADD COLUMN IF NOT EXISTS account_id BIGINT REFERENCES accounts(id);
+ALTER TABLE web_orders ADD COLUMN IF NOT EXISTS customer_email_lower TEXT;
+CREATE INDEX IF NOT EXISTS web_orders_account ON web_orders(account_id,created_at DESC);
+CREATE TABLE IF NOT EXISTS order_lines (
+ id BIGSERIAL PRIMARY KEY, order_id BIGINT NOT NULL REFERENCES web_orders(id),
+ account_id BIGINT REFERENCES accounts(id), line_index INTEGER NOT NULL,
+ clover_item_id TEXT, item_name TEXT NOT NULL, category_id TEXT, qty INTEGER NOT NULL,
+ unit_cents INTEGER NOT NULL, modifiers JSONB NOT NULL DEFAULT '[]',
+ created_at TIMESTAMPTZ NOT NULL DEFAULT now(), UNIQUE(order_id,line_index)
+);
+CREATE INDEX IF NOT EXISTS order_lines_account_item ON order_lines(account_id,clover_item_id);
+CREATE TABLE IF NOT EXISTS upsell_impressions (
+ id BIGSERIAL PRIMARY KEY, account_id BIGINT NOT NULL REFERENCES accounts(id),
+ item TEXT NOT NULL, shown_at TIMESTAMPTZ NOT NULL DEFAULT now(), added BOOLEAN NOT NULL DEFAULT false
+);
+-- Capture priced line history in the same transaction that records the payment outcome.
+CREATE OR REPLACE FUNCTION capture_reward_order_lines() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+ NEW.customer_email_lower := LOWER(NEW.customer_email);
+ IF NEW.status IN ('charged','paid','paid_unrouted','refire_pending','paid_print_queued','paid_print_failed') AND jsonb_typeof(NEW.items)='array' THEN
+  INSERT INTO order_lines(order_id,account_id,line_index,clover_item_id,item_name,category_id,qty,unit_cents,modifiers,created_at)
+  SELECT NEW.id,NEW.account_id,(ordinality-1)::int,item->>'cloverItemId',item->>'itemName',item->>'categoryId',
+   (item->>'quantity')::int,(item->>'basePrice')::int + COALESCE((SELECT SUM((opt->>'delta')::int) FROM jsonb_array_elements(COALESCE(item->'options','[]')) opt),0),
+   COALESCE(item->'options','[]'),NEW.created_at
+  FROM jsonb_array_elements(NEW.items) WITH ORDINALITY AS lines(item,ordinality)
+  ON CONFLICT(order_id,line_index) DO UPDATE SET account_id=EXCLUDED.account_id;
+ END IF;
+ RETURN NEW;
+END $$;
+CREATE OR REPLACE TRIGGER reward_order_history AFTER INSERT OR UPDATE OF status,account_id ON web_orders
+ FOR EACH ROW EXECUTE FUNCTION capture_reward_order_lines();
+ALTER TABLE vip_promo_codes ADD COLUMN IF NOT EXISTS reservation_key TEXT;
+ALTER TABLE vip_promo_codes ADD COLUMN IF NOT EXISTS reserved_at TIMESTAMPTZ;
+
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS credential_version INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE account_sessions ADD COLUMN IF NOT EXISTS credential_version INTEGER NOT NULL DEFAULT 0;
+
+-- 004_enrollment_recovery.sql
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS enrollment_payload JSONB;
+CREATE UNIQUE INDEX IF NOT EXISTS saved_addresses_default_uq ON saved_addresses(account_id) WHERE is_default;
+
+-- 005_single_welcome.sql
+CREATE UNIQUE INDEX IF NOT EXISTS vip_promo_member_once_uq ON vip_promo_codes(business,member_id) WHERE member_id IS NOT NULL;
+
+-- 006_optional_marketing.sql
+-- Consent can be withdrawn on both channels without deleting membership.
+ALTER TABLE vip_members DROP CONSTRAINT IF EXISTS at_least_one_consent;

@@ -168,6 +168,8 @@ def main() -> int:
             shown = price_display(i)
             if shown:
                 parts.append(f"price: {ts_str(shown)}")
+            if i.get("description"):
+                parts.append(f"description: {ts_str(i['description'])}")
             if i["displayName"].strip().lower() in POPULAR:
                 parts.append("popular: true")
             opts = i.get("options") or []

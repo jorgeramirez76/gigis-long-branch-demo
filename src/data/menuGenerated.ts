@@ -331,7 +331,7 @@ export const MENU_GENERATED: MenuCategory[] = [
     id: "hot-dogs",
     name: "Hot Dogs",
     items: [
-      { name: "Plain Hot Dog", price: "$6.00" },
+      { name: "Plain Hot Dog", price: "$5.00", description: "Served with fries." },
       { name: "Cheese Hot Dog", price: "$8.99" },
       { name: "Sonny's Double Italian Hot Dog", price: "$10.00" },
       { name: "Chili Dog", price: "$10.99" },

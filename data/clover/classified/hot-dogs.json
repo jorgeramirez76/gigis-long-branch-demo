@@ -2,14 +2,15 @@
   "category": "Hot Dogs",
   "displayName": "Hot Dogs",
   "verdict": "include",
-  "reason": "Real Gigi's hot dog menu — four priced items, data clean.",
+  "reason": "Real Gigi's hot dog menu \u2014 four priced items, data clean.",
   "items": [
     {
       "name": "Plain Hot Dog",
       "displayName": "Plain Hot Dog",
       "include": true,
-      "priceCents": 624,
-      "priceDisplay": "$6.24"
+      "priceCents": 520,
+      "priceDisplay": "$5.20",
+      "description": "Served with fries."
     },
     {
       "name": "Cheese Hot Dog",

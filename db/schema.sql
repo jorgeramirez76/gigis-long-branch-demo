@@ -305,3 +305,23 @@ CREATE TABLE IF NOT EXISTS campaign_redemptions (
   redeemed_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE UNIQUE INDEX IF NOT EXISTS campaign_redemptions_key_uq ON campaign_redemptions (campaign_id, idempotency_key);
+
+-- === Scheduled broadcasts (2026-09-19) ===
+-- A blast queued for a later moment. api/cron/send-scheduled.ts (every 5 min) claims due rows
+-- one at a time and sends each through api/lib/broadcastRun.ts — the same core as the admin
+-- dashboard's button, so every guard and audit row applies. request_id is the send core's
+-- dedupe key; started_at/finished_at/result record what happened.
+CREATE TABLE IF NOT EXISTS scheduled_broadcasts (
+  id          BIGSERIAL PRIMARY KEY,
+  business    TEXT NOT NULL,
+  subject     TEXT,
+  message     TEXT NOT NULL,
+  want_sms    BOOLEAN NOT NULL DEFAULT FALSE,
+  want_email  BOOLEAN NOT NULL DEFAULT FALSE,
+  send_at     TIMESTAMPTZ NOT NULL,
+  request_id  UUID NOT NULL UNIQUE,
+  started_at  TIMESTAMPTZ,
+  finished_at TIMESTAMPTZ,
+  result      JSONB,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);

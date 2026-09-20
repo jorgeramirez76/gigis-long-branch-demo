@@ -12,11 +12,18 @@
     {
       "path": "/api/cron/daily-digest",
       "schedule": "5 11,12 * * *"
+    },
+    {
+      "path": "/api/cron/send-scheduled",
+      "schedule": "*/5 * * * *"
     }
   ],
   "functions": {
     "api/order/create.ts": {
       "maxDuration": 60
+    },
+    "api/cron/send-scheduled.ts": {
+      "maxDuration": 300
     },
     "api/admin/broadcast.ts": {
       "maxDuration": 300

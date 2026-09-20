@@ -789,7 +789,7 @@ export function buildOrderNote(opts: {
     opts.orderNote ? `⚠ NOTE: ${opts.orderNote}` : "",
     `${opts.customer.name} ${opts.customer.phone}${addr}`,
     items,
-    `Sub ${money(opts.totals.subtotal)}${opts.totals.discount ? ` FreePie -${money(opts.totals.discount)}` : ""}${opts.totals.deliveryFee ? ` Dlv ${money(opts.totals.deliveryFee)}` : ""} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
+    `Sub ${money(opts.totals.subtotal)}${opts.totals.discount ? ` Promo -${money(opts.totals.discount)}` : ""}${opts.totals.deliveryFee ? ` Dlv ${money(opts.totals.deliveryFee)}` : ""} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
   ].filter(Boolean);
   return parts.join(" | ");
 }

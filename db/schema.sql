@@ -274,3 +274,34 @@ ALTER TABLE broadcasts ADD COLUMN IF NOT EXISTS delivery_started_at TIMESTAMPTZ;
 ALTER TABLE broadcasts ADD COLUMN IF NOT EXISTS completed_at TIMESTAMPTZ;
 CREATE UNIQUE INDEX IF NOT EXISTS broadcasts_request_id_uidx ON broadcasts(request_id);
 CREATE UNIQUE INDEX IF NOT EXISTS broadcasts_active_content_uidx ON broadcasts(content_key) WHERE completed_at IS NULL;
+
+-- === Campaign promo codes (2026-09-19) ===
+-- Staff-run offers advertised by a blast (GAMEDAY: buy one pizza, get one free). Unlike the
+-- per-member PIE-XXXXXX welcome pie in vip_promo_codes, ONE row serves every customer and is
+-- never burned; each use appends to campaign_redemptions. api/lib/campaignPromo.ts also
+-- creates these lazily, so a fresh database never 500s for want of them.
+CREATE TABLE IF NOT EXISTS campaign_promos (
+  id          BIGSERIAL PRIMARY KEY,
+  business    TEXT NOT NULL,
+  code        TEXT NOT NULL,                 -- staff-chosen word, A-Z 0-9 hyphen, never PIE*
+  kind        TEXT NOT NULL,                 -- 'bogo_pizza'
+  description TEXT NOT NULL,
+  pickup_only BOOLEAN NOT NULL DEFAULT TRUE,
+  active      BOOLEAN NOT NULL DEFAULT TRUE, -- flip false to end an offer early
+  starts_at   TIMESTAMPTZ,                   -- null = already open
+  expires_at  TIMESTAMPTZ,                   -- null = never closes
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS campaign_promos_business_code_uq ON campaign_promos (business, code);
+
+CREATE TABLE IF NOT EXISTS campaign_redemptions (
+  id              BIGSERIAL PRIMARY KEY,
+  campaign_id     BIGINT NOT NULL REFERENCES campaign_promos(id),
+  idempotency_key TEXT NOT NULL,             -- the order attempt; makes recording idempotent
+  order_ref       TEXT,
+  customer_phone  TEXT,
+  discount_cents  INT NOT NULL DEFAULT 0,
+  free_count      INT NOT NULL DEFAULT 0,
+  redeemed_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS campaign_redemptions_key_uq ON campaign_redemptions (campaign_id, idempotency_key);

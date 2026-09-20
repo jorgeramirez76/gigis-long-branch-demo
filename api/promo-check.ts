@@ -1,6 +1,7 @@
 import { clientIp } from "./lib/requestIp.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { checkPromoCode, normalizePromoCode, FREE_PIE_ITEM } from "./lib/promo.js";
+import { FREE_PIE_ITEM } from "./lib/promo.js";
+import { resolvePromo } from "./lib/campaignPromo.js";
 import { priceLines } from "./lib/menuCatalog.js";
 import { rateLimitAll } from "./lib/rateLimit.js";
 
@@ -43,21 +44,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const body = (req.body ?? {}) as Record<string, unknown>;
-  const code = normalizePromoCode(body.code);
-  if (!code) {
-    res.status(200).json({ valid: false, message: "That code doesn't look right — check it and try again." });
-    return;
-  }
 
   try {
-    const check = await checkPromoCode("gigis_long_branch", code);
+    const check = await resolvePromo("gigis_long_branch", body.code);
     if (!check.ok) {
       res.status(200).json({ valid: false, message: check.message });
+      return;
+    }
+    if (check.kind === "bogo_pizza") {
+      // No discountCents here: a buy-one-get-one is worth whatever the cheaper pizza in the
+      // cart costs, so the amount is computed from the cart on both sides (src/lib/bogoPromo.ts)
+      // rather than pinned to a catalog item the way the welcome pie is.
+      res.status(200).json({
+        valid: true,
+        code: check.code,
+        kind: check.kind,
+        description: check.description,
+        pickupOnly: check.pickupOnly,
+        message: "Code applied — buy one pizza, get one free on this pickup order.",
+      });
       return;
     }
     res.status(200).json({
       valid: true,
       code: check.code,
+      kind: "welcome",
       description: check.description,
       freeItem: FREE_PIE_ITEM,
       discountCents: freeItemPriceCents(),

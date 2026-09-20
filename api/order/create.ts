@@ -25,7 +25,8 @@ import { liveItemNames } from "../lib/menuLive.js";
 import { isOrderingOpen, isDeliveryOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, releaseOrder, reserveOrder, settleQueuedPrint, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
-import { applyFreePie, checkPromoCode, claimPromoCode, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
+import { applyFreePie, claimPromoCode, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
+import { applyBogoPizza, normalizeCampaignCode, recordCampaignRedemption, resolvePromo } from "../lib/campaignPromo.js";
 import { alertStaffOnce, alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
@@ -298,7 +299,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Promo format + pickup-only are cheap stateless checks, so they run with the other shape
   // validations — before any DB work or the bot check. The code's actual validity (exists,
   // unredeemed, unexpired) is checked after pricing, where the cart is known.
-  const promoCode = promoCodeRaw ? normalizePromoCode(promoCodeRaw) : null;
+  // Either family is accepted here: a campaign word (GAMEDAY) or a welcome PIE- code. This is
+  // only a shape check — which family it actually belongs to is settled against the database
+  // below, by the same resolver the checkout preview uses.
+  const promoCode = promoCodeRaw ? (normalizeCampaignCode(promoCodeRaw) ?? normalizePromoCode(promoCodeRaw)) : null;
   if (promoCodeRaw && !promoCode) {
     res.status(400).json({ error: "promo_invalid", message: "That code doesn't look right — check it and try again." });
     return;
@@ -306,7 +310,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (promoCode && fulfillment !== "pickup") {
     res.status(400).json({
       error: "promo_pickup_only",
-      message: "The free welcome pie is for pickup orders only — switch to pickup to use your code.",
+      message: "Promo codes are good on pickup orders only — switch to pickup to use your code.",
     });
     return;
   }
@@ -426,25 +430,44 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // The client only ever sends the code. `kitchenLines` is what Clover, the ticket and the receipt
   // see — identical to `lines` except one Plain Pie unit is zero-priced (see applyFreePie).
   let promo: { id: number; code: string } | null = null;
+  // A campaign offer (GAMEDAY) is multi-use, so it is never reserved or burned like the
+  // one-per-member welcome pie — each order simply appends a row to campaign_redemptions.
+  let campaign: { id: number; code: string; freeCount: number } | null = null;
   let discount = 0;
   let kitchenLines: CartLineInput[] = lines;
+  let appliedCode: string | null = null;
   if (promoCode) {
-    const check = await checkPromoCode("gigis_long_branch", promoCode);
+    const check = await resolvePromo("gigis_long_branch", promoCodeRaw);
     if (!check.ok) {
       res.status(400).json({ error: "promo_invalid", message: check.message });
       return;
     }
-    const applied = applyFreePie(lines, check.code);
-    if (!applied) {
-      res.status(400).json({
-        error: "promo_needs_pie",
-        message: "Your code is for a free Plain Pie — add a Plain Pie to your order to use it.",
-      });
-      return;
+    appliedCode = check.code;
+    if (check.kind === "bogo_pizza") {
+      const applied = applyBogoPizza(lines, check.code);
+      if (!applied) {
+        res.status(400).json({
+          error: "promo_needs_two_pizzas",
+          message: "Buy one pizza, get one free — add a second pizza to your order to use this code.",
+        });
+        return;
+      }
+      campaign = { id: check.id, code: check.code, freeCount: applied.freeCount };
+      discount = applied.discountCents;
+      kitchenLines = applied.lines;
+    } else {
+      const applied = applyFreePie(lines, check.code);
+      if (!applied) {
+        res.status(400).json({
+          error: "promo_needs_pie",
+          message: "Your code is for a free Plain Pie — add a Plain Pie to your order to use it.",
+        });
+        return;
+      }
+      promo = { id: check.id, code: check.code };
+      discount = applied.discountCents;
+      kitchenLines = applied.lines;
     }
-    promo = { id: check.id, code: check.code };
-    discount = applied.discountCents;
-    kitchenLines = applied.lines;
   }
   const totals = computeTotals(lines, tipCents, fee, discount);
   // The browser may have been left open across a menu-price deployment. Never charge the
@@ -473,6 +496,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Finalizes the reservation after the order lands with confirmed payment. The
   // atomic claim below already prevents a second order from receiving the same discount.
   const redeemPromo = async (orderRef: string) => {
+    // Multi-use offers are counted, not consumed: recording never throws and never blocks
+    // the next customer, so it is safe on every one of the paths that reach here.
+    if (campaign) {
+      await recordCampaignRedemption(campaign.id, idempotencyKey, {
+        orderRef, phone: cust.phone, discountCents: discount, freeCount: campaign.freeCount,
+      });
+    }
     if (!promo) return;
     try {
       const first = await redeemPromoCode(promo.id, idempotencyKey);
@@ -530,7 +560,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     fulfillment,
     customer: cust,
     items: kitchenLines,
-    fee: totals.deliveryFee, discount: totals.discount, town: cust.town, promoCode: promoCode ?? undefined,
+    fee: totals.deliveryFee, discount: totals.discount, town: cust.town, promoCode: appliedCode ?? undefined,
     subtotal: totals.subtotal,
     cardPricing: totals.cardPricing,
     tax: totals.tax,

@@ -19,8 +19,12 @@ import { getOpenStatus, isOrderingOpen, isDeliveryOpen, deliveryClosedReason, ty
 import { countUnits, readyMessage } from "../lib/readyTime";
 import { DELIVERY_TOWNS, DELIVERY_FEES, deliveryFeeCents, formatFee, type DeliveryTown } from "../lib/deliveryZones";
 import { RewardsJoin } from "./RewardsJoin";
+import { planBogoPizza } from "../lib/bogoPromo";
 
 type Fulfillment = "pickup" | "delivery";
+/** "welcome" is the per-member free Plain Pie; "bogo_pizza" is a campaign word like GAMEDAY
+ *  whose value is the cheaper pizza in the cart (src/lib/bogoPromo.ts, shared with the server). */
+type PromoKind = "welcome" | "bogo_pizza";
 const TIP_PCTS = [0, 10, 15, 20];
 /** Keep in sync with FREE_PIE_ITEM in api/lib/promo.ts (that file pulls in the
  *  server DB client, so it can't be imported into the browser bundle). */
@@ -73,7 +77,7 @@ type SavedForm = {
   tipPct?: number;
   tipTouched?: boolean;
   orderNote?: string;
-  promo?: { code: string; discountCents: number } | null;
+  promo?: { code: string; discountCents: number; kind?: PromoKind } | null;
   /** The uncertainty freeze must survive the reload it exists for: an aborted attempt whose
    *  capture may have landed freezes the priced inputs, and reload is exactly how people
    *  retry — an unfrozen post-reload form lets them nudge the tip, mint a fresh key, and
@@ -144,9 +148,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   // so switching to delivery just pauses it rather than wiping it. Restored as-is on
   // reload — the server re-validates the code when the order is placed anyway.
   const [promoInput, setPromoInput] = useState("");
-  const [promo, setPromo] = useState<{ code: string; discountCents: number } | null>(
+  const [promo, setPromo] = useState<{ code: string; discountCents: number; kind: PromoKind } | null>(
     saved.promo && typeof saved.promo.code === "string" && typeof saved.promo.discountCents === "number"
-      ? saved.promo
+      ? { ...saved.promo, kind: saved.promo.kind === "bogo_pizza" ? "bogo_pizza" : "welcome" }
       : null,
   );
   const [promoMsg, setPromoMsg] = useState("");
@@ -197,7 +201,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       if (!pie || pie.redeemed_at || pie.reservation_key || (pie.expires_at && Date.parse(pie.expires_at) <= Date.now())) return;
       const result = await fetch("/api/promo-check", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:pie.code})});
       const checked = await result.json();
-      if (active && result.ok && checked.valid) setPromo(previous => previous || {code:checked.code,discountCents:Number(checked.discountCents)||0});
+      if (active && result.ok && checked.valid) setPromo(previous => previous || {code:checked.code,discountCents:Number(checked.discountCents)||0,kind:"welcome"});
     }).catch(() => {});
     return () => { active = false; };
   }, [attemptUncertain]);
@@ -218,8 +222,14 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   // The free pie discounts only a PICKUP order that actually contains a Plain Pie — mirrors the
   // server, which recomputes the discount from its own catalog and rejects anything else.
   const hasFreePie = cart.lines.some((l) => l.itemName === FREE_PIE_ITEM);
+  // A buy-one-get-one is worth the cheaper pizza of each pair actually in the cart — the SAME
+  // function the server runs, so expectedTotal matches to the cent (src/lib/bogoPromo.ts).
+  const bogo = planBogoPizza(cart.lines);
+  const promoQualifies = promo?.kind === "bogo_pizza" ? bogo.freeCount > 0 : hasFreePie;
   const promoDiscount =
-    promo && fulfillment === "pickup" && hasFreePie ? Math.min(promo.discountCents, cart.subtotal) : 0;
+    !promo || fulfillment !== "pickup" || !promoQualifies
+      ? 0
+      : Math.min(promo.kind === "bogo_pizza" ? bogo.discountCents : promo.discountCents, cart.subtotal);
   // Tax follows the server: NJ taxes a separately stated delivery charge on taxable goods, so it
   // is taxed with the food (cart.tax alone would under-collect on delivery orders); a promo'd
   // free item is NOT taxable, so tax is computed after the discount.
@@ -432,7 +442,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       });
       const data = await res.json();
       if (res.ok && data.valid && typeof data.code === "string") {
-        setPromo({ code: data.code, discountCents: Number(data.discountCents) || 0 });
+        setPromo({ code: data.code, discountCents: Number(data.discountCents) || 0, kind: data.kind === "bogo_pizza" ? "bogo_pizza" : "welcome" });
         setPromoInput("");
       } else {
         setPromo(null);
@@ -712,7 +722,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           )}
           <div className="rounded-2xl bg-[var(--color-panel)] p-4 text-sm shadow-[var(--shadow-sm)]">
             {confirmed.discount ? (
-              <div className="mb-1 flex justify-between"><span className="text-[var(--color-copy-soft)]">VIP free pie</span><span className="font-semibold">−{money(confirmed.discount)}</span></div>
+              <div className="mb-1 flex justify-between"><span className="text-[var(--color-copy-soft)]">Promo discount</span><span className="font-semibold">−{money(confirmed.discount)}</span></div>
             ) : null}
             <div className="flex justify-between"><span className="text-[var(--color-copy-soft)]">Total</span><span className="font-bold">{money(confirmed.total)}</span></div>
             {confirmed.orderId && <div className="mt-1 flex justify-between"><span className="text-[var(--color-copy-soft)]">Order #</span><span className="font-mono text-xs">{confirmed.orderId.slice(-8).toUpperCase()}</span></div>}
@@ -944,19 +954,20 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           />
         </div>
 
-        {/* VIP free-pie code */}
+        {/* Promo code: VIP welcome pie or a campaign word (GAMEDAY) */}
         <div>
-          <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">VIP free-pie code</p>
+          <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Promo code</p>
           {fulfillment === "delivery" ? (
             <p className="rounded-xl bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy-soft)]">
-              Free-pie codes are good on <strong>pickup orders only</strong> — switch to pickup to redeem yours.
+              Promo codes are good on <strong>pickup orders only</strong> — switch to pickup to redeem yours.
             </p>
           ) : promo ? (
             <div className="rounded-xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy)]">
               <div className="flex items-center justify-between gap-3">
                 <span>
-                  ✓ <strong className="font-mono">{promo.code}</strong> — free {FREE_PIE_ITEM}
-                  {hasFreePie && promoDiscount > 0 && <strong> (−{money(promoDiscount)})</strong>}
+                  ✓ <strong className="font-mono">{promo.code}</strong> —{" "}
+                  {promo.kind === "bogo_pizza" ? "buy one pizza, get one free" : `free ${FREE_PIE_ITEM}`}
+                  {promoQualifies && promoDiscount > 0 && <strong> (−{money(promoDiscount)})</strong>}
                 </span>
                 <button
                   type="button"
@@ -970,9 +981,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   Remove
                 </button>
               </div>
-              {!hasFreePie && (
+              {!promoQualifies && (
                 <p className="mt-1.5 text-xs text-[var(--color-action-text)]">
-                  Add a {FREE_PIE_ITEM} to your cart and it comes off the total here.
+                  {promo.kind === "bogo_pizza"
+                    ? `Add ${bogo.pizzaUnits === 1 ? "a second" : "two"} pizza${bogo.pizzaUnits === 1 ? "" : "s"} from the Pizza menu and the cheaper one comes off the total here.`
+                    : `Add a ${FREE_PIE_ITEM} to your cart and it comes off the total here.`}
                 </p>
               )}
             </div>
@@ -989,8 +1002,8 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                       void applyPromo();
                     }
                   }}
-                  placeholder="PIE-XXXXXX"
-                  aria-label="VIP free-pie code"
+                  placeholder="Promo code"
+                  aria-label="Promo code"
                   autoCapitalize="characters"
                   autoCorrect="off"
                   spellCheck={false}
@@ -1011,7 +1024,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 </p>
               )}
               <p className="mt-1.5 text-xs text-[var(--color-copy-muted)]">
-                Got a VIP welcome code? Redeem your free {FREE_PIE_ITEM} here — pickup orders only.
+                Got a promo code or a VIP welcome code? Redeem it here — pickup orders only.
               </p>
             </>
           )}
@@ -1034,7 +1047,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           </ul>
           <dl className="mt-3 space-y-1 border-t border-[var(--color-line)] pt-3 text-sm">
             <Row label="Subtotal" value={money(cart.subtotal)} />
-            {promoDiscount > 0 && promo && <Row label={`VIP free pie (${promo.code})`} value={`−${money(promoDiscount)}`} />}
+            {promoDiscount > 0 && promo && <Row label={promo.kind === "bogo_pizza" ? `Buy one, get one free (${promo.code})` : `VIP free pie (${promo.code})`} value={`−${money(promoDiscount)}`} />}
             <Row label={CARD_PRICING_LABEL} value={money(cardPricing)} />
             {fulfillment === "delivery" &&
               (town === "" ? (

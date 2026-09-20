@@ -31,8 +31,8 @@ export default function App() {
       <main className="overflow-x-clip pb-24 md:pb-0">
         <Hero />
         <FanFavorites />
-        <Menu />
         <VipClub />
+        <Menu />
         <About />
         <Reviews />
         <Gallery />

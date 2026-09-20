@@ -21,6 +21,8 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuSheetRef = useRef<HTMLDivElement>(null);
   // Keep the compact controls through tablet widths. On expansion, release the
   // drawer's scroll lock rather than hiding an open modal behind desktop navigation.
   useEffect(() => {
@@ -39,6 +41,51 @@ export function Nav() {
   useEffect(() => {
     const el = drawerRef.current;
     if (el) el.inert = !mobileOpen;
+  }, [mobileOpen]);
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const sheet = menuSheetRef.current;
+    const trigger = menuButtonRef.current;
+    if (!sheet) return;
+    const focusable = () => Array.from(sheet.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex="0"]',
+    )).filter(element => element.getClientRects().length > 0);
+    const focusFirst = () => (focusable()[0] ?? sheet).focus({ preventScroll: true });
+    focusFirst();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMobileOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const elements = focusable();
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (!first || !last) {
+        event.preventDefault();
+        sheet.focus();
+      } else if (event.shiftKey && (document.activeElement === first || document.activeElement === sheet)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    const onFocusIn = (event: FocusEvent) => {
+      if (event.target instanceof Node && !sheet.contains(event.target)) focusFirst();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("focusin", onFocusIn);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("focusin", onFocusIn);
+      // Do not steal focus if another dialog (such as the cart) has taken it.
+      if (sheet.contains(document.activeElement) || document.activeElement === document.body) {
+        if (trigger?.getClientRects().length) trigger.focus({ preventScroll: true });
+      }
+    };
   }, [mobileOpen]);
   const cart = useCart();
 
@@ -59,7 +106,7 @@ export function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-[var(--color-chrome)]/95 shadow-[0_4px_20px_rgba(0,0,0,0.06)] backdrop-blur-md"
           : "bg-white/95 border-b border-[var(--color-line)]"
@@ -101,16 +148,19 @@ export function Nav() {
 
         {/* Mobile: cart + hamburger */}
         <div className="flex shrink-0 items-center gap-2 xl:hidden">
-          <CartButton label="" className="!px-3" />
-          <a href={`tel:${LOCATION.phoneTel}`} className="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-red)] p-3 text-white shadow-[var(--shadow-red)]" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}>
+          <CartButton label="" className="min-h-11 min-w-11 justify-center !px-3" />
+          <a href={`tel:${LOCATION.phoneTel}`} className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-[var(--color-brand-red)] p-3 text-white shadow-[var(--shadow-red)]" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}>
             <PhoneIcon className="h-4 w-4" />
           </a>
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
             aria-expanded={mobileOpen}
-            className={`inline-flex items-center justify-center rounded-full border p-3 transition ${
+            aria-controls="mobile-navigation"
+            aria-haspopup="dialog"
+            className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border p-3 transition ${
               scrolled
                 ? "border-[var(--color-line)] bg-[var(--color-panel)] text-[var(--color-copy)]"
                 : "border-[var(--color-line)] bg-white text-[var(--color-copy)]"
@@ -134,6 +184,12 @@ export function Nav() {
         />
         {/* sheet */}
         <div
+          ref={menuSheetRef}
+          id="mobile-navigation"
+          role="dialog"
+          aria-modal={mobileOpen ? true : undefined}
+          aria-label="Gigi's navigation menu"
+          tabIndex={-1}
           className={`absolute inset-x-0 top-0 max-h-dvh origin-top overflow-y-auto bg-[var(--color-chrome)] px-6 pb-8 pt-6 shadow-[var(--shadow-lg)] transition-transform duration-300 ease-out ${
             mobileOpen ? "translate-y-0" : "-translate-y-full"
           }`}
@@ -144,7 +200,7 @@ export function Nav() {
               type="button"
               onClick={() => setMobileOpen(false)}
               aria-label="Close menu"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)]"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)]"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M6 6l12 12M18 6L6 18" />

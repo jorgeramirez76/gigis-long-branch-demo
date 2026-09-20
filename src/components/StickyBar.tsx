@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DIRECTIONS_URL, LOCATION } from "../data/location";
 import { MenuIcon, PhoneIcon, PinIcon } from "./Icons";
 import { useCart } from "../ordering/CartContext";
@@ -6,11 +6,11 @@ import { goToMenu } from "../lib/goToMenu";
 
 /**
  * Sticky mobile bottom bar: Call / Order / Menu / Directions.
- * Visible only below md. Slides up on first scroll to avoid covering hero CTAs.
+ * Visible below md so ordering is available even on short phone screens.
  * Respects iOS safe-area-inset.
  */
 export function StickyBar() {
-  const [show, setShow] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
   // iOS floats fixed-bottom elements into the middle of the screen while the software
   // keyboard is up (the visual viewport shrinks but the layout viewport doesn't), which is
   // exactly where this bar landed when someone tapped the menu search field. Hide it while
@@ -19,9 +19,6 @@ export function StickyBar() {
   const cart = useCart();
 
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > 120);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
     const isField = (el: EventTarget | null) =>
       el instanceof HTMLElement && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable);
     const onFocusIn = (e: FocusEvent) => setTyping(isField(e.target));
@@ -29,14 +26,19 @@ export function StickyBar() {
     document.addEventListener("focusin", onFocusIn);
     document.addEventListener("focusout", onFocusOut);
     return () => {
-      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("focusin", onFocusIn);
       document.removeEventListener("focusout", onFocusOut);
     };
   }, []);
 
+  useEffect(() => {
+    if (barRef.current) barRef.current.inert = typing;
+  }, [typing]);
+
   return (
     <div
+      ref={barRef}
+      aria-hidden={typing}
       // Plain `transform`, NOT the translate-y-* utilities: Tailwind v4 implements those via
       // `translate: var(--tw-translate-x) var(--tw-translate-y)`, and with transition-transform
       // the transition gets STUCK — the custom property updates but the transitioned `translate`
@@ -45,13 +47,13 @@ export function StickyBar() {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-[var(--color-panel)] backdrop-blur transition-transform duration-300 md:hidden"
       style={{
         paddingBottom: "env(safe-area-inset-bottom)",
-        transform: show && !typing ? "translateY(0)" : "translateY(100%)",
+        transform: !typing ? "translateY(0)" : "translateY(100%)",
       }}
     >
       <div className="mx-auto grid max-w-md grid-cols-4">
         <a
           href={`tel:${LOCATION.phoneTel}`}
-          className="flex flex-col items-center gap-1 py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-action-text)] transition active:bg-[var(--color-brand-red)]/5"
+          className="flex flex-col items-center gap-1 py-3 text-xs font-bold uppercase tracking-wider text-[var(--color-action-text)] transition active:bg-[var(--color-brand-red)]/5"
           aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}
         >
           <PhoneIcon className="h-[22px] w-[22px]" />
@@ -62,7 +64,7 @@ export function StickyBar() {
           // The mobile bar is where most orders start, and this said "Order" while opening an
           // empty cart — the dead end Tommy hit. Nothing to review means: show them the food.
           onClick={cart.count > 0 ? cart.openCart : goToMenu}
-          className="relative flex flex-col items-center gap-1 border-l border-[var(--color-line)] py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-action-text)] transition active:bg-[var(--color-brand-red)]/5"
+          className="relative flex flex-col items-center gap-1 border-l border-[var(--color-brand-red)] bg-[var(--color-brand-red)] py-3 text-xs font-bold uppercase tracking-wider text-white transition active:bg-[var(--color-brand-red-dark)]"
           aria-label={cart.count > 0 ? `Open your order, ${cart.count} item${cart.count === 1 ? "" : "s"}` : "Browse the menu"}
         >
           <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -80,7 +82,7 @@ export function StickyBar() {
         </button>
         <a
           href="#menu"
-          className="flex flex-col items-center gap-1 border-l border-[var(--color-line)] py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-copy)] transition active:bg-black/5"
+          className="flex flex-col items-center gap-1 border-l border-[var(--color-line)] py-3 text-xs font-bold uppercase tracking-wider text-[var(--color-copy)] transition active:bg-black/5"
         >
           <MenuIcon className="h-[22px] w-[22px]" />
           Menu
@@ -89,7 +91,7 @@ export function StickyBar() {
           href={DIRECTIONS_URL}
           target="_blank"
           rel="noreferrer"
-          className="flex flex-col items-center gap-1 border-l border-[var(--color-line)] py-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-copy)] transition active:bg-black/5"
+          className="flex flex-col items-center gap-1 border-l border-[var(--color-line)] py-3 text-xs font-bold uppercase tracking-wider text-[var(--color-copy)] transition active:bg-black/5"
         >
           <PinIcon className="h-[22px] w-[22px]" />
           Directions

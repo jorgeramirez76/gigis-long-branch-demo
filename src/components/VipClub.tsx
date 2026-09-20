@@ -1,10 +1,24 @@
+import { FAVORITES } from "../data/gallery";
+import { ArrowIcon } from "./Icons";
+
 export function VipClub() {
- return <section id="vip-club" className="bg-[var(--color-chrome)] py-20 text-[var(--color-copy)]">
-  <div className="container-x max-w-3xl text-center"><p className="eyebrow">Gigi’s VIP Club</p>
-  <h2 className="mt-4 text-4xl md:text-6xl">Sign up. Get a free pizza pie.</h2>
-  <p className="mx-auto mt-5 max-w-xl text-lg">Join Gigi’s VIP Club and get a free plain cheese pizza pie just for signing up, plus exclusive discounts and amazing food deals.</p>
-  <p className="mx-auto mt-3 max-w-xl text-sm">New members: verify your email and activate your account to see your free-pie code. One welcome pie per eligible household. Pickup only. Choose email or text updates to hear about discounts and deals.</p>
-  <div className="mt-8 flex flex-wrap justify-center gap-4"><a className="btn-primary" href="/account/?join=1">Join VIP &amp; get my free pie</a><a className="btn-secondary" href="/account/">Sign in / My rewards</a></div>
-  <p className="mt-5 text-sm">Already a VIP? Use “Already a VIP?” to set a password and keep your existing code.</p></div>
- </section>;
+  const pizza = FAVORITES[0];
+  return <section id="vip-club" className="vip-feature" aria-labelledby="vip-heading">
+    <div className="container-x">
+      <div className="vip-feature-card">
+        <div className="vip-feature-photo">
+          <picture><source type="image/webp" srcSet={pizza.webp} sizes="(min-width: 900px) 35vw, 100vw" /><img src={pizza.src} alt="Gigi’s classic plain cheese pizza pie" loading="lazy" decoding="async" /></picture>
+          <span className="vip-photo-label">Your welcome pie is on us.</span>
+        </div>
+        <div className="vip-feature-copy">
+          <p className="vip-eyebrow">Gigi’s VIP Club · A tastier kind of membership</p>
+          <h2 id="vip-heading">Good pizza.<br /><span>Even better perks.</span></h2>
+          <p>Join the family and get a <strong>free plain cheese pizza pie</strong> when you sign up. Stay for the exclusive discounts and delicious deals.</p>
+          <a className="btn-gold" href="/account/?join=1">Get my free pizza pie<ArrowIcon className="h-5 w-5" /></a>
+          <p className="vip-terms">New members: verify your email and activate your account to get your code. One welcome pie per eligible household. Pickup only. Choose email or text updates for deals.</p>
+          <a className="vip-signin" href="/account/">Already a VIP? Sign in to your rewards →</a>
+        </div>
+      </div>
+    </div>
+  </section>;
 }

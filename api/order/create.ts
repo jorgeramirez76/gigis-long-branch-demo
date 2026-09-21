@@ -30,7 +30,7 @@ import { applyBogoPizza, normalizeCampaignCode, recordCampaignRedemption, resolv
 import { alertStaffOnce, alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
-import { isVipMember } from "../lib/vipLookup.js";
+import { lookupVipCustomer } from "../lib/vipLookup.js";
 import { parseVipJoinWith } from "../lib/vipCheckoutJoin.js";
 import { addressDedupeKey, legacyAddressDedupeKey } from "../lib/address.js";
 import { normalizePhone, US_PHONE_RE } from "../lib/phone.js";
@@ -635,6 +635,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
+  // ---- who is ordering: VIP marker + address on file for the kitchen header ----
+  // ONE round trip, read before the note is built and reused for the receipt's join
+  // pitch below (it used to be a second, post-fire isVipMember lookup). A signed-in
+  // rewards account counts as a VIP on its own.
+  const vipCustomer = await lookupVipCustomer(
+    "gigis_long_branch",
+    `+1${phoneIdentity(cust.phone)}`,
+    cust.email ?? null,
+    signedInAccount?.id ?? null,
+  );
+  const noteHeader = {
+    vipMember: vipCustomer.member,
+    // Either promo family earns the marker: the per-member welcome pie and the
+    // multi-use campaign code (GAMEDAY) are both "this ticket used a VIP offer".
+    vipPromo: appliedCode !== null,
+    addressOnFile: vipCustomer.address,
+  };
+
   const releasePromo = async () => {
     if (!promo) return;
     try {
@@ -662,7 +680,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         fulfillment,
         deliveryFee: 0,
         cardPricing: 0,
-        note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "free", orderNote }),
+        note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "free", orderNote, ...noteHeader }),
       });
       paidOrderId = draft.id;
       if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draft.id });
@@ -687,7 +705,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         fulfillment,
         deliveryFee: totals.deliveryFee,
         cardPricing: totals.cardPricing,
-        note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", orderNote }),
+        note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", orderNote, ...noteHeader }),
       });
       draftId = draft.id;
       // Persist the draft pointer before /pay. A function killed during payment must leave staff
@@ -782,7 +800,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Payment is attached to this exact itemized order. Fire that same order once,
   // then wait for Clover to confirm the kitchen print before marking it complete.
-  const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: freeOrder ? "free" : "card", chargeId, orderNote });
+  const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: freeOrder ? "free" : "card", chargeId, orderNote, ...noteHeader });
   try {
       await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, freeOrder ? "free" : true) });
       // Kitchen ticket: firing only makes the order visible in the POS — this is
@@ -819,7 +837,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // reads as a glitch. Deliberately NOT run on the paid-but-not-fired or
       // uncertain exits: no marketing on an order we cannot vouch for.
       const vipJoin = await startVipEnrollment(vipJoinReq);
-      const vipEligible = vipJoin ? false : !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
+      const vipEligible = vipJoin ? false : !vipCustomer.member;
       await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines: kitchenLines, totals, paymentMethod: freeOrder ? "free" : paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
       res.status(200).json({
         ok: true,

@@ -121,12 +121,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       phone: row.customerPhone,
       email: row.customerEmail ?? undefined,
       address: row.address ?? undefined,
+      town: row.town ?? undefined,
     },
     lines,
     totals,
     payment: "card",
     chargeId: row.chargeId,
     orderNote: `REFIRED by staff — original attempt never reached the POS`,
+    // The refire chit is a HEADER too (the stored lines are re-sent as line items and
+    // carry the item detail). We don't re-run the VIP lookup here — an admin recovery
+    // must not depend on another DB read — but the stored promo code is enough to keep
+    // the ★ VIP PROMO ★ marker the original ticket had.
+    vipPromo: row.promoCode != null,
   });
 
   // Persist before contacting Clover. A lost response or failed pointer write leaves

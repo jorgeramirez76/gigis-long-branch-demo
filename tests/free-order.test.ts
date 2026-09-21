@@ -49,5 +49,8 @@ test("the kitchen ticket says the order is free, never that it was paid by card 
   });
   assert.match(note, /FREE — VIP PROMO, NOTHING OWED/);
   assert.doesNotMatch(note, /PAID w\/ CC|NOT PAID/);
-  assert.match(note, /FREE — VIP welcome pie PIE-TEST01/, "the free line itself still prints");
+  // 2026-09-21: the note is a HEADER now (see tests/ticket-header.test.ts) — the
+  // "FREE — VIP welcome pie" marker rides the LINE ITEM, which is what prints below it.
+  assert.match(applied.lines[0].notes ?? "", /FREE — VIP welcome pie PIE-TEST01/, "the free line itself still says it");
+  assert.doesNotMatch(note, /welcome pie/, "the header must not repeat the line");
 });

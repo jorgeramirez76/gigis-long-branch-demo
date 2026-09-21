@@ -741,7 +741,13 @@ export async function payForOrder(opts: {
 function addressLine(street?: string | null, apt?: string | null, town?: string | null): string {
   const s = (street ?? "").trim();
   if (!s) return "";
-  return [s, (apt ?? "").trim(), (town ?? "").trim()].filter(Boolean).join(", ");
+  // Customers type a bare "2" or "3B" in the apt field, which prints as "55 Bradley Ave, 3B"
+  // and reads like part of the street on a chit. Label it unless they already did.
+  const rawApt = (apt ?? "").trim();
+  const unit = !rawApt || /^(apt|apartment|unit|ste|suite|#|fl|floor|rm|room)\b|^#/i.test(rawApt)
+    ? rawApt
+    : `Apt ${rawApt}`;
+  return [s, unit, (town ?? "").trim()].filter(Boolean).join(", ");
 }
 
 // Per-segment caps INSIDE the note, sized so the whole header (everything above the

@@ -140,7 +140,7 @@ describe('refired chit parity with the original', () => {
     await handler({ method: 'POST', headers: { 'x-admin-token': 'test-admin-token' }, body: { id: 12 } } as never, res as never);
     assert.equal(code, 502);
     assert.equal(notes.length, 1, 'the refire built exactly one Clover order note');
-    assert.ok(notes[0].includes('→ 12 Brighton Ave, Long Branch'),
+    assert.ok(notes[0].includes('Addr: 12 Brighton Ave, Long Branch'),
       `refired delivery chit lost the town: ${notes[0]}`);
     assert.ok(notes[0].includes('REFIRED by staff'), 'the refire is still labelled for staff');
   });

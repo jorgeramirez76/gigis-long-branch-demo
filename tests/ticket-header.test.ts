@@ -135,3 +135,27 @@ describe("kitchen ticket header (order note)", () => {
     assert.ok(note.slice(0, 490).includes("★ VIP PROMO ★"));
   });
 });
+
+it("a bare apartment number is labelled so it cannot read as part of the street", () => {
+  const note = buildOrderNote({
+    fulfillment: "pickup",
+    customer: { name: "Lus Ramirez", phone: "(347) 392-6363" },
+    lines: [{ itemName: "Plain Pie", quantity: 1, basePrice: 1700, options: [], notes: "" }],
+    totals: { subtotal: 1700, cardPricing: 0, tax: 113, tip: 0, deliveryFee: 0, discount: 0, total: 1813 },
+    payment: "card",
+    addressOnFile: { address: "55 Bradley Ave", apt: "3B", town: "Long Branch" },
+  } as Parameters<typeof buildOrderNote>[0]);
+  assert.match(note, /Addr: 55 Bradley Ave, Apt 3B, Long Branch/);
+});
+
+it("an apartment the customer already labelled is not double-labelled", () => {
+  const note = buildOrderNote({
+    fulfillment: "pickup",
+    customer: { name: "Lus Ramirez", phone: "(347) 392-6363" },
+    lines: [{ itemName: "Plain Pie", quantity: 1, basePrice: 1700, options: [], notes: "" }],
+    totals: { subtotal: 1700, cardPricing: 0, tax: 113, tip: 0, deliveryFee: 0, discount: 0, total: 1813 },
+    payment: "card",
+    addressOnFile: { address: "55 Bradley Ave", apt: "Unit 4", town: "Long Branch" },
+  } as Parameters<typeof buildOrderNote>[0]);
+  assert.match(note, /Addr: 55 Bradley Ave, Unit 4, Long Branch/);
+});

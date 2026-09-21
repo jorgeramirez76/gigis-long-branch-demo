@@ -25,7 +25,7 @@ import { liveItemNames } from "../lib/menuLive.js";
 import { isOrderingOpen, isDeliveryOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, releaseOrder, reserveOrder, settleQueuedPrint, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
-import { applyFreePie, claimPromoCode, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
+import { applyFreePie, claimPromoCode, isFreePickupOrder, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
 import { applyBogoPizza, normalizeCampaignCode, recordCampaignRedemption, resolvePromo } from "../lib/campaignPromo.js";
 import { alertStaffOnce, alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
@@ -72,15 +72,18 @@ async function sendOrderReceipt(o: {
   address?: string;
   lines: CartLineInput[];
   totals: Totals;
-  paymentMethod: "card" | "pickup" | "cash";
+  paymentMethod: "card" | "pickup" | "cash" | "free";
   orderId: string;
   /** Show the free-pie VIP invite (only for non-members). */
   vipPitch?: boolean;
 }): Promise<void> {
   if (!o.email) return;
   const money = (c: number) => `$${(c / 100).toFixed(2)}`;
-  // Card is the only payment method a website order can have (see the prepay gate in the handler).
-  const paymentLine = `Paid online — ${money(o.totals.total)} charged to your card.`;
+  // Card is the only payment method a website order can have (see the prepay gate in the handler),
+  // except an order a promo brought to $0.00, which has nothing to pay at all.
+  const paymentLine = o.paymentMethod === "free"
+    ? "Nothing to pay — this one's on us. Just come pick it up."
+    : `Paid online — ${money(o.totals.total)} charged to your card.`;
   try {
     const html = receiptHtml({
       customerName: o.name,
@@ -482,14 +485,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
     return;
   }
-  if (totals.total <= 0) {
-    // Reachable without an empty cart: a free-pie promo zero-prices the Plain Pie and tax is
-    // computed after the discount, so a cart holding only the free pie totals exactly $0.00.
-    // With no message the client rendered the raw key — the banner read "empty_order".
+  // A cart holding only the free pie totals exactly $0.00 once the discount and the after-discount
+  // tax are applied. That used to be refused ("add anything else, or just come in") — which is
+  // exactly what a member who wants nothing but their free pie was promised they would not have
+  // to do. It now skips the card step entirely and goes to the kitchen; see the free branch below.
+  const freeOrder = isFreePickupOrder(totals.total, promo !== null || campaign !== null, fulfillment);
+  if (totals.total <= 0 && !freeOrder) {
     res.status(400).json({
       error: "empty_order",
-      message:
-        "Your total comes to $0.00 — add anything else to the order, or just come in and pick up your free pie.",
+      message: "Your total comes to $0.00 — please add an item to your order.",
     });
     return;
   }
@@ -525,11 +529,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Reject request-shape failures before claiming either the order key or a one-time promo.
-  if (!cardToken || !cardToken.startsWith("clv_")) {
+  // A $0.00 promo order carries no card at all — there is nothing for one to do.
+  if (!freeOrder && (!cardToken || !cardToken.startsWith("clv_"))) {
     res.status(400).json({ error: "card_token_required" });
     return;
   }
-  if (totals.total < CARD_MIN_TOTAL) {
+  if (!freeOrder && totals.total < CARD_MIN_TOTAL) {
     res.status(400).json({ error: "order_too_small", message: "Card orders have a $1.00 minimum — please add an item." });
     return;
   }
@@ -566,7 +571,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     tax: totals.tax,
     tip: totals.tip,
     total: totals.total,
-    paymentMethod,
+    paymentMethod: freeOrder ? "free" : paymentMethod,
   });
   let reservedId: number | null = null;
   if (reservation.reserved === true) {
@@ -646,7 +651,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Clover records for one customer order and made kitchen reconciliation unsafe.
   let chargeId: string | undefined;
   let paidOrderId: string | undefined;
-  if (paymentMethod === "card") {
+  if (freeOrder) {
+    // ---- $0.00 pickup: the promo covers the whole order, so no card and no /pay ----
+    // The itemized order is still created in Clover exactly as a paid one is (zero-priced free
+    // line, note, title), then joins the SAME fire → print → redeem → receipt tail below. The
+    // kitchen, the audit row and the customer's receipt see no difference except the wording.
+    try {
+      const draft = await createDraftOrder({
+        lines: kitchenLines,
+        fulfillment,
+        deliveryFee: 0,
+        cardPricing: 0,
+        note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "free", orderNote }),
+      });
+      paidOrderId = draft.id;
+      if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draft.id });
+    } catch (err) {
+      // Nothing was charged and nothing was fired: hand the code and the key back so the
+      // customer can simply try again, or show the code at the counter.
+      console.error("[order/create] free order could not be created in Clover", err);
+      if (reservedId != null) await releaseOrder(reservedId);
+      await releasePromo();
+      res.status(502).json({
+        error: "pos_unavailable",
+        message: "We couldn't reach the register just now. Please try again in a moment — or show your code at the counter and we'll take care of you.",
+      });
+      return;
+    }
+  } else if (paymentMethod === "card") {
     const orderAmount = totals.total - totals.tip; // Clover computes items + tax; tip is paid on top.
     let draftId: string | undefined;
     try {
@@ -681,7 +713,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // No email passed: Clover would send its own bare payment receipt on top of our branded one.
       const charge = await payForOrder({
         orderId: draftId,
-        source: cardToken,
+        // The card_token_required gate above guarantees this for every non-free order, and only
+        // a non-free order reaches this branch.
+        source: cardToken as string,
         idempotencyKey,
         clientIp: ip,
         tipAmount: totals.tip || undefined,
@@ -731,8 +765,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  if (!paidOrderId || !chargeId) {
-    // Defensive invariant: every successful pay-for-order response sets both.
+  if (!paidOrderId || (!chargeId && !freeOrder)) {
+    // Defensive invariant: every successful pay-for-order response sets both (a free order has no charge).
     // Preserve the reservation because reaching here after a payment call is ambiguous.
     console.error("[order/create] paid order invariant failed");
     if (reservedId != null) await updateOrder(reservedId, { status: "capture_uncertain", cloverOrderId: paidOrderId });
@@ -748,9 +782,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Payment is attached to this exact itemized order. Fire that same order once,
   // then wait for Clover to confirm the kitchen print before marking it complete.
-  const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", chargeId, orderNote });
+  const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: freeOrder ? "free" : "card", chargeId, orderNote });
   try {
-      await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, true) });
+      await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, freeOrder ? "free" : true) });
       // Kitchen ticket: firing only makes the order visible in the POS — this is
       // what drives the printer. Awaited (not fire-and-forget) so it isn't killed
       // by the serverless function freezing after the response; never throws.
@@ -786,11 +820,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // uncertain exits: no marketing on an order we cannot vouch for.
       const vipJoin = await startVipEnrollment(vipJoinReq);
       const vipEligible = vipJoin ? false : !(await isVipMember("gigis_long_branch", `+1${phoneIdentity(cust.phone)}`, cust.email ?? null));
-      await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines: kitchenLines, totals, paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
+      await sendOrderReceipt({ email: cust.email, name: cust.name, phone: cust.phone, fulfillment, address: cust.address, lines: kitchenLines, totals, paymentMethod: freeOrder ? "free" : paymentMethod, orderId: paidOrderId, vipPitch: vipEligible });
       res.status(200).json({
         ok: true,
         orderId: paidOrderId,
         paid: true,
+        free: freeOrder || undefined,
         chargeId,
         totals,
         vipEligible,

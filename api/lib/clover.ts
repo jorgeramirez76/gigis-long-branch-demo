@@ -332,9 +332,9 @@ async function rest(path: string, init: RequestInit): Promise<any> {
  *   WEBSITE ORDER • FOR DELIVERY • PAID w/ CC
  * `paid` is omitted while the order is still a draft (payment not yet taken).
  */
-export function ticketTitle(fulfillment: Fulfillment, paid?: boolean): string {
+export function ticketTitle(fulfillment: Fulfillment, paid?: boolean | "free"): string {
   const kind = fulfillment === "delivery" ? "FOR DELIVERY" : "CUSTOMER PICKUP";
-  const pay = paid === undefined ? "" : paid ? " • PAID w/ CC" : " • NOT PAID";
+  const pay = paid === undefined ? "" : paid === "free" ? " • FREE (VIP)" : paid ? " • PAID w/ CC" : " • NOT PAID";
   return `WEBSITE ORDER • ${kind}${pay}`;
 }
 
@@ -748,7 +748,7 @@ export function buildOrderNote(opts: {
   customer: { name: string; phone: string; email?: string; address?: string; town?: string };
   lines: CartLineInput[];
   totals: Totals;
-  payment: "card" | "pickup" | "cash";
+  payment: "card" | "pickup" | "cash" | "free";
   chargeId?: string;
   orderNote?: string;
 }): string {
@@ -757,7 +757,9 @@ export function buildOrderNote(opts: {
   // Who collects, and how much — the driver (delivery) or the counter (pickup).
   const collector = opts.fulfillment === "delivery" ? "DRIVER COLLECTS" : "COLLECT AT COUNTER";
   const pay =
-    opts.payment === "card"
+    opts.payment === "free"
+      ? `** FREE — VIP PROMO, NOTHING OWED **`
+      : opts.payment === "card"
       ? `** PAID w/ CC ${money(opts.totals.total)} **${opts.chargeId ? ` (Clover ${opts.chargeId})` : ""}`
       : opts.payment === "cash"
         ? opts.fulfillment === "delivery"

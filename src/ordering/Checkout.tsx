@@ -239,6 +239,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const tax = Math.round((cart.subtotal - promoDiscount + cardPricing + deliveryFee) * TAX_RATE);
   const tip = Math.round((cart.subtotal - promoDiscount) * (tipPct / 100));
   const grandTotal = cart.subtotal - promoDiscount + cardPricing + deliveryFee + tax + tip;
+  // Nothing to pay: the promo covers the whole pickup order. No card is collected and none is
+  // sent — the server takes this exact case straight to the kitchen (api/order/create.ts).
+  const freeOrder = grandTotal === 0 && promoDiscount > 0 && fulfillment === "pickup";
   // Apple Pay's button is built asynchronously and priced by message, so it needs
   // the live total rather than whatever it was on the render that started the load.
   const grandTotalRef = useRef(grandTotal);
@@ -627,7 +630,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     let spent = false;
     try {
       let cardToken: string | undefined;
-      if (payment === "card") {
+      if (payment === "card" && !freeOrder) {
         if (!cardRef.current) throw new Error("Payment fields aren't ready yet — one moment.");
         cardToken = await cardRef.current.tokenize();
       }
@@ -767,8 +770,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     cartEmpty: cart.lines.length === 0,
     contactOk: !!contactOk,
     deliveryOk: !!deliveryOk,
-    cardReady,
-    cardInitFailed,
+    // A $0.00 order never touches the card fields, so their state cannot block it.
+    cardReady: cardReady || freeOrder,
+    cardInitFailed: cardInitFailed && !freeOrder,
     turnstileOn: TURNSTILE_ON,
     turnstileToken: !!turnstileToken,
     turnstileFailed,
@@ -885,8 +889,15 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             other payment method, so this is not merely a hidden option. */}
         <div>
           <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Payment</p>
+          {freeOrder && (
+            <div className="mt-1 rounded-2xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy)]">
+              <span className="font-bold">Nothing to pay — this one's on us.</span> Your code covers the whole order, so no card is needed. Just place it and come pick it up.
+            </div>
+          )}
+          {/* The card fields stay mounted (hidden) on a free order: Clover's form is a one-time
+              mount, and the customer may still add an item and turn this back into a card order. */}
           {CARD_ENABLED ? (
-            <div className="mt-1 space-y-2.5 rounded-2xl bg-[var(--color-panel)] p-4 shadow-[var(--shadow-sm)]">
+            <div className={`mt-1 space-y-2.5 rounded-2xl bg-[var(--color-panel)] p-4 shadow-[var(--shadow-sm)]${freeOrder ? " hidden" : ""}`}>
               {applePayOk && (
                 <div className="space-y-2">
                   {/* The button is a Clover-hosted iframe, so it can't be
@@ -1099,9 +1110,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               ? "Closed — ordering opens 10 AM"
               : submitting
                 ? "Placing order…"
-                : payment === "card"
-                  ? "Pay & place order"
-                  : "Place order"}
+                : freeOrder
+                  ? "Place free order"
+                  : payment === "card"
+                    ? "Pay & place order"
+                    : "Place order"}
           </span>
           <span>{money(grandTotal)}</span>
         </button>

@@ -90,6 +90,17 @@ export function applyFreePie(
   return { lines: out, discountCents: target.basePrice };
 }
 
+/**
+ * A pickup order that a promo has brought to exactly $0.00 has nothing to charge, so it must
+ * not be pushed through the card path (Clover cannot capture $0) and must not be refused
+ * either — "just come in and pick up your free pie" is what sent a customer to the counter
+ * angry on 2026-09-21. It goes to the kitchen with no payment step. Delivery stays out: the
+ * fee and the driver make a $0 total impossible there anyway, and the promos are pickup-only.
+ */
+export function isFreePickupOrder(totalCents: number, hasPromo: boolean, fulfillment: string): boolean {
+  return totalCents === 0 && hasPromo && fulfillment === "pickup";
+}
+
 export type PromoCheck =
   | { ok: true; id: number; code: string; description: string }
   | { ok: false; reason: "not_found" | "already_redeemed" | "expired" | "in_use"; message: string };

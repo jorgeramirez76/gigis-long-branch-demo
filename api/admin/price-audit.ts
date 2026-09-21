@@ -21,6 +21,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!secretMatches(req.headers["x-audit-token"], expected)) return void res.status(401).json({ error: "unauthorized" });
   if (req.method !== "GET") return void res.status(405).json({ error: "method_not_allowed" });
 
+  // ?refresh=1 — republish the menu snapshot /api/menu serves. Needed after a price correction:
+  // the snapshot is written by the nightly cron, so until it reruns the storefront shows the OLD
+  // price while the order API prices from the corrected static catalog, and the checkout's
+  // total-equality gate rejects the order.
+  if (req.query.refresh === "1") {
+    const secret = process.env.CRON_SECRET;
+    const base = (process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com").replace(/\/$/, "");
+    if (!secret) return void res.status(503).json({ error: "cron_secret_missing" });
+    const r = await fetch(`${base}/api/cron/refresh-menu`, { method: "POST", headers: { Authorization: `Bearer ${secret}` } });
+    return void res.status(200).json({ refresh: { status: r.status, body: (await r.text()).slice(0, 400) } });
+  }
+
   try {
     const inv = await fetchLiveInventory();
     const { total, removed, priceDrift } = pruneMenu(inv);

@@ -31,7 +31,9 @@
     $('forgot').hidden = !['login','confirm'].includes(mode); $('forgot').textContent = confirm ? 'Request a new password link' : 'Forgot password?'; $('challenge').hidden = confirm;
     if (!confirm) ensureChallenge();
     $('form-title').textContent = {login:'Welcome back',signup:'Join VIP. Get a free pie.',claim:'Keep your VIP benefits',reset:'Get back into your account',confirm:'Choose your password'}[mode];
-    $('form-detail').textContent = signup ? 'Your free plain cheese pizza pie starts here. Use your email as your username; we’ll send a secure link to choose your password and activate your account. Choose email or text updates below for exclusive discounts and food deals.' : confirm ? 'Choose at least 12 characters. Your email is your username.' : mode === 'claim' ? 'Enter the email you used for the VIP Club. Your existing free-pie code stays with you.' : 'Use the email associated with your account.';
+    // One email, one link: if this address already holds the VIP confirmation link from a
+    // checkout opt-in, submitting here rides on THAT link instead of sending a second one.
+    $('form-detail').textContent = signup ? 'Your free plain cheese pizza pie starts here. Use your email as your username. One email, one link — it confirms your email, unlocks your free-pie code and lets you choose your password. If you just ordered and ticked the VIP box, that link is already in your inbox. Choose email or text updates below for exclusive discounts and food deals.' : confirm ? 'Choose at least 12 characters. Your email is your username.' : mode === 'claim' ? 'Enter the email you used for the VIP Club. Your existing free-pie code stays with you.' : 'Use the email associated with your account.';
     $('submit').textContent = {login:'Sign in',signup:'Join VIP & get my free pie',claim:'Email my secure link',reset:'Send reset link',confirm:'Save password & sign in'}[mode];
     document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('selected',b.dataset.mode === mode));
   }

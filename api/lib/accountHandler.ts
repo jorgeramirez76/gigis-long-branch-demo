@@ -8,13 +8,18 @@ import { rateLimitAllStrict } from "./rateLimit.js";
 import { sendReceiptEmail, sendSms } from "./notify.js";
 import { normalizePhone } from "./phone.js";
 import { addressDedupeKey, legacyAddressDedupeKey } from "./address.js";
-import { CANONICAL_CONSENT_TEXT } from "./vipSignupShared.js";
+import { attachAccountSignup, CANONICAL_CONSENT_TEXT } from "./vipSignupShared.js";
 import { accountOrders, claimGuestOrders, finishEnrollment } from "./accountStore.js";
 import { usualItems } from "./upsell.js";
 import { priceLines, type ClientLine } from "./menuCatalog.js";
 import { liveItemNames } from "./menuLive.js";
 
 const GENERIC = { ok: true, message: "If this email can be used, a secure link will arrive shortly. Check your inbox and spam folder." };
+// Signup's answer. Deliberately ONE message for every branch — whether a link was just emailed,
+// or the person is already holding the VIP confirmation link from their order (which now carries
+// the password step too). Saying which would turn this endpoint into a "does this email have a
+// membership / a signup in flight?" oracle for anyone past the rate limit.
+const ONE_LINK = { ok: true, message: "One link is all it takes. Check your inbox (and spam) for a link from Gigi's — if you just ordered and ticked the VIP box, it's the confirmation email already sitting there. Tap it once to confirm your email, get your free-pie code and choose your password." };
 const text = (value: unknown, max = 160) => typeof value === "string" ? value.trim().slice(0,max) : "";
 const cleanEmail = (value: unknown) => text(value,254).toLowerCase();
 async function botCheck(token: unknown, ip: string): Promise<boolean> {
@@ -34,9 +39,14 @@ async function emailLink(email: string, purpose: string, payload: unknown) {
     VALUES (${key},${ACCOUNT_BUSINESS},${email},${purpose},${JSON.stringify(payload)}::jsonb,now()+interval '30 minutes')`;
   // Hash fragment is not sent in HTTP requests, server logs, or referrers.
   const url = `${ACCOUNT_ORIGIN}/account/#token=${token}`;
+  // One link, and it says what it does. A signup link confirms the address, activates the VIP
+  // membership and free pie, and sets the password — there is no second email to wait for.
+  const lead = purpose === "reset"
+    ? "Choose a new password for Gigi's Rewards."
+    : "This one link finishes everything: it confirms your email, activates your Gigi's VIP Club membership and free-pie code, and lets you choose your password.";
   const result = await sendReceiptEmail(email,"Your Gigi's Rewards secure link",
-    `<p>Finish signing in to Gigi's Rewards. Choose your password after opening this link.</p><p><a href="${url}">Continue to Gigi's Rewards</a></p><p>This link expires in 30 minutes. If you didn't request it, ignore this email.</p>`,
-    `Continue to Gigi's Rewards: ${url}\nThis link expires in 30 minutes. If you didn't request it, ignore it.`);
+    `<p>${lead}</p><p><a href="${url}">Continue to Gigi's Rewards</a></p><p>This link expires in 30 minutes. If you didn't request it, ignore this email.</p>`,
+    `${lead}\n\nContinue to Gigi's Rewards: ${url}\nThis link expires in 30 minutes. If you didn't request it, ignore it.`);
   if (!result.sent) {
     await sql`DELETE FROM account_tokens WHERE token_hash = ${key}`;
     throw new Error("account_email_unavailable");
@@ -71,8 +81,18 @@ export function accountHandler(action: string) {
         if (typeof body.smsConsent !== "boolean" || typeof body.emailConsent !== "boolean" || body.consentText !== CANONICAL_CONSENT_TEXT) return void res.status(400).json({error:"invalid_consent"});
         const payload = {name,phone,email,fullAddress:`${street}, ${city}, ${state} ${zip}`,apt:apt || null,
           addrKey:addressDedupeKey(street,apt,city,state,zip),legacyAddrKey:legacyAddressDedupeKey(street,apt),smsConsent:body.smsConsent,emailConsent:body.emailConsent,source:body.source === "menu-qr" ? "menu-qr" : "rewards-account",street,city,state,zip};
+        // ONE EMAIL, ONE LINK. If this address is already holding a live VIP verification link —
+        // the customer ticked the club box at checkout seconds ago and is now tapping "Create my
+        // account" on the confirmation screen — ride on it instead of sending a second one. The
+        // profile is parked on that pending row and api/vip-verify.ts hands the person into the
+        // password step the moment the link they already have is tapped.
+        //
+        // Falls through to the normal link when the attach fails, which is exactly the case where
+        // a second link is genuinely needed: no pending row, or one that was verified or expired
+        // between the customer's two taps.
+        if (await attachAccountSignup(ACCOUNT_BUSINESS,email,phone,payload,body.smsConsent,body.emailConsent)) return void res.status(200).json(ONE_LINK);
         await emailLink(email,"signup",payload);
-        return void res.status(200).json(GENERIC);
+        return void res.status(200).json(ONE_LINK);
       }
       if (action === "password-reset-request" || action === "claim") {
         const found = await sql`SELECT id FROM accounts WHERE business=${ACCOUNT_BUSINESS} AND email=${email} AND deleted_at IS NULL`;

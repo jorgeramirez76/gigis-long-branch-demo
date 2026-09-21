@@ -740,7 +740,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
               to confirm we received it.
             </p>
           )}
-          <RewardsJoin name={name} phone={phone} email={email} address={confirmed.fulfillment === "delivery" ? address : ""} city={confirmed.fulfillment === "delivery" ? town : ""} />
+          <RewardsJoin name={name} phone={phone} email={email} address={confirmed.fulfillment === "delivery" ? address : ""} city={confirmed.fulfillment === "delivery" ? town : ""} vipJoin={confirmed.vipJoin} />
           <p className="text-xs text-[var(--color-copy-muted)]">
             Questions? Call the shop at{" "}
             <a className="font-semibold text-[var(--color-action-text)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>.

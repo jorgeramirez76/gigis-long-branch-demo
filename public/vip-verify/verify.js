@@ -74,6 +74,18 @@
         "Your email is confirmed and you're in the VIP Club. Watch for our weekly deals!";
       $("doneNote").textContent = "";
     }
+    // ONE EMAIL, ONE LINK. The server hands back an account path only when a Gigi's Rewards
+    // signup was parked on this verification, so the password step happens on this page instead
+    // of costing a second email and a second tap. Shape-checked before it reaches an href: the
+    // only thing this page should ever navigate to is our own one-time account link.
+    if (data.accountPath && /^\/account\/#token=[A-Za-z0-9_-]{43}$/.test(data.accountPath)) {
+      $("donePassword").setAttribute("href", data.accountPath);
+      $("donePassword").hidden = false;
+      $("doneMenu").className = "btn ghost";
+      $("doneNote").textContent =
+        ($("doneNote").textContent ? $("doneNote").textContent + " " : "") +
+        "One last step: choose a password below and your orders, this code and your favorites live in your Gigi's account.";
+    }
     show(doneEl);
   }
 

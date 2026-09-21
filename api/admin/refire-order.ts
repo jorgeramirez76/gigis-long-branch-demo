@@ -121,6 +121,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       phone: row.customerPhone,
       email: row.customerEmail ?? undefined,
       address: row.address ?? undefined,
+      // Town, same as the original chit. buildOrderNote appends it to the delivery address line
+      // so the driver sees the zone the fee was charged for; omitting it here printed a refired
+      // delivery with a bare street and no town — the one ticket where the customer is already
+      // waiting and staff have the least context.
       town: row.town ?? undefined,
     },
     lines,

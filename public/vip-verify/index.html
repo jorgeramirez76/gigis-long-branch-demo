@@ -95,7 +95,11 @@ footer a{color:var(--gold-bright)}
       <p id="doneMsg"></p>
       <p class="code" id="doneCode" hidden></p>
       <p class="mute" id="doneNote"></p>
-      <a class="btn" href="/#menu">Start an order</a>
+      <!-- ONE EMAIL, ONE LINK. When a Gigi's Rewards signup rode along on this verification, the
+           password step is offered right here — tapping the emailed button already proved this
+           inbox, so there is nothing a second email could establish. -->
+      <a class="btn" id="donePassword" hidden href="/account/">Choose your password</a>
+      <a class="btn" id="doneMenu" href="/#menu">Start an order</a>
     </div>
 
     <!-- Problem: expired / replaced / broken link -->

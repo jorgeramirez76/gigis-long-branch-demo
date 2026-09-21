@@ -233,7 +233,11 @@ export function hashSecret(secret: string): string {
 
 /** Park (or refresh) the pending signup. Resubmitting replaces the row wholesale: new token, new
  *  poll id, clock restarted — so "resend" is just submitting the form again, and any earlier link
- *  stops working (one live link per email at a time). */
+ *  stops working (one live link per email at a time).
+ *
+ *  account_payload is deliberately NOT in the SET list: a rewards-account signup riding on this
+ *  email (see attachAccountSignup) survives a resend, so asking for a fresh link never silently
+ *  drops the password step the person already asked for. */
 export async function storePendingSignup(
   business: VipBusiness,
   p: ValidatedSignup,
@@ -395,6 +399,65 @@ export async function sweepExpiredPending(business: VipBusiness): Promise<void> 
 /** Burn a pending row outright (used when a signup can't proceed). */
 export async function deletePendingSignup(business: VipBusiness, email: string): Promise<void> {
   await sql`DELETE FROM vip_email_verifications WHERE business = ${business} AND LOWER(email) = LOWER(${email})`;
+}
+
+// ---------------------------------------------------------------------------
+// ONE EMAIL, ONE LINK — the rewards-account signup riding on a pending VIP link
+// ---------------------------------------------------------------------------
+
+/**
+ * Attach a rewards-account signup to the verification link this email is ALREADY holding.
+ *
+ * The owner's complaint (2026-09-21, "back-and-forth with the emails"): a customer who ticked the
+ * VIP box at checkout got "Tap to confirm your email", and then — for tapping "Create my account"
+ * on the very next screen — a SECOND "Finish your Gigi's Rewards account" link. Two emails and two
+ * taps for one order.
+ *
+ * So the account signup no longer sends anything of its own while a live VIP link exists: it parks
+ * its validated profile HERE, and api/vip-verify.ts hands the person straight into the password
+ * step once that one link is tapped.
+ *
+ * Consent: the account form re-attests the SAME canonical text, so its ticks are the person's
+ * freshest statement about this email and they replace the checkout ones in the payload that
+ * completeSignup will record. The address/household fields are deliberately left alone — the
+ * one-pie-per-household key belongs to the signup that parked this row.
+ *
+ * Guarded on THREE things, and a miss on any of them is not an error — the caller simply emails
+ * its own link, which is the right answer in every one of those cases:
+ *  - still unverified and unexpired: a link tapped in the meantime is spent.
+ *  - the SAME phone as the parked signup. Without it, anyone who knows an email address could
+ *    POST a signup and rewrite that person's pending CONSENT flags (or bury their own name and
+ *    address in the profile the password step will save). They still could not obtain the link —
+ *    it is in the victim's inbox — but consent records are not something a stranger gets to edit.
+ *    A genuine customer matches: the confirmation screen prefills the same contact details the
+ *    checkout opt-in was parked with.
+ */
+export async function attachAccountSignup(
+  business: VipBusiness,
+  email: string,
+  phone: string,
+  accountPayload: unknown,
+  smsConsent: boolean,
+  emailConsent: boolean,
+): Promise<boolean> {
+  const r = await sql`
+    UPDATE vip_email_verifications
+    SET account_payload = ${JSON.stringify(accountPayload)}::jsonb,
+        payload = payload || jsonb_build_object('smsConsent', ${smsConsent}::boolean,
+                                                'emailConsent', ${emailConsent}::boolean)
+    WHERE business = ${business} AND LOWER(email) = LOWER(${email})
+      AND payload->>'phone' = ${phone}
+      AND verified_at IS NULL AND expires_at > now()
+    RETURNING id
+  `;
+  return r.rowCount === 1;
+}
+
+/** The account signup parked on a verification row, if one rode along. Read on the verify path. */
+export async function pendingAccountSignup(id: number): Promise<Record<string, unknown> | null> {
+  const r = await sql`SELECT account_payload FROM vip_email_verifications WHERE id = ${id}`;
+  const value = r.rows[0]?.account_payload;
+  return value ? (value as Record<string, unknown>) : null;
 }
 
 /** What became of an attempt to start (park) a signup — branched on by both the

@@ -145,6 +145,9 @@ END $$;
 ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS poll_id     TEXT;
 ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ;
 ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS issued_code TEXT;
+-- 009: the rewards-account signup riding on this verification, so ONE link confirms the email,
+-- issues the free-pie code and hands the person into choosing a password.
+ALTER TABLE vip_email_verifications ADD COLUMN IF NOT EXISTS account_payload JSONB;
 
 CREATE UNIQUE INDEX IF NOT EXISTS vip_email_verifications_uq
   ON vip_email_verifications (business, email);

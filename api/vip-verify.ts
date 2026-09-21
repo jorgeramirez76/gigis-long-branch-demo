@@ -3,6 +3,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { rateLimitAll } from "./lib/rateLimit.js";
 import { hashSecret } from "./lib/vipSignupShared.js";
 import { notifyStaffNewMember } from "./lib/vipStaffNotify.js";
+import { mintAccountSignupToken } from "./lib/accountStore.js";
 import {
   claimForVerification,
   completeSignup,
@@ -10,6 +11,7 @@ import {
   lookupVerifyToken,
   memberCreatedSince,
   NO_CODE_SENTINEL,
+  pendingAccountSignup,
   recordIssuedCode,
   recoverMemberCode,
   releaseClaim,
@@ -33,6 +35,32 @@ import {
  * No Turnstile: the signup step already passed it, and a 32-byte token is not guessable.
  */
 
+
+/**
+ * ONE EMAIL, ONE LINK — the rewards-account password step, handed over on THIS page.
+ *
+ * If a rewards-account signup rode along on this verification (api/lib/accountHandler.ts parks it
+ * there rather than emailing a second "Finish your Gigi's Rewards account" link), the person who
+ * just tapped the emailed button has proved control of the inbox — exactly the authority that
+ * second email existed to establish. So they get a one-time account link straight back, and the
+ * landing page offers "Choose your password" instead of telling them to go read more mail.
+ *
+ * Never throws: the member row and free pie are already real by the time this runs, so a handoff
+ * failure must not turn a successful verification into an error. Without it the person simply
+ * sets a password from /account/ the ordinary way.
+ */
+async function accountHandoff(id: number, email: string): Promise<{ accountPath?: string }> {
+  try {
+    const payload = await pendingAccountSignup(id);
+    if (!payload) return {};
+    const token = await mintAccountSignupToken(email, payload);
+    // Same-origin path; the fragment is never sent in a request, log or Referer header.
+    return { accountPath: `/account/#token=${token}` };
+  } catch (err) {
+    console.error("[vip-verify] account handoff failed (the verification itself stands)", err);
+    return {};
+  }
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -112,12 +140,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             await notifyStaffNewMember(row.business, row.payload, recoveredEarly.code);
           }
         }
-        res.status(200).json({ ok: true, alreadyVerified: true, code: recoveredEarly.code });
+        res.status(200).json({ ok: true, alreadyVerified: true, code: recoveredEarly.code, ...(await accountHandoff(row.id, row.email)) });
         return;
       }
       const stored = row.issued_code === NO_CODE_SENTINEL ? null : row.issued_code;
       const code = stored ?? (await recoverMemberCode(row.business, row.email))?.code ?? null;
-      res.status(200).json({ ok: true, alreadyVerified: true, code });
+      res.status(200).json({ ok: true, alreadyVerified: true, code, ...(await accountHandoff(row.id, row.email)) });
       return;
     }
 
@@ -132,7 +160,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         res.status(409).json({ error: "verification_processing", retryable: true, message: "Your membership is still being finished — wait a moment and try again." });
         return;
       }
-      res.status(200).json({ ok: true, alreadyVerified: true, code });
+      res.status(200).json({ ok: true, alreadyVerified: true, code, ...(await accountHandoff(row.id, row.email)) });
       return;
     }
 
@@ -163,13 +191,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (recovered.minted || (await memberCreatedSince(row.business, row.email, row.created_at))) {
           await notifyStaffNewMember(row.business, row.payload, recovered.code);
         }
-        res.status(200).json({ ok: true, code: recovered.code, description: recovered.description });
+        res.status(200).json({ ok: true, code: recovered.code, description: recovered.description, ...(await accountHandoff(row.id, row.email)) });
         return;
       }
       // Verified, but genuinely no code to hand out. Mark it settled so the waiting tab stops
       // instead of polling for a code that will never arrive.
       await recordIssuedCode(row.id, NO_CODE_SENTINEL);
-      res.status(200).json(outcome);
+      res.status(200).json({ ...outcome, ...(await accountHandoff(row.id, row.email)) });
       return;
     }
 
@@ -178,8 +206,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await notifyStaffNewMember(row.business, row.payload, outcome.code);
     // Keep the PII table tidy from this side too — verification traffic happens even when signups
     // pause, so the sweep can't live only in the signup handler.
+    const handoff = await accountHandoff(row.id, row.email);
     await sweepExpiredPending(row.business);
-    res.status(200).json(outcome);
+    res.status(200).json({ ...outcome, ...handoff });
   } catch (err) {
     console.error("[vip-verify] error", err);
     res.status(500).json({ error: "internal_error", message: "Something went wrong on our end — please try that link again." });

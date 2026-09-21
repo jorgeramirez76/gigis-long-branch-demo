@@ -102,3 +102,46 @@ describe('itemized total payment gate', () => {
     assert.ok(calls.some(call => call.includes('/v1/orders/')), 'Clover total was actually checked');
   });
 });
+
+describe('refired chit parity with the original', () => {
+  // A refire rebuilds the kitchen note from the stored order, so anything the original chit
+  // printed and the refire does not is context staff lose on the one ticket where the customer
+  // is already waiting. The delivery TOWN was exactly that: api/order/create.ts passes
+  // customer.town to buildOrderNote (it drives the "→ street, Town" line the driver reads for
+  // the zone the fee was charged for), and the refire passed only the street.
+  function deliveryBackend() {
+    const notes: string[] = [];
+    globalThis.fetch = (async (url, init) => {
+      if (String(url).includes('clover.com')) {
+        const body = JSON.parse(String(init?.body ?? '{}')) as { note?: string };
+        if (typeof body.note === 'string') notes.push(body.note);
+        throw new TypeError('simulated lost Clover response');
+      }
+      const q = JSON.parse(String(init?.body)) as { query: string };
+      if (q.query.includes("SET status = 'refire_pending'")) return result([{ id: 12 }]);
+      if (/SELECT id, status, charge_id, clover_order_id, fulfillment/.test(q.query)) return result([{
+        id: 12, status: 'paid_unrouted', charge_id: 'PAY2', clover_order_id: null, fulfillment: 'delivery',
+        customer_name: 'Delivery customer', customer_phone: '7325550101', customer_email: null,
+        address: '12 Brighton Ave',
+        items: JSON.stringify([{ itemName: 'Plain Pizza', basePrice: 2000, quantity: 1, options: [] }]),
+        subtotal: 2000, card_pricing: 80, tax: 138, tip: 0, total: 2718, note: null,
+        business: 'gigis_long_branch', fee_cents: 500, discount_cents: 0, town: 'Long Branch', promo_code: null,
+      }]);
+      if (/^(CREATE|ALTER|UPDATE)/.test(q.query.trim())) return result();
+      throw new Error('Unexpected database query: ' + q.query);
+    }) as typeof fetch;
+    return notes;
+  }
+
+  it('prints the delivery town on the refired ticket, exactly as the original did', async () => {
+    const notes = deliveryBackend();
+    let code = 0;
+    const res = { setHeader() {}, status(value: number) { code = value; return this; }, json() { return this; } };
+    await handler({ method: 'POST', headers: { 'x-admin-token': 'test-admin-token' }, body: { id: 12 } } as never, res as never);
+    assert.equal(code, 502);
+    assert.equal(notes.length, 1, 'the refire built exactly one Clover order note');
+    assert.ok(notes[0].includes('→ 12 Brighton Ave, Long Branch'),
+      `refired delivery chit lost the town: ${notes[0]}`);
+    assert.ok(notes[0].includes('REFIRED by staff'), 'the refire is still labelled for staff');
+  });
+});

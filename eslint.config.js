@@ -8,6 +8,9 @@ export default tseslint.config(
     ignores: [
       "dist/**",
       "node_modules/**",
+      // Agent worktrees are full copies of this repo living inside it; linting them
+      // reports every finding N+1 times and fails the gate on code that is not ours yet.
+      ".claude/worktrees/**",
       ".vite-react-ssg-temp/**",
       "public/**/*.js",
       "src/data/menuGenerated.ts",

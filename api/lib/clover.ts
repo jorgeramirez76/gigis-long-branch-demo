@@ -737,11 +737,32 @@ export async function payForOrder(opts: {
   return { id: data.id, amount: data.amount ?? 0 };
 }
 
+/** "55 Bradley Ave, Apt 2, Long Branch" from whatever parts we hold. Empty when there is no street. */
+function addressLine(street?: string | null, apt?: string | null, town?: string | null): string {
+  const s = (street ?? "").trim();
+  if (!s) return "";
+  return [s, (apt ?? "").trim(), (town ?? "").trim()].filter(Boolean).join(", ");
+}
+
+// Per-segment caps INSIDE the note, sized so the whole header (everything above the
+// totals) fits the 490-char slice even at every field's maximum — the address is a
+// safety field (staff were hand-writing it) and must never be the thing that falls off.
+// Real values are far shorter; these only ever bite a pathological name/address.
+const NOTE_NAME_MAX = 60;
+const NOTE_ADDR_MAX = 100;
+
 /**
- * Build the human-readable kitchen ticket note. Safety-critical fields (payment
- * status, delivery address, customer allergy/special note) are FRONT-loaded so
- * the 490-char cap can only ever truncate the tail (the itemized list), never
- * the allergy warning or the address.
+ * Build the kitchen ticket note — a HEADER ONLY. The order's LINE ITEMS carry the
+ * item detail (name + "WEB • options · notes", including the "FREE — VIP welcome pie
+ * PIE-…" / "FREE — BOGO GAMEDAY" marker applyFreePie/applyBogoPizza put on the
+ * discounted line), so repeating them here printed the whole order twice on one chit
+ * (Kenny, 2026-09-20). What stays is what the counter needs at a glance: fulfillment +
+ * payment, whether this is a VIP, whether a VIP/campaign promo was used, the customer's
+ * allergy/special note, name, phone, address, and the money.
+ *
+ * Front-loaded so the 490-char cap can only ever truncate the TAIL (the totals,
+ * which Clover also computes on the order itself) — never the VIP markers, the
+ * allergy warning, the name/phone or the address.
  */
 export function buildOrderNote(opts: {
   fulfillment: Fulfillment;
@@ -751,6 +772,13 @@ export function buildOrderNote(opts: {
   payment: "card" | "pickup" | "cash" | "free";
   chargeId?: string;
   orderNote?: string;
+  /** Ordering customer is a VIP club member or is signed in to a rewards account. */
+  vipMember?: boolean;
+  /** A VIP welcome-pie (PIE-…) or campaign (GAMEDAY) code was applied to this order. */
+  vipPromo?: boolean;
+  /** Street on file (vip_members.address/apt, else the account's default saved address).
+   *  Printed on a PICKUP chit so staff stop hand-writing it. */
+  addressOnFile?: { address?: string | null; apt?: string | null; town?: string | null } | null;
 }): string {
   const money = (c: number) => `$${(c / 100).toFixed(2)}`;
   const kind = opts.fulfillment === "delivery" ? "FOR DELIVERY (in-house driver)" : "CUSTOMER PICKUP";
@@ -766,31 +794,23 @@ export function buildOrderNote(opts: {
           ? `** NOT PAID — DRIVER COLLECTS CASH ${money(opts.totals.total)} **`
           : `** NOT PAID — COLLECT CASH AT COUNTER ${money(opts.totals.total)} **`
         : `** NOT PAID — ${collector} ${money(opts.totals.total)} **`;
-  // Town is on the chit so the driver sees the zone the fee was charged for.
+  // Town is on the chit so the driver sees the zone the fee was charged for; on a
+  // pickup chit the address on file saves staff hand-writing it off the phone.
   const addr =
     opts.fulfillment === "delivery"
-      ? ` → ${opts.customer.address ?? "(no address)"}${opts.customer.town ? `, ${opts.customer.town}` : ""}`
-      : "";
-  const items = opts.lines
-    .map((l) => {
-      // Compact here — (F)/(L)/(R) per topping — because this note covers the
-      // whole order and gets cut at 490 chars; each line item's own note carries
-      // the spelled-out FULL PIE / LEFT HALF / RIGHT HALF wording.
-      const opt = l.options
-        .map((o) => o.name + (o.placement === "left" ? "(L)" : o.placement === "right" ? "(R)" : o.placement === "whole" ? "(F)" : ""))
-        .join(", ");
-      return `${l.quantity}x ${l.itemName}${opt ? ` [${opt}]` : ""}${l.notes ? ` (${l.notes})` : ""}`;
-    })
-    .join("; ");
-  // Front-loaded so the 490-char cap can only ever drop the item/total TAIL:
-  //   header → ⚠ allergy note → customer + address → items → totals.
-  // (create.ts caps: name ≤80, orderNote ≤130, address ≤120 — worst case ends at
-  //  ~455 chars, inside the 490 slice, so the allergy note + address always survive.)
+      ? addressLine(opts.customer.address ?? "(no address)", null, opts.customer.town)
+      : addressLine(opts.addressOnFile?.address, opts.addressOnFile?.apt, opts.addressOnFile?.town);
+  // Front-loaded so the 490-char cap can only ever drop the TOTALS tail:
+  //   header → ★ VIP markers → ⚠ allergy note → customer → address → totals.
+  // (create.ts caps: name ≤80, orderNote ≤130, address ≤120. The item list is gone —
+  //  the line items are the item detail — so everything above the totals fits with room.)
   const parts = [
     `WEBSITE ORDER · ${kind} · ${pay}`,
+    opts.vipMember ? "★ VIP MEMBER ★" : "",
+    opts.vipPromo ? "★ VIP PROMO ★" : "",
     opts.orderNote ? `⚠ NOTE: ${opts.orderNote}` : "",
-    `${opts.customer.name} ${opts.customer.phone}${addr}`,
-    items,
+    `${opts.customer.name.slice(0, NOTE_NAME_MAX)} ${opts.customer.phone}`,
+    addr ? `Addr: ${addr.slice(0, NOTE_ADDR_MAX)}` : "",
     `Sub ${money(opts.totals.subtotal)}${opts.totals.discount ? ` Promo -${money(opts.totals.discount)}` : ""}${opts.totals.deliveryFee ? ` Dlv ${money(opts.totals.deliveryFee)}` : ""} Tax ${money(opts.totals.tax)}${opts.totals.tip ? ` Tip ${money(opts.totals.tip)}` : ""} = ${money(opts.totals.total)}`,
   ].filter(Boolean);
   return parts.join(" | ");

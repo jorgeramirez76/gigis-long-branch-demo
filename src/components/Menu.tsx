@@ -8,6 +8,7 @@ import { PhoneIcon } from "./Icons";
 import { useOrderingUI } from "../ordering/OrderingProvider";
 import { useCart } from "../ordering/CartContext";
 import { goToMenu } from "../lib/goToMenu";
+import { menuPhotos } from "../data/menuPhotos";
 
 /** One orderable menu line. The whole row opens the item modal (options +
  * quantity → add to cart). `categoryLabel` is shown only in search results. */
@@ -15,8 +16,9 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
   const { configureItem, isOrderable } = useOrderingUI();
   const orderable = isOrderable(item);
   const hasOptions = !!item.options && item.options.length > 0;
+  const photo = menuPhotos(categoryId, item.name)[0];
 
-  const info = (
+  const text = (
     <div className="min-w-0 flex-1">
       {categoryLabel && (
         <p className="mb-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-copy-muted)]">
@@ -41,6 +43,21 @@ function MenuItemRow({ item, categoryId, categoryLabel }: { item: MenuItem; cate
       )}
     </div>
   );
+
+  const info = photo ? (
+    <div className="flex min-w-0 flex-1 items-center gap-3 md:gap-4">
+      <img
+        src={photo.thumb}
+        alt={photo.caption}
+        width={320}
+        height={240}
+        loading="lazy"
+        decoding="async"
+        className="h-20 w-20 shrink-0 rounded-xl object-cover shadow-[var(--shadow-sm)] md:h-24 md:w-24"
+      />
+      {text}
+    </div>
+  ) : text;
 
   if (!orderable) {
     return (

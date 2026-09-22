@@ -13,6 +13,7 @@ import {
   placementDelta,
   type ToppingPlacement,
 } from "../data/menuToppings";
+import { menuPhotos } from "../data/menuPhotos";
 
 /** Charge-priced toppings can go on half the pie; everything else is whole-only. */
 function canPlace(group: OptionGroup, choiceDelta?: string): boolean {
@@ -148,6 +149,7 @@ export function ItemModal({ item, categoryId, existingLine, onClose }: { item: M
   const cart = useCart();
   const basePrice = parsePrice(item.price);
   const groups = useMemo(() => item.options ?? [], [item.options]);
+  const photos = menuPhotos(categoryId, item.name);
   // selected choice names per group index
   const [selected, setSelected] = useState<Record<number, Set<string>>>(() => initialEditSelections(groups, existingLine));
   // topping name → where it goes (only charge-priced toppings; default whole pie)
@@ -296,6 +298,29 @@ export function ItemModal({ item, categoryId, existingLine, onClose }: { item: M
         ref={panelRef}
         className="flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bg-[var(--color-panel)] shadow-[var(--shadow-lg)] sm:rounded-3xl"
       >
+        {photos.length === 1 && (
+          <img
+            src={photos[0].full}
+            alt={photos[0].caption}
+            decoding="async"
+            className="h-48 w-full shrink-0 object-cover sm:h-56"
+          />
+        )}
+        {photos.length > 1 && (
+          <ul className="flex shrink-0 snap-x gap-3 overflow-x-auto border-b border-[var(--color-line)] p-4" aria-label={`${item.name} photos`}>
+            {photos.map((photo) => (
+              <li key={photo.full} className="w-40 shrink-0 snap-start">
+                <img
+                  src={photo.thumb}
+                  alt={photo.caption}
+                  decoding="async"
+                  className="h-32 w-40 rounded-xl object-cover"
+                />
+                <p className="mt-1 text-center text-xs font-semibold text-[var(--color-copy-soft)]">{photo.caption}</p>
+              </li>
+            ))}
+          </ul>
+        )}
         <div className="flex items-start justify-between gap-4 border-b border-[var(--color-line)] p-5">
           <div>
             <h3 className="font-display text-2xl text-[var(--color-copy)]">{item.name}</h3>

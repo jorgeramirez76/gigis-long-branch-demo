@@ -211,7 +211,8 @@
             }
           ]
         }
-      ]
+      ],
+      "description": "San Marzano tomatoes, grande mozzarella. Classic cheese or create your own pizza."
     },
     {
       "name": "White Pie",
@@ -420,7 +421,8 @@
             }
           ]
         }
-      ]
+      ],
+      "description": "Mozzarella, ricotta, pecorino Romano, garlic, olive oil."
     },
     {
       "name": "Meat Lover Pie",
@@ -629,7 +631,8 @@
             }
           ]
         }
-      ]
+      ],
+      "description": "Pepperoni, meatballs, sausage, ham."
     },
     {
       "name": "Margherita",

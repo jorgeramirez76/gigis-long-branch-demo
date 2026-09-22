@@ -7,7 +7,8 @@ import type { MenuCategory, MenuItem } from "../data/menuTypes";
  * is a copy of the menu as of its last write, so between a deploy that changes a topping list
  * and the next 4 AM refresh it would still offer choices the order API — which prices from the
  * static catalog — no longer knows: a topping pulled from the menu could be ticked here and then
- * refused at checkout as unknown. Items the build has never seen keep the snapshot's options. */
+ * refused at checkout as unknown. Descriptions follow the build too. Items the build has never
+ * seen keep the snapshot's options. */
 export function withStaticOptions(live: MenuCategory[]): MenuCategory[] {
   const byKey = new Map<string, MenuItem>();
   for (const c of MENU) for (const it of c.items) byKey.set(c.id + "\0" + it.name, it);
@@ -15,7 +16,10 @@ export function withStaticOptions(live: MenuCategory[]): MenuCategory[] {
     ...c,
     items: c.items.map((it) => {
       const built = byKey.get(c.id + "\0" + it.name);
-      return built ? { ...it, options: built.options } : it;
+      if (!built) return it;
+      // Descriptions are site copy, not register data — the build's wording wins over a snapshot
+      // written before it changed.
+      return { ...it, options: built.options, ...(built.description ? { description: built.description } : {}) };
     }),
   }));
 }

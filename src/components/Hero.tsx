@@ -8,6 +8,16 @@ export function Hero() {
     <section id="top" className="food-hero">
       <div className="food-hero-grid container-x">
         <div className="food-hero-copy">
+          {/* Owner request (Kenny, 2026-09-24): Sea Bright must be as easy to find from here as Long
+              Branch is from Sea Bright — a highlighted button on first load, not fine print below the
+              hero details (which on a phone sat under the photo, a scroll away). */}
+          <a
+            href="https://gigisnystylepizza.com/sea-bright"
+            className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#b8202a] px-4 py-2.5 text-xs font-bold text-white shadow-[0_6px_18px_#b8202a40] transition hover:-translate-y-0.5 hover:bg-[#9b121a] active:scale-[0.97] md:px-5 md:text-sm"
+          >
+            Closer to Sea Bright? Order from our Sea Bright location
+            <ArrowIcon className="h-3.5 w-3.5 shrink-0" />
+          </a>
           <p className="eyebrow">Your neighborhood pizza spot · Long Branch</p>
           <h1>Big slices.<br />Big cravings.<br /><span>That’s Gigi’s.</span></h1>
           <p className="food-hero-description">Real NY-style pizza. Bubbling cheese, a crisp golden crust, and the kind of slice you fold with both hands. Hungry yet?</p>
@@ -24,7 +34,6 @@ export function Hero() {
             <p><OpenStatusPill /> <span aria-hidden="true"> · </span><a href={DIRECTIONS_URL} target="_blank" rel="noreferrer">{LOCATION.street}</a></p>
             <p>Online pickup until 11 PM · Delivery until 10 PM</p>
             <p>Counter until 11 PM Mon–Wed / midnight Thu–Sun.</p>
-            <p>Looking for our other shop? <a href="https://gigisnystylepizza.com/sea-bright">Visit Sea Bright →</a></p>
           </div>
         </div>
         <div className="food-hero-photo">

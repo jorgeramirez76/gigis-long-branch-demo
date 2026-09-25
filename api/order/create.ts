@@ -802,7 +802,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // then wait for Clover to confirm the kitchen print before marking it complete.
   const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: freeOrder ? "free" : "card", chargeId, orderNote, ...noteHeader });
   try {
-      await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, freeOrder ? "free" : true) });
+      // A club member outranks a promo: the member tag is the one staff act on.
+      const ticketVip = vipCustomer.member ? "member" : appliedCode !== null ? "promo" : null;
+      await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, freeOrder ? "free" : true, ticketVip) });
       // Kitchen ticket: firing only makes the order visible in the POS — this is
       // what drives the printer. Awaited (not fire-and-forget) so it isn't killed
       // by the serverless function freezing after the response; never throws.

@@ -332,10 +332,18 @@ async function rest(path: string, init: RequestInit): Promise<any> {
  *   WEBSITE ORDER • FOR DELIVERY • PAID w/ CC
  * `paid` is omitted while the order is still a draft (payment not yet taken).
  */
-export function ticketTitle(fulfillment: Fulfillment, paid?: boolean | "free"): string {
+/**
+ * The order TITLE prints at the top of the chit in large bold type, so it is where "treat this
+ * customer extra special" has to live (owner, 2026-09-20). The VIP tag is APPENDED, never
+ * prepended: WEBSITE_TITLE_RE matches the "WEBSITE ORDER •" prefix to find open web tickets.
+ * Plain ASCII asterisks, the same style as the "** PAID w/ CC **" that already prints cleanly.
+ */
+export type TicketVip = "member" | "promo" | null;
+export function ticketTitle(fulfillment: Fulfillment, paid?: boolean | "free", vip: TicketVip = null): string {
   const kind = fulfillment === "delivery" ? "FOR DELIVERY" : "CUSTOMER PICKUP";
   const pay = paid === undefined ? "" : paid === "free" ? " • FREE (VIP)" : paid ? " • PAID w/ CC" : " • NOT PAID";
-  return `WEBSITE ORDER • ${kind}${pay}`;
+  const tag = vip === "member" ? " • ** VIP CLUB MEMBER **" : vip === "promo" ? " • ** VIP PROMO **" : "";
+  return `WEBSITE ORDER • ${kind}${pay}${tag}`;
 }
 
 /**

@@ -141,3 +141,39 @@ test("garbage quantities and prices are tolerated, never negative", () => {
   assert.equal(plan.freeCount, 1);
   assert.equal(plan.discountCents, 0);
 });
+
+// ---- Percent off pizza (STORM25) ----
+import { planPizzaPercent } from "../src/lib/pizzaPercent.ts";
+import { applyPizzaPercent } from "../api/lib/campaignPromo.ts";
+
+test("percent off comes off the whole pizza — base price AND toppings — per unit, to the cent", () => {
+  const topped = pie("Plain Pie", 1700, 2, [{ group: "Toppings", name: "Pepperoni", delta: 300 }, { group: "Toppings", name: "Mushroom", delta: 300 }]);
+  const plan = planPizzaPercent([topped, other("Plain", 330, "slices", 3)], 25);
+  assert.equal(plan.pizzaUnits, 2);
+  assert.equal(plan.perUnitByIndex[0], 575); // 25% of $23.00 (17 + 3 + 3)
+  assert.equal(plan.perUnitByIndex[1], 0);   // slices are not pizzas
+  assert.equal(plan.discountCents, 1150);
+});
+
+test("percent off rounds per unit and never touches non-pizza lines", () => {
+  const plan = planPizzaPercent([pie("Bar Stool Pie", 1301), other("Chili Dog", 1099, "hot-dogs")], 25);
+  assert.equal(plan.perUnitByIndex[0], 325); // 325.25 → 325
+  assert.equal(plan.discountCents, 325);
+});
+
+test("applyPizzaPercent lowers the pizza's base price by the per-unit discount so Clover's line total matches ours", () => {
+  const lines = [pie("Sicilian", 2600, 1, [{ group: "Toppings", name: "Sausage", delta: 300 }]), other("Garlic Knots", 600, "appetizers")];
+  const applied = applyPizzaPercent(lines, "STORM25", 25);
+  assert.ok(applied);
+  assert.equal(applied.discountCents, 725);
+  assert.equal(sum(lines) - sum(applied.lines), 725);
+  assert.equal(applied.lines[0].basePrice, 2600 - 725);
+  assert.equal(applied.lines[0].options.length, 1);       // toppings still on the ticket
+  assert.match(applied.lines[0].notes ?? "", /25% OFF — STORM25/);
+  assert.equal(applied.lines[1].basePrice, 600);           // knots untouched
+  assert.equal(computeTotals(lines, 0, 0, applied.discountCents).subtotal - applied.discountCents, sum(applied.lines));
+});
+
+test("percent off with no pizza in the cart applies nothing", () => {
+  assert.equal(applyPizzaPercent([other("Chili Dog", 1099, "hot-dogs")], "STORM25", 25), null);
+});

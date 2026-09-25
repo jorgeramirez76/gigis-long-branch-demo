@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS campaign_promos (
   id          BIGSERIAL PRIMARY KEY,
   business    TEXT NOT NULL,
   code        TEXT NOT NULL,                 -- staff-chosen word, A-Z 0-9 hyphen, never PIE*
-  kind        TEXT NOT NULL,                 -- 'bogo_pizza'
+  kind        TEXT NOT NULL,                 -- 'bogo_pizza' | 'pct_pizza'
   description TEXT NOT NULL,
   pickup_only BOOLEAN NOT NULL DEFAULT TRUE,
   active      BOOLEAN NOT NULL DEFAULT TRUE, -- flip false to end an offer early
@@ -296,6 +296,8 @@ CREATE TABLE IF NOT EXISTS campaign_promos (
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE UNIQUE INDEX IF NOT EXISTS campaign_promos_business_code_uq ON campaign_promos (business, code);
+-- pct_pizza (2026-09-25, STORM25): whole percent off every pizza, toppings included.
+ALTER TABLE campaign_promos ADD COLUMN IF NOT EXISTS percent_off INT NOT NULL DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS campaign_redemptions (
   id              BIGSERIAL PRIMARY KEY,

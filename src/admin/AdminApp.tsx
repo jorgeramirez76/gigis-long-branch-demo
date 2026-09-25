@@ -358,6 +358,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
   const [emailOn, setEmailOn] = useState(true);
   const [promoCode, setPromoCode] = useState("");
   const [promoDescription, setPromoDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [phase, setPhase] = useState<"compose" | "confirm" | "sending" | "done">("compose");
   const [preview, setPreview] = useState<{ smsCount: number; emailCount: number; smsPreview: string | null; channelsReady: { sms: boolean; email: boolean } } | null>(null);
   const [result, setResult] = useState<{ smsSent: number; smsFailed: number; emailSent: number; emailFailed: number; inProgress?: boolean; duplicate?: boolean } | null>(null);
@@ -369,6 +370,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
     subject: subject.trim(),
     channels: { sms: smsOn, email: emailOn },
     promoCode: promoCode.trim() || undefined,
+    imageUrl: imageUrl.trim() || undefined,
     promoDescription: promoDescription.trim() || undefined,
   };
   // What "Send it" sends is the exact body that was previewed — never the live
@@ -426,7 +428,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
           {result.emailSent} sent{result.emailFailed ? `, ${result.emailFailed} failed` : ""}.
         </p>
         <button
-          onClick={() => { setPhase("compose"); setMessage(""); setSubject(""); setPromoCode(""); setPromoDescription(""); setResult(null); }}
+          onClick={() => { setPhase("compose"); setMessage(""); setSubject(""); setPromoCode(""); setPromoDescription(""); setImageUrl(""); setResult(null); }}
           className="mt-4 rounded-full bg-[var(--color-brand-red)] px-5 py-2.5 text-sm font-bold text-white"
         >
           New blast
@@ -456,6 +458,16 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Email subject — e.g. This weekend only: 2 large pies $30"
             className="mt-4 w-full rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm disabled:opacity-60"
+          />
+        )}
+        {emailOn && (
+          <input
+            aria-label="Email flyer image URL"
+            value={imageUrl}
+            disabled={!composing}
+            onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="Flyer image for the email (optional) — https://gigislongbranch.com/img/promos/….jpg"
+            className="mt-2 w-full rounded-xl border border-[var(--color-cream-darker)] px-4 py-2.5 text-sm disabled:opacity-60"
           />
         )}
         <textarea

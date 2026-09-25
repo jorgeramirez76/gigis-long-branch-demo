@@ -51,6 +51,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       res.status(200).json({ valid: false, message: check.message });
       return;
     }
+    if (check.kind === "pct_pizza") {
+      // Worth a percentage of whatever pizzas are in the cart; both sides compute it from the
+      // cart with src/lib/pizzaPercent.ts, so only the percentage travels.
+      res.status(200).json({
+        valid: true,
+        code: check.code,
+        kind: check.kind,
+        percentOff: check.percentOff,
+        description: check.description,
+        pickupOnly: check.pickupOnly,
+        message: `Code applied — ${check.percentOff}% off every pizza on this pickup order.`,
+      });
+      return;
+    }
     if (check.kind === "bogo_pizza") {
       // No discountCents here: a buy-one-get-one is worth whatever the cheaper pizza in the
       // cart costs, so the amount is computed from the cart on both sides (src/lib/bogoPromo.ts)

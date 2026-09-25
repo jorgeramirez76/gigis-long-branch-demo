@@ -26,7 +26,7 @@ import { isOrderingOpen, isDeliveryOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, releaseOrder, reserveOrder, settleQueuedPrint, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
 import { applyFreePie, claimPromoCode, isFreePickupOrder, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
-import { applyBogoPizza, normalizeCampaignCode, recordCampaignRedemption, resolvePromo } from "../lib/campaignPromo.js";
+import { applyBogoPizza, applyPizzaPercent, normalizeCampaignCode, recordCampaignRedemption, resolvePromo } from "../lib/campaignPromo.js";
 import { alertStaffOnce, alertStaff, sendReceiptEmail } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
@@ -456,6 +456,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return;
       }
       campaign = { id: check.id, code: check.code, freeCount: applied.freeCount };
+      discount = applied.discountCents;
+      kitchenLines = applied.lines;
+    } else if (check.kind === "pct_pizza") {
+      // Percent off every pizza, toppings included (src/lib/pizzaPercent.ts, shared with the browser).
+      const applied = applyPizzaPercent(lines, check.code, check.percentOff);
+      if (!applied) {
+        res.status(400).json({
+          error: "promo_needs_pizza",
+          message: `${check.percentOff}% off any pizza — add a pizza from the Pizza menu to use this code.`,
+        });
+        return;
+      }
+      campaign = { id: check.id, code: check.code, freeCount: 0 };
       discount = applied.discountCents;
       kitchenLines = applied.lines;
     } else {

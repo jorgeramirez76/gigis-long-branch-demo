@@ -1,6 +1,7 @@
 import { sql, type VipBusiness } from "./db.js";
 import type { CartLineInput } from "./clover.js";
 import { planBogoPizza, type BogoLine } from "../../src/lib/bogoPromo.js";
+import { planPizzaPercent } from "../../src/lib/pizzaPercent.js";
 import { checkPromoCode, normalizePromoCode } from "./promo.js";
 
 /**
@@ -22,7 +23,9 @@ import { checkPromoCode, normalizePromoCode } from "./promo.js";
  * A campaign has a validity window and is pickup-only; the order endpoint enforces both.
  */
 
-export type CampaignKind = "bogo_pizza";
+/** bogo_pizza: buy one pizza, get the cheaper one free (GAMEDAY).
+ *  pct_pizza:  a percentage off every pizza, toppings included (STORM25 = 25). */
+export type CampaignKind = "bogo_pizza" | "pct_pizza";
 
 export type CampaignRow = {
   id: number;
@@ -30,6 +33,8 @@ export type CampaignRow = {
   kind: CampaignKind;
   description: string;
   pickupOnly: boolean;
+  /** Whole percent for pct_pizza; 0 otherwise. */
+  percentOff: number;
 };
 
 export type CampaignCheck =
@@ -54,6 +59,8 @@ export async function ensureCampaignTables() {
   )`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS campaign_promos_business_code_uq
     ON campaign_promos (business, code)`;
+  // pct_pizza campaigns (2026-09-25) carry their percentage on the row.
+  await sql`ALTER TABLE campaign_promos ADD COLUMN IF NOT EXISTS percent_off INT NOT NULL DEFAULT 0`;
   // One row per use. The UNIQUE below is what makes redemption idempotent: the order
   // endpoint can call record twice for the same attempt (retry, replay) and the offer is
   // still counted once, without any burn semantics that could lock the next customer out.
@@ -85,7 +92,7 @@ export function normalizeCampaignCode(raw: unknown): string | null {
 export async function checkCampaignCode(business: VipBusiness, code: string): Promise<CampaignCheck> {
   await ensureCampaignTables();
   const r = await sql`
-    SELECT id, code, kind, description, pickup_only, active, starts_at, expires_at
+    SELECT id, code, kind, description, pickup_only, active, starts_at, expires_at, percent_off
     FROM campaign_promos
     WHERE business = ${business} AND code = ${code}
   `;
@@ -93,6 +100,7 @@ export async function checkCampaignCode(business: VipBusiness, code: string): Pr
     | {
         id: number; code: string; kind: string; description: string;
         pickup_only: boolean; active: boolean; starts_at: string | null; expires_at: string | null;
+        percent_off: number | null;
       }
     | undefined;
   if (!row) return { ok: false, reason: "not_found", message: "We don't recognise that code." };
@@ -104,13 +112,21 @@ export async function checkCampaignCode(business: VipBusiness, code: string): Pr
   if (row.expires_at && new Date(row.expires_at).getTime() <= now) {
     return { ok: false, reason: "expired", message: "That offer has ended." };
   }
+  if (row.kind !== "bogo_pizza" && row.kind !== "pct_pizza") {
+    return { ok: false, reason: "inactive", message: "That offer has ended." };
+  }
+  const percentOff = row.kind === "pct_pizza" ? Math.min(100, Math.max(0, Math.round(Number(row.percent_off) || 0))) : 0;
+  if (row.kind === "pct_pizza" && percentOff < 1) {
+    return { ok: false, reason: "inactive", message: "That offer has ended." };
+  }
   return {
     ok: true,
     id: Number(row.id),
     code: row.code,
-    kind: row.kind as CampaignKind,
+    kind: row.kind,
     description: row.description,
     pickupOnly: row.pickup_only !== false,
+    percentOff,
   };
 }
 
@@ -150,6 +166,33 @@ export function applyBogoPizza(
   return { lines: out, discountCents: plan.discountCents, freeCount: plan.freeCount };
 }
 
+/**
+ * Take a percentage off every pizza unit — base price AND toppings — by lowering the line's
+ * base price by the per-unit discount. Options stay on the line unchanged, so the kitchen chit
+ * still lists every topping while Clover's line total, the tax and ours all agree, for the same
+ * reason applyBogoPizza zero-prices rather than adding an order-level discount.
+ *
+ * Returns null when the cart holds no pizza: it is money off PIZZA, not off the order.
+ */
+export function applyPizzaPercent(
+  lines: CartLineInput[],
+  code: string,
+  percentOff: number,
+): { lines: CartLineInput[]; discountCents: number; pizzaUnits: number } | null {
+  const plan = planPizzaPercent(lines as unknown as BogoLine[], percentOff);
+  if (plan.pizzaUnits < 1 || plan.discountCents < 1) return null;
+  const out = lines.map((line, index) => {
+    const off = plan.perUnitByIndex[index] ?? 0;
+    if (off < 1) return line;
+    return {
+      ...line,
+      basePrice: line.basePrice - off,
+      notes: [`${Math.round(percentOff)}% OFF — ${code}`, line.notes].filter(Boolean).join(" · "),
+    };
+  });
+  return { lines: out, discountCents: plan.discountCents, pizzaUnits: plan.pizzaUnits };
+}
+
 /** Append one use. Idempotent per order attempt, and NEVER throws — a bookkeeping hiccup
  *  must not fail an order that has already been made and paid for. */
 export async function recordCampaignRedemption(
@@ -173,7 +216,7 @@ export async function recordCampaignRedemption(
 
 export type ResolvedPromo =
   | { ok: true; kind: "welcome"; id: number; code: string; description: string }
-  | { ok: true; kind: CampaignKind; id: number; code: string; description: string; pickupOnly: boolean }
+  | { ok: true; kind: CampaignKind; id: number; code: string; description: string; pickupOnly: boolean; percentOff: number }
   | { ok: false; message: string };
 
 const BAD_FORMAT = "That code doesn't look right — check it and try again.";
@@ -194,7 +237,7 @@ export async function resolvePromo(business: VipBusiness, raw: unknown): Promise
   if (campaignCode) {
     const hit = await checkCampaignCode(business, campaignCode);
     if (hit.ok) {
-      return { ok: true, kind: hit.kind, id: hit.id, code: hit.code, description: hit.description, pickupOnly: hit.pickupOnly };
+      return { ok: true, kind: hit.kind, id: hit.id, code: hit.code, description: hit.description, pickupOnly: hit.pickupOnly, percentOff: hit.percentOff };
     }
     // A code that exists but is over or not yet open must say so, rather than being
     // retried as a welcome code and coming back "we don't recognise that".

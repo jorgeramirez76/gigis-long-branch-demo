@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { isVipBusiness } from "../lib/db.js";
 import { requireAdmin } from "../lib/adminAuth.js";
-import { runBroadcast } from "../lib/broadcastRun.js";
+import { isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
 import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
 
 export const config = { maxDuration: 300 };
@@ -39,11 +39,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!dryRun && (typeof requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId)))
     return void res.status(400).json({ error: "request_id_required" });
 
-  // A flyer must already be published on the shop's own site — never an arbitrary host.
   let image: string | null = null;
   if (imageUrl != null && imageUrl !== "") {
-    if (typeof imageUrl !== "string" || !/^https:\/\/gigislongbranch\.com\/img\/[\w./-]+\.(?:jpe?g|png|gif)$/i.test(imageUrl) || imageUrl.includes(".."))
-      return void res.status(400).json({ error: "invalid_image_url" });
+    if (!isOwnFlyerUrl(imageUrl)) return void res.status(400).json({ error: "invalid_image_url" });
     image = imageUrl;
   }
   const codeRequested = typeof promoCode === "string" && promoCode.trim().length > 0;

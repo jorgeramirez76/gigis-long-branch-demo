@@ -32,6 +32,11 @@ export type BroadcastInput = {
   imageAlt?: string;
 };
 
+/** A flyer must already be published on the shop's own site — never an arbitrary host. */
+export function isOwnFlyerUrl(v: unknown): v is string {
+  return typeof v === "string" && !v.includes("..") && /^https:\/\/gigislongbranch\.com\/img\/[\w./-]+\.(?:jpe?g|png|gif)$/i.test(v);
+}
+
 export type BroadcastOutcome = { status: number; body: Record<string, unknown> };
 
 export async function runBroadcast(input: BroadcastInput): Promise<BroadcastOutcome> {

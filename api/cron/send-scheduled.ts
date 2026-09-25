@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { cronAuthorized } from "../lib/cronAuth.js";
 import { sql, isVipBusiness } from "../lib/db.js";
-import { runBroadcast } from "../lib/broadcastRun.js";
+import { isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
+import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
 
 /**
  * GET /api/cron/send-scheduled — every 5 minutes (vercel.json).
@@ -36,6 +37,12 @@ export async function ensureScheduledTable() {
     result      JSONB,
     created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
   )`;
+  // 2026-09-25: a queued blast can carry the same promo code and email flyer the dashboard can.
+  await sql`ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS promo_code TEXT`;
+  await sql`ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS promo_description TEXT`;
+  await sql`ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS promo_expires_at TIMESTAMPTZ`;
+  await sql`ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS image_url TEXT`;
+  await sql`ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS image_alt TEXT`;
   ensured = true;
 }
 
@@ -50,6 +57,8 @@ function flag(v: unknown): boolean {
 type Row = {
   id: number; business: string; subject: string | null; message: string;
   want_sms: boolean; want_email: boolean; send_at: string; request_id: string;
+  promo_code?: string | null; promo_description?: string | null; promo_expires_at?: string | null;
+  image_url?: string | null; image_alt?: string | null;
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -75,7 +84,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           WHERE send_at <= now() AND started_at IS NULL
           ORDER BY send_at, id LIMIT 1
         ) AND started_at IS NULL
-        RETURNING id, business, subject, message, want_sms, want_email, send_at, request_id
+        RETURNING id, business, subject, message, want_sms, want_email, send_at, request_id,
+                  promo_code, promo_description, promo_expires_at, image_url, image_alt
       `;
       const row = claimed.rows[0] as Row | undefined;
       if (!row) break;
@@ -84,6 +94,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (!isVipBusiness(row.business)) {
         outcome = { status: 400, body: { error: "invalid_business" } };
       } else {
+        const code = row.promo_code ? normalizeBroadcastPromoCode(row.promo_code) : null;
+        const expiry = row.promo_expires_at ? new Date(row.promo_expires_at) : null;
         try {
           outcome = await runBroadcast({
             business: row.business,
@@ -91,11 +103,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             subject: row.subject ?? undefined,
             wantSms: flag(row.want_sms),
             wantEmail: flag(row.want_email),
-            code: null,
-            codeDesc: "",
-            expiry: null,
+            code,
+            codeDesc: code ? (row.promo_description ?? "").trim() || code : "",
+            expiry: expiry && Number.isFinite(expiry.getTime()) ? expiry : null,
             dryRun: false,
             requestId: row.request_id,
+            imageUrl: isOwnFlyerUrl(row.image_url) ? row.image_url : null,
+            imageAlt: row.image_alt ?? undefined,
           });
         } catch (err) {
           console.error(`[cron/send-scheduled] row ${row.id} threw`, err);

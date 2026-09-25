@@ -330,3 +330,9 @@ CREATE TABLE IF NOT EXISTS scheduled_broadcasts (
   result      JSONB,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+-- 2026-09-25: a queued blast can carry the dashboard's promo code and an email flyer.
+ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS promo_code TEXT;
+ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS promo_description TEXT;
+ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS promo_expires_at TIMESTAMPTZ;
+ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS image_url TEXT;   -- gigislongbranch.com/img/… only
+ALTER TABLE scheduled_broadcasts ADD COLUMN IF NOT EXISTS image_alt TEXT;

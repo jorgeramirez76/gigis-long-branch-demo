@@ -26,7 +26,7 @@ type Fulfillment = "pickup" | "delivery";
 /** "welcome" is the per-member free Plain Pie; "bogo_pizza" is a campaign word like GAMEDAY
  *  whose value is the cheaper pizza in the cart (src/lib/bogoPromo.ts, shared with the server). */
 type PromoKind = "welcome" | "bogo_pizza" | "pct_pizza";
-type PromoState = { code: string; discountCents: number; kind: PromoKind; percentOff?: number };
+type PromoState = { code: string; discountCents: number; kind: PromoKind; percentOff?: number; pickupOnly?: boolean };
 function promoKind(raw: unknown): PromoKind {
   return raw === "bogo_pizza" || raw === "pct_pizza" ? raw : "welcome";
 }
@@ -82,7 +82,7 @@ type SavedForm = {
   tipPct?: number;
   tipTouched?: boolean;
   orderNote?: string;
-  promo?: { code: string; discountCents: number; kind?: PromoKind; percentOff?: number } | null;
+  promo?: { code: string; discountCents: number; kind?: PromoKind; percentOff?: number; pickupOnly?: boolean } | null;
   /** The uncertainty freeze must survive the reload it exists for: an aborted attempt whose
    *  capture may have landed freezes the priced inputs, and reload is exactly how people
    *  retry — an unfrozen post-reload form lets them nudge the tip, mint a fresh key, and
@@ -155,7 +155,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [promoInput, setPromoInput] = useState("");
   const [promo, setPromo] = useState<PromoState | null>(
     saved.promo && typeof saved.promo.code === "string" && typeof saved.promo.discountCents === "number"
-      ? { ...saved.promo, kind: promoKind(saved.promo.kind), percentOff: Number(saved.promo.percentOff) || 0 }
+      ? { ...saved.promo, kind: promoKind(saved.promo.kind), percentOff: Number(saved.promo.percentOff) || 0, pickupOnly: saved.promo.pickupOnly !== false }
       : null,
   );
   const [promoMsg, setPromoMsg] = useState("");
@@ -235,8 +235,11 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const pct = planPizzaPercent(cart.lines, promo?.kind === "pct_pizza" ? promo.percentOff ?? 0 : 0);
   const promoQualifies =
     promo?.kind === "bogo_pizza" ? bogo.freeCount > 0 : promo?.kind === "pct_pizza" ? pct.discountCents > 0 : hasFreePie;
+  // A pickup-only code (the welcome pie, GAMEDAY) is worth nothing on a delivery order;
+  // STORM25 is good either way, and the server enforces the same flag.
+  const promoBlockedByDelivery = fulfillment !== "pickup" && (!promo || promo.pickupOnly !== false);
   const promoDiscount =
-    !promo || fulfillment !== "pickup" || !promoQualifies
+    !promo || promoBlockedByDelivery || !promoQualifies
       ? 0
       : Math.min(
           promo.kind === "bogo_pizza" ? bogo.discountCents : promo.kind === "pct_pizza" ? pct.discountCents : promo.discountCents,
@@ -457,7 +460,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       });
       const data = await res.json();
       if (res.ok && data.valid && typeof data.code === "string") {
-        setPromo({ code: data.code, discountCents: Number(data.discountCents) || 0, kind: promoKind(data.kind), percentOff: Number(data.percentOff) || 0 });
+        setPromo({ code: data.code, discountCents: Number(data.discountCents) || 0, kind: promoKind(data.kind), percentOff: Number(data.percentOff) || 0, pickupOnly: data.pickupOnly !== false });
         setPromoInput("");
       } else {
         setPromo(null);
@@ -980,10 +983,23 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         {/* Promo code: VIP welcome pie or a campaign word (GAMEDAY) */}
         <div>
           <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Promo code</p>
-          {fulfillment === "delivery" ? (
-            <p className="rounded-xl bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy-soft)]">
-              Promo codes are good on <strong>pickup orders only</strong> — switch to pickup to redeem yours.
-            </p>
+          {fulfillment === "delivery" && promo && promo.pickupOnly !== false ? (
+            <div className="flex items-center justify-between gap-3 rounded-xl bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy-soft)]">
+              <span>
+                <strong className="font-mono">{promo.code}</strong> is good on <strong>pickup orders only</strong> — switch to pickup to redeem it.
+              </span>
+              <button
+                type="button"
+                disabled={frozen}
+                onClick={() => {
+                  setPromo(null);
+                  setPromoMsg("");
+                }}
+                className="shrink-0 text-xs font-bold text-[var(--color-action-text)] underline"
+              >
+                Remove
+              </button>
+            </div>
           ) : promo ? (
             <div className="rounded-xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy)]">
               <div className="flex items-center justify-between gap-3">

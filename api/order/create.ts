@@ -310,13 +310,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(400).json({ error: "promo_invalid", message: "That code doesn't look right — check it and try again." });
     return;
   }
-  if (promoCode && fulfillment !== "pickup") {
-    res.status(400).json({
-      error: "promo_pickup_only",
-      message: "Promo codes are good on pickup orders only — switch to pickup to use your code.",
-    });
-    return;
-  }
+  // Whether a code is pickup-only is settled below, once the resolver says which offer it is:
+  // the welcome pie always is; a campaign code says so on its row (STORM25 allows delivery).
   if (!UUID_RE.test(idempotencyKey)) {
     res.status(400).json({ error: "idempotency_key_required" });
     return;
@@ -443,6 +438,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const check = await resolvePromo("gigis_long_branch", promoCodeRaw);
     if (!check.ok) {
       res.status(400).json({ error: "promo_invalid", message: check.message });
+      return;
+    }
+    if (fulfillment !== "pickup" && (check.kind === "welcome" || check.pickupOnly)) {
+      res.status(400).json({
+        error: "promo_pickup_only",
+        message: "That code is good on pickup orders only — switch to pickup to use it.",
+      });
       return;
     }
     appliedCode = check.code;

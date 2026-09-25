@@ -22,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { business, message, subject, channels, promoCode, promoDescription, expiresAt, dryRun, requestId } =
+  const { business, message, subject, channels, promoCode, promoDescription, expiresAt, dryRun, requestId, imageUrl, imageAlt } =
     req.body ?? {};
 
   if (!isVipBusiness(business)) return void res.status(400).json({ error: "invalid_business" });
@@ -39,6 +39,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!dryRun && (typeof requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId)))
     return void res.status(400).json({ error: "request_id_required" });
 
+  // A flyer must already be published on the shop's own site — never an arbitrary host.
+  let image: string | null = null;
+  if (imageUrl != null && imageUrl !== "") {
+    if (typeof imageUrl !== "string" || !/^https:\/\/gigislongbranch\.com\/img\/[\w./-]+\.(?:jpe?g|png|gif)$/i.test(imageUrl) || imageUrl.includes(".."))
+      return void res.status(400).json({ error: "invalid_image_url" });
+    image = imageUrl;
+  }
   const codeRequested = typeof promoCode === "string" && promoCode.trim().length > 0;
   const code = codeRequested ? normalizeBroadcastPromoCode(promoCode) : null;
   if (codeRequested && !code) {
@@ -56,6 +63,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const out = await runBroadcast({
       business, message, subject, wantSms, wantEmail, code, codeDesc, expiry, dryRun: dryRun === true, requestId,
+      imageUrl: image, imageAlt: typeof imageAlt === "string" ? imageAlt.slice(0, 200) : undefined,
     });
     res.status(out.status).json(out.body);
   } catch (err) {

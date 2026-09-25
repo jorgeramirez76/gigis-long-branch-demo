@@ -93,7 +93,7 @@ export async function sendEmail(
   toEmail: string,
   subject: string,
   bodyText: string,
-  opts?: { promoCode?: string; promoDescription?: string; promoHowTo?: string; ctaText?: string; ctaUrl?: string },
+  opts?: { promoCode?: string; promoDescription?: string; promoHowTo?: string; ctaText?: string; ctaUrl?: string; imageUrl?: string; imageAlt?: string },
 ): Promise<SendResult> {
   const { RESEND_API_KEY, EMAIL_FROM } = process.env;
   if (!RESEND_API_KEY || !EMAIL_FROM) {
@@ -121,7 +121,7 @@ export async function sendEmail(
         from: EMAIL_FROM,
         to: [toEmail],
         subject,
-        html: emailHtml({ bodyText, unsubUrl, promoCode: opts?.promoCode, promoDescription: opts?.promoDescription, promoHowTo: opts?.promoHowTo, ctaText: opts?.ctaText, ctaUrl: opts?.ctaUrl }),
+        html: emailHtml({ bodyText, unsubUrl, promoCode: opts?.promoCode, promoDescription: opts?.promoDescription, promoHowTo: opts?.promoHowTo, ctaText: opts?.ctaText, ctaUrl: opts?.ctaUrl, imageUrl: opts?.imageUrl, imageAlt: opts?.imageAlt }),
         text: `${bodyText}\n\nUnsubscribe: ${unsubUrl}`,
         headers: {
           "List-Unsubscribe": `<${unsubUrl}>`,

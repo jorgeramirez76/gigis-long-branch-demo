@@ -35,6 +35,9 @@ export function emailHtml(opts: {
   /** Button under the message. Defaults to the menu — set both to point it elsewhere. */
   ctaText?: string;
   ctaUrl?: string;
+  /** Flyer shown above the message. Callers pass only URLs on the shop's own site. */
+  imageUrl?: string;
+  imageAlt?: string;
 }): string {
   const paragraphs = opts.bodyText
     .split(/\n{2,}/)
@@ -59,6 +62,7 @@ export function emailHtml(opts: {
       <div style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:0.5px;">GIGI'S VIP CLUB</div>
       <div style="font-size:13px;color:#e6b45e;margin-top:4px;letter-spacing:1px;text-transform:uppercase;">NY Style Pizza — Long Branch</div>
     </div>
+    ${opts.imageUrl ? `<img src="${escapeHtml(opts.imageUrl)}" alt="${escapeHtml(opts.imageAlt || "")}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border:0;">` : ""}
     <div style="background:#ffffff;padding:28px 24px;">
       ${paragraphs}
       ${promoBlock}

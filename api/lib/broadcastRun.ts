@@ -27,12 +27,15 @@ export type BroadcastInput = {
   expiry: Date | null;
   dryRun: boolean;
   requestId: string | undefined;
+  /** Optional flyer for the email (validated by the caller to the shop's own site). */
+  imageUrl?: string | null;
+  imageAlt?: string;
 };
 
 export type BroadcastOutcome = { status: number; body: Record<string, unknown> };
 
 export async function runBroadcast(input: BroadcastInput): Promise<BroadcastOutcome> {
-  const { business, message, subject, wantSms, wantEmail, code, codeDesc, expiry, dryRun, requestId } = input;
+  const { business, message, subject, wantSms, wantEmail, code, codeDesc, expiry, dryRun, requestId, imageUrl, imageAlt } = input;
 const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : message.trim());
 
   const smsAudience = wantSms
@@ -85,7 +88,7 @@ const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : messag
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS broadcasts_active_content_uidx ON broadcasts(content_key) WHERE completed_at IS NULL`;
   const contentKey = createHash("sha256").update(JSON.stringify([
     business, message.trim(), wantEmail ? subject!.trim() : null, wantSms, wantEmail,
-    code, codeDesc, expiry?.toISOString() ?? null,
+    code, codeDesc, expiry?.toISOString() ?? null, ...(imageUrl ? [imageUrl] : []),
   ])).digest("hex");
 
   async function priorRunSummary() {
@@ -216,6 +219,8 @@ const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : messag
     const result = await sendEmail(m.email!, subject!.trim(), message.trim(), {
       promoCode: code ?? undefined,
       promoDescription: codeDesc ? `${codeDesc} — redeem at the register only; not valid in online checkout.` : undefined,
+      imageUrl: imageUrl ?? undefined,
+      imageAlt,
     });
     if (result.sent) counts.emailSent++;
     else counts.emailFailed++;

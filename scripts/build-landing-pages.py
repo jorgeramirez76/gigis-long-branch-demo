@@ -370,6 +370,8 @@ def body(page, others, price_html):
         for s in page["sections"])
     if page["slug"] == "catering-long-branch":
         sections += '<section class="wrap"><h2>Planning a child’s birthday?</h2><p>For a hands-on celebration at the restaurant, explore our <a href="/pizza-party-long-branch/">kids’ make-your-own-pizza parties</a>. Call the team about dates and arrangements.</p></section>'
+    if page["slug"] in {"pizza-delivery-pier-village", "pizza-delivery-west-end-long-branch", "pizza-delivery-elberon"}:
+        sections += '<section class="wrap"><h2>Feeding a group?</h2><p>Compare <a href="/catering-long-branch/">Long Branch catering options</a> when planning an office lunch or gathering. Confirm quantities, timing and delivery arrangements with the restaurant.</p></section>'
     faq = "".join(f"<details><summary>{E(q['q'])}</summary><p>{E(q['a'])}</p></details>" for q in page["faq"])
     # internal links to EVERY sibling landing page. Google reported /pizza-delivery-elberon/
     # and /pizza-delivery-pier-village/ as "Discovered - currently not indexed" with no

@@ -273,6 +273,18 @@
         "paragraphs": [
           "We cater the full Gigi's menu: hand-stretched New York-style pizza, Grandma squares, and specialty pies, plus hot and cold heroes, pasta, salads, appetizers, and full Italian dinners. It travels well and feeds a crowd.",
           "Feeding guests with dietary needs? We make gluten-free NY-style pizza (prepared in a shared kitchen, so not guaranteed allergen-free) and vegan pizza on our NY crust with dairy-free cheese and vegetable toppings."
+        ],
+        "reading": [
+          {
+            "context": "For guests asking about ingredients and preparation, review the",
+            "href": "/gluten-free-pizza-long-branch/",
+            "label": "gluten-free pizza and shared-kitchen details"
+          },
+          {
+            "context": "For dairy-free pizza requests, see the",
+            "href": "/vegan-pizza-long-branch/",
+            "label": "vegan pizza menu information"
+          }
         ]
       },
       {
@@ -373,6 +385,13 @@
         "h2": "How to order",
         "paragraphs": [
           "Order online at gigislongbranch.com by tapping the menu or Order button, or call us at (732) 377-2468. We're open 7 days: Monday through Wednesday 10 AM to 11 PM, and Thursday through Sunday 10 AM to midnight. Catering is available for events, offices and gatherings too."
+        ],
+        "reading": [
+          {
+            "context": "Ordering later in the evening? Check the",
+            "href": "/late-night-pizza-long-branch/",
+            "label": "Long Branch late-night pickup and delivery hours"
+          }
         ]
       }
     ],
@@ -638,6 +657,13 @@
         "h2": "Square pizza for pickup or delivery",
         "paragraphs": [
           "Order square pizza for pickup at 140 Brighton Avenue or delivery to Long Branch and the surrounding towns listed below. Online delivery closes at 10 PM and online pickup at 11 PM daily. The counter is open until 11 PM Monday–Wednesday and midnight Thursday–Sunday; after 11 PM, call or order at the counter for pickup."
+        ],
+        "reading": [
+          {
+            "context": "If your group is gathering near the waterfront, review the",
+            "href": "/pizza-delivery-pier-village/",
+            "label": "Pier Village pizza delivery information"
+          }
         ]
       }
     ],
@@ -711,6 +737,13 @@
         "h2": "Feeding Monmouth University",
         "paragraphs": [
           "Monmouth University's campus is in West Long Branch, minutes from our kitchen. A hot NY pie, a stack of garlic knots, or a hero delivered to a dorm study session or a game-day watch party is exactly the kind of order we run all the time — and the whole menu is available for delivery, not a shortened list."
+        ],
+        "reading": [
+          {
+            "context": "Planning food for a group? Compare the",
+            "href": "/catering-long-branch/",
+            "label": "Long Branch pizza and Italian catering options"
+          }
         ]
       },
       {

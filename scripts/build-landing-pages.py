@@ -362,11 +362,17 @@ def head(page):
 <script type="module" src="/metrics.js"></script>
 </head>"""
 
+def contextual_reading(section):
+    return "".join(
+        f'<p>{E(item["context"])} <a href="{E(item["href"])}">{E(item["label"])}</a>.</p>'
+        for item in section.get("reading", [])
+    )
+
 def body(page, others, price_html):
     order = (BASE + page["orderHref"]) if page.get("orderHref") else order_url()
     tel = f"tel:{BIZ['phone_tel']}"
     sections = "".join(
-        f"<section class=\"wrap\"><h2>{E(s['h2'])}</h2>{''.join(f'<p>{E(p)}</p>' for p in s['paragraphs'])}</section>"
+        f"<section class=\"wrap\"><h2>{E(s['h2'])}</h2>{''.join(f'<p>{E(p)}</p>' for p in s['paragraphs'])}{contextual_reading(s)}</section>"
         for s in page["sections"])
     if page["slug"] == "catering-long-branch":
         sections += '<section class="wrap"><h2>Planning a child’s birthday?</h2><p>For a hands-on celebration at the restaurant, explore our <a href="/pizza-party-long-branch/">kids’ make-your-own-pizza parties</a>. Call the team about dates and arrangements.</p></section>'

@@ -25,6 +25,9 @@ function mockStorage() {
 }
 test('passwords use independent salts, reject truncation and never match a missing account',async()=>{
   assert.equal(validPassword('short'),false);
+  // Owner, 2026-10-01: 8 characters is the minimum (was 12).
+  assert.equal(validPassword('abcdefg'),false);
+  assert.equal(validPassword('abcdefgh'),true);
   assert.equal(validPassword('😀'.repeat(19)),false);
   const value='a long memorable pizza password';const first=await hashPassword(value),second=await hashPassword(value);
   assert.notEqual(first,second);assert.equal(await verifyPassword(value,first),true);

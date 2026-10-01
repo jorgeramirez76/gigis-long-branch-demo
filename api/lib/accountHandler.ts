@@ -102,7 +102,7 @@ export function accountHandler(action: string) {
         return void res.status(200).json(GENERIC);
       }
       if (action === "password-reset-confirm") {
-        if (!/^[A-Za-z0-9_-]{43}$/.test(text(body.token,100)) || !validPassword(body.password)) return void res.status(400).json({error:"invalid_password",message:"Use 12 or more characters (at most 72 UTF-8 bytes)."});
+        if (!/^[A-Za-z0-9_-]{43}$/.test(text(body.token,100)) || !validPassword(body.password)) return void res.status(400).json({error:"invalid_password",message:"Use 8 or more characters (at most 72 UTF-8 bytes)."});
         const result = await sql`SELECT email,purpose,payload FROM account_tokens WHERE token_hash=${tokenId} AND business=${ACCOUNT_BUSINESS} AND used_at IS NULL AND expires_at>now()`;
         const pending = result.rows[0];
         if (!pending) return void res.status(400).json({error:"link_expired",message:"This link was used or expired. Request another."});

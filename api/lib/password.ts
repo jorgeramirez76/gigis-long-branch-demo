@@ -1,9 +1,9 @@
 import { hash, compare, truncates } from "bcryptjs";
 export function validPassword(value: unknown): value is string {
-  return typeof value === "string" && value.length >= 12 && !truncates(value);
+  return typeof value === "string" && value.length >= 8 && !truncates(value);
 }
 export async function hashPassword(password: string): Promise<string> {
-  if (!validPassword(password)) throw new Error("Use at least 12 characters and at most 72 UTF-8 bytes.");
+  if (!validPassword(password)) throw new Error("Use at least 8 characters and at most 72 UTF-8 bytes.");
   return hash(password, 12);
 }
 // A valid cost-12 hash ensures missing accounts still perform the same expensive comparison.

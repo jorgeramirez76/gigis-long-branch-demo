@@ -19,6 +19,7 @@ import { getOpenStatus, isOrderingOpen, isDeliveryOpen, deliveryClosedReason, ty
 import { countUnits, readyMessage } from "../lib/readyTime";
 import { DELIVERY_TOWNS, DELIVERY_FEES, deliveryFeeCents, formatFee, type DeliveryTown } from "../lib/deliveryZones";
 import { RewardsJoin } from "./RewardsJoin";
+import { CONSENT_TEXT } from "../lib/vipConsent";
 import { planBogoPizza } from "../lib/bogoPromo";
 import { planPizzaPercent } from "../lib/pizzaPercent";
 
@@ -129,6 +130,18 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const [name, setName] = useState(saved.name ?? "");
   const [phone, setPhone] = useState(saved.phone ?? "");
   const [email, setEmail] = useState(saved.email ?? "");
+  // VIP-club opt-in riding on the checkout (restored 2026-10-01 — owner: signups stalled once it
+  // was replaced by the post-order account form). Deliberately NOT part of any gate and NOT
+  // persisted to the saved form: marketing fields never block or outlive the money path.
+  // Enrollment starts server-side only after the order lands (free pie = NEXT order).
+  const [vipSms, setVipSms] = useState(false);
+  const [vipEmail, setVipEmail] = useState(false);
+  const [vipAddress, setVipAddress] = useState("");
+  const [vipApt, setVipApt] = useState("");
+  const [vipCity, setVipCity] = useState("");
+  const [vipZip, setVipZip] = useState("");
+  // A signed-in customer already has the club; the join box would only offer them a duplicate.
+  const [signedIn, setSignedIn] = useState(false);
   const [address, setAddress] = useState(saved.address ?? "");
   // VIP-club opt-in riding on the checkout. Deliberately NOT part of any gate and NOT
   // persisted to the saved form: marketing fields never block or outlive the money path.
@@ -193,6 +206,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     let active = true;
     fetch("/api/account/me").then(async r => r.ok ? r.json() : null).then(async data => {
       if (!active || !data) return;
+      setSignedIn(true);
       setName(previous => previous || data.account.name);
       setPhone(previous => previous || data.account.phone || "");
       setEmail(previous => previous || data.account.email);
@@ -494,6 +508,26 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           cardToken,
           idempotencyKey,
           turnstileToken,
+          // VIP-club opt-in: a passenger on the order, sent only when complete enough
+          // for Long Branch's household rules (consent + street + city + 5-digit ZIP;
+          // delivery reuses the order's own street + town and only adds ZIP). Anything
+          // less is omitted and the confirmation-screen form takes over. The server
+          // re-validates everything.
+          vip:
+            !signedIn &&
+            (vipSms || vipEmail) &&
+            /^\d{5}(?:-\d{4})?$/.test(vipZip.trim()) &&
+            (fulfillment === "delivery" || (vipAddress.trim().length >= 4 && vipCity.trim().length >= 2))
+              ? {
+                  smsConsent: vipSms,
+                  emailConsent: vipEmail,
+                  zip: vipZip.trim(),
+                  address: fulfillment === "pickup" ? vipAddress : undefined,
+                  apt: fulfillment === "pickup" && vipApt.trim() ? vipApt : undefined,
+                  city: fulfillment === "pickup" ? vipCity : undefined,
+                  consentText: CONSENT_TEXT,
+                }
+              : undefined,
           customer: {
             name, phone, email,
             address: fulfillment === "delivery" ? address : undefined,
@@ -866,11 +900,87 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <div className="rounded-2xl border border-[var(--color-line)] p-4 text-sm">
-          <p>Gigi’s Rewards keeps your welcome pie and past orders together.</p>
-          <a className="font-bold underline" href="/account/">Sign in to use your rewards</a>
-          <p className="mt-1 text-xs">New here? Create your account after this order.</p>
-        </div>
+        {/* VIP-club opt-in. Consent is captured here; enrollment starts server-side only
+            AFTER the order lands (order/create -> startVipEnrollment), so the free pie can
+            only ever apply to a future order — never this one. Boxes start UNCHECKED:
+            A2P/TCPA require an affirmative opt-in. Nothing in this block ever gates the
+            pay button. Long Branch households dedupe on street+city+state+ZIP, so the
+            block asks for exactly what that rule needs and nothing more. */}
+        {!signedIn && (
+          <div className="rounded-2xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-panel)] p-4 shadow-sm">
+            <p className="text-sm font-bold text-[var(--color-copy)]">🍕 Get a FREE Plain Pie on your next pickup order</p>
+            <p className="mt-0.5 text-xs text-[var(--color-copy-soft)]">
+              Join Gigi's VIP Club — we'll email your free-pie code right after this order.
+            </p>
+            <div className="mt-2.5 space-y-2 text-sm text-[var(--color-copy)]">
+              <label className="flex items-start gap-2.5">
+                <input type="checkbox" checked={vipSms} disabled={frozen} onChange={(e) => setVipSms(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0" />
+                <span>Text me deals</span>
+              </label>
+              <label className="flex items-start gap-2.5">
+                <input type="checkbox" checked={vipEmail} disabled={frozen} onChange={(e) => setVipEmail(e.target.checked)} className="mt-0.5 h-4 w-4 shrink-0" />
+                <span>Email me deals</span>
+              </label>
+            </div>
+            {(vipSms || vipEmail) && (
+              <div className="mt-2.5 space-y-2">
+                {fulfillment === "pickup" && (
+                  <>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={vipAddress}
+                        onChange={(e) => setVipAddress(e.target.value)}
+                        placeholder="Home address (one pie per household)"
+                        autoComplete="street-address"
+                        disabled={frozen}
+                        maxLength={160}
+                        className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                      />
+                      <input
+                        type="text"
+                        value={vipApt}
+                        onChange={(e) => setVipApt(e.target.value)}
+                        placeholder="Apt"
+                        autoComplete="address-line2"
+                        disabled={frozen}
+                        maxLength={40}
+                        className="mt-1 w-20 shrink-0 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      value={vipCity}
+                      onChange={(e) => setVipCity(e.target.value)}
+                      placeholder="City / town"
+                      autoComplete="address-level2"
+                      disabled={frozen}
+                      maxLength={60}
+                      className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                    />
+                  </>
+                )}
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={vipZip}
+                  onChange={(e) => setVipZip(e.target.value)}
+                  placeholder={fulfillment === "delivery" ? "ZIP code (for your one-per-household pie)" : "ZIP code"}
+                  autoComplete="postal-code"
+                  disabled={frozen}
+                  maxLength={10}
+                  className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base text-[var(--color-copy)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+                />
+              </div>
+            )}
+            {/* The disclosure at the point of consent — the same pinned CONSENT_TEXT every other
+                signup surface shows unconditionally, and the server verifies was attested. */}
+            <p className="mt-2 text-[10px] leading-relaxed text-[var(--color-copy-muted)]">{CONSENT_TEXT}</p>
+            <p className="mt-2 text-xs text-[var(--color-copy-soft)]">
+              Already a member? <a className="font-bold underline" href="/account/">Sign in to use your rewards</a>
+            </p>
+          </div>
+        )}
 
         {/* Tip */}
         <div>

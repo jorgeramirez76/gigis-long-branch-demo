@@ -120,6 +120,7 @@ def main():
 <p class="eyebrow">Full menu &amp; prices · Long Branch, NJ</p>
 <h1>Gigi's Long Branch Menu with Prices</h1>
 <p class="dek">Every item and every price below comes straight from the register — {total} items across {len([c for c in cats if c[3]])} categories: hand-stretched NY pies, Grandma and Sicilian squares, heroes, pasta, all-day breakfast, and more. Order pickup or delivery online, or call {PHONE}.</p>
+<p>Looking for breakfast? Explore the <a href="/breakfast">breakfast menu</a>, then choose your items from the current menu below.</p>
 <p class="pnote">Cash menu prices shown. Card orders add 4% card pricing, plus tax and any delivery fee. Your total is shown before you pay.</p>
 <div class="cta"><a class="btn btn-gold" href="{BASE}/#menu">Order Online</a>
 <a class="btn btn-ghost" href="{TEL}">Call {PHONE}</a></div>

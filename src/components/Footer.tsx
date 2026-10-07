@@ -86,6 +86,7 @@ export function Footer() {
           <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-action-text)]">Explore</p>
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[var(--color-copy)]/75">
             <a href="/menu/" className="hover:text-[var(--color-copy)]">Full Menu &amp; Prices</a>
+            <a href="/breakfast" className="hover:text-[var(--color-copy)]">Breakfast Menu</a>
             <a href="/square-pizza-long-branch/" className="hover:text-[var(--color-copy)]">Square Pizza</a>
             <a href="/pizza-delivery-west-long-branch/" className="hover:text-[var(--color-copy)]">West Long Branch Delivery</a>
             <a href="/pizza-party-long-branch/" className="hover:text-[var(--color-copy)]">Kids’ Pizza Parties</a>

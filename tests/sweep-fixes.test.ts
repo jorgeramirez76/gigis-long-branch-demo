@@ -23,7 +23,8 @@ test("a short ecomm read retries and consults REST instead of aborting the sale"
   assert.match(clover, /if \(expected === undefined \|\| amount >= expected\) return amount;/);
   assert.match(clover, /typeof d\?\.total === "number" \? d\.total === expected : null/);
   const create = read("../api/order/create.ts");
-  assert.match(create, /getEcommOrderAmount\(draftId, orderAmount\)/);
+  // The card branch shares ONE 429 allowance between the draft build and this read.
+  assert.match(create, /getEcommOrderAmount\(draftId, orderAmount, setupRetry\)/);
 });
 
 test("a frozen customer's replay is answered even after the 11 PM close", () => {

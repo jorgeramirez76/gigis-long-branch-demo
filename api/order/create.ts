@@ -4,6 +4,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import {
   buildOrderNote,
   cloverConfigured,
+  cloverRetryBudget,
   computeTotals,
   createDraftOrder,
   deleteDraftOrder,
@@ -696,6 +697,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         deliveryFee: 0,
         cardPricing: 0,
         note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "free", orderNote, ...noteHeader }),
+        retry: cloverRetryBudget(),
       });
       paidOrderId = draft.id;
       if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draft.id });
@@ -714,6 +716,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   } else if (paymentMethod === "card") {
     const orderAmount = totals.total - totals.tip; // Clover computes items + tax; tip is paid on top.
     let draftId: string | undefined;
+    // ONE 429 allowance (≤6s of waiting in all) for every pre-payment Clover call below, so a
+    // throttled register costs the customer seconds, not a failed checkout. /pay never retries.
+    const setupRetry = cloverRetryBudget();
     try {
       const draft = await createDraftOrder({
         lines: kitchenLines,
@@ -721,24 +726,38 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         deliveryFee: totals.deliveryFee,
         cardPricing: totals.cardPricing,
         note: buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: "card", orderNote, ...noteHeader }),
+        retry: setupRetry,
       });
       draftId = draft.id;
       // Persist the draft pointer before /pay. A function killed during payment must leave staff
       // one exact Clover order to inspect, and the same idempotency key must never make another.
       if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draftId });
-      const cloverAmount = await getEcommOrderAmount(draftId, orderAmount);
+      const cloverAmount = await getEcommOrderAmount(draftId, orderAmount, setupRetry);
       if (cloverAmount !== orderAmount) {
         throw new Error(`Clover amount ${cloverAmount} did not match expected ${orderAmount}`);
       }
     } catch (err) {
-      console.error("[order/create] single-order setup failed before payment", err instanceof Error ? err.message : err);
+      console.error(
+        "[order/create] single-order setup failed before payment",
+        err instanceof CloverError ? err.status : "",
+        err instanceof Error ? err.message : err,
+      );
       const discarded = !draftId || await deleteDraftOrder(draftId).then(() => true, () => false);
       if (discarded && reservedId != null) await releaseOrder(reservedId, { draftDiscarded: !!draftId });
       await releasePromo();
-      res.status(502).json({
-        error: "order_routing_failed",
-        message: "We couldn't prepare your Clover order, so your card was not charged. Please try again or call the store.",
-      });
+      // Clover still throttling after the allowance: say so, rather than "couldn't prepare".
+      const busy = err instanceof CloverError && err.status === 429;
+      res.status(502).json(
+        busy
+          ? {
+              error: "register_busy",
+              message: "Our register is busy right now, so your card was not charged. Please try again in a minute, or call the store.",
+            }
+          : {
+              error: "order_routing_failed",
+              message: "We couldn't prepare your Clover order, so your card was not charged. Please try again or call the store.",
+            },
+      );
       return;
     }
 

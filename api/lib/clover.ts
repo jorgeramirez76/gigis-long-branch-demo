@@ -169,6 +169,88 @@ export class CloverError extends Error {
 }
 
 /**
+ * 429 backoff allowance for ONE checkout's pre-payment Clover setup (per request object, never
+ * module state: Fluid compute runs invocations side by side, and one checkout must not drain
+ * another's allowance).
+ *
+ * Only an explicit 429 is ever retried against it — that is Clover's limiter refusing the
+ * request. A thrown fetch, a 5xx or any other 4xx may already have been applied, so those are
+ * never repeated. Calls made WITHOUT a budget (pay, fire, print, polling, admin listings) are
+ * single-attempt exactly as before: a repeated print_event is a second kitchen ticket.
+ */
+export type CloverRetryBudget = {
+  remainingMs: number;
+  retries: number;
+  /** Epoch ms before which no call on this budget may go out: the longest Retry-After any
+   *  sibling has been given, so one checkout's calls never retry early into a penalty. */
+  notBefore: number;
+};
+export const SETUP_RETRY_BUDGET_MS = 6000; // all setup waits combined
+const ROLLBACK_RETRY_BUDGET_MS = 2000; // the one cleanup DELETE gets its own small allowance
+const RATE_LIMIT_MIN_WAIT_MS = 1000; // Clover: pause at least 1s after a 429
+const RATE_LIMIT_MAX_WAIT_MS = 4000; // longer than this is not worth a customer's checkout
+const RATE_LIMIT_MAX_RETRIES = 2; // per call
+export function cloverRetryBudget(ms = SETUP_RETRY_BUDGET_MS): CloverRetryBudget {
+  return { remainingMs: ms, retries: 0, notBefore: 0 };
+}
+
+const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/** Names of the x-ratelimit-* headers on a 429 — they say WHICH limit fired
+ *  (tokenConcurrentLimit vs tokenLimit vs crossToken*). */
+function rateLimitHeaderNames(res: Response): string[] {
+  const names: string[] = [];
+  res.headers.forEach((_value, name) => {
+    if (name.toLowerCase().startsWith("x-ratelimit")) names.push(name);
+  });
+  return names;
+}
+
+/**
+ * How long to wait before retrying a 429, or null to give up. Never shorter than Retry-After or
+ * than 1s; a Retry-After above RATE_LIMIT_MAX_WAIT_MS fails fast instead (Clover: retrying before
+ * retry-after lengthens the penalty). Charges the wait to `budget`.
+ */
+function rateLimitWaitMs(res: Response, retryNo: number, budget: CloverRetryBudget): number | null {
+  if (retryNo >= RATE_LIMIT_MAX_RETRIES) return null;
+  const header = res.headers.get("retry-after");
+  let asked: number | null = null;
+  if (header) {
+    const seconds = Number(header);
+    if (Number.isFinite(seconds) && seconds > 0) asked = seconds * 1000;
+    else {
+      // The HTTP-date form. Unparseable means we cannot know what Clover asked for, so fail
+      // fast rather than guess short.
+      const at = Date.parse(header);
+      if (!Number.isFinite(at)) return null;
+      asked = at - Date.now();
+    }
+  }
+  const base = asked != null ? Math.max(asked, RATE_LIMIT_MIN_WAIT_MS) : RATE_LIMIT_MIN_WAIT_MS * 2 ** retryNo;
+  if (base > RATE_LIMIT_MAX_WAIT_MS) return null;
+  const wait = base + Math.floor(Math.random() * 250);
+  if (wait > budget.remainingMs) return null;
+  budget.remainingMs -= wait;
+  budget.retries++;
+  budget.notBefore = Math.max(budget.notBefore, Date.now() + wait);
+  return wait;
+}
+
+/** One line per 429: which call, which limit, and what we did. No bodies, no customer data. */
+function logRateLimit(
+  where: string,
+  res: Response,
+  decision: { retryNo: number; waitMs: number } | "giving up" | "not retried",
+): void {
+  const limits = rateLimitHeaderNames(res);
+  const action = typeof decision === "string" ? decision : `retry ${decision.retryNo} in ${decision.waitMs}ms`;
+  console.warn(
+    `[clover] 429 on ${where.split("?")[0]} limit=${limits.length ? limits.join(",") : "-"} ` +
+      `retry-after=${res.headers.get("retry-after") ?? "-"} — ${action}`,
+  );
+}
+
+/**
  * Charge a tokenized card via the Ecommerce API. `amount` is the full amount to
  * capture in cents (subtotal + tax + tip). `idempotencyKey` (a UUID) makes a
  * retry after a lost response return the SAME charge instead of double-charging.
@@ -304,23 +386,47 @@ export async function listOpenWebsiteOrders(maxPages = 5): Promise<{
   return { orders, scanned: rows.length, oldestScanned: Number.isFinite(oldest) ? oldest : undefined, truncated };
 }
 
-async function rest(path: string, init: RequestInit): Promise<any> {
+/**
+ * One Clover v3 REST call. With a `retry` budget, an explicit 429 is repeated after a bounded,
+ * Retry-After-honouring wait (see CloverRetryBudget). Everything else — a thrown fetch, a 5xx,
+ * any other 4xx, or any call without a budget — fails on the first attempt, as it always has.
+ */
+async function rest(path: string, init: RequestInit, retry?: CloverRetryBudget): Promise<any> {
   const t = token();
   const mid = merchantId();
   if (!t || !mid) throw new CloverError("clover_not_configured", 503);
-  const res = await fetch(`${REST_BASE}/v3/merchants/${mid}${path}`, {
-    ...init,
-    headers: {
-      Authorization: `Bearer ${t}`,
-      "Content-Type": "application/json",
-      ...(init.headers || {}),
-    },
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    throw new CloverError((data as any)?.message || `Clover REST ${res.status}`, res.status, data);
+  for (let retryNo = 0; ; retryNo++) {
+    if (retry) {
+      // A sibling on this budget was told to wait longer than we were: honour its penalty too.
+      const hold = retry.notBefore - Date.now();
+      if (hold > 0) await sleep(hold);
+    }
+    const res = await fetch(`${REST_BASE}/v3/merchants/${mid}${path}`, {
+      ...init,
+      headers: {
+        Authorization: `Bearer ${t}`,
+        "Content-Type": "application/json",
+        ...(init.headers || {}),
+      },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) return data;
+    const message = (data as any)?.message || `Clover REST ${res.status}`;
+    if (res.status !== 429) throw new CloverError(message, res.status, data);
+
+    const where = `${init.method ?? "GET"} ${path}`;
+    const wait = retry ? rateLimitWaitMs(res, retryNo, retry) : null;
+    logRateLimit(where, res, wait != null ? { retryNo: retryNo + 1, waitMs: wait } : retry ? "giving up" : "not retried");
+    if (wait != null) {
+      await sleep(wait);
+      continue;
+    }
+    throw new CloverError(message, res.status, {
+      ...(data && typeof data === "object" ? data : {}),
+      __retryAfter: res.headers.get("retry-after"),
+      __rateLimit: rateLimitHeaderNames(res),
+    });
   }
-  return data;
 }
 
 /**
@@ -363,19 +469,27 @@ export async function createDraftOrder(opts: {
   deliveryFee?: number;
   /** The "Card pricing (4%)" line, cents — see computeTotals. */
   cardPricing?: number;
+  /** 429 allowance shared with the rest of this checkout's pre-payment setup. */
+  retry?: CloverRetryBudget;
 }): Promise<{ id: string; href: string }> {
   const mid = merchantId()!;
   const title = ticketTitle(opts.fulfillment);
+  const retry = opts.retry ?? cloverRetryBudget();
 
-  const order = await rest(`/orders`, {
-    method: "POST",
-    body: JSON.stringify({
-      orderType: { id: ORDER_TYPES[opts.fulfillment] },
-      title,
-      note: opts.note.slice(0, 490), // Clover note cap ~500 chars; safety fields are front-loaded
-    }),
-  });
+  const order = await rest(
+    `/orders`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        orderType: { id: ORDER_TYPES[opts.fulfillment] },
+        title,
+        note: opts.note.slice(0, 490), // Clover note cap ~500 chars; safety fields are front-loaded
+      }),
+    },
+    retry,
+  );
   const orderId = order.id as string;
+  const retriedBefore = retry.retries;
 
   try {
     // Build every unit as a line item.
@@ -413,20 +527,62 @@ export async function createDraftOrder(opts: {
     // Without it, custom items read "Taxes (included)" — the order totals to
     // the pre-tax figure, /v1/orders/{id}/pay would undercharge, and website
     // orders under-report sales tax in the merchant's Clover reports.
-    const CHUNK = 6;
-    for (let i = 0; i < items.length; i += CHUNK) {
-      await Promise.all(
-        items.slice(i, i + CHUNK).map((it) =>
-          rest(`/orders/${orderId}/line_items`, {
-            method: "POST",
-            body: JSON.stringify({ ...it, taxRates: [NJ_TAX_RATE] }),
-          }),
+    //
+    // At most 3 in flight. Clover allows 5 concurrent requests per token and answers a 6th with
+    // 429 Too Many Requests: the old chunk of 6 did exactly that to every 6-line cart (Brenaye
+    // Jones, 10/9-10/10: a 6-line card order failed 7 out of 7 tries). 3 leaves room for a
+    // concurrent checkout's POST /orders or a sweep GET, and keeps one checkout near or under
+    // the 16/s per-token rate. allSettled, not all: a failure must not send the rollback DELETE
+    // into the middle of its own burst, and no further chunk starts after one.
+    //
+    // And no faster than one chunk per 250ms (12/s). Clover's per-token RATE limit is 16/s, and
+    // a big order — up to MAX_UNITS lines — answered quickly would otherwise burst past it.
+    const LINE_ITEM_CONCURRENCY = 3;
+    const LINE_ITEM_CHUNK_INTERVAL_MS = 250;
+    let chunkStartedAt = 0;
+    for (let i = 0; i < items.length; i += LINE_ITEM_CONCURRENCY) {
+      if (i > 0) {
+        const since = Date.now() - chunkStartedAt;
+        if (since < LINE_ITEM_CHUNK_INTERVAL_MS) await sleep(LINE_ITEM_CHUNK_INTERVAL_MS - since);
+      }
+      chunkStartedAt = Date.now();
+      const results = await Promise.allSettled(
+        items.slice(i, i + LINE_ITEM_CONCURRENCY).map((it) =>
+          rest(
+            `/orders/${orderId}/line_items`,
+            {
+              method: "POST",
+              body: JSON.stringify({ ...it, taxRates: [NJ_TAX_RATE] }),
+            },
+            retry,
+          ),
         ),
       );
+      const failed = results.find((r): r is PromiseRejectedResult => r.status === "rejected");
+      if (failed) throw failed.reason;
     }
 
+    // A line item was re-sent after a 429. Clover's docs promise a 429 is unprocessed only for
+    // the Ecommerce API, and a duplicated $0 free-pie line would not move the amount check —
+    // it would just put two free pies on the kitchen ticket. Prove the count instead of
+    // trusting it. A truncated expansion (>100 lines) reads short and fails closed too.
+    if (retry.retries > retriedBefore) {
+      const draft = await rest(`/orders/${orderId}?expand=lineItems`, { method: "GET" }, retry);
+      const held = draft?.lineItems?.elements;
+      if (!Array.isArray(held) || held.length !== items.length) {
+        throw new CloverError(
+          `draft holds ${Array.isArray(held) ? held.length : "unknown"} line items, expected ${items.length}`,
+          409,
+        );
+      }
+    }
   } catch (err) {
-    await rest(`/orders/${orderId}`, { method: "DELETE" }).catch(() => {});
+    await deleteDraftOrder(orderId, cloverRetryBudget(ROLLBACK_RETRY_BUDGET_MS)).catch((e) =>
+      console.error(
+        `[clover] could not delete partial draft ${orderId} — remove it from the POS`,
+        e instanceof Error ? e.message : e,
+      ),
+    );
     throw err;
   }
 
@@ -452,9 +608,13 @@ export async function fireOrder(
   });
 }
 
-/** Delete a draft order (rollback path — never call on a fired/paid order). */
-export async function deleteDraftOrder(orderId: string): Promise<void> {
-  await rest(`/orders/${orderId}`, { method: "DELETE" });
+/** Delete a draft order (rollback path — never call on a fired/paid order). A 429 is retried
+ *  within its own small allowance, so a throttled checkout does not leave a half-built draft. */
+export async function deleteDraftOrder(
+  orderId: string,
+  retry: CloverRetryBudget = cloverRetryBudget(ROLLBACK_RETRY_BUDGET_MS),
+): Promise<void> {
+  await rest(`/orders/${orderId}`, { method: "DELETE" }, retry);
 }
 
 /**
@@ -632,16 +792,22 @@ export async function createPosOrder(opts: {
  * (line items + tax) so we can verify it equals our own total BEFORE charging.
  * A just-created v3 order takes a beat to appear on the ecommerce side
  * (separate systems, eventual consistency), so 404s are retried briefly. */
-export async function getEcommOrderAmount(orderId: string, expected?: number): Promise<number> {
+export async function getEcommOrderAmount(
+  orderId: string,
+  expected?: number,
+  retry: CloverRetryBudget = cloverRetryBudget(),
+): Promise<number> {
   const t = ecommToken();
   if (!t) throw new CloverError("clover_not_configured", 503);
   const delays = [0, 400, 900, 1600]; // ~3s worst case — invisible next to card auth time
   let last: CloverError | null = null;
   let short: number | null = null;
+  let rateLimited = 0;
   /** null = not asked, true = v3 REST agrees with `expected` (lag: keep waiting),
    *  false = REST holds a DIFFERENT number (genuinely wrong: stop early). */
   let restConfirmed: boolean | null = null;
-  for (const ms of delays) {
+  for (let slot = 0; slot < delays.length; slot++) {
+    const ms = delays[slot];
     if (ms) await new Promise((r) => setTimeout(r, ms));
     const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
       headers: { Authorization: `Bearer ${t}` },
@@ -667,7 +833,7 @@ export async function getEcommOrderAmount(orderId: string, expected?: number): P
       console.warn(`[clover] ecomm order ${orderId} read ${amount}, expected ${expected} — retrying`);
       short = amount;
       if (restConfirmed === null) {
-        restConfirmed = await rest(`/orders/${orderId}`, { method: "GET" })
+        restConfirmed = await rest(`/orders/${orderId}`, { method: "GET" }, retry)
           .then((d) => (typeof d?.total === "number" ? d.total === expected : null))
           .catch(() => null);
         if (restConfirmed === false) break;
@@ -675,6 +841,18 @@ export async function getEcommOrderAmount(orderId: string, expected?: number): P
       continue;
     }
     last = new CloverError(data.message || "ecomm order lookup failed", res.status, data);
+    // A 429 is Clover's limiter refusing a safe GET: wait it out within the checkout's allowance.
+    // The amount still has to pass create.ts's strict equality check before any payment.
+    // On the last slot there is nothing left to retry into, so don't sleep just to give up.
+    if (res.status === 429 && slot < delays.length - 1) {
+      const retryNo = rateLimited++;
+      const wait = rateLimitWaitMs(res, retryNo, retry);
+      logRateLimit(`GET /v1/orders/${orderId}`, res, wait != null ? { retryNo: retryNo + 1, waitMs: wait } : "giving up");
+      if (wait != null) {
+        await sleep(wait);
+        continue;
+      }
+    }
     if (res.status !== 404 && res.status < 500) break; // real error — don't spin on it
   }
   if (short != null) return short;

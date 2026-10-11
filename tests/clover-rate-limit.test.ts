@@ -41,7 +41,7 @@ function stubClover(route: Route): Call[] {
 }
 const isCreate = (c: Call) => c.method === 'POST' && c.path === '/orders';
 const isLine = (c: Call) => c.method === 'POST' && c.path.endsWith('/line_items');
-const isVerify = (c: Call) => c.method === 'GET' && c.path.includes('expand=lineItems');
+const isVerify = (c: Call) => c.method === 'GET' && c.path.includes('/line_items?limit=1000');
 const lineCalls = (calls: Call[]) => calls.filter(isLine);
 const deletes = (calls: Call[]) => calls.filter((c) => c.method === 'DELETE');
 const named = (calls: Call[], name: string) => lineCalls(calls).filter((c) => c.body?.name === name);
@@ -115,7 +115,7 @@ describe('createDraftOrder under Clover rate limiting', () => {
         if (c.body?.price === 0 && !refused) { refused = true; return tooMany('1'); }
         return json({ id: 'LI' });
       }
-      if (isVerify(c)) return json({ lineItems: { elements: Array.from({ length: 6 }, (_, i) => ({ id: `LI${i}` })) } });
+      if (isVerify(c)) return json({ elements: Array.from({ length: 6 }, (_, i) => ({ id: `LI${i}` })) });
       return json({});
     });
     const draft = await pump(t, clover.createDraftOrder(brenayeCart()));
@@ -124,7 +124,7 @@ describe('createDraftOrder under Clover rate limiting', () => {
     assert.equal(free.length, 2, 'the refused free-pie line was sent again');
     assert.ok(free[1].at - free[0].at >= 1000, `retried after ${free[1].at - free[0].at}ms`);
     assert.equal(lineCalls(calls).length, 7);
-    assert.equal(calls.filter((c) => c.method === 'GET' && c.path === '/orders/ORDER1?expand=lineItems').length, 1);
+    assert.equal(calls.filter((c) => c.method === 'GET' && c.path === '/orders/ORDER1/line_items?limit=1000').length, 1);
     assert.equal(deletes(calls).length, 0);
   });
 
@@ -218,7 +218,7 @@ describe('createDraftOrder under Clover rate limiting', () => {
         if (c.body?.price === 0 && !refused) { refused = true; return tooMany('1'); }
         return json({ id: 'LI' });
       }
-      if (isVerify(c)) return json({ lineItems: { elements: held.map((name) => ({ name })) } });
+      if (isVerify(c)) return json({ elements: held.map((name) => ({ name })) });
       return json({});
     });
     await assert.rejects(pump(t, clover.createDraftOrder(brenayeCart())), (err: unknown) => {
@@ -260,7 +260,7 @@ describe('createDraftOrder under Clover rate limiting', () => {
         if (c.body?.price === 0 && !refused) { refused = true; return tooMany('3'); }
         return json({ id: 'LI' });
       }
-      if (isVerify(c)) return json({ lineItems: { elements: Array.from({ length: 6 }, (_, i) => ({ id: `LI${i}` })) } });
+      if (isVerify(c)) return json({ elements: Array.from({ length: 6 }, (_, i) => ({ id: `LI${i}` })) });
       return json({});
     });
     await pump(t, clover.createDraftOrder(brenayeCart()));
@@ -279,7 +279,7 @@ describe('createDraftOrder under Clover rate limiting', () => {
         if (c.body?.price === 0 && !refused) { refused = true; return tooMany(new Date(Date.now() + 2000).toUTCString()); }
         return json({ id: 'LI' });
       }
-      if (isVerify(c)) return json({ lineItems: { elements: Array.from({ length: 6 }, (_, i) => ({ id: `LI${i}` })) } });
+      if (isVerify(c)) return json({ elements: Array.from({ length: 6 }, (_, i) => ({ id: `LI${i}` })) });
       return json({});
     });
     await pump(t, clover.createDraftOrder(brenayeCart()));
@@ -300,7 +300,7 @@ describe('createDraftOrder under Clover rate limiting', () => {
         if (c.body?.price === 0 && !refusedB) { refusedB = true; return tooMany('3'); }
         return json({ id: 'LI' });
       }
-      if (isVerify(c)) return json({ lineItems: { elements: Array.from({ length: 6 }, (_, i) => ({ id: `LI${i}` })) } });
+      if (isVerify(c)) return json({ elements: Array.from({ length: 6 }, (_, i) => ({ id: `LI${i}` })) });
       return json({});
     });
     await pump(t, clover.createDraftOrder(brenayeCart()));

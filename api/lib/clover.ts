@@ -565,10 +565,11 @@ export async function createDraftOrder(opts: {
     // A line item was re-sent after a 429. Clover's docs promise a 429 is unprocessed only for
     // the Ecommerce API, and a duplicated $0 free-pie line would not move the amount check —
     // it would just put two free pies on the kitchen ticket. Prove the count instead of
-    // trusting it. A truncated expansion (>100 lines) reads short and fails closed too.
+    // trusting it. The line-item collection is read with limit=1000: an order expansion caps
+    // at 100, which would read a MAX_UNITS cart short and refuse it for nothing.
     if (retry.retries > retriedBefore) {
-      const draft = await rest(`/orders/${orderId}?expand=lineItems`, { method: "GET" }, retry);
-      const held = draft?.lineItems?.elements;
+      const draft = await rest(`/orders/${orderId}/line_items?limit=1000`, { method: "GET" }, retry);
+      const held = draft?.elements;
       if (!Array.isArray(held) || held.length !== items.length) {
         throw new CloverError(
           `draft holds ${Array.isArray(held) ? held.length : "unknown"} line items, expected ${items.length}`,

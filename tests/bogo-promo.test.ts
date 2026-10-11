@@ -177,3 +177,18 @@ test("applyPizzaPercent lowers the pizza's base price by the per-unit discount s
 test("percent off with no pizza in the cart applies nothing", () => {
   assert.equal(applyPizzaPercent([other("Chili Dog", 1099, "hot-dogs")], "STORM25", 25), null);
 });
+
+test("a high percentage on a heavily topped pie never drives a price below zero — the remainder comes off the toppings", () => {
+  const lines = [pie("Personal Pizza", 1000, 1, [
+    { group: "Toppings", name: "Pepperoni", delta: 300 },
+    { group: "Toppings", name: "Mushroom", delta: 300 },
+  ])];
+  const applied = applyPizzaPercent(lines, "BIGDEAL", 90);
+  assert.ok(applied);
+  assert.equal(applied.discountCents, 1440); // 90% of 1600
+  const [l] = applied.lines;
+  assert.equal(l.basePrice, 0, "the base absorbs its full 1000");
+  assert.ok(l.options.every((o) => o.delta >= 0), "no topping goes negative");
+  assert.equal(l.options.reduce((s, o) => s + o.delta, 0), 160, "the other 440 came off the toppings");
+  assert.equal(sum(lines) - sum(applied.lines), 1440, "the line still drops by exactly the planned amount");
+});

@@ -184,9 +184,26 @@ export function applyPizzaPercent(
   const out = lines.map((line, index) => {
     const off = plan.perUnitByIndex[index] ?? 0;
     if (off < 1) return line;
+    // The discount comes off the base price first; whatever the base cannot absorb (a heavily
+    // topped pie at a high percentage) comes off the topping deltas, largest first, so no price
+    // on the line ever goes below zero — Clover rejects negative prices — while the line still
+    // drops by exactly the planned amount.
+    const fromBase = Math.min(off, Math.max(0, line.basePrice));
+    let remainder = off - fromBase;
+    const options = line.options.map((o) => ({ ...o }));
+    if (remainder > 0) {
+      const order = options.map((_o, i) => i).sort((a, b) => (options[b].delta || 0) - (options[a].delta || 0));
+      for (const i of order) {
+        if (remainder <= 0) break;
+        const take = Math.min(remainder, Math.max(0, Math.round(options[i].delta || 0)));
+        options[i].delta = (options[i].delta || 0) - take;
+        remainder -= take;
+      }
+    }
     return {
       ...line,
-      basePrice: line.basePrice - off,
+      basePrice: line.basePrice - fromBase,
+      options,
       notes: [`${Math.round(percentOff)}% OFF — ${code}`, line.notes].filter(Boolean).join(" · "),
     };
   });

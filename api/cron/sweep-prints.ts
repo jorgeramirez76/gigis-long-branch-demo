@@ -11,8 +11,9 @@ import { remindStrandedOrders, sweepQueuedPrints } from "../lib/printSweep.js";
  * on the night's LAST order wasn't re-checked until the next order or the 4 AM
  * menu cron — a page into an empty store, hours after anyone could act. This
  * cron guarantees the check during the hours somebody can: every 15 minutes,
- * 7 AM until just before midnight Eastern (vercel.json — UTC hours 11-23,0-3,
- * which holds across DST). No overnight runs on purpose: the hours gate means
+ * UTC hours 14-23,0-4 (vercel.json). That is 10 AM to 12:45 AM Eastern in summer
+ * and 9 AM to 11:45 PM in winter, so it covers 10 AM to 11 PM online ordering plus
+ * the stuck-ticket window after the last order in either season. No overnight runs on purpose: the hours gate means
  * no new orders exist after close, so a night check could only ever wake Kenny
  * for something he can't do anything about until morning.
  *

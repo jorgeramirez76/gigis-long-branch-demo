@@ -5,7 +5,13 @@ import { isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
 import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
 
 /**
- * GET /api/cron/send-scheduled — every 5 minutes (vercel.json).
+ * GET /api/cron/send-scheduled — every 15 minutes, UTC hours 14-23,0-4 (vercel.json).
+ *
+ * Same minutes and hours as sweep-prints, so both crons share one Neon wake-up and the database
+ * can scale to zero overnight and between ticks. Every-5-minutes around the clock kept Neon
+ * awake 24/7 (2026-10-14: Neon usage warning). A blast is sent at the first tick at or after
+ * its send_at, so up to 15 minutes late; one queued for overnight goes out at the morning's
+ * first tick (10 AM Eastern in summer, 9 AM in winter).
  *
  * Drains scheduled_broadcasts: blasts queued for a future moment ("tomorrow at 11am"), sent
  * through the SAME core the admin dashboard uses (api/lib/broadcastRun.ts), so a scheduled

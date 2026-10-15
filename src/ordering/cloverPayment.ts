@@ -64,8 +64,9 @@ function loadSdk(): Promise<any> {
 /**
  * Start downloading Clover's SDK script ahead of the checkout (the cart drawer calls this through
  * warmCheckout when it opens), so the card fields are not waiting on a new TLS origin plus 41 KB
- * once the customer taps Checkout. Loads the script only: no Clover instance, no card iframes, no
- * merchant config. A failure is ignored here; the checkout's own load retries and reports it.
+ * once the customer taps Checkout. Only the script is fetched here; the Clover instance, the
+ * merchant config and the card iframes are still created by the checkout itself. A failure is
+ * ignored here; the checkout's own load retries and reports it.
  */
 export function preloadCardSdk(): void {
   if (typeof window === "undefined" || !cardPaymentEnabled()) return;

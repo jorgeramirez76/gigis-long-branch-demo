@@ -44,6 +44,7 @@ import { placementSuffix } from "../../src/data/menuToppings.js";
 import { clientTotalMatches } from "../lib/orderSafety.js";
 import { replayOrder } from "../lib/orderReplay.js";
 import { isDefinitelyDeclined } from "../lib/paymentRetry.js";
+import { CARD_DECLINE_ALERT_ABOVE, CARD_DECLINE_BUCKET, CARD_DECLINE_WINDOW_SEC } from "../lib/cardDeclines.js";
 
 /**
  * The receipt's "join the VIP Club" button: the rewards signup, tagged as coming from a receipt.
@@ -250,11 +251,12 @@ async function noteSetupFailure(idempotencyKey: string, reason: string): Promise
 /**
  * A burst of card declines is what card testing looks like (Turnstile raises the cost, it does
  * not remove it). More than 8 declines site-wide in a 15-minute window emails the owner once an
- * hour, so a pattern is noticed the same day instead of on the Clover statement. Never throws.
+ * hour, so a pattern is noticed the same day instead of on the Clover statement; the count is also
+ * shown by /api/admin/clover-status (api/lib/cardDeclines.ts). Never throws.
  */
 async function noteDecline(): Promise<void> {
   try {
-    if (await rateLimit("card-declines:all", 8, 900)) return;
+    if (await rateLimit(CARD_DECLINE_BUCKET, CARD_DECLINE_ALERT_ABOVE, CARD_DECLINE_WINDOW_SEC)) return;
     await alertOpsOnce(
       "card-declines",
       "CARD DECLINE SPIKE — more than 8 card declines on the website within 15 minutes. That pattern usually means someone is testing stolen cards. Check Clover's transactions; to stop online card payments, set VITE_CARD_PAYMENTS_OFF=1 in Vercel and redeploy.",

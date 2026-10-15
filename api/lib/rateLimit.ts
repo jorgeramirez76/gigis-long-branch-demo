@@ -114,6 +114,14 @@ export async function claimWindow(bucket: string, windowSec: number): Promise<bo
   }
 }
 
+/** Read a fixed window's count without adding to it (0 when nothing was counted). Throws on a
+ *  storage error. `windowStart` is in seconds, as rateLimit() computes it. */
+export async function peekWindowCount(bucket: string, windowStart: number): Promise<number> {
+  await ensure();
+  const r = await sql`SELECT n FROM rate_counters WHERE bucket = ${bucket} AND window_start = ${windowStart}`;
+  return Number(r.rows[0]?.n ?? 0);
+}
+
 /** Hand back an unused claim so the next occurrence can retry. */
 export async function releaseWindow(bucket: string, windowSec: number): Promise<void> {
   try {

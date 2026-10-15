@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { requireAdmin } from "../lib/adminAuth.js";
 import { cloverConfigured, fulfillmentConfigured } from "../lib/clover.js";
+import { cardDeclineCount } from "../lib/cardDeclines.js";
 
 /**
  * GET /api/admin/clover-status — is the site actually wired to the Clover merchant?
@@ -9,8 +10,8 @@ import { cloverConfigured, fulfillmentConfigured } from "../lib/clover.js";
  * masks every value as empty for this project), so the order-type IDs needed to switch
  * ordering on cannot be looked up from a laptop. This runs where the token already is.
  *
- * Read-only and admin-guarded. Reports which settings are present as booleans and never
- * echoes a secret. The order types it returns are what `CLOVER_ORDER_TYPE_PICKUP` and
+ * Read-only and admin-guarded. Reports which settings are present as booleans, plus the
+ * card-decline counter behind the decline-spike email, and never echoes a secret. The order types it returns are what `CLOVER_ORDER_TYPE_PICKUP` and
  * `CLOVER_ORDER_TYPE_DELIVERY` expect.
  */
 const REST_BASE = "https://api.clover.com";
@@ -41,6 +42,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // The emergency stop (api/order/create.ts): true means the deployed server is refusing every
     // new web order. Check here after the redeploy that an env flip needs.
     cardPaymentsOff: process.env.CARD_PAYMENTS_OFF === "1" || process.env.VITE_CARD_PAYMENTS_OFF === "1",
+    // The decline counter behind the "CARD DECLINE SPIKE" email: how many definite declines the
+    // site saw in the current 15-minute window and the one before (null if unreadable).
+    cardDeclines: await cardDeclineCount(),
     orderingLive: cloverConfigured(),
     pickupRoutable: fulfillmentConfigured("pickup"),
     deliveryRoutable: fulfillmentConfigured("delivery"),

@@ -3,6 +3,7 @@ import { cronAuthorized } from "../lib/cronAuth.js";
 import { sql, isVipBusiness } from "../lib/db.js";
 import { isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
 import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
+import { smsSendWindowOpen } from "../lib/smsWindow.js";
 
 /**
  * GET /api/cron/send-scheduled — every 15 minutes, UTC hours 14-23,0-4 (vercel.json).
@@ -11,7 +12,8 @@ import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
  * can scale to zero overnight and between ticks. Every-5-minutes around the clock kept Neon
  * awake 24/7 (2026-10-14: Neon usage warning). A blast is sent at the first tick at or after
  * its send_at, so up to 15 minutes late; one queued for overnight goes out at the morning's
- * first tick (10 AM Eastern in summer, 9 AM in winter).
+ * first tick (10 AM Eastern in summer, 9 AM in winter). A blast with a TEXT leg also waits for
+ * the SMS window (9 AM to 8:30 PM Eastern, api/lib/smsWindow.ts) — it is left unclaimed until then.
  *
  * Drains scheduled_broadcasts: blasts queued for a future moment ("tomorrow at 11am"), sent
  * through the SAME core the admin dashboard uses (api/lib/broadcastRun.ts), so a scheduled
@@ -83,11 +85,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await ensureScheduledTable();
     // At most a few per tick; each blast can take minutes and the function has a ceiling.
     for (let n = 0; n < 3; n++) {
+      // SMS quiet hours (api/lib/smsWindow.ts): outside the window a row with a text leg is not
+      // even CLAIMED — it waits, untouched, for the first tick inside the window. Refusing it after
+      // the claim would mark it finished and drop the blast for good. The same instant is handed
+      // to runBroadcast so its own check can never disagree with this one.
+      const now = new Date();
+      const smsOpen = smsSendWindowOpen(now);
       const claimed = await sql`
         UPDATE scheduled_broadcasts SET started_at = now()
         WHERE id = (
           SELECT id FROM scheduled_broadcasts
           WHERE send_at <= now() AND started_at IS NULL
+            AND (NOT want_sms OR ${smsOpen})
           ORDER BY send_at, id LIMIT 1
         ) AND started_at IS NULL
         RETURNING id, business, subject, message, want_sms, want_email, send_at, request_id,
@@ -116,6 +125,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             requestId: row.request_id,
             imageUrl: isOwnFlyerUrl(row.image_url) ? row.image_url : null,
             imageAlt: row.image_alt ?? undefined,
+            now,
           });
         } catch (err) {
           console.error(`[cron/send-scheduled] row ${row.id} threw`, err);

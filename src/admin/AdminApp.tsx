@@ -361,7 +361,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
   const [promoDescription, setPromoDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [phase, setPhase] = useState<"compose" | "confirm" | "sending" | "done">("compose");
-  const [preview, setPreview] = useState<{ smsCount: number; emailCount: number; smsPreview: string | null; channelsReady: { sms: boolean; email: boolean } } | null>(null);
+  const [preview, setPreview] = useState<{ smsCount: number; emailCount: number; smsPreview: string | null; channelsReady: { sms: boolean; email: boolean }; smsWindowOpen?: boolean; smsWindow?: string; smsAtMonthlyMax?: number | null } | null>(null);
   const [result, setResult] = useState<{ smsSent: number; smsFailed: number; emailSent: number; emailFailed: number; inProgress?: boolean; duplicate?: boolean } | null>(null);
   const [error, setError] = useState("");
 
@@ -414,7 +414,9 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
           ? "A selected channel isn't configured on the server yet — see Overview."
           : err instanceof ApiError && ["duplicate_broadcast", "broadcast_in_progress"].includes(err.message)
             ? "This broadcast is already running, was recently delivered, or needs review. Check History; it was not sent again."
-            : "Send failed — nothing may have gone out. Check History before retrying.",
+            : err instanceof ApiError && err.payload.error === "sms_quiet_hours"
+              ? `Nothing was sent. ${err.message}`
+              : "Send failed — nothing may have gone out. Check History before retrying.",
       );
     }
   }
@@ -530,6 +532,18 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
               <div className="text-xs font-bold uppercase text-[var(--color-ink-mute)]">Text preview</div>
               <p className="mt-1">{preview.smsPreview}</p>
             </div>
+          )}
+          {smsOn && preview.smsWindowOpen === false && (
+            <p className="mt-3 text-sm font-semibold text-[var(--color-brand-red-bright)]">
+              Texts can only go out between {preview.smsWindow ?? "9 AM and 8:30 PM Eastern"} — it's outside that now, so
+              sending will be refused. Untick Text to send the email now, or come back then.
+            </p>
+          )}
+          {smsOn && !!preview.smsAtMonthlyMax && (
+            <p className="mt-3 text-sm font-semibold text-[var(--color-brand-red-bright)]">
+              {preview.smsAtMonthlyMax} {preview.smsAtMonthlyMax === 1 ? "person" : "people"} on the text list already got 4 or more texts
+              in the last 30 days. The signup terms say "typically up to 4 per month" — consider waiting.
+            </p>
           )}
           {((smsOn && !preview.channelsReady.sms) || (emailOn && !preview.channelsReady.email)) && (
             <p className="mt-3 text-sm font-semibold text-[var(--color-brand-red-bright)]">

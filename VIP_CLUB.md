@@ -28,5 +28,10 @@ and welcome-offer records. Never put raw passwords, tokens or full customer phon
 Shared broadcast codes are register-only unless an explicit discount implementation is
 added. They do not use the `PIE-` checkout redemption path.
 
+Text blasts may only START between 9 AM and 8:30 PM Eastern (`api/lib/smsWindow.ts`). Outside
+that window the dashboard refuses a blast with a text leg (email-only blasts are fine), and a
+scheduled blast with a text leg waits unclaimed for the next tick inside the window. The dry run
+also warns when people on the text list already got 4+ texts in the last 30 days.
+
 Run the account/security, promo and checkout tests before enabling the release. Migrations
 must precede activation. Do not claim that this local implementation is already live.

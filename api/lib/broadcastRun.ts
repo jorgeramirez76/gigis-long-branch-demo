@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { sql, type VipBusiness } from "./db.js";
 import { sendSms, sendEmail, withStopNotice, smsConfigured, emailConfigured } from "./notify.js";
+import { SMS_WINDOW_LABEL, smsSendWindowOpen } from "./smsWindow.js";
 
 /**
  * The broadcast send core, lifted verbatim out of api/admin/broadcast.ts (2026-09-19) so a
@@ -30,7 +31,13 @@ export type BroadcastInput = {
   /** Optional flyer for the email (validated by the caller to the shop's own site). */
   imageUrl?: string | null;
   imageAlt?: string;
+  /** The clock the SMS quiet-hours check reads (the cron passes the instant it claimed the row). */
+  now?: Date;
 };
+
+/** Texts sent per member in the trailing 30 days that the signup disclosure calls the usual ceiling
+ *  ("typically up to 4 per month"). Used for a dry-run warning, never to drop anyone silently. */
+const SMS_MONTHLY_TYPICAL_MAX = 4;
 
 /** A flyer must already be published on the shop's own site — never an arbitrary host. */
 export function isOwnFlyerUrl(v: unknown): v is string {
@@ -70,13 +77,45 @@ const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : messag
       `).rows as Member[])
     : [];
 
+  const now = input.now ?? new Date();
   if (dryRun) {
+    // How many on the text list already got the usual monthly maximum — a warning for the
+    // person about to press Send. Best effort: an error here must not block the preview.
+    let smsAtMonthlyMax: number | null = null;
+    if (wantSms) {
+      try {
+        const r = await sql`
+          SELECT COUNT(*)::int AS n FROM (
+            SELECT s.member_id FROM vip_sends s
+            JOIN vip_members m ON m.id = s.member_id AND m.sms_consent
+            WHERE s.business = ${business} AND s.channel = 'sms' AND s.status = 'sent'
+              AND s.created_at > now() - interval '30 days'
+            GROUP BY s.member_id HAVING COUNT(*) >= ${SMS_MONTHLY_TYPICAL_MAX}
+          ) t
+        `;
+        smsAtMonthlyMax = Number(r.rows[0]?.n ?? 0);
+      } catch (e) {
+        console.error("[broadcast] monthly SMS count unavailable", e);
+      }
+    }
     return { status: 200, body: {
       dryRun: true,
       smsCount: smsAudience.length,
       emailCount: emailAudience.length,
       smsPreview: wantSms ? smsBody : null,
       channelsReady: { sms: smsConfigured(), email: emailConfigured() },
+      smsWindowOpen: smsSendWindowOpen(now),
+      smsWindow: SMS_WINDOW_LABEL,
+      smsAtMonthlyMax,
+    } };
+  }
+
+  // Quiet hours, for texts only (email is fine at any hour). Refused BEFORE anything is reserved,
+  // so the same blast can simply be sent again inside the window.
+  if (wantSms && !smsSendWindowOpen(now)) {
+    return { status: 409, body: {
+      error: "sms_quiet_hours",
+      message: `Texts can only go out between ${SMS_WINDOW_LABEL}. Untick Text to send the email now, or send the text then.`,
     } };
   }
 

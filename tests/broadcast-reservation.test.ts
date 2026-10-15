@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { afterEach, test } from "node:test";
+import { afterEach, beforeEach, mock, test } from "node:test";
 import handler from "../api/admin/broadcast.js";
 process.env.DATABASE_URL="postgres://test:test@fake-neon.test/test";
 process.env.ADMIN_TOKEN="broadcast-test-token";
@@ -7,7 +7,10 @@ process.env.TWILIO_ACCOUNT_SID="test-account";
 process.env.TWILIO_AUTH_TOKEN="test-secret";
 process.env.TWILIO_FROM_NUMBER="+15551230001";
 const originalFetch=globalThis.fetch;
-afterEach(()=>{globalThis.fetch=originalFetch;});
+// Texts may only start 9 AM-8:30 PM Eastern (api/lib/smsWindow.ts); pin the clock inside that
+// window so these SMS fixtures pass at any hour the suite runs.
+beforeEach(()=>{mock.timers.enable({apis:["Date"],now:new Date("2026-09-20T16:00:00Z")});});
+afterEach(()=>{globalThis.fetch=originalFetch;mock.timers.reset();});
 const firstId="12345678-1234-4123-8123-123456789012";
 const secondId="12345678-1234-4123-8123-123456789013";
 function response(){const state:{status:number;body:Record<string,unknown>}={status:0,body:{}};return {state,res:{status(n:number){state.status=n;return this;},json(v:Record<string,unknown>){state.body=v;return this;},setHeader(){return this;}}};}

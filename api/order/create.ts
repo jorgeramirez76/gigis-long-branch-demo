@@ -28,7 +28,7 @@ import { closedTodayMessage, isOrderingOpen, isDeliveryOpen } from "../../src/li
 import { claimWindow, rateLimit, rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, releaseOrder, reserveOrder, settleQueuedPrint, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
 import { applyFreePie, claimPromoCode, isFreePickupOrder, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
-import { applyBogoPizza, applyPizzaPercent, normalizeCampaignCode, recordCampaignRedemption, resolvePromo } from "../lib/campaignPromo.js";
+import { applyBogoPizza, applyPizzaPercent, normalizeCampaignCode, recordCampaignRedemption, resolvePromo, type ResolvedPromo } from "../lib/campaignPromo.js";
 import { alertOpsOnce, alertStaffOnce, alertStaff, sendReceiptEmail, STAFF_PAGE_COOLDOWN_SEC } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
@@ -540,7 +540,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   let kitchenLines: CartLineInput[] = lines;
   let appliedCode: string | null = null;
   if (promoCode) {
-    const check = await resolvePromo("gigis_long_branch", promoCodeRaw);
+    // The lookup reads the same database as the ledger. Left unguarded, a transient Neon error
+    // escaped as a raw 500, which the browser treats as an unknown outcome: it freezes the form
+    // and tells the customer to tap again. Nothing has been reserved or charged by here, so the
+    // answer is the readable one the peekOrder guard above gives.
+    let check: ResolvedPromo;
+    try {
+      check = await resolvePromo("gigis_long_branch", promoCodeRaw);
+    } catch (err) {
+      console.error("[order/create] promo lookup unavailable before payment", err);
+      await pageLedgerDown();
+      res.status(503).json(LEDGER_DOWN_ANSWER);
+      return;
+    }
     if (!check.ok) {
       res.status(400).json({ error: "promo_invalid", message: check.message });
       return;

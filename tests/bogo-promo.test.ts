@@ -28,6 +28,17 @@ test("campaign code normalisation: staff words only, PIE namespace reserved", ()
   assert.equal(normalizeCampaignCode("-lead"), null);
   assert.equal(normalizeCampaignCode(""), null);
   assert.equal(normalizeCampaignCode(42), null);
+  // Punctuation copied along with the word, from a flyer or a text, is dropped at either end.
+  assert.equal(normalizeCampaignCode("THANKYOU!"), "THANKYOU");
+  assert.equal(normalizeCampaignCode("thankyou."), "THANKYOU");
+  assert.equal(normalizeCampaignCode('"Thank you!"'), "THANKYOU");
+  assert.equal(normalizeCampaignCode("(gameday),"), "GAMEDAY");
+  assert.equal(normalizeCampaignCode(" thankyou: "), "THANKYOU");
+  // ...and only at the ends: inside the word it is still not a code, and punctuation alone is nothing.
+  assert.equal(normalizeCampaignCode("thank.you"), null);
+  assert.equal(normalizeCampaignCode("thank'you"), null);
+  assert.equal(normalizeCampaignCode("!!!"), null);
+  assert.equal(normalizeCampaignCode("(PIE-ABC123)"), null);
 });
 
 test("fewer than two pizzas earns nothing — it is a free pizza, not money off", () => {

@@ -534,6 +534,13 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         // that may have landed. The freeze clears only on proof the replay guard ran and
         // found nothing: a success below, or the definite 402 decline.
         if (data.error === "processing" || data.error === "uncertain") setAttemptUncertain(true);
+        // A code the server now refuses (the offer ended, or it was restored from the saved form
+        // after its week) stayed applied, so every retry failed the same way until the customer
+        // found Remove. Drop it: the next tap goes through without the code, the persist effect
+        // drops it from the saved form on the same render, and the message still shows below.
+        // The server refuses a code BEFORE any reservation, draft or charge, so the fresh key
+        // this mints has nothing to replay.
+        if (data.error === "promo_invalid") setPromo(null);
         // A definite decline (402) is Clover explicitly confirming no money moved, and the
         // server has deleted both the draft and the web_orders row — the old key has no
         // server-side memory left. Retire it and mint fresh so the retry starts clean.

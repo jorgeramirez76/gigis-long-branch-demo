@@ -79,6 +79,25 @@ test('reorder cannot read another account order and scopes lookup to store',asyn
   const query=queries.find(q=>q.query.includes('SELECT items FROM web_orders'))!;
   assert.match(query.query,/account_id=.*AND business=/);assert.ok(query.params.map(String).includes('7'));
 });
+test('reorder strips every promo marker from the stored kitchen notes and keeps the customer\'s own note',async()=>{
+  // The stored lines are the kitchen lines of a discounted order. Reordered at full price, a
+  // marker left on the note would print on the chit and staff could honor a discount never charged.
+  const stored=[
+    {itemName:'Plain Pie',categoryId:'pizza',quantity:1,notes:'20% OFF — THANKYOU · no onions'},
+    {itemName:'Plain Pie',categoryId:'pizza',quantity:1,notes:'FREE — BOGO GAMEDAY'},
+    {itemName:'Plain Pie',categoryId:'pizza',quantity:1,notes:'FREE — BOGO GAME-DAY · well done'},
+    {itemName:'Plain Pie',categoryId:'pizza',quantity:1,notes:'FREE — VIP welcome pie PIE-TEST01 · extra sauce'},
+    {itemName:'Plain Pie',categoryId:'pizza',quantity:2,notes:'light cheese'},
+    {itemName:'Plain Pie',categoryId:'pizza',quantity:1},
+  ];
+  storageRows(q=>q.includes('FROM account_sessions s JOIN accounts')?[signedIn]:q.includes('SELECT items FROM web_orders')?[{items:JSON.stringify(stored)}]:[]);
+  const r=response();await accountHandler('reorder')(sessionRequest({orderId:7}) as never,r.res as never);
+  assert.equal(r.state.status,200,JSON.stringify(r.state.body));
+  const lines=(r.state.body as {lines:{basePrice:number;quantity:number;notes?:string}[]}).lines;
+  assert.deepEqual(lines.map(l=>l.notes??''),['no onions','','well done','extra sauce','light cheese','']);
+  assert.ok(lines.every(l=>l.basePrice>0),'every reordered line is priced at full price');
+  assert.deepEqual(lines.map(l=>l.quantity),[1,1,1,1,2,1]);
+});
 test('a revoked or credential-version-stale session cannot read private orders',async()=>{
   const queries=storageRows(()=>[]),r=response();
   await accountHandler('orders')({...sessionRequest(),method:'GET'} as never,r.res as never);

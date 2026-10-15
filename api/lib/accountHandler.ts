@@ -33,6 +33,10 @@ const PUBLIC_ACTIONS = new Set(["config", "signup", "login", "logout", "password
 export const CONSENT_TEXTS_PER_30_DAYS = 3;
 const CONSENT_TEXT_UNAVAILABLE = "Your preferences were saved, but we could not send the confirmation text. Contact the restaurant for help.";
 const text = (value: unknown, max = 160) => typeof value === "string" ? value.trim().slice(0,max) : "";
+/** Every promo marker the order path writes onto a kitchen line note, each joined to the customer's
+ *  own note with " · ": the welcome pie (api/lib/promo.ts applyFreePie), a BOGO free unit and a
+ *  percent-off line (api/lib/campaignPromo.ts applyBogoPizza / applyPizzaPercent). Keep in step. */
+const PROMO_MARKER_RE = /(?:FREE — VIP welcome pie PIE-[A-Z0-9]+|FREE — BOGO [A-Z0-9][A-Z0-9-]{3,19}|\d{1,3}% OFF — [A-Z0-9][A-Z0-9-]{3,19})(?: · )?/g;
 const cleanEmail = (value: unknown) => text(value,254).toLowerCase();
 async function botCheck(token: unknown, ip: string): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
@@ -171,7 +175,11 @@ export function accountHandler(action: string) {
         const order = (await sql`SELECT items FROM web_orders WHERE id=${Number(body.orderId)||0} AND account_id=${account.id} AND business=${ACCOUNT_BUSINESS}`).rows[0];
         if (!order) return void res.status(404).json({error:"order_not_found"});
         const lines = (typeof order.items === "string" ? JSON.parse(order.items) : order.items) as ClientLine[];
-        const priced = priceLines(lines.map(line=>({...line,notes:line.notes?.replace(/FREE — VIP welcome pie PIE-[A-Z0-9]+(?: · )?/g, "")})),await liveItemNames());
+        // The stored lines are the kitchen lines, so a discounted order's notes carry the marker the
+        // order path front-loads ahead of the customer's own note. A reorder re-prices every line at
+        // full price; a marker left on the note would print on the kitchen chit (api/lib/clover.ts)
+        // and staff could honor a discount that was never charged. Strip every marker, keep the note.
+        const priced = priceLines(lines.map(line=>({...line,notes:line.notes?.replace(PROMO_MARKER_RE, "")})),await liveItemNames());
         if (!priced.ok) return void res.status(409).json({error:"menu_changed",message:"Some items or options have changed. Please choose from the current menu."});
         return void res.status(200).json({lines:priced.lines});
       }

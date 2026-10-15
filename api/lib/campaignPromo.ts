@@ -83,7 +83,9 @@ export async function ensureCampaignTables() {
  *  "PIE" is reserved for the welcome benefit so the two namespaces can never collide. */
 export function normalizeCampaignCode(raw: unknown): string | null {
   if (typeof raw !== "string") return null;
-  const code = raw.trim().toUpperCase().replace(/\s+/g, "");
+  // "THANKYOU!" / "thankyou." — punctuation copied off a flyer or a text around the word is
+  // dropped at either end only; anything inside the word still fails the shape test below.
+  const code = raw.trim().toUpperCase().replace(/\s+/g, "").replace(/^[.!,;:'"()]+|[.!,;:'"()]+$/g, "");
   if (!/^[A-Z0-9][A-Z0-9-]{3,19}$/.test(code)) return null;
   if (code.startsWith("PIE")) return null;
   return code;

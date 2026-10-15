@@ -15,7 +15,8 @@ Repository: `~/Projects/gigis-long-branch-demo`. Deployment runs through the exi
 | `TURNSTILE_SECRET_KEY`, `VITE_TURNSTILE_SITE_KEY` | Server bot verification and browser widget |
 | `RESEND_API_KEY`, `EMAIL_FROM` | Transactional email and verified sender |
 | `DIGEST_EMAIL`, `DIGEST_FROM` | Owner digest recipient and explicitly verified sender |
-| `STAFF_ALERT_PHONE`, `STAFF_ALERT_EMAIL` | Lost-order SMS and email fallback |
+| `STAFF_ALERT_PHONE`, `STAFF_ALERT_EMAIL` | Money/food-at-risk pages (paid order not fired, ticket not printed, uncertain card result, ordering down): sent by SMS **and** email every time |
+| `OPS_ALERT_EMAIL` | Optional. Where developer/owner alerts go (menu price drift, failed or blocked menu refresh, checkout failing before payment, card-decline spike). Defaults to `DIGEST_EMAIL`. These never text the store |
 | `VIP_SIGNUP_ALERT_PHONE` | Long Branch signup notices; Sea Bright currently uses `STAFF_ALERT_PHONE` |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | SMS sender and inbound signature verification |
 | `TWILIO_API_KEY_SID`, `TWILIO_API_KEY_SECRET` | Optional Twilio API-key authentication |

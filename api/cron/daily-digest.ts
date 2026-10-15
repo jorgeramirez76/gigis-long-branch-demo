@@ -6,6 +6,7 @@ import { sql } from "../lib/db.js";
 import { getOrderSummary, listOpenWebsiteOrders } from "../lib/clover.js";
 import { getCaptureByCloverId, listWorklistCandidates } from "../lib/orderStore.js";
 import { sendEmail } from "../lib/notify.js";
+import { CLOSED_DATES } from "../../src/lib/openStatus.js";
 
 /**
  * Daily health digest, emailed to the owner every morning (sibling of Sea Bright's — same
@@ -22,6 +23,33 @@ const SHOP = "Gigi's Long Branch";
 
 
 const money = (c: number) => `$${(c / 100).toFixed(2)}`;
+
+/** Checkout opens recorded yesterday by the first-party metrics (CartDrawer's Checkout button).
+ *  A lower bound — DNT/GPC visitors are never counted. Null when the table can't be read. */
+async function checkoutStartsYesterday(): Promise<number | null> {
+  try {
+    const r = await sql`
+      SELECT COALESCE(sum(n), 0)::int AS n FROM site_metric_daily
+      WHERE business = 'gigis_long_branch' AND event = 'checkout_start'
+        AND day = (now() AT TIME ZONE 'America/New_York')::date - 1
+    `;
+    return Number(r.rows[0]?.n ?? 0);
+  } catch {
+    return null;
+  }
+}
+
+/** Customers who opened checkout yesterday with not one order getting through is how a silent
+ *  outage looks from here: refused attempts are deleted from the ledger, so the order list alone
+ *  just says "no web orders". Sea Bright refused every checkout Oct 6-10 and the digest said
+ *  exactly that for four mornings. Skipped on a day the owner closed (CLOSED_DATES). */
+const REFUSAL_SIGNAL_MIN_STARTS = 3;
+export function checkoutOutageLine(starts: number | null, paidOrders: number): string | null {
+  if (starts == null || paidOrders > 0 || starts < REFUSAL_SIGNAL_MIN_STARTS) return null;
+  const yesterday = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date(Date.now() - 24 * 3600e3));
+  if (CLOSED_DATES[yesterday]) return null;
+  return `${starts} visitors opened checkout yesterday, but no web order went through — checkout may have been refusing orders. Place a test order (or check the Vercel logs for /api/order/create).`;
+}
 
 type Section = { title: string; lines: string[]; attention: boolean };
 
@@ -64,8 +92,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         WHERE (created_at AT TIME ZONE 'America/New_York')::date = (now() AT TIME ZONE 'America/New_York')::date - 1
         GROUP BY status ORDER BY n DESC
       `;
-      if (r.rows.length === 0) return { lines: ["No web orders yesterday."], attention: false };
       const paidish = new Set(["paid", "paid_print_queued", "paid_print_failed", "charged", "paid_unrouted"]);
+      const paidOrders = r.rows.filter((row) => paidish.has(String(row.status))).reduce((a, row) => a + Number(row.n), 0);
+      const outage = checkoutOutageLine(await checkoutStartsYesterday(), paidOrders);
+      if (r.rows.length === 0) return { lines: ["No web orders yesterday.", ...(outage ? [outage] : [])], attention: !!outage };
       let count = 0;
       let cents = 0;
       const lines = r.rows.map((row) => {
@@ -76,7 +106,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return `${n}x ${row.status} (${money(c)})`;
       });
       lines.unshift(`${count} order(s), ${money(cents)} paid volume.`);
-      return { lines, attention: false };
+      if (outage) lines.push(outage);
+      return { lines, attention: !!outage };
     }),
   );
 
@@ -129,6 +160,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (!r.rows.length) return { lines: ["None — every recent order reached a settled state."], attention: false };
       return {
         lines: r.rows.map((row) => `#${row.id} ${row.status} ${money(Number(row.total ?? 0))} ${row.customer_name ?? ""} (${String(row.created_at).slice(0, 10)})`),
+        attention: true,
+      };
+    }),
+  );
+
+  sections.push(
+    await section("Scheduled blasts", async () => {
+      // A queued blast's outcome is written to its row and nowhere else, so a failed or hung one
+      // was invisible. Created lazily by send-scheduled; a fresh database simply has none.
+      const exists = await sql`SELECT to_regclass('public.scheduled_broadcasts') IS NOT NULL AS ok`;
+      if (!exists.rows[0]?.ok) return { lines: ["None scheduled."], attention: false };
+      const r = await sql`
+        SELECT id, send_at, started_at, finished_at, result->>'status' AS status,
+               result->>'error' AS error, result->>'inProgress' AS in_progress
+        FROM scheduled_broadcasts
+        WHERE (finished_at > now() - interval '26 hours'
+               AND (COALESCE(result->>'status', '') <> '200' OR result->>'inProgress' = 'true'))
+           OR (started_at IS NOT NULL AND finished_at IS NULL AND started_at < now() - interval '15 minutes')
+        ORDER BY id DESC LIMIT 10
+      `;
+      if (!r.rows.length) return { lines: ["No failed or stuck scheduled blasts."], attention: false };
+      return {
+        lines: r.rows.map((row) =>
+          row.finished_at == null
+            ? `#${row.id} started ${String(row.started_at).slice(0, 16)} and never finished — check History before re-sending.`
+            : String(row.in_progress) === "true"
+              ? `#${row.id} sent with some failures — check History and provider records before re-sending.`
+              : `#${row.id} failed (${row.status ?? "?"}${row.error ? ` ${row.error}` : ""}) — nothing may have gone out.`,
+        ),
         attention: true,
       };
     }),

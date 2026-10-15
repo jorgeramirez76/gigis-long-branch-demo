@@ -5,7 +5,7 @@ import { isVercelCron, menuRefreshWindow } from "../lib/menuSchedule.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
 import { fetchLiveInventory, pruneMenu, REMOVAL_GUARD_SHARE } from "../lib/menuSync.js";
-import { alertStaff, alertStaffOnce } from "../lib/notify.js";
+import { alertOps, alertOpsOnce } from "../lib/notify.js";
 import { sweepQueuedPrints } from "../lib/printSweep.js";
 import { HALF_TOPPING_CHARGE_CENTS, TOPPING_CHARGE_CENTS } from "../../src/data/menuToppings.js";
 import { menuPriceCents, MENU_PRICING_VERSION } from "../lib/cardPricing.mjs";
@@ -58,7 +58,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ?? (process.env.MENU_SYNC_ALLOW_SHRINK !== "1" && total > 0 && removed.length > total * REMOVAL_GUARD_SHARE
         ? `${removed.length} of ${total} committed website items would be removed` : null);
     if (reason) {
-      await alertStaffOnce("menu-refresh-blocked", `MENU REFRESH BLOCKED — ${reason}. Keeping the last good menu.`, 3600);
+      // Ops alerts (email to the owner/developer), never a 4 AM text to the store: nobody at the
+      // counter can fix a menu pull, and the owner's rule is that texts are for food at risk.
+      await alertOpsOnce("menu-refresh-blocked", `MENU REFRESH BLOCKED — ${reason}. Keeping the last good menu.`, 3600);
       res.status(422).json({ error: "bad_menu_pull", reason, removed: removed.length, total });
       return;
     }
@@ -84,7 +86,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // used to live only in a Vercel log nobody reads. Reported, not auto-applied.
       console.log("[cron/refresh-menu] price drift", JSON.stringify(priceDrift));
       const lines = priceDrift.slice(0, 5).map((d) => `${d.item} site ${d.site} vs Clover ${d.clover}`);
-      await alertStaff(`MENU PRICE DRIFT (${priceDrift.length}) — the website and the register disagree: ${lines.join("; ")}${priceDrift.length > 5 ? "; …" : ""}. The site keeps charging its shown price until it is regenerated.`);
+      await alertOps(`MENU PRICE DRIFT (${priceDrift.length}) — the website and the register disagree: ${lines.join("; ")}${priceDrift.length > 5 ? "; …" : ""}. The site keeps charging its shown price until it is regenerated.`);
     }
     // Reported, not applied: the order API charges toppings from the constant, so a
     // silent reprice here would show one price and charge another.
@@ -109,7 +111,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         toppingChargeDrift && `full topping site $${(toppingChargeDrift.site / 100).toFixed(2)} vs Clover $${(toppingChargeDrift.clover / 100).toFixed(2)}`,
         halfToppingChargeDrift && `half topping site $${(halfToppingChargeDrift.site / 100).toFixed(2)} vs Clover $${(halfToppingChargeDrift.clover / 100).toFixed(2)}`,
       ].filter(Boolean);
-      await alertStaff(`TOPPING CHARGE DRIFT — the website and the register disagree: ${parts.join("; ")}. The site keeps charging its shown rate until the constants in menuToppings.ts are updated and redeployed.`);
+      await alertOps(`TOPPING CHARGE DRIFT — the website and the register disagree: ${parts.join("; ")}. The site keeps charging its shown rate until the constants in menuToppings.ts are updated and redeployed.`);
     }
     res.status(200).json({
       ok: true,
@@ -122,7 +124,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   } catch (err) {
     console.error("[cron/refresh-menu] error", err);
-    await alertStaff(`NIGHTLY MENU REFRESH FAILED — ${err instanceof Error ? err.message : "sync failed"}. The site keeps serving the last good menu; items 86'd in Clover today are still orderable online.`);
+    await alertOps(`NIGHTLY MENU REFRESH FAILED — ${err instanceof Error ? err.message : "sync failed"}. The site keeps serving the last good menu; items 86'd in Clover today are still orderable online.`);
     res.status(502).json({ error: err instanceof Error ? err.message : "sync_failed" });
   }
 }

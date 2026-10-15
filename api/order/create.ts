@@ -25,11 +25,11 @@ import {
 import { priceLines, type ClientLine } from "../lib/menuCatalog.js";
 import { liveItemNames } from "../lib/menuLive.js";
 import { closedTodayMessage, isOrderingOpen, isDeliveryOpen } from "../../src/lib/openStatus.js";
-import { rateLimitAll } from "../lib/rateLimit.js";
+import { claimWindow, rateLimit, rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, releaseOrder, reserveOrder, settleQueuedPrint, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
 import { applyFreePie, claimPromoCode, isFreePickupOrder, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
 import { applyBogoPizza, applyPizzaPercent, normalizeCampaignCode, recordCampaignRedemption, resolvePromo } from "../lib/campaignPromo.js";
-import { alertStaffOnce, alertStaff, sendReceiptEmail, STAFF_PAGE_COOLDOWN_SEC } from "../lib/notify.js";
+import { alertOpsOnce, alertStaffOnce, alertStaff, sendReceiptEmail, STAFF_PAGE_COOLDOWN_SEC } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
 import { lookupVipCustomer } from "../lib/vipLookup.js";
@@ -225,6 +225,49 @@ async function pageLedgerDown(): Promise<void> {
     `ONLINE ORDERING IS DOWN — the order database is unreachable, every web order is being refused with "call the store". Check Neon (outage or monthly compute quota) and Vercel.`,
   );
   if (outcome === "failed") ledgerDownPagedAt = 0;
+}
+
+/**
+ * Count checkouts refused BEFORE payment because the register could not take the order
+ * (register_busy, order_routing_failed, pos_unavailable), and tell the owner when it keeps
+ * happening. From Oct 6 to 10 Sea Bright refused every web checkout this way — about 7
+ * customers and $374 of carts over 4.5 days — and nothing alerted: refused rows are deleted, so
+ * the digest just said "No web orders yesterday". Only requests that got past Turnstile, the
+ * rate limits, pricing and the reservation reach these refusals, so bots and validation errors
+ * never count. Distinct checkouts, not taps: a key counts once per hour, so one customer
+ * re-tapping cannot trip it. Email (alertOps), not a text — whether this should page the store
+ * is the owner's call. Never throws, and a counter error just skips the count.
+ */
+async function noteSetupFailure(idempotencyKey: string, reason: string): Promise<void> {
+  try {
+    if (!(await claimWindow(`setup-fail:key:${idempotencyKey}`, 3600))) return;
+    if (await rateLimit("setup-fail:all", 2, 3600)) return; // fewer than 3 distinct checkouts this hour
+    await alertOpsOnce(
+      "ordering-setup-failing",
+      `CHECKOUT KEEPS FAILING BEFORE PAYMENT — 3 or more customers this hour could not place a web order (latest: ${reason}). No card was charged, but online ordering is effectively down. Check Clover (API token, outage, rate limits) and the Vercel logs for /api/order/create.`,
+      3600,
+    );
+  } catch (err) {
+    console.error("[order/create] setup-failure counter unavailable", err);
+  }
+}
+
+/**
+ * A burst of card declines is what card testing looks like (Turnstile raises the cost, it does
+ * not remove it). More than 8 declines site-wide in a 15-minute window emails the owner once an
+ * hour, so a pattern is noticed the same day instead of on the Clover statement. Never throws.
+ */
+async function noteDecline(): Promise<void> {
+  try {
+    if (await rateLimit("card-declines:all", 8, 900)) return;
+    await alertOpsOnce(
+      "card-declines",
+      "CARD DECLINE SPIKE — more than 8 card declines on the website within 15 minutes. That pattern usually means someone is testing stolen cards. Check Clover's transactions; to stop online card payments, set VITE_CARD_PAYMENTS_OFF=1 in Vercel and redeploy.",
+      3600,
+    );
+  } catch (err) {
+    console.error("[order/create] decline counter unavailable", err);
+  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -774,6 +817,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error("[order/create] free order could not be created in Clover", err);
       if (reservedId != null) await releaseOrder(reservedId);
       await releasePromo();
+      await noteSetupFailure(idempotencyKey, "pos_unavailable");
       res.status(502).json({
         error: "pos_unavailable",
         message: "We couldn't reach the register just now. Please try again in a moment — or show your code at the counter and we'll take care of you.",
@@ -814,6 +858,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       await releasePromo();
       // Clover still throttling after the allowance: say so, rather than "couldn't prepare".
       const busy = err instanceof CloverError && err.status === 429;
+      await noteSetupFailure(idempotencyKey, busy ? "register_busy" : "order_routing_failed");
       res.status(502).json(
         busy
           ? {
@@ -879,6 +924,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (discarded && reservedId != null) await releaseOrder(reservedId, { draftDiscarded: true });
       await releasePromo();
       console.error("[order/create] pay-for-order declined", status, err instanceof Error ? err.message : err);
+      await noteDecline();
       res.status(402).json({ error: "payment_failed", message: "We couldn't process that card. Please try again or use a different card." });
       return;
     }

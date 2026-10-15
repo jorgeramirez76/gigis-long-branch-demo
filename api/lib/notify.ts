@@ -168,31 +168,72 @@ export async function sendReceiptEmail(toEmail: string, subject: string, html: s
   }
 }
 
+/** Email one alert to every address in a comma-separated list. True if any send succeeded. */
+async function emailAlert(list: string | undefined, subject: string, message: string, from?: string): Promise<boolean> {
+  let delivered = false;
+  const safe = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  for (const email of (list || "").split(",").map(s => s.trim()).filter(Boolean)) {
+    const result = await sendReceiptEmail(email, subject, `<p>${safe}</p>`, message, from);
+    if (!result.sent) console.error("[alert] email failed", result.error);
+    delivered = result.sent || delivered;
+  }
+  return delivered;
+}
+
 /**
- * Fire-and-forget internal alert to store staff. Used when a paid order fails to
- * reach the POS so a human can recover it before the customer shows up.
+ * Internal alert to store staff for MONEY OR FOOD AT RISK: a paid order that didn't reach the
+ * kitchen, a ticket that never printed, an uncertain card result, ordering down. Never throws.
  *
- * Sends on EVERY configured channel — SMS (STAFF_ALERT_PHONE) and email
- * (STAFF_ALERT_EMAIL, comma-separated). It was SMS-only, and with STAFF_ALERT_PHONE
- * unset in production every "paid but not fired" alert went to the Vercel log and
- * nowhere else — the alerts that exist precisely so a human catches a charged order
- * the kitchen never saw. Never throws.
+ * Sends on EVERY configured channel, every time — SMS (STAFF_ALERT_PHONE) AND email
+ * (STAFF_ALERT_EMAIL, comma-separated). It used to stop as soon as Twilio's API accepted the
+ * text, using email only if that API call itself errored. But "accepted" is not "delivered":
+ * carrier filtering, an undelivered message or a phone that is off left a "paid but not fired"
+ * page with no backup at all (OPERATIONS: a configured number is not proof of receipt).
+ *
+ * Problems only a developer or the owner can act on (menu drift, refresh failures, blasts
+ * that failed) go through alertOps instead — never as a text to the store.
  */
 export async function alertStaff(message: string): Promise<boolean> {
+  let delivered = false;
   const phone = process.env.STAFF_ALERT_PHONE;
   if (phone) {
     const sent = await sendSms(phone, message.slice(0, 320));
-    if (sent.sent) return true;
-    console.error("[alertStaff] SMS failed", sent.error);
+    if (sent.sent) delivered = true;
+    else console.error("[alertStaff] SMS failed", sent.error);
   }
-  let delivered = false;
-  const safe = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  for (const email of (process.env.STAFF_ALERT_EMAIL || "").split(",").map(s => s.trim()).filter(Boolean)) {
-    const result = await sendReceiptEmail(email, "Gigi's website needs attention", `<p>${safe}</p>`, message);
-    delivered = result.sent || delivered;
-  }
+  delivered = (await emailAlert(process.env.STAFF_ALERT_EMAIL, "Gigi's website needs attention", message)) || delivered;
   if (!delivered) console.error("[alertStaff] no channel delivered", message);
   return delivered;
+}
+
+/**
+ * Operational alert for the OWNER/DEVELOPER, by email only: menu price drift, a failed or
+ * blocked nightly menu refresh, checkout refusing orders before payment, a run of card
+ * declines. None of these is food at risk this minute, and none is something the store can fix
+ * (most need pull-clover.py, a rebuild or a redeploy), so they never text the store — the
+ * owner's rule is that texts are for food-at-risk moments (see daily-digest.ts).
+ *
+ * Goes to OPS_ALERT_EMAIL when set (e.g. the developer), else to the owner's DIGEST_EMAIL,
+ * from DIGEST_FROM when set. Never throws; true if any email went out.
+ */
+export async function alertOps(message: string): Promise<boolean> {
+  const to = process.env.OPS_ALERT_EMAIL || process.env.DIGEST_EMAIL;
+  const delivered = await emailAlert(to, "Gigi's Long Branch website — needs a look", message, process.env.DIGEST_FROM || undefined);
+  if (!delivered) console.error("[alertOps] no channel delivered", message);
+  return delivered;
+}
+
+/** alertOps with the same atomic cooldown as alertStaffOnce (and the same fail-open claim). */
+export async function alertOpsOnce(key: string, message: string, cooldownSec: number): Promise<StaffPageOutcome> {
+  // The staff-page: prefix is what makes claimWindow fail OPEN on a database error.
+  const bucket = `staff-page:ops:${key}`;
+  if (!(await claimWindow(bucket, cooldownSec))) {
+    console.log(`[alertOps] suppressed (cooldown ${key}) —`, message);
+    return "suppressed";
+  }
+  if (await alertOps(message)) return "sent";
+  await releaseWindow(bucket, cooldownSec);
+  return "failed";
 }
 
 /** One staff page per problem per this window. 30 minutes: long enough that a customer

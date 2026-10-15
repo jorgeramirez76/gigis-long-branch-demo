@@ -23,10 +23,10 @@
       "maxDuration": 120
     },
     "api/cron/send-scheduled.ts": {
-      "maxDuration": 300
+      "maxDuration": 800
     },
     "api/admin/broadcast.ts": {
-      "maxDuration": 300
+      "maxDuration": 800
     },
     "api/admin/printer-test.ts": {
       "maxDuration": 60

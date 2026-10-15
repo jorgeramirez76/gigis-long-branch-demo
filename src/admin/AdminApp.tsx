@@ -362,7 +362,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
   const [promoDescription, setPromoDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [phase, setPhase] = useState<"compose" | "confirm" | "sending" | "done">("compose");
-  const [preview, setPreview] = useState<{ smsCount: number; emailCount: number; smsPreview: string | null; channelsReady: { sms: boolean; email: boolean }; smsWindowOpen?: boolean; smsWindow?: string; smsAtMonthlyMax?: number | null } | null>(null);
+  const [preview, setPreview] = useState<{ smsCount: number; emailCount: number; smsPreview: string | null; channelsReady: { sms: boolean; email: boolean }; smsWindowOpen?: boolean; smsWindow?: string; smsAtMonthlyMax?: number | null; estimatedSeconds?: number; fitsOneRun?: boolean } | null>(null);
   const [result, setResult] = useState<{ smsSent: number; smsFailed: number; emailSent: number; emailFailed: number; inProgress?: boolean; duplicate?: boolean } | null>(null);
   const [error, setError] = useState("");
 
@@ -544,6 +544,17 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
             <p className="mt-3 text-sm font-semibold text-[var(--color-brand-red-bright)]">
               {preview.smsAtMonthlyMax} {preview.smsAtMonthlyMax === 1 ? "person" : "people"} on the text list already got 4 or more texts
               in the last 30 days. The signup terms say "typically up to 4 per month" — consider waiting.
+            </p>
+          )}
+          {preview.fitsOneRun === false && (
+            <p className="mt-3 text-sm font-semibold text-[var(--color-brand-red-bright)]">
+              This list is too big to send in one go (about {Math.ceil((preview.estimatedSeconds ?? 0) / 60)} minutes of sending).
+              Part of the list would not get it. Ask the developer to switch blasts to batch sending before you send this.
+            </p>
+          )}
+          {preview.fitsOneRun !== false && (preview.estimatedSeconds ?? 0) >= 90 && (
+            <p className="mt-3 text-sm text-[var(--color-ink-soft)]">
+              Sending takes about {Math.ceil((preview.estimatedSeconds ?? 0) / 60)} minutes. Keep this page open until it finishes.
             </p>
           )}
           {((smsOn && !preview.channelsReady.sms) || (emailOn && !preview.channelsReady.email)) && (

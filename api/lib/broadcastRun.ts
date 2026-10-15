@@ -35,6 +35,23 @@ export type BroadcastInput = {
   now?: Date;
 };
 
+/** The function ceiling for a blast run (vercel.json maxDuration for api/admin/broadcast.ts and
+ *  api/cron/send-scheduled.ts; 800 s is the Pro + Fluid compute limit). A run that is still sending
+ *  when it hits this is killed mid-list: the rest of the list never gets the message, and the
+ *  broadcast stays reserved for staff review. */
+export const BLAST_RUN_LIMIT_SEC = 800;
+/** Seconds per email: the 600 ms pacing sleep below plus a typical Resend call. */
+const EMAIL_SEC_EACH = 0.9;
+/** Seconds per text: eight Twilio submissions run at once, each roughly half a second. */
+const SMS_SEC_EACH = 0.5 / 8;
+
+/** How long a blast to these audiences should take, and whether that fits in one run with room to
+ *  spare. Shown in the dry run so a list that has outgrown one run is caught before Send. */
+export function blastDuration(smsCount: number, emailCount: number): { estimatedSeconds: number; fitsOneRun: boolean } {
+  const estimatedSeconds = Math.ceil(smsCount * SMS_SEC_EACH + emailCount * EMAIL_SEC_EACH);
+  return { estimatedSeconds, fitsOneRun: estimatedSeconds <= BLAST_RUN_LIMIT_SEC * 0.75 };
+}
+
 /** Texts sent per member in the trailing 30 days that the signup disclosure calls the usual ceiling
  *  ("typically up to 4 per month"). Used for a dry-run warning, never to drop anyone silently. */
 const SMS_MONTHLY_TYPICAL_MAX = 4;
@@ -107,6 +124,7 @@ const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : messag
       smsWindowOpen: smsSendWindowOpen(now),
       smsWindow: SMS_WINDOW_LABEL,
       smsAtMonthlyMax,
+      ...blastDuration(smsAudience.length, emailAudience.length),
     } };
   }
 
@@ -257,8 +275,9 @@ const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : messag
 
   // Resend does NOT queue like Twilio — its default limit is ~2 requests/sec and a
   // 429'd send is recorded as a plain failure with no retry path short of re-blasting
-  // the list. One worker with spacing stays safely under the limit (maxDuration 300
-  // gives this pace room for hundreds of members).
+  // the list. One worker with spacing stays safely under the limit. At ~0.9 s each, one
+  // run (BLAST_RUN_LIMIT_SEC) fits roughly 650 members with room to spare; the dry run
+  // warns before a list outgrows that (blastDuration).
   await runPool(emailAudience, async (m) => {
     const result = await sendEmail(m.email!, subject!.trim(), message.trim(), {
       promoCode: code ?? undefined,

@@ -34,5 +34,11 @@ that window the dashboard refuses a blast with a text leg (email-only blasts are
 scheduled blast with a text leg waits unclaimed for the next tick inside the window. The dry run
 also warns when people on the text list already got 4+ texts in the last 30 days.
 
+Each blast runs inside one function call of at most 800 seconds (`BLAST_RUN_LIMIT_SEC`). Emails go
+out one at a time (~0.9 s each, under Resend's rate limit), so one run fits roughly 650 email
+members with room to spare. The dry run estimates the send time and warns when a list no longer
+fits; at that point switch email fan-out to Resend's batch endpoint before sending. A blast killed
+mid-list is not resumed automatically: it stays reserved for staff review (no double sends).
+
 Accounts are live (production release `65df7d0`). For later changes, run the account/security,
 promo and checkout tests first; migrations must precede activation of anything that needs them.

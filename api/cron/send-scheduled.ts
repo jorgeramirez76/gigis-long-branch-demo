@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { cronAuthorized } from "../lib/cronAuth.js";
 import { sql, isVipBusiness } from "../lib/db.js";
-import { isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
+import { BLAST_RUN_LIMIT_SEC, isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
 import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
 import { smsSendWindowOpen } from "../lib/smsWindow.js";
 
@@ -26,7 +26,14 @@ import { smsSendWindowOpen } from "../lib/smsWindow.js";
  * makes a manual re-run safe, but the decision to re-run is a human's.
  */
 
-export const config = { maxDuration: 300 };
+export const config = { maxDuration: 800 }; // = BLAST_RUN_LIMIT_SEC (api/lib/broadcastRun.ts) and vercel.json
+
+/** Claim another due blast in the same tick only while most of the run is still ahead. A blast
+ *  started late in the run could be killed mid-list; leaving the row unclaimed instead means it
+ *  simply goes out at the next tick, 15 minutes later. */
+export function mayStartAnotherBlast(elapsedMs: number): boolean {
+  return elapsedMs < BLAST_RUN_LIMIT_SEC * 1000 * 0.25;
+}
 
 let ensured = false;
 export async function ensureScheduledTable() {
@@ -81,10 +88,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const done: Array<{ id: number; status: number; body: Record<string, unknown> }> = [];
+  const startedAt = Date.now();
   try {
     await ensureScheduledTable();
     // At most a few per tick; each blast can take minutes and the function has a ceiling.
     for (let n = 0; n < 3; n++) {
+      if (n > 0 && !mayStartAnotherBlast(Date.now() - startedAt)) break;
       // SMS quiet hours (api/lib/smsWindow.ts): outside the window a row with a text leg is not
       // even CLAIMED — it waits, untouched, for the first tick inside the window. Refusing it after
       // the claim would mark it finished and drop the blast for good. The same instant is handed

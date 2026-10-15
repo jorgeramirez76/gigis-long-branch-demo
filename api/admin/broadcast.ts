@@ -4,7 +4,7 @@ import { requireAdmin } from "../lib/adminAuth.js";
 import { isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
 import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
 
-export const config = { maxDuration: 300 };
+export const config = { maxDuration: 800 }; // = BLAST_RUN_LIMIT_SEC (api/lib/broadcastRun.ts) and vercel.json
 
 /**
  * POST /api/admin/broadcast

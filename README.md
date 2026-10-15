@@ -23,9 +23,12 @@ without real provider keys cannot complete payments or send account verification
 Before release run `npm test`, `npm run lint` (eslint plus both type checks) and
 `npm run build` (which also runs `scripts/verify-prices.py`, the CSP gate and the SEO gate).
 Pushing `main` deploys production through the existing Vercel integration. GitHub Actions
-(`.github/workflows/seo-check.yml`) runs the same three commands on every push and pull
-request, but it only *blocks* a bad deploy once it is a required check: enable branch
-protection on `main` with that check required, or Vercel Deployment Checks for it.
+(`.github/workflows/seo-check.yml`) runs the same three commands on pushes to `main` and on
+pull requests, but it only *blocks* a bad deploy once it is a required check: enable branch
+protection on `main` with that check required, or Vercel Deployment Checks for it. The check
+to select is the job `seo` (GitHub lists it as `seo`, or as
+`CI (tests, lint, build, rendered SEO) / seo` on a pull request); the job keeps that id so a
+check already required under it keeps working.
 Never place a real charge or send customer/staff messages merely to test a release.
 
 ## Source map

@@ -4,6 +4,8 @@ name: CI (tests, lint, build, rendered SEO)
 # Neon — no network or secrets needed), lint and type checks, then the full production build
 # with its price, CSP and SEO gates. To make it BLOCK a bad deploy, mark this check required
 # (branch protection on main, or Vercel Deployment Checks) — see README "Development and release".
+# The check is named after the job id, `seo`; renaming the job would orphan a check already
+# required under that name.
 on:
   pull_request:
   push:

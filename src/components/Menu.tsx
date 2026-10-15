@@ -154,7 +154,7 @@ export function Menu() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search the menu — “grandma”, “buffalo”, “parm”…"
               aria-label="Search the menu"
-              className="w-full rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] py-3 pl-11 pr-4 text-sm shadow-[var(--shadow-sm)] focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
+              className="w-full rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] py-3 pl-11 pr-4 text-base shadow-[var(--shadow-sm)] sm:text-sm focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/20"
             />
             <svg
               aria-hidden="true"

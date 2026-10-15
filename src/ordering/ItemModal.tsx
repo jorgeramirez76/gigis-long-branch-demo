@@ -368,7 +368,7 @@ export function ItemModal({ item, categoryId, existingLine, onClose }: { item: M
               maxLength={500}
               rows={2}
               placeholder="e.g. well done, cut in squares, no onions…"
-              className="w-full resize-none rounded-xl border border-[var(--color-line)] bg-[var(--color-page)]/40 px-3 py-2 text-sm focus:border-[var(--color-brand-red)] focus:outline-none"
+              className="w-full resize-none rounded-xl border border-[var(--color-line)] bg-[var(--color-page)]/40 px-3 py-2 text-base focus:border-[var(--color-brand-red)] focus:outline-none"
             />
           </div>
         </div>

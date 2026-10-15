@@ -951,6 +951,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                         type="text"
                         value={vipAddress}
                         onChange={(e) => setVipAddress(e.target.value)}
+                        aria-label="Home street address"
                         placeholder="Home address (one pie per household)"
                         autoComplete="street-address"
                         disabled={frozen}
@@ -961,6 +962,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                         type="text"
                         value={vipApt}
                         onChange={(e) => setVipApt(e.target.value)}
+                        aria-label="Apartment or unit (optional)"
                         placeholder="Apt"
                         autoComplete="address-line2"
                         disabled={frozen}
@@ -972,6 +974,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                       type="text"
                       value={vipCity}
                       onChange={(e) => setVipCity(e.target.value)}
+                      aria-label="City or town"
                       placeholder="City / town"
                       autoComplete="address-level2"
                       disabled={frozen}
@@ -985,6 +988,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   inputMode="numeric"
                   value={vipZip}
                   onChange={(e) => setVipZip(e.target.value)}
+                  aria-label="ZIP code"
                   placeholder={fulfillment === "delivery" ? "ZIP code (for your one-per-household pie)" : "ZIP code"}
                   autoComplete="postal-code"
                   disabled={frozen}
@@ -1106,7 +1110,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
             onChange={(e) => setOrderNote(e.target.value)}
             maxLength={130}
             placeholder="Allergies, utensils, pickup notes…"
-            className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-sm focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
+            className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
           />
         </div>
 
@@ -1178,7 +1182,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                   autoCapitalize="characters"
                   autoCorrect="off"
                   spellCheck={false}
-                  className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 font-mono text-sm uppercase focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
+                  className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 font-mono text-base uppercase focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
                 />
                 <button
                   type="button"
@@ -1471,7 +1475,7 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-sm focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
+        className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 text-base focus:border-[var(--color-brand-red)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-red)]/15"
       />
     </div>
   );

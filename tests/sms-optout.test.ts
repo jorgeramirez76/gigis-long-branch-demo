@@ -20,13 +20,19 @@ describe('which replies revoke SMS consent', () => {
     ['revoke', 'stop'], ['OPTOUT', 'stop'], ['opt out', 'stop'], ['Opt-out please', 'stop'],
     ['please stop', 'stop'], ['Stop texting me', 'stop'], ['can you stop sending these', 'stop'],
     ['remove me from this list', 'stop'], ["don't text me again", 'stop'], ['no more texts', 'stop'],
+    // "stop" anywhere (not just at either end), and more plain-English revocations
+    ['Please stop these texts', 'stop'], ['please stop the messages', 'stop'], ['I want to stop receiving these', 'stop'],
+    ['stop all of this', 'stop'], ['take me off your list', 'stop'], ['Take my number off this list please', 'stop'],
+    ['no more please', 'stop'], ['leave me alone', 'stop'], ['Wrong number', 'stop'], ['how do I unsubscribe from this', 'stop'],
+    ['i revoke consent', 'stop'], ['Cancel these texts', 'stop'], ['I quit', 'stop'], ["I'll stop by later. Stop texting me", 'stop'],
     // stop always wins over yes
     ['Yes stop texting me', 'stop'], ['YES STOP', 'stop'],
     // the deliberate first-word YES (WORKLIST LB-2) still confirms the double opt-in
     ['YES', 'start'], ['YES!', 'start'], ['yes please', 'start'], ['Start', 'start'], ['unstop', 'start'],
     ['help', 'help'], ['INFO', 'help'],
     // not revocations
-    ['please stop by', 'other'], ['what time do you close', 'other'], ['', 'other'],
+    ['please stop by', 'other'], ['Yes, we will stop by tonight', 'start'], ['what time do you close', 'other'],
+    ['can I cancel my order', 'other'], ['is the end of the week special still on', 'other'], ['', 'other'],
   ];
   for (const [reply, want] of table) {
     it(`"${reply}" → ${want}`, () => assert.equal(classifySmsKeyword(reply), want));

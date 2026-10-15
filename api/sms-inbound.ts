@@ -18,8 +18,12 @@ const CARRIER_STOP_WORDS = new Set(["stop", "stopall", "unsubscribe", "cancel", 
 /** Every single word that means "stop" here, the FCC's revocation words included. */
 const STOP_WORDS = new Set([...CARRIER_STOP_WORDS, "revoke", "optout"]);
 const START_WORDS = new Set(["start", "yes", "unstop"]);
-/** Plain-English revocations anywhere in the reply ("can you stop sending these"). */
-const STOP_PHRASE = /\b(opt ?out|stop (texting|txting|messaging|sending)|remove me|unsubscribe|(dont|do not) (text|txt|message|contact)|no more (texts?|messages))\b/;
+/** Stop words with no everyday second meaning: anywhere in the reply, they mean stop. ("stop"
+ *  itself is handled on its own below; "cancel", "end" and "quit" count only at either end of the
+ *  reply, since "cancel my order" or "end of the day" are not revocations.) */
+const UNAMBIGUOUS_STOP_WORDS = new Set(["stopall", "unsubscribe", "unsub", "revoke", "optout"]);
+/** Plain-English revocations anywhere in the reply ("take me off your list", "no more please"). */
+const STOP_PHRASE = /\b(opt ?out|remove (me|my number|this number)|take (me|my number|this number) off|off (your|the|this|ur) (list|texts?)|(dont|do not) (text|txt|message|contact|send)|no more|leave me alone|wrong number)\b/;
 
 /** Lowercase letters and single spaces only — "STOP!!", "Stop." and "stop  texting" all normalize. */
 function normalizeSmsBody(input: string): string {
@@ -28,20 +32,29 @@ function normalizeSmsBody(input: string): string {
 
 export type SmsKeyword = "stop" | "start" | "help" | "other";
 /**
- * STOP is checked FIRST, and matched beyond the exact keyword: a reply whose first or last word
- * is a stop word ("please stop", "stop texting me", "YES STOP") or that says so in plain English
- * ("opt out", "can you stop sending these") revokes consent. It used to take the whole message
- * being one of six words, so "please stop" and "opt out" kept the person on the list, and "yes
- * stop texting me" matched the YES opt-in first and re-subscribed them. Over-opting-out is
- * harmless; texting someone who revoked consent is the TCPA exposure.
- * "please stop by" stays "other" (neither end is a stop word). START keeps its deliberate
- * first-word match (WORKLIST LB-2: "YES!" and "yes please" confirm the double opt-in), but only
- * once no stop intent was found.
+ * STOP is checked FIRST, and matched well beyond the exact keyword, because over-opting-out is
+ * harmless and texting someone who revoked consent is the TCPA exposure. A reply is STOP when:
+ *  - the word "stop" appears anywhere, unless the very next word is "by" ("please stop by" is an
+ *    invitation, the one documented false positive): "please stop these texts", "I want to stop
+ *    receiving these", "YES STOP";
+ *  - stopall, unsubscribe, unsub, revoke or optout appears anywhere;
+ *  - its first or last word is cancel, end or quit ("cancel", "quit please", "ok end");
+ *  - or it says so in plain English: "opt out", "take me off your list", "remove me",
+ *    "don't text me", "no more please", "leave me alone", "wrong number".
+ * It used to take the whole message being one of six words, so "please stop" and "opt out" kept
+ * the person on the list, and "yes stop texting me" matched the YES opt-in first and re-subscribed
+ * them. START keeps its deliberate first-word match (WORKLIST LB-2: "YES!" and "yes please"
+ * confirm the double opt-in), but only once no stop intent was found.
  */
 export function classifySmsKeyword(input: string): SmsKeyword {
   const body = normalizeSmsBody(input);
   const words = body ? body.split(" ") : [];
-  if (words.length && (STOP_WORDS.has(words[0]) || STOP_WORDS.has(words[words.length - 1]) || STOP_PHRASE.test(body))) return "stop";
+  const last = words.length - 1;
+  const stopIntent =
+    words.some((w, i) => (w === "stop" && words[i + 1] !== "by") || UNAMBIGUOUS_STOP_WORDS.has(w)) ||
+    (words.length > 0 && (STOP_WORDS.has(words[0]) || STOP_WORDS.has(words[last]))) ||
+    STOP_PHRASE.test(body);
+  if (stopIntent) return "stop";
   if (words.length && START_WORDS.has(words[0])) return "start";
   if (body === "help" || body === "info") return "help";
   return "other";

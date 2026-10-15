@@ -1,6 +1,7 @@
 import { cronAuthorized } from "../lib/cronAuth.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { remindStrandedOrders, sweepQueuedPrints } from "../lib/printSweep.js";
+import { shopOpenForCron } from "../lib/cronHours.js";
 
 /**
  * Scheduled follow-up on kitchen tickets recorded as still moving through
@@ -10,12 +11,12 @@ import { remindStrandedOrders, sweepQueuedPrints } from "../lib/printSweep.js";
  * too, but that made the 25-minute stuck check traffic-driven (a ticket that queued on the
  * night's LAST order wasn't re-checked until the next order or the 4 AM menu cron) and
  * spent Clover calls in front of the customer's own checkout. This cron guarantees the
- * check during the hours somebody can act: every 15 minutes,
- * UTC hours 14-23,0-4 (vercel.json). That is 10 AM to 12:45 AM Eastern in summer
- * and 9 AM to 11:45 PM in winter, so it covers 10 AM to 11 PM online ordering plus
- * the stuck-ticket window after the last order in either season. No overnight runs on purpose: the hours gate means
- * no new orders exist after close, so a night check could only ever wake Kenny
- * for something he can't do anything about until morning.
+ * check during the hours somebody can act: every 20 minutes, and only while the shop is open
+ * (api/lib/cronHours.ts: counter hours, Mon-Wed 10 AM-11 PM and Thu-Sun 10 AM-midnight Eastern,
+ * never on a CLOSED_DATES day). Changed 2026-10-15 from every 15 minutes, 10 AM to 12:45 AM.
+ * vercel.json fires at :00, :20 and :40 over UTC hours 0-4,14-23, which covers the open hours in
+ * summer and winter; ticks outside them return before touching the database. A ticket queued in
+ * the last minutes before close is therefore next checked at the first tick after opening.
  *
  * Auth: fail CLOSED, same shape as refresh-menu — Vercel Cron sends
  * `Authorization: Bearer $CRON_SECRET`; safe to hit manually with that header.
@@ -32,6 +33,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (!cronAuthorized(req.headers.authorization, secret)) {
     res.status(401).json({ error: "unauthorized" });
+    return;
+  }
+  if (!shopOpenForCron()) {
+    res.status(200).json({ ok: true, skipped: "shop_closed" });
     return;
   }
   const prints = await sweepQueuedPrints(); // never throws

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { afterEach, test } from "node:test";
+import { afterEach, beforeEach, mock, test } from "node:test";
 process.env.DATABASE_URL = "postgres://test:test@fake-neon.test/test";
 process.env.CRON_SECRET = "cron-test-secret";
 process.env.RESEND_API_KEY = "re_test";
@@ -9,7 +9,10 @@ process.env.PUBLIC_BASE_URL = "https://gigislongbranch.com";
 import handler from "../api/cron/send-scheduled.js";
 
 const originalFetch = globalThis.fetch;
-afterEach(() => { globalThis.fetch = originalFetch; });
+// The cron only works while the shop is open (api/lib/cronHours.ts), so every test runs at noon
+// Eastern on a Wednesday; tests/cron-open-hours.test.ts covers the closed-hours no-op.
+beforeEach(() => { mock.timers.enable({ apis: ["Date"], now: new Date("2026-10-14T16:00:00Z").getTime() }); });
+afterEach(() => { globalThis.fetch = originalFetch; mock.timers.reset(); });
 
 function response() {
   const state: { status: number; body: Record<string, unknown> } = { status: 0, body: {} };

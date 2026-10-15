@@ -17,7 +17,7 @@ import { BLAST_RUN_LIMIT_SEC, blastDuration } from "../api/lib/broadcastRun.js";
 import handler, { mayStartAnotherBlast } from "../api/cron/send-scheduled.js";
 
 const originalFetch = globalThis.fetch;
-afterEach(() => { globalThis.fetch = originalFetch; mock.restoreAll(); });
+afterEach(() => { globalThis.fetch = originalFetch; mock.restoreAll(); mock.timers.reset(); });
 const read = (rel: string) => readFileSync(new URL(`../${rel}`, import.meta.url), "utf8");
 
 describe("blast run ceiling", () => {
@@ -53,7 +53,8 @@ describe("send-scheduled: a second blast only starts early in the run", () => {
   });
 
   function cron(stepMs: number) {
-    let now = Date.UTC(2026, 9, 14, 15, 0);
+    let now = Date.UTC(2026, 9, 14, 15, 0); // 11 AM EDT on a Wednesday: the shop is open, so the cron runs
+    mock.timers.enable({ apis: ["Date"], now });
     mock.method(Date, "now", () => now);
     let claims = 0;
     const result = (data: Record<string, unknown>[] = []) => {

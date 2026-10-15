@@ -4,16 +4,17 @@ import { sql, isVipBusiness } from "../lib/db.js";
 import { BLAST_RUN_LIMIT_SEC, isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
 import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
 import { smsSendWindowOpen } from "../lib/smsWindow.js";
+import { shopOpenForCron } from "../lib/cronHours.js";
 
 /**
- * GET /api/cron/send-scheduled — every 15 minutes, UTC hours 14-23,0-4 (vercel.json).
+ * GET /api/cron/send-scheduled — every 20 minutes, only while the shop is open (2026-10-15).
  *
- * Same minutes and hours as sweep-prints, so both crons share one Neon wake-up and the database
- * can scale to zero overnight and between ticks. Every-5-minutes around the clock kept Neon
- * awake 24/7 (2026-10-14: Neon usage warning). A blast is sent at the first tick at or after
- * its send_at, so up to 15 minutes late; one queued for overnight goes out at the morning's
- * first tick (10 AM Eastern in summer, 9 AM in winter). A blast with a TEXT leg also waits for
- * the SMS window (9 AM to 8:30 PM Eastern, api/lib/smsWindow.ts) — it is left unclaimed until then.
+ * Same ticks as sweep-prints (vercel.json "*\/20 0-4,14-23", gated by api/lib/cronHours.ts to
+ * the real Eastern counter hours), so both crons share one Neon wake-up and the database sleeps
+ * between ticks and overnight. A blast is sent at the first open-hours tick at or after its
+ * send_at, so up to 20 minutes late; one queued for while the shop is closed goes out at the
+ * first tick after 10 AM. A blast with a TEXT leg also waits for the SMS window (9 AM to 8:30 PM
+ * Eastern, api/lib/smsWindow.ts) — it is left unclaimed until then.
  *
  * Drains scheduled_broadcasts: blasts queued for a future moment ("tomorrow at 11am"), sent
  * through the SAME core the admin dashboard uses (api/lib/broadcastRun.ts), so a scheduled
@@ -30,7 +31,7 @@ export const config = { maxDuration: 800 }; // = BLAST_RUN_LIMIT_SEC (api/lib/br
 
 /** Claim another due blast in the same tick only while most of the run is still ahead. A blast
  *  started late in the run could be killed mid-list; leaving the row unclaimed instead means it
- *  simply goes out at the next tick, 15 minutes later. */
+ *  simply goes out at the next tick, 20 minutes later. */
 export function mayStartAnotherBlast(elapsedMs: number): boolean {
   return elapsedMs < BLAST_RUN_LIMIT_SEC * 1000 * 0.25;
 }
@@ -84,6 +85,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (!cronAuthorized(req.headers.authorization, secret)) {
     res.status(401).json({ error: "unauthorized" });
+    return;
+  }
+
+  if (!shopOpenForCron()) {
+    res.status(200).json({ ok: true, skipped: "shop_closed", sent: [] });
     return;
   }
 

@@ -65,7 +65,9 @@ test("a hand-fired text blast at 10 PM is refused before anything is reserved or
 });
 
 test("the scheduled queue leaves text blasts unclaimed outside the window", async () => {
-  mock.timers.enable({ apis: ["Date"], now: new Date("2026-09-21T03:30:00Z") }); // 11:30 PM EDT
+  // 11:30 PM EDT on a Sunday: the counter is still open (Thu-Sun close at midnight, so the cron
+  // runs), while the SMS window shut at 8:30 PM.
+  mock.timers.enable({ apis: ["Date"], now: new Date("2026-09-21T03:30:00Z") });
   const db = storage();
   let code = 0;
   const res = { setHeader() { return this; }, status(v: number) { code = v; return this; }, json() { return this; } };

@@ -509,7 +509,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // (There used to be an inline sweepQueuedPrints(3) here: Clover GETs for OTHER customers'
   // queued tickets, in front of this customer's own rate-limited line-item burst. The
-  // sweep-prints cron now runs every 15 minutes through all ordering hours and settles those
+  // sweep-prints cron runs every 20 minutes while the shop is open and settles those
   // rows itself, so the order path no longer spends its time or Clover quota on them.)
 
   // ---- authoritative pricing from the server catalog (NEVER trust client prices) ----

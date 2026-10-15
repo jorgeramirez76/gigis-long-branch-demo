@@ -18,7 +18,7 @@ const STUCK_AFTER_SEC = 25 * 60;
  * becomes `paid_print_failed` once the page is confirmed sent. An unresolved stuck ticket
  * re-pages at most once per cooldown window until the row settles — bounded, never per-sweep.
  *
- * Runs from the sweep-prints cron (every 15 minutes through ordering hours) and the nightly menu
+ * Runs from the sweep-prints cron (every 20 minutes while the shop is open) and the nightly menu
  * cron. Never throws: a sweep problem must not fail the cron that runs it.
  */
 export async function sweepQueuedPrints(limit = 20): Promise<{ checked: number; printed: number; stuck: number }> {

@@ -38,6 +38,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Turnstile fails OPEN by design when its secret is absent — every abuse control on
     // ordering then rests on Clover's own velocity checks. Make that state observable.
     turnstileSecret: !!process.env.TURNSTILE_SECRET_KEY,
+    // The emergency stop (api/order/create.ts): true means the deployed server is refusing every
+    // new web order. Check here after the redeploy that an env flip needs.
+    cardPaymentsOff: process.env.CARD_PAYMENTS_OFF === "1" || process.env.VITE_CARD_PAYMENTS_OFF === "1",
     orderingLive: cloverConfigured(),
     pickupRoutable: fulfillmentConfigured("pickup"),
     deliveryRoutable: fulfillmentConfigured("delivery"),

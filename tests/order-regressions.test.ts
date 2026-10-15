@@ -21,6 +21,13 @@ test("an unfinished draft is not replayed as a completed order", () => {
   );
 });
 
+test("a free-pie order whose fire is unconfirmed is uncertain, but never about a charge", () => {
+  assert.deepEqual(
+    replayOrder({ id: 1, status: "routing_uncertain", chargeId: null, cloverOrderId: "free-1", ageSec: 4 }),
+    { kind: "uncertain", paid: false, noCharge: true },
+  );
+});
+
 test("capture uncertainty stays distinct from a confirmed paid routing failure", () => {
   assert.deepEqual(
     replayOrder({ id: 1, status: "capture_uncertain", chargeId: null, cloverOrderId: "draft-1", ageSec: 4 }),

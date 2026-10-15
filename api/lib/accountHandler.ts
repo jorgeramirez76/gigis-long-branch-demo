@@ -4,7 +4,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "./db.js";
 import { ACCOUNT_BUSINESS, ACCOUNT_ORIGIN, hashToken, sameOrigin, readSession, createSession, logout } from "./session.js";
 import { hashPassword, validPassword, verifyPassword } from "./password.js";
-import { rateLimitAllStrict } from "./rateLimit.js";
+import { claimWindow, rateLimitAllStrict } from "./rateLimit.js";
 import { sendReceiptEmail, sendSms } from "./notify.js";
 import { normalizePhone } from "./phone.js";
 import { addressDedupeKey, legacyAddressDedupeKey } from "./address.js";
@@ -194,6 +194,15 @@ export function accountHandler(action: string) {
         if (!body.email) await sql`INSERT INTO email_suppressions(email,source) VALUES(${account.email},'rewards-account') ON CONFLICT(email) DO NOTHING`;
         else await sql`DELETE FROM email_suppressions WHERE LOWER(email)=${account.email}`;
         if (body.sms && !member.sms_requested && !member.sms_consent && member.phone) {
+          // The confirmation goes to the member's phone, which signup never verified, and toggling
+          // texts off and on used to resend it every time: the shop's A2P number could be made to
+          // text any phone ~30 times per 15 minutes per IP. Two guards before any send:
+          // 1) a number whose last keyword was STOP is blocked by Twilio until it texts START
+          //    itself, so a send would only cost money and log an error;
+          const keyword = (await sql`SELECT action FROM consent_events WHERE member_id=${member.id} AND channel='sms' AND source IN ('sms_stop','sms_start') ORDER BY created_at DESC, id DESC LIMIT 1`).rows[0];
+          if (keyword?.action === "opt_out") return void res.status(200).json({ok:true,message:"Preferences saved. This number replied STOP to us earlier, so carriers block our texts until you text START to (848) 275-3977."});
+          // 2) at most one confirmation per phone per day (fails closed: no claim, no text).
+          if (!(await claimWindow(`consent-sms:${hashToken(String(member.phone))}`,86400))) return void res.status(200).json({ok:true,message:"Preferences saved. We already sent this number a confirmation text today — reply YES to it to start getting texts."});
           const sent = await sendSms(String(member.phone),"Gigi's Rewards: Reply YES to confirm promotional texts. Up to 4 msgs/mo. Msg&data rates may apply. Reply STOP to opt out, HELP for help.");
           if (!sent.sent) return void res.status(503).json({error:"confirmation_unavailable",message:"Your preferences were saved, but we could not send the confirmation text. Contact the restaurant for help."});
         }

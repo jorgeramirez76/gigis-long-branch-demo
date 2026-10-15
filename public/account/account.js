@@ -79,7 +79,7 @@
     }catch(err){message(err.message);}finally{submitting=false;button.disabled=false;challengeToken='';if(widget!==undefined&&window.turnstile)window.turnstile.reset(widget);}};
   $('logout').onclick=async()=>{try{await api('logout',{});location.href='/account/';}catch(e){message(e.message);}};
   $('copy-code').onclick=async()=>{try{await navigator.clipboard.writeText(current.pie.code);message('Code copied. Apply it at checkout for an eligible pickup order.');}catch{message('Copy the code shown above.');}};
-  $('consent-form').onsubmit=async e=>{e.preventDefault();try{await api('consent',{sms:e.target.elements.sms.checked,email:e.target.elements.email.checked,consentText:siteConfig.consentText});message('Preferences saved. New text requests need a YES reply.');}catch(err){message(err.message);}};
+  $('consent-form').onsubmit=async e=>{e.preventDefault();try{const saved=await api('consent',{sms:e.target.elements.sms.checked,email:e.target.elements.email.checked,consentText:siteConfig.consentText});message(saved.message||'Preferences saved. New text requests need a YES reply.');}catch(err){message(err.message);}};
   $('delete-form').onsubmit=async e=>{e.preventDefault();if(!confirm('Delete your rewards account and saved addresses?'))return;try{await api('delete',{password:e.target.elements.password.value});location.href='/account/';}catch(err){message(err.message);}};
   $('more-orders').onclick=async()=>{try{const r=await api('orders?page='+(++orderPage));renderOrders(r.orders,true);}catch(err){orderPage--;message(err.message);}};
   window.addEventListener('focus',()=>{if(current)dashboard().catch(()=>{});});

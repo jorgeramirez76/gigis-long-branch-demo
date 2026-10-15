@@ -11,15 +11,15 @@ const STUCK_AFTER_SEC = 25 * 60;
  * Second look at kitchen tickets that were still queued when the order request had to answer
  * the customer.
  *
- * The order path cannot wait out this print pipeline (measured in minutes, against a 60-second
- * function), so a still-moving job is recorded as `paid_print_queued` with no alert. That is
+ * The order path cannot wait out this print pipeline (measured in minutes), so it arms
+ * `paid_print_queued` right after the fire and waits only a few seconds for paper. That is
  * only safe because this comes back and checks: printed → the row becomes `paid` and nobody is
  * disturbed; not printed → staff are paged (deduped by the print: cooldown window) and the row
  * becomes `paid_print_failed` once the page is confirmed sent. An unresolved stuck ticket
  * re-pages at most once per cooldown window until the row settles — bounded, never per-sweep.
  *
- * Runs opportunistically at the start of the next order and from the nightly menu cron.
- * Never throws: a sweep problem must not fail the order that triggered it.
+ * Runs from the sweep-prints cron (every 15 minutes through ordering hours) and the nightly menu
+ * cron. Never throws: a sweep problem must not fail the cron that runs it.
  */
 export async function sweepQueuedPrints(limit = 20): Promise<{ checked: number; printed: number; stuck: number }> {
   const out = { checked: 0, printed: 0, stuck: 0 };
@@ -89,11 +89,26 @@ export async function remindStrandedOrders(): Promise<{ checked: number; reminde
     for (const row of rows) {
       out.checked++;
       const money = `$${(row.total / 100).toFixed(2)}`;
-      // Three strand flavors, three recovery instructions — matching the original alerts.
+      // A free-pie order never involved a card: say so, and give the free-order steps.
+      if (row.status === "routing_uncertain") {
+        const paged = await alertStaffOnce(
+          `strand:${row.id}`,
+          `STILL UNRESOLVED — free VIP pie web order for ${row.customerName} (nothing owed): Clover order ${row.cloverOrderId ?? "?"} may never have reached the kitchen. Make it if it is in the POS, then settle its free-pie code in Admin.`,
+          STRAND_REMIND_ONCE_SEC,
+        );
+        if (paged === "sent") {
+          out.reminded++;
+          console.error(`[strand-remind] row ${row.id} (${row.status}) still unresolved — staff reminded`);
+        }
+        continue;
+      }
+      // Strand flavors and their recovery instructions — matching the original alerts.
       const detail = row.status === "refire_pending"
         ? `staff recovery was interrupted; check Clover for an existing ticket before making any replacement. Do NOT refire or re-charge.`
         : row.chargeId && !row.cloverOrderId
         ? `charge ${row.chargeId} — refire it from the admin worklist (do NOT re-charge).`
+        : row.status === "pending" && row.cloverOrderId
+          ? `the checkout stopped while Clover order ${row.cloverOrderId} was being paid, so it may hold a payment — or may be an unpaid leftover draft. Open it in the POS: if it is paid, make the order; if not, it can be voided.`
         : row.cloverOrderId
           ? `Clover order ${row.cloverOrderId} may hold the payment — open it in the POS: if it is paid, make it; if not, it can be voided.`
           : `the charge may have captured without a confirmation — check Clover payments before doing anything else.`;

@@ -196,6 +196,21 @@ export function cloverRetryBudget(ms = SETUP_RETRY_BUDGET_MS): CloverRetryBudget
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
+/**
+ * Per-request ceilings on every Clover call. Before these, no Clover fetch had a timeout, so one
+ * stalled connection could hold the order request until Vercel killed the function — and a kill
+ * inside /pay leaves a `pending` row holding a Clover order that may carry a payment, with no
+ * outcome recorded. A timed-out call throws like any dropped connection and takes the caller's
+ * existing failure path: before payment, the setup catch (no charge, draft discarded); on /pay,
+ * the uncertain-capture path (row kept as capture_uncertain, staff paged, customer told to call
+ * before re-ordering). Sized so a healthy call never comes close — Clover answers in about a
+ * second — while the whole worst-case checkout still ends inside create.ts's maxDuration.
+ */
+export const REST_TIMEOUT_MS = 15_000;
+export const ECOMM_READ_TIMEOUT_MS = 10_000;
+/** Generous on purpose: a /pay that times out becomes "we couldn't confirm your payment". */
+export const PAY_TIMEOUT_MS = 30_000;
+
 /** Names of the x-ratelimit-* headers on a 429 — they say WHICH limit fired
  *  (tokenConcurrentLimit vs tokenLimit vs crossToken*). */
 function rateLimitHeaderNames(res: Response): string[] {
@@ -270,6 +285,7 @@ export async function createCharge(opts: {
 
   const res = await fetch(`${ECOMMERCE_BASE}/v1/charges`, {
     method: "POST",
+    signal: AbortSignal.timeout(PAY_TIMEOUT_MS),
     headers: {
       Authorization: `Bearer ${t}`,
       "Content-Type": "application/json",
@@ -403,6 +419,7 @@ async function rest(path: string, init: RequestInit, retry?: CloverRetryBudget):
     }
     const res = await fetch(`${REST_BASE}/v3/merchants/${mid}${path}`, {
       ...init,
+      signal: init.signal ?? AbortSignal.timeout(REST_TIMEOUT_MS),
       headers: {
         Authorization: `Bearer ${t}`,
         "Content-Type": "application/json",
@@ -645,17 +662,30 @@ export async function getPrintEventState(eventId: string): Promise<string | unde
   return data?.state;
 }
 
-// ~24s of polling. The first version gave up after 5.3s, which is simply shorter than this
+// ~24s of polling — the default, used by the staff tools (refire, reprint), where a person is
+// waiting on the answer. The first version gave up after 5.3s, which is shorter than this
 // merchant's print pipeline takes (Clover queues the job, the Station picks it up, then it
-// reaches the networked kitchen printer). Every ticket therefore looked unconfirmed. The
-// function's maxDuration is 60s and the customer already has their response by now.
-const PRINT_POLL_DELAYS_MS = [400, 700, 1100, 1600, 2200, 2800, 3400, 4000, 4000, 4000] as const;
+// reaches the networked kitchen printer), so every ticket looked unconfirmed.
+const PRINT_POLL_DELAYS_MS: readonly number[] = [400, 700, 1100, 1600, 2200, 2800, 3400, 4000, 4000, 4000];
+
+/**
+ * The checkout's much shorter wait (~3.8s). The customer is NOT answered until the order
+ * request returns, so the 24s ladder above sat inside every paying customer's "Placing order…"
+ * (about 23s per successful order, measured), and a FAILED retry could push past the browser's
+ * 45s abort. At this store a healthy ticket takes minutes to print, so the long poll almost
+ * always ended "still queued" anyway. This one only catches an immediate FAILED (which is
+ * retried once) or a fast print; everything else is recorded `paid_print_queued` and the
+ * sweep-prints cron decides it (printed → paid; still not printed after 25 minutes → staff
+ * paged). create.ts arms that queued state BEFORE this wait, so a killed function cannot lose it.
+ */
+export const CHECKOUT_PRINT_POLL_DELAYS_MS: readonly number[] = [400, 700, 1100, 1600];
 
 async function confirmPrintEvent(
   eventId: string,
+  delays: readonly number[] = PRINT_POLL_DELAYS_MS,
 ): Promise<{ printed: boolean; queued?: boolean; state?: string; error?: string }> {
   let lastState: string | undefined;
-  for (const delay of PRINT_POLL_DELAYS_MS) {
+  for (const delay of delays) {
     await new Promise((resolve) => setTimeout(resolve, delay));
     try {
       lastState = await getPrintEventState(eventId);
@@ -707,6 +737,7 @@ export async function orderLineItemsPrinted(orderId: string): Promise<boolean | 
  */
 export async function printOrderTicket(
   orderId: string,
+  opts: { pollDelaysMs?: readonly number[] } = {},
 ): Promise<{ printed: boolean; queued?: boolean; eventId?: string; state?: string; error?: string }> {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
@@ -720,7 +751,7 @@ export async function printOrderTicket(
       }
 
       console.log(`[print] kitchen ticket queued for order ${orderId} — event ${ev.id} state ${ev.state} device ${ev.device ?? "default"}`);
-      const confirmed = await confirmPrintEvent(ev.id);
+      const confirmed = await confirmPrintEvent(ev.id, opts.pollDelaysMs);
       if (confirmed.printed) {
         console.log(`[print] kitchen ticket completed for order ${orderId} — event ${ev.id}`);
         return { printed: true, eventId: ev.id, state: confirmed.state };
@@ -812,6 +843,7 @@ export async function getEcommOrderAmount(
     if (ms) await new Promise((r) => setTimeout(r, ms));
     const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
       headers: { Authorization: `Bearer ${t}` },
+      signal: AbortSignal.timeout(ECOMM_READ_TIMEOUT_MS),
     });
     // There is NO top-level amount on this endpoint (learned the hard way — the
     // old `data.amount` read threw on every order and silently forced the
@@ -881,6 +913,8 @@ export async function payForOrder(opts: {
 
   const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${opts.orderId}/pay`, {
     method: "POST",
+    // A timeout here throws, which create.ts treats as an UNCERTAIN capture — never a decline.
+    signal: AbortSignal.timeout(PAY_TIMEOUT_MS),
     headers: {
       Authorization: `Bearer ${t}`,
       "Content-Type": "application/json",
@@ -1123,6 +1157,7 @@ export async function mirrorProbe(
       if (wait > 0) await new Promise((r) => setTimeout(r, wait));
       const res = await fetch(`${ECOMMERCE_BASE}/v1/orders/${orderId}`, {
         headers: { Authorization: `Bearer ${t}` },
+        signal: AbortSignal.timeout(ECOMM_READ_TIMEOUT_MS),
       });
       const data = (await res.json().catch(() => ({}))) as { items?: { name?: string; amount?: number }[] };
       reads.push({ atMs: Date.now() - started, items: Array.isArray(data.items) ? data.items : [] });

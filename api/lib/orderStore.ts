@@ -190,11 +190,11 @@ export async function updateOrder(
   }
 }
 
-/** Flip a queued-print row to its outcome ONLY while it is still queued. Every order POST
- *  triggers a sweep, so two concurrent sweeps can read the same row — the conditional update
- *  makes exactly one of them the owner of the page/log that follows. Returns false when the
- *  row was already decided (or on a storage error, in which case the row stays queued and the
- *  next sweep retries). */
+/** Flip a queued-print row to its outcome ONLY while it is still queued. The order request (its
+ *  own print result), the sweep-prints cron and the nightly menu cron can all reach the same row —
+ *  the conditional update makes exactly one of them the owner of the page/log that follows.
+ *  Returns false when the row was already decided (or on a storage error, in which case the row
+ *  stays queued and the next sweep retries). */
 export async function claimQueuedPrint(id: number, status: "paid" | "paid_print_failed"): Promise<boolean> {
   try {
     await ensure();
@@ -311,6 +311,15 @@ export async function listQueuedPrints(minAgeSec: number, limit = 20): Promise<A
   }
 }
 
+/**
+ * Orders the strand reminder (printSweep.remindStrandedOrders) follows up on.
+ *
+ * Besides the paid/charged strands, two rows that used to surface only in the next morning's
+ * digest: a `pending` row that already holds a Clover order id (the function died inside /pay,
+ * so that order may carry a payment — or, after a failed draft delete, it is an unpaid leftover;
+ * a live checkout is past this state within a minute), and a free-pie order whose fire was never
+ * confirmed (`routing_uncertain`).
+ */
 export async function listUnresolvedStrands(business = "gigis_long_branch"): Promise<
   { id: number; status: OrderStatus; chargeId: string | null; cloverOrderId: string | null; customerName: string; total: number }[]
 > {
@@ -320,9 +329,12 @@ export async function listUnresolvedStrands(business = "gigis_long_branch"): Pro
       SELECT id, status, charge_id, clover_order_id, customer_name, total
       FROM web_orders
       WHERE business = ${business}
-        AND status IN ('paid_unrouted', 'charged', 'capture_uncertain', 'refire_pending')
-        AND updated_at < now() - interval '35 minutes'
         AND created_at > now() - interval '24 hours'
+        AND (
+          (status IN ('paid_unrouted', 'charged', 'capture_uncertain', 'refire_pending', 'routing_uncertain')
+            AND updated_at < now() - interval '35 minutes')
+          OR (status = 'pending' AND clover_order_id IS NOT NULL AND updated_at < now() - interval '10 minutes')
+        )
       ORDER BY created_at ASC LIMIT 25
     `;
     return r.rows.map((row: Record<string, unknown>) => ({

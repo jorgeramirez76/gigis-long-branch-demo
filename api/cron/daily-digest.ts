@@ -122,7 +122,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const r = await sql`
         SELECT id, status, total, customer_name, created_at
         FROM web_orders
-        WHERE status IN ('pending', 'charged', 'paid_unrouted', 'capture_uncertain', 'paid_print_queued')
+        WHERE status IN ('pending', 'charged', 'paid_unrouted', 'capture_uncertain', 'paid_print_queued', 'routing_uncertain')
           AND created_at < now() - interval '1 hour'
         ORDER BY created_at DESC LIMIT 10
       `;

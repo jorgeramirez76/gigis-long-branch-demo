@@ -20,7 +20,7 @@
   ],
   "functions": {
     "api/order/create.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
     },
     "api/cron/send-scheduled.ts": {
       "maxDuration": 300

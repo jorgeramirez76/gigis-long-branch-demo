@@ -13,6 +13,7 @@ import {
   getOrderPaymentId,
   payForOrder,
   printOrderTicket,
+  CHECKOUT_PRINT_POLL_DELAYS_MS,
   ticketTitle,
   CloverError,
   MAX_UNITS,
@@ -42,7 +43,6 @@ import { deliveryFeeCents, isDeliveryTown } from "../../src/lib/deliveryZones.js
 import { placementSuffix } from "../../src/data/menuToppings.js";
 import { clientTotalMatches } from "../lib/orderSafety.js";
 import { replayOrder } from "../lib/orderReplay.js";
-import { sweepQueuedPrints } from "../lib/printSweep.js";
 import { isDefinitelyDeclined } from "../lib/paymentRetry.js";
 
 /**
@@ -431,25 +431,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   if (prior && replayOrder(prior).kind === "uncertain") {
-    if (await replayAlertOk()) await alertStaffOnce(`order:${idempotencyKey}`, `UNCERTAIN WEB ORDER — retry seen for Clover order ${prior.cloverOrderId ?? "?"}; verify payment and order state before remaking.`);
-    res.status(409).json({ error: "uncertain", message: "We couldn't confirm your previous attempt. Please call the store before re-ordering so you aren't charged twice." });
+    // A free-pie order (routing_uncertain) never involved a card: its retry must not page an
+    // uncertain CARD result or warn the customer about being charged twice.
+    const noCharge = prior.status === "routing_uncertain";
+    if (await replayAlertOk()) await alertStaffOnce(`order:${idempotencyKey}`, noCharge
+      ? `FREE VIP PIE ORDER NOT CONFIRMED — retry seen for Clover order ${prior.cloverOrderId ?? "?"} (nothing owed). Make it if it is in the POS; then settle the code in Admin.`
+      : `UNCERTAIN WEB ORDER — retry seen for Clover order ${prior.cloverOrderId ?? "?"}; verify payment and order state before remaking.`);
+    res.status(409).json({ error: "uncertain", message: noCharge
+      ? "We couldn't confirm whether your order reached the kitchen. Please call the store before ordering again."
+      : "We couldn't confirm your previous attempt. Please call the store before re-ordering so you aren't charged twice." });
     return;
   }
   if (prior && replayOrder(prior).kind === "processing") {
     res.status(409).json({ error: "processing", message: "This order is already being placed. Please wait a moment before retrying." });
     return;
   }
-
-  // Opportunistic second look at earlier tickets that were still queued when their order had to
-  // answer. Real traffic is the trigger — during service the next order sweeps the last — so a
-  // dead printer surfaces within one order instead of waiting for the nightly cron. AWAITED, not
-  // fire-and-forget: this request often answers within a second (validation failures, 403s), and
-  // Vercel freezes the instance after the response — a detached sweep frozen between marking a
-  // row paid_print_failed and paging staff silently loses the one alert for a charged order the
-  // kitchen never saw. It never throws, and it only touches rows older than its threshold.
-  // Capped small: each row costs a Clover GET (+ alerts when stuck) in front of THIS customer's
-  // order, whose own charge still needs most of the 60s budget. The nightly cron takes the
-  // backlog at full width.
 
   const ip = clientIp(req);
 
@@ -471,7 +467,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  await sweepQueuedPrints(3);
+  // (There used to be an inline sweepQueuedPrints(3) here: Clover GETs for OTHER customers'
+  // queued tickets, in front of this customer's own rate-limited line-item burst. The
+  // sweep-prints cron now runs every 15 minutes through all ordering hours and settles those
+  // rows itself, so the order path no longer spends its time or Clover quota on them.)
 
   // ---- authoritative pricing from the server catalog (NEVER trust client prices) ----
   // Items pulled off Clover since this build are rejected here too, so a page
@@ -764,7 +763,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         retry: cloverRetryBudget(),
       });
       paidOrderId = draft.id;
-      if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draft.id });
+      // Durable pointer BEFORE the fire, and with it `routing_uncertain` (ported from Sea Bright),
+      // not the `pending` it would otherwise keep: a pending row holding a Clover id reads as an
+      // uncertain CARD capture, so a retry before the fire was confirmed told a free-pie customer
+      // "so you aren't charged twice" and paged staff about a card result that never existed.
+      if (reservedId != null) await updateOrderStrict(reservedId, { cloverOrderId: draft.id, status: "routing_uncertain" });
     } catch (err) {
       // Nothing was charged and nothing was fired: hand the code and the key back so the
       // customer can simply try again, or show the code at the counter.
@@ -896,41 +899,65 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  // Payment is attached to this exact itemized order. Fire that same order once,
-  // then wait for Clover to confirm the kitchen print before marking it complete.
+  // Payment is attached to this exact itemized order. Fire that same order once, arm the print
+  // follow-up, then give the kitchen printer a few seconds before answering the customer.
   const note = buildOrderNote({ fulfillment, customer: cust, lines: kitchenLines, totals, payment: freeOrder ? "free" : "card", chargeId, orderNote, ...noteHeader });
+  // A free order owes nothing, so no page may call it "PAID".
+  const moneyState = freeOrder ? "a FREE VIP order (nothing owed)" : "PAID";
+  // Once true, the ticket is in the POS: the catch below must not report it as "not fired".
+  let fired = false;
+  // redeemPromo pages staff when it finds the code already redeemed, so it must run exactly
+  // once per order, whichever path finishes it.
+  let promoSettled = false;
+  const settlePromo = async () => {
+    if (promoSettled) return;
+    promoSettled = true;
+    await redeemPromo(paidOrderId);
+  };
   try {
       // A club member outranks a promo: the member tag is the one staff act on.
       const ticketVip = vipCustomer.member ? "member" : appliedCode !== null ? "promo" : null;
       await fireOrder(paidOrderId, { paid: true, note, title: ticketTitle(fulfillment, freeOrder ? "free" : true, ticketVip) });
-      // Kitchen ticket: firing only makes the order visible in the POS — this is
-      // what drives the printer. Awaited (not fire-and-forget) so it isn't killed
-      // by the serverless function freezing after the response; never throws.
-      // A failed print job cannot be replayed later, and the order is already paid,
-      // so a silent failure is exactly the "customer shows up, nobody made it" case
-      // prepaid ordering exists to prevent — page staff instead of only logging.
-      const ticket = await printOrderTicket(paidOrderId);
-      // `queued` = Clover still has the job moving (CREATED/PRINTING). Tickets here routinely take
-      // minutes to reach the kitchen printer, far longer than this function can wait, so only a
-      // job that is genuinely stuck or rejected gets a human out of bed.
+      fired = true;
+      // Arm the print follow-up BEFORE waiting on the printer (Sea Bright does the same). The row
+      // used to stay `charged` (or the free path's routing_uncertain) through the whole print
+      // wait: a re-tap in that window paged "PAID WEB ORDER NOT FIRED — retry seen" for an order
+      // already open in the POS, and a function killed there left a row the strand reminder later
+      // called "never reached the kitchen". paid_print_queued replays as the placed order, and the
+      // sweep-prints cron settles it: printed → paid; still not printed after 25 min → staff paged.
+      const armed = reservedId != null && await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
+      // Burn the code NOW — the ticket is in the POS, so the pie is spent. Waiting behind the
+      // print stage let a killed function leave a fired order whose code stayed on hold for good.
+      await settlePromo();
+      // Kitchen ticket: firing only makes the order visible in the POS — this is what drives the
+      // printer. Awaited (not fire-and-forget) so it isn't killed by the serverless freeze after
+      // the response; never throws. The SHORT checkout wait (~4s, see CHECKOUT_PRINT_POLL_DELAYS_MS)
+      // catches an immediate FAILED, which is retried once; a ticket still moving through Clover's
+      // queue — the normal case here, measured in minutes — is left to the sweep. The customer was
+      // waiting ~23s on "Placing order…" for the old 24s poll, which almost always ended "queued".
+      const ticket = await printOrderTicket(paidOrderId, { pollDelaysMs: CHECKOUT_PRINT_POLL_DELAYS_MS });
       if (ticket.queued) {
-        // Still moving through Clover's queue. Record it as such rather than as a clean "paid":
-        // sweepQueuedPrints comes back later and decides, so a genuinely stuck ticket is still
-        // caught without paging staff about every slow one.
-        const recorded = reservedId != null && await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
+        // Still queued: already recorded by the arm above. If that write was lost, try once more;
+        // if THAT fails nothing would ever follow up on this ticket, so page now (noisy but safe).
+        const recorded = armed || (reservedId != null && await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note }));
         if (!recorded) await alertStaffOnce(`print:${paidOrderId}`,
-          `WEB ORDER PRINT UNCONFIRMED — Clover order ${paidOrderId} is PAID; confirm the kitchen received its ticket.`);
+          `WEB ORDER PRINT UNCONFIRMED — Clover order ${paidOrderId} is ${moneyState}; confirm the kitchen received its ticket.`);
       } else if (!ticket.printed) {
-        if (reservedId != null) await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
+        // A failed print job cannot be replayed later and the order is in the POS, so a silent
+        // failure is exactly the "customer shows up, nobody made it" case — page staff. Page
+        // FIRST and settle only on a confirmed send; a lost page leaves the row queued for the sweep.
+        if (!armed && reservedId != null) await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
         const paged = await alertStaffOnce(`print:${paidOrderId}`,
           `KITCHEN TICKET DID NOT PRINT — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — ` +
-          `Clover order ${paidOrderId} is PAID and open in the POS, but no ticket came out (${ticket.error ?? ticket.state ?? "unknown"}). Print it from the POS.`,
+          `Clover order ${paidOrderId} is ${moneyState} and open in the POS, but no ticket came out (${ticket.error ?? ticket.state ?? "unknown"}). Print it from the POS.`,
         );
         if (paged === "sent" && reservedId != null) await settleQueuedPrint(reservedId, "paid_print_failed");
       } else if (reservedId != null) {
-        await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
+        // Paper confirmed: withdraw the queued handoff. Conditional, so only a still-queued row
+        // moves; if this write is lost the sweep reads the same printed line items and settles it.
+        if (armed) await settleQueuedPrint(reservedId, "paid");
+        else await updateOrder(reservedId, { status: "paid", cloverOrderId: paidOrderId, note });
       }
-      await redeemPromo(paidOrderId);
       // Checkout opt-in first: a started (or absorbed) signup answers the
       // membership question itself, and suppresses the receipt's join pitch — a
       // "join the club" invite next to the verification email it just asked for
@@ -949,14 +976,41 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         vipEligible,
         ...(vipJoin ? { vipJoin } : {}),
         ...(!ticket.printed && !ticket.queued
-          ? { routingIssue: true, message: "Your payment went through, but please call the store to confirm the kitchen received your order." }
+          ? { routingIssue: true, message: freeOrder
+            ? "Your order is in, but please call the store to confirm the kitchen received it."
+            : "Your payment went through, but please call the store to confirm the kitchen received your order." }
           : {}),
       });
     } catch (err) {
+      if (fired) {
+        // The ticket IS in the POS and something after the fire threw (nothing there is expected
+        // to). The order stands: the row keeps the state it reached and the code is burned.
+        console.error("[order/create] order fired, then a follow-up step failed", err);
+        await settlePromo();
+        await alertStaffOnce(`order:${idempotencyKey}`, `WEB ORDER — CHECK THE TICKET — ${cust.name} ${maskPhone(cust.phone)} — Clover order ${paidOrderId} is ${moneyState} and in the POS, but its kitchen ticket was not confirmed. Make it from the POS if no ticket printed.`);
+        res.status(200).json(freeOrder
+          ? { ok: true, orderId: paidOrderId, paid: true, free: true, totals, vipEligible: false }
+          : { ok: true, orderId: paidOrderId, paid: true, chargeId, totals, vipEligible: false, routingIssue: true, message: "Your payment went through, but please call the store to confirm the kitchen received your order." });
+        return;
+      }
+      if (freeOrder) {
+        // A free order has no payment to protect, so none of the card recovery below is true of
+        // it: no payment "went through", and paid_unrouted would start reminders about money
+        // that was never taken. Clover may still have opened the order and lost the answer, so
+        // the row stays routing_uncertain (every retry is told to call the store) and the code
+        // stays ON HOLD until a person has looked: burning it costs a member a pie the kitchen
+        // may never have made; releasing it could buy a second one.
+        console.error("[order/create] free order did not fire", err);
+        await alertStaffOnce(`order:${idempotencyKey}`,
+          `FREE VIP PIE ORDER NOT CONFIRMED — ${cust.name.slice(0, 24)} ${maskPhone(cust.phone)} — Clover order ${paidOrderId} may not have reached the kitchen (nothing owed). ` +
+          (promo ? `Make it if it is in the POS. If made: in Admin release code ${promo.code}'s hold AND mark it used. If not: release the hold only.` : "Make it if it is in the POS."));
+        res.status(200).json({ ok: true, orderId: paidOrderId, paid: false, routingIssue: true, message: "We couldn't confirm your order reached the kitchen. Please call the store before ordering again." });
+        return;
+      }
       // Paid but not fired: the payment and items live on the SAME order, so
       // staff recovery is just opening that order in the POS. Never delete it.
       console.error("[order/create] fire failed after payment", err);
-      await redeemPromo(paidOrderId);
+      await settlePromo();
       if (reservedId != null) await updateOrder(reservedId, { status: "paid_unrouted", note });
       await alertStaffOnce(`order:${idempotencyKey}`, `PAID WEB ORDER NOT FIRED — ${cust.name} ${maskPhone(cust.phone)} $${(totals.total / 100).toFixed(2)} — Clover order ${paidOrderId} holds the payment but didn't fire; open it in the POS.`);
       res.status(200).json({ ok: true, paid: true, chargeId, routingIssue: true, message: "Your payment went through, but please call the store to confirm your order was received." });

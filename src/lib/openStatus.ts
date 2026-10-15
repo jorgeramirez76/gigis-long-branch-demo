@@ -130,11 +130,19 @@ export function deliveryClosedReason(): string {
  *  checkout, the server's refusal and any future surface can never drift apart. */
 export const ORDERING_HOURS_LINE = "Online ordering is open daily from 10 AM to 11 PM";
 
+/** Inside the counter's weekday hours right now (Mon-Wed 10 AM-11 PM, Thu-Sun 10 AM-midnight),
+ *  ignoring CLOSED_DATES. getOpenStatus() adds the closed-day check on top; the scheduled-blast
+ *  cron uses this directly so a "closed today" notice can still go out on a closed day. */
+export function isCounterOpenNow(): boolean {
+  const { day, hour } = nowInNY();
+  return hour >= OPEN_HOUR && hour < (CLOSE_HOUR[day] ?? 23);
+}
+
 export function getOpenStatus(): OpenStatus {
   if (closedTodayReason()) return { open: false, label: "Closed today", closingSoon: false };
   const { day, hour } = nowInNY();
   const close = CLOSE_HOUR[day] ?? 23;
-  const open = hour >= OPEN_HOUR && hour < close;
+  const open = isCounterOpenNow();
   if (!open) {
     return { open: false, label: "Closed · opens 10 AM", closingSoon: false };
   }

@@ -4,17 +4,20 @@ import { sql, isVipBusiness } from "../lib/db.js";
 import { BLAST_RUN_LIMIT_SEC, isOwnFlyerUrl, runBroadcast } from "../lib/broadcastRun.js";
 import { normalizeBroadcastPromoCode } from "../lib/broadcastPromo.js";
 import { smsSendWindowOpen } from "../lib/smsWindow.js";
-import { shopOpenForCron } from "../lib/cronHours.js";
+import { blastWindowOpen, cronGateApplies } from "../lib/cronHours.js";
 
 /**
- * GET /api/cron/send-scheduled — every 20 minutes, only while the shop is open (2026-10-15).
+ * GET /api/cron/send-scheduled — every 20 minutes, only during the counter's weekday hours
+ * (Mon-Wed 10 AM-11 PM, Thu-Sun 10 AM-midnight Eastern; decided 2026-10-15).
  *
  * Same ticks as sweep-prints (vercel.json "*\/20 0-4,14-23", gated by api/lib/cronHours.ts to
- * the real Eastern counter hours), so both crons share one Neon wake-up and the database sleeps
- * between ticks and overnight. A blast is sent at the first open-hours tick at or after its
- * send_at, so up to 20 minutes late; one queued for while the shop is closed goes out at the
- * first tick after 10 AM. A blast with a TEXT leg also waits for the SMS window (9 AM to 8:30 PM
- * Eastern, api/lib/smsWindow.ts) — it is left unclaimed until then.
+ * the real Eastern hours), so both crons share one Neon wake-up and the database sleeps between
+ * ticks and overnight. A blast is sent at the first open-hours tick at or after its send_at, so
+ * up to 20 minutes late; one queued for while the shop is closed goes out at the 10 AM tick. The
+ * gate ignores CLOSED_DATES on purpose, so a "closed today" notice queued for a holiday still goes
+ * out that morning. A blast with a TEXT leg also waits for the SMS window (9 AM to 8:30 PM
+ * Eastern, api/lib/smsWindow.ts) — it is left unclaimed until then. A hand-run hit with the
+ * secret (for example to re-run a blast that was claimed and then crashed) is never gated.
  *
  * Drains scheduled_broadcasts: blasts queued for a future moment ("tomorrow at 11am"), sent
  * through the SAME core the admin dashboard uses (api/lib/broadcastRun.ts), so a scheduled
@@ -88,7 +91,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (!shopOpenForCron()) {
+  if (cronGateApplies(req.headers["user-agent"]) && !blastWindowOpen()) {
     res.status(200).json({ ok: true, skipped: "shop_closed", sent: [] });
     return;
   }

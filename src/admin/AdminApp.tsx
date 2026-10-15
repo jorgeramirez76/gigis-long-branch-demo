@@ -536,7 +536,7 @@ function Blast({ business, stats, onSent }: { business: Business; stats: Stats |
           )}
           {smsOn && preview.smsWindowOpen === false && (
             <p className="mt-3 text-sm font-semibold text-[var(--color-brand-red-bright)]">
-              Texts can only go out between {preview.smsWindow ?? "9 AM and 8:30 PM Eastern"} — it's outside that now, so
+              Texts can only go out from {preview.smsWindow ?? "9 AM to 8:30 PM Eastern"} — it's outside that now, so
               sending will be refused. Untick Text to send the email now, or come back then.
             </p>
           )}

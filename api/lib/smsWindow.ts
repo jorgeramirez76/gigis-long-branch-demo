@@ -8,12 +8,13 @@
  * ran until 12:45 AM (its cron hours are UTC, so the window also moved with daylight saving).
  *
  * The window here is deliberately inside the legal one: no blast starts before 9:00 AM or at/after
- * 8:30 PM Eastern, because a blast takes minutes to fan out (up to the 300 s function cap) and
- * must be finished well before 9 PM. Email is not limited. Computed with Intl in
+ * 8:30 PM Eastern, because a blast takes minutes to fan out (up to the 800 s function cap,
+ * BLAST_RUN_LIMIT_SEC in broadcastRun.ts) and must be finished well before 9 PM. Email is not limited. Computed with Intl in
  * America/New_York, so it is correct across DST — never from the UTC cron hours.
  */
 export const SMS_WINDOW_OPENS_MIN = 9 * 60; // 9:00 AM Eastern
 export const SMS_WINDOW_LAST_START_MIN = 20 * 60 + 30; // 8:30 PM Eastern
+/** Reads after "from": "Texts can only go out from 9 AM to 8:30 PM Eastern". */
 export const SMS_WINDOW_LABEL = "9 AM to 8:30 PM Eastern";
 
 function minutesInNewYork(now: Date): number {

@@ -47,3 +47,19 @@ test("an uncertain submission blocks same-action and fresh-ID replays even with 
 test("a failure before starting delivery can safely retry the reserved action",async()=>{const db=storage({startFailure:true});assert.equal((await run()).status,500);assert.equal(db.sends,0);assert.equal((await run()).status,200);assert.equal(db.sends,1);});
 test("successful provider submission with lost audit stays reserved",async()=>{const db=storage({auditFailure:true});await run();await run();const fresh=await run(secondId);assert.equal(db.sends,1);assert.equal(fresh.status,409);assert.equal(db.rows[0].completed,false);});
 test("simultaneous fresh IDs for identical content cannot both submit",async()=>{const db=storage();const results=await Promise.all([run(),run(secondId)]);assert.equal(db.sends,1);assert.ok(results.some(r=>r.status===409));});
+test("a retry of a text blast that started before 8:30 PM gets its summary after 8:30 PM, not a quiet-hours refusal",async()=>{
+  const db=storage();
+  mock.timers.reset();mock.timers.enable({apis:["Date"],now:new Date("2026-09-21T00:25:00Z")}); // 8:25 PM EDT
+  assert.equal((await run()).status,200);
+  assert.equal(db.sends,1);
+  mock.timers.reset();mock.timers.enable({apis:["Date"],now:new Date("2026-09-21T00:45:00Z")}); // 8:45 PM EDT, response was lost
+  const retry=await run();
+  assert.equal(retry.status,200,"the same request is answered from its earlier run");
+  assert.equal(retry.body.duplicate,true);
+  assert.equal(retry.body.smsSent,1,"staff see it went out, so nobody re-sends it as email");
+  const fresh=await run(secondId);
+  assert.equal(fresh.status,409);
+  assert.equal(fresh.body.error,"sms_quiet_hours","a NEW text blast is still refused");
+  assert.equal(db.sends,1);
+  assert.equal(db.rows.length,1,"and nothing new was reserved");
+});

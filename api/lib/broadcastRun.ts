@@ -128,15 +128,6 @@ const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : messag
     } };
   }
 
-  // Quiet hours, for texts only (email is fine at any hour). Refused BEFORE anything is reserved,
-  // so the same blast can simply be sent again inside the window.
-  if (wantSms && !smsSendWindowOpen(now)) {
-    return { status: 409, body: {
-      error: "sms_quiet_hours",
-      message: `Texts can only go out between ${SMS_WINDOW_LABEL}. Untick Text to send the email now, or send the text then.`,
-    } };
-  }
-
   if (wantSms && !smsConfigured())
     return { status: 409, body: { error: "sms_not_configured" } };
   if (wantEmail && !emailConfigured())
@@ -175,6 +166,18 @@ const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : messag
     return { status: 409, body: {error:"request_id_conflict"} };
   if (prior?.delivery_started_at)
     return { status: 200, body: replay(prior) };
+
+  // Quiet hours, for texts only (email is fine at any hour). Checked AFTER the request-id lookup:
+  // a retry of a blast that already started before 8:30 PM (say its response was lost) must get
+  // its replay summary above, not "nothing was sent", or staff resend it as email-only and the
+  // email list gets it twice. Only a NEW send is refused, and BEFORE anything is reserved, so the
+  // same blast can simply be sent again inside the window.
+  if (wantSms && !smsSendWindowOpen(now)) {
+    return { status: 409, body: {
+      error: "sms_quiet_hours",
+      message: `Texts can only go out from ${SMS_WINDOW_LABEL}. Untick Text to send the email now, or send the text then.`,
+    } };
+  }
 
   // A retry after an ambiguous failure (client timeout, tab reload mid-send) must not
   // text the whole list twice — an identical message that already DELIVERED something in

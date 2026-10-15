@@ -62,6 +62,17 @@ function loadSdk(): Promise<any> {
 }
 
 /**
+ * Start downloading Clover's SDK script ahead of the checkout (the cart drawer calls this through
+ * warmCheckout when it opens), so the card fields are not waiting on a new TLS origin plus 41 KB
+ * once the customer taps Checkout. Loads the script only: no Clover instance, no card iframes, no
+ * merchant config. A failure is ignored here; the checkout's own load retries and reports it.
+ */
+export function preloadCardSdk(): void {
+  if (typeof window === "undefined" || !cardPaymentEnabled()) return;
+  loadSdk().catch(() => {});
+}
+
+/**
  * Clover's element factory is a process-wide singleton: `Element.getInstance`
  * caches the FIRST instance and silently ignores the apiKey/merchantId passed by
  * every later call. So the page must share ONE Clover instance — otherwise

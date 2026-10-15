@@ -1,5 +1,5 @@
 import { replaceCartLine } from "./cartEdit";
-import { savedAttemptUncertain } from "./Checkout";
+import { savedAttemptUncertain } from "./checkoutAttempt";
 import { useCallback, createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { capLineOptions, findCatalogItem, optionDelta, placementEligible } from "../lib/menuPricing";
 import { isToppingPlacement } from "../data/menuToppings";

@@ -1,5 +1,5 @@
 import { initialEditSelections } from "./cartEdit";
-import { savedAttemptUncertain } from "./Checkout";
+import { savedAttemptUncertain } from "./checkoutAttempt";
 import type { CartLine } from "./CartContext";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MenuItem, OptionGroup } from "../data/menu";

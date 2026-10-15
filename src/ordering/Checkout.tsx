@@ -10,6 +10,7 @@ import {
   cardPaymentEnabled,
   initApplePay,
   initCloverCard,
+  preloadCardSdk,
   type ApplePayHandle,
   type CloverCard,
 } from "./cloverPayment";
@@ -22,11 +23,8 @@ import { RewardsJoin } from "./RewardsJoin";
 import { CONSENT_TEXT } from "../lib/vipConsent";
 import { planBogoPizza } from "../lib/bogoPromo";
 import { planPizzaPercent } from "../lib/pizzaPercent";
+import { FORM_STORE_KEY, readSavedForm, storageArea, type Fulfillment, type PromoKind, type SavedForm } from "./checkoutAttempt";
 
-type Fulfillment = "pickup" | "delivery";
-/** "welcome" is the per-member free Plain Pie; "bogo_pizza" is a campaign word like GAMEDAY
- *  whose value is the cheaper pizza in the cart (src/lib/bogoPromo.ts, shared with the server). */
-type PromoKind = "welcome" | "bogo_pizza" | "pct_pizza";
 type PromoState = { code: string; discountCents: number; kind: PromoKind; percentOff?: number; pickupOnly?: boolean };
 function promoKind(raw: unknown): PromoKind {
   return raw === "bogo_pizza" || raw === "pct_pizza" ? raw : "welcome";
@@ -47,20 +45,7 @@ const ORDER_TIMEOUT_MS = 45_000;
  *  stalled payment. Cleared the moment an order settles, so the next order always
  *  mints a fresh key. */
 const IDEM_STORE_KEY = "gigis:order-idem";
-/** The checkout form itself, persisted alongside the key. The key's signature includes
- *  the typed contact fields, so the key can only survive a reload if the fields do too —
- *  otherwise the first render after a reload sees empty fields, mints a fresh key and
- *  overwrites the parked one, and the retry double-charges. Cleared with the key. */
-const FORM_STORE_KEY = "gigis:checkout-form";
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-function storageArea(): Storage | null {
-  try {
-    return typeof localStorage !== "undefined" ? localStorage : null;
-  } catch {
-    return null; // blocked (private mode / embedded webview policy)
-  }
-}
 
 function forgetIdempotencyKey() {
   try {
@@ -73,35 +58,6 @@ function forgetIdempotencyKey() {
   }
 }
 
-type SavedForm = {
-  fulfillment?: Fulfillment;
-  name?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
-  town?: string;
-  tipPct?: number;
-  tipTouched?: boolean;
-  orderNote?: string;
-  promo?: { code: string; discountCents: number; kind?: PromoKind; percentOff?: number; pickupOnly?: boolean } | null;
-  /** The uncertainty freeze must survive the reload it exists for: an aborted attempt whose
-   *  capture may have landed freezes the priced inputs, and reload is exactly how people
-   *  retry — an unfrozen post-reload form lets them nudge the tip, mint a fresh key, and
-   *  genuinely pay twice for the same food. Cleared with the rest when the order settles. */
-  attemptUncertain?: boolean;
-};
-
-function readSavedForm(): SavedForm {
-  try {
-    const raw = storageArea()?.getItem(FORM_STORE_KEY);
-    if (!raw) return {};
-    const p = JSON.parse(raw) as SavedForm;
-    return p && typeof p === "object" ? p : {};
-  } catch {
-    return {};
-  }
-}
-
 function forgetSavedForm() {
   try {
     storageArea()?.removeItem(FORM_STORE_KEY);
@@ -110,11 +66,10 @@ function forgetSavedForm() {
   }
 }
 
-/** Whether a persisted uncertain payment attempt is on file. The CartDrawer checks this so a
- *  post-reload cart edit can't change the idempotency signature — minting a fresh key over a
- *  capture that may have landed — while the checkout freeze locks only its own form inputs. */
-export function savedAttemptUncertain(): boolean {
-  return readSavedForm().attemptUncertain === true;
+/** Called when the cart drawer opens, once this module has loaded: fetch what the checkout needs
+ *  from third parties before the customer taps Checkout. */
+export function warmCheckout(): void {
+  preloadCardSdk();
 }
 
 type Confirmation = { orderId?: string; paid: boolean; total: number; discount?: number; fulfillment: Fulfillment; routingIssue?: boolean; duplicate?: boolean; units: number; vipEligible?: boolean; message?: string; vipJoin?: { status: "verify_sent" | "already_member"; email?: string; pollId?: string | null; ttlHours?: number } };
@@ -122,7 +77,7 @@ type Confirmation = { orderId?: string; paid: boolean; total: number; discount?:
 export function Checkout({ onClose }: { onClose: () => void }) {
   const cart = useCart();
   // Restored once per mount so the idempotency key's signature reproduces after a
-  // reload/reopen — see FORM_STORE_KEY above.
+  // reload/reopen — see FORM_STORE_KEY in ./checkoutAttempt.
   const [saved] = useState(readSavedForm);
   const [fulfillment, setFulfillment] = useState<Fulfillment>(saved.fulfillment === "delivery" ? "delivery" : "pickup");
   // Card is the only payment method — website orders are prepaid (2026-08-11).

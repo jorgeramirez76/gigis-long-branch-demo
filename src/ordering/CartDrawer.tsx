@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { lineUnitPrice, money, useCart, CARD_PRICING_LABEL, type CartLine } from "./CartContext";
-import { savedAttemptUncertain } from "./Checkout";
+import { savedAttemptUncertain } from "./checkoutAttempt";
 import { placementSuffix } from "../data/menuToppings";
 import { Upsell } from "./Upsell";
 import { goToMenu } from "../lib/goToMenu";

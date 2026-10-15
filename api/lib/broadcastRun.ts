@@ -4,6 +4,34 @@ import { sendSms, sendEmail, withStopNotice, smsConfigured, emailConfigured } fr
 import { SMS_WINDOW_LABEL, smsSendWindowOpen } from "./smsWindow.js";
 
 /**
+ * How the email tells members to redeem a blast code. A code that also exists as an active
+ * campaign in campaign_promos (STORM25, THANKYOU) works in online checkout, for pickup only or
+ * for delivery too depending on its row; any other blast code is a register-only code. Until
+ * 2026-10-15 every blast email said "register only", even for the online campaign codes.
+ * A missing table or a failed read falls back to the register-only wording: it can only
+ * under-promise.
+ */
+export async function codeRedemptionTerms(business: VipBusiness, code: string): Promise<string> {
+  const REGISTER_ONLY = "redeem at the register only; not valid in online checkout.";
+  try {
+    const r = await sql`
+      SELECT pickup_only FROM campaign_promos
+      WHERE business = ${business} AND code = ${code} AND active
+        AND (expires_at IS NULL OR expires_at > now())
+      LIMIT 1
+    `;
+    const row = r.rows[0] as { pickup_only: boolean | string | null } | undefined;
+    if (!row) return REGISTER_ONLY;
+    const pickupOnly = row.pickup_only !== false && row.pickup_only !== "false" && row.pickup_only !== "f";
+    return pickupOnly
+      ? "enter it at online checkout on a pickup order, or show it at the register."
+      : "enter it at online checkout for pickup or delivery, or show it at the register.";
+  } catch {
+    return REGISTER_ONLY;
+  }
+}
+
+/**
  * The broadcast send core, lifted verbatim out of api/admin/broadcast.ts (2026-09-19) so a
  * SCHEDULED blast (api/cron/send-scheduled.ts) runs the identical path the admin button does:
  * same consent-filtered audiences, same request-id / content-key dedupe, same durable
@@ -281,10 +309,11 @@ const smsBody = withStopNotice(code ? `${message.trim()} Code: ${code}` : messag
   // the list. One worker with spacing stays safely under the limit. At ~0.9 s each, one
   // run (BLAST_RUN_LIMIT_SEC) fits roughly 650 members with room to spare; the dry run
   // warns before a list outgrows that (blastDuration).
+  const terms = code && codeDesc && emailAudience.length ? await codeRedemptionTerms(business as VipBusiness, code) : null;
   await runPool(emailAudience, async (m) => {
     const result = await sendEmail(m.email!, subject!.trim(), message.trim(), {
       promoCode: code ?? undefined,
-      promoDescription: codeDesc ? `${codeDesc} — redeem at the register only; not valid in online checkout.` : undefined,
+      promoDescription: codeDesc && terms ? `${codeDesc} — ${terms}` : undefined,
       imageUrl: imageUrl ?? undefined,
       imageAlt,
     });

@@ -1091,7 +1091,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 </p>
               )}
               <p className="mt-1.5 text-xs text-[var(--color-copy-muted)]">
-                Got a promo code or a VIP welcome code? Redeem it here — pickup orders only.
+                Got a promo code or a VIP welcome code? Redeem it here. Welcome-pie codes are good on pickup orders only; other offers say whether delivery counts.
               </p>
             </>
           )}

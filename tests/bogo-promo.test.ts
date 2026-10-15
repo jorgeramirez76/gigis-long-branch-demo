@@ -192,3 +192,12 @@ test("a high percentage on a heavily topped pie never drives a price below zero 
   assert.equal(l.options.reduce((s, o) => s + o.delta, 0), 160, "the other 440 came off the toppings");
   assert.equal(sum(lines) - sum(applied.lines), 1440, "the line still drops by exactly the planned amount");
 });
+
+// ---- The applied-code message names delivery when the row allows it ----
+test("the applied-code message says pickup-only or pickup-or-delivery to match the campaign row", async () => {
+  const { campaignAppliedMessage } = await import("../api/lib/campaignPromo.js");
+  assert.equal(campaignAppliedMessage("pct_pizza", 20, false), "Code applied — 20% off every pizza, pickup or delivery.");
+  assert.equal(campaignAppliedMessage("pct_pizza", 25, true), "Code applied — 25% off every pizza on this pickup order.");
+  assert.equal(campaignAppliedMessage("bogo_pizza", 0, true), "Code applied — buy one pizza, get one free on this pickup order.");
+  assert.equal(campaignAppliedMessage("bogo_pizza", 0, false), "Code applied — buy one pizza, get one free, pickup or delivery.");
+});

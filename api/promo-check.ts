@@ -1,7 +1,7 @@
 import { clientIp } from "./lib/requestIp.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { FREE_PIE_ITEM } from "./lib/promo.js";
-import { resolvePromo } from "./lib/campaignPromo.js";
+import { campaignAppliedMessage, resolvePromo } from "./lib/campaignPromo.js";
 import { priceLines } from "./lib/menuCatalog.js";
 import { rateLimitAll } from "./lib/rateLimit.js";
 
@@ -61,7 +61,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         percentOff: check.percentOff,
         description: check.description,
         pickupOnly: check.pickupOnly,
-        message: `Code applied — ${check.percentOff}% off every pizza on this pickup order.`,
+        message: campaignAppliedMessage(check.kind, check.percentOff, check.pickupOnly),
       });
       return;
     }
@@ -75,7 +75,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         kind: check.kind,
         description: check.description,
         pickupOnly: check.pickupOnly,
-        message: "Code applied — buy one pizza, get one free on this pickup order.",
+        message: campaignAppliedMessage(check.kind, 0, check.pickupOnly),
       });
       return;
     }

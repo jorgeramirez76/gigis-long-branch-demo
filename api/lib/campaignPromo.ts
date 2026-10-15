@@ -267,3 +267,13 @@ export async function resolvePromo(business: VipBusiness, raw: unknown): Promise
   if (!welcome.ok) return { ok: false, message: welcome.message };
   return { ok: true, kind: "welcome", id: welcome.id, code: welcome.code, description: welcome.description };
 }
+
+/** The one-line confirmation checkout shows once a campaign code is applied. A code whose row
+ *  allows delivery (STORM25, THANKYOU) must not be announced as "on this pickup order", or a
+ *  delivery customer reads it as refused. */
+export function campaignAppliedMessage(kind: CampaignKind, percentOff: number, pickupOnly: boolean): string {
+  const scope = pickupOnly ? " on this pickup order" : ", pickup or delivery";
+  return kind === "pct_pizza"
+    ? `Code applied — ${Math.round(percentOff)}% off every pizza${scope}.`
+    : `Code applied — buy one pizza, get one free${scope}.`;
+}

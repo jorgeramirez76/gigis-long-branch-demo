@@ -509,8 +509,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // (There used to be an inline sweepQueuedPrints(3) here: Clover GETs for OTHER customers'
   // queued tickets, in front of this customer's own rate-limited line-item burst. The
-  // sweep-prints cron runs every 20 minutes while the shop is open and settles those
-  // rows itself, so the order path no longer spends its time or Clover quota on them.)
+  // sweep-prints cron runs every 20 minutes while online ordering is open, plus a 45-minute tail
+  // after close, and settles those rows itself, so the order path no longer spends its time or
+  // Clover quota on them.)
 
   // ---- authoritative pricing from the server catalog (NEVER trust client prices) ----
   // Items pulled off Clover since this build are rejected here too, so a page
@@ -967,7 +968,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // wait: a re-tap in that window paged "PAID WEB ORDER NOT FIRED — retry seen" for an order
       // already open in the POS, and a function killed there left a row the strand reminder later
       // called "never reached the kitchen". paid_print_queued replays as the placed order, and the
-      // sweep-prints cron settles it: printed → paid; still not printed after 25 min → staff paged.
+      // sweep-prints cron settles it at its first 20-minute tick past the 25-minute stuck threshold,
+      // while ordering is open or within the 45-minute tail after close: printed → paid; still not
+      // printed → staff paged.
       const armed = reservedId != null && await updateOrder(reservedId, { status: "paid_print_queued", cloverOrderId: paidOrderId, note });
       // Burn the code NOW — the ticket is in the POS, so the pie is spent. Waiting behind the
       // print stage let a killed function leave a fired order whose code stayed on hold for good.

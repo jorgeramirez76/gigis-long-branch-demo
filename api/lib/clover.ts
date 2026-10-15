@@ -675,8 +675,10 @@ const PRINT_POLL_DELAYS_MS: readonly number[] = [400, 700, 1100, 1600, 2200, 280
  * 45s abort. At this store a healthy ticket takes minutes to print, so the long poll almost
  * always ended "still queued" anyway. This one only catches an immediate FAILED (which is
  * retried once) or a fast print; everything else is recorded `paid_print_queued` and the
- * sweep-prints cron decides it (printed → paid; still not printed after 25 minutes → staff
- * paged). create.ts arms that queued state BEFORE this wait, so a killed function cannot lose it.
+ * sweep-prints cron decides it at its first 20-minute tick past the 25-minute stuck threshold,
+ * while ordering is open or within the 45-minute tail after close (printed → paid; still not
+ * printed → staff paged). create.ts arms that queued state BEFORE this wait, so a killed
+ * function cannot lose it.
  */
 export const CHECKOUT_PRINT_POLL_DELAYS_MS: readonly number[] = [400, 700, 1100, 1600];
 

@@ -17,7 +17,8 @@ Payment uncertainty is distinct from a decline. An uncertain attempt stays locke
 its existing order status is resolved; never ask the customer to pay again blindly.
 A captured but unrouted order needs staff recovery. An unknown printer response does not
 prove a ticket failed. Alerts are deduplicated, and failed SMS delivery can use the email
-fallback. Scheduled sweeps also check the final order of the evening.
+fallback. The print sweep runs every 20 minutes while online ordering is open and for 45
+minutes after the 11 PM close, so the evening's last tickets are checked by the 11:40 PM tick.
 
 An OPEN Clover ticket can be an orphaned draft or an incident leftover. It does not prove
 money is owed. **Do not collect again** without reconciling the payment and website ledger.

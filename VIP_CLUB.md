@@ -29,10 +29,16 @@ consent and welcome-offer records. Expired sign-in links and sessions are pruned
 Shared broadcast codes are register-only unless an explicit discount implementation is
 added. They do not use the `PIE-` checkout redemption path.
 
-Text blasts may only START between 9 AM and 8:30 PM Eastern (`api/lib/smsWindow.ts`). Outside
-that window the dashboard refuses a blast with a text leg (email-only blasts are fine), and a
-scheduled blast with a text leg waits unclaimed for the next tick inside the window. The dry run
-also warns when people on the text list already got 4+ texts in the last 30 days.
+Scheduled blasts are sent by `api/cron/send-scheduled.ts`, which ticks every 20 minutes and does
+its work only during the counter's hours (`api/lib/cronHours.ts`: Mon-Wed 10 AM-11 PM, Thu-Sun
+10 AM-midnight Eastern). A blast goes out at the first tick at or after its send time, so up to
+20 minutes late; one queued for overnight goes out at the 10 AM tick. The gate ignores
+`CLOSED_DATES` on purpose, so a blast queued for a closed day (the "closed today" notice) still
+goes out that day. Text blasts may only START between 9 AM and 8:30 PM Eastern
+(`api/lib/smsWindow.ts`). Outside that window the dashboard refuses a blast with a text leg
+(email-only blasts are fine), and a scheduled blast with a text leg waits unclaimed for the next
+tick inside the window. The dry run also warns when people on the text list already got 4+ texts
+in the last 30 days.
 
 Each blast runs inside one function call of at most 800 seconds (`BLAST_RUN_LIMIT_SEC`). Emails go
 out one at a time (~0.9 s each, under Resend's rate limit), so one run fits roughly 650 email

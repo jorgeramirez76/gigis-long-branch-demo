@@ -11,6 +11,7 @@ import handler from "../api/cron/send-scheduled.js";
 const originalFetch = globalThis.fetch;
 // The cron only works while the shop is open (api/lib/cronHours.ts), so every test runs at noon
 // Eastern on a Wednesday; tests/cron-open-hours.test.ts covers the closed-hours no-op.
+// A test that needs a different instant must call mock.timers.reset() first: this beforeEach pins the clock file-wide.
 beforeEach(() => { mock.timers.enable({ apis: ["Date"], now: new Date("2026-10-14T16:00:00Z").getTime() }); });
 afterEach(() => { globalThis.fetch = originalFetch; mock.timers.reset(); });
 

@@ -38,6 +38,11 @@ export function Hero() {
         </div>
         <div className="food-hero-photo">
           <picture>
+            {/* Phones show this photo as a short, full-width strip (storefront.css: 170-230px tall
+                under 768px), so the 900x1350 portrait was mostly cropped away. The wide crop fits
+                that strip as it is and is about a third of the bytes, so the likely mobile LCP
+                image gets lighter. Desktop and tablet keep the portrait. */}
+            <source media="(max-width: 767px)" type="image/webp" srcSet={HERO_IMAGE.webpWide} sizes="(max-height: 500px) 50vw, 100vw" />
             <source type="image/webp" srcSet={HERO_IMAGE.webpPortrait} sizes="(min-width: 900px) 50vw, 100vw" />
             <img src={HERO_IMAGE.srcPortrait} alt={HERO_IMAGE.alt} loading="eager" {...{ fetchpriority: "high" }} decoding="async" />
           </picture>

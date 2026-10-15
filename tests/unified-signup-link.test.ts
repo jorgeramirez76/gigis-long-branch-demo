@@ -247,3 +247,14 @@ test("an account for an email with no membership still enrolls normally", async 
   assert.ok(insert?.params.includes(CANONICAL_CONSENT_TEXT), "with the canonical consent text recorded verbatim");
   assert.ok(insert?.query.includes("WHERE NOT EXISTS"), "and the one-pie-per-household guard intact");
 });
+
+test("the receipt's join button carries no personal data and is credited to the receipt", async () => {
+  const { readFileSync } = await import("node:fs");
+  const create = readFileSync(new URL("../api/order/create.ts", import.meta.url), "utf8");
+  const start = create.indexOf("function vipJoinUrl(");
+  const fn = create.slice(start, create.indexOf("\n}\n", start) + 2);
+  assert.match(fn, /return `\$\{base\}\/account\/\?join=1&source=receipt`;/);
+  assert.doesNotMatch(fn, /phone|email|address|name/, "no customer field may reach the URL");
+  const handler = readFileSync(new URL("../api/lib/accountHandler.ts", import.meta.url), "utf8");
+  assert.match(handler, /const ACCOUNT_SIGNUP_SOURCES = new Set<unknown>\(\["menu-qr", "receipt"\]\);/);
+});

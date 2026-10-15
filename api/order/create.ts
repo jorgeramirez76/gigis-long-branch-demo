@@ -46,22 +46,17 @@ import { replayOrder } from "../lib/orderReplay.js";
 import { isDefinitelyDeclined } from "../lib/paymentRetry.js";
 
 /**
- * The receipt's "join the VIP Club" button, pointed at the standalone signup page
- * with the order's own details in the query string.
+ * The receipt's "join the VIP Club" button: the rewards signup, tagged as coming from a receipt.
  *
- * The customer just typed all of this to order; sending them to an empty form is
- * what the old #vip-club link cost us. The page only writes these into its inputs
- * (still editable) — the server re-validates everything and the consent boxes stay
- * unchecked, so a forwarded receipt can't opt anybody in.
+ * NO personal data in the URL. It used to carry the customer's name, phone, email and delivery
+ * address to the retired /vip-club/ page, which now only redirects to /account/ — the account
+ * page never reads those fields (it prefills from sessionStorage), so they did nothing except
+ * land in logs, link scanners and forwarded emails. The redirect also stamped every receipt
+ * signup source=menu-qr, crediting the printed-menu QR code; source=receipt keeps them apart.
  */
-function vipJoinUrl(o: { name: string; phone?: string; email?: string; fulfillment: Fulfillment; address?: string }): string {
+function vipJoinUrl(): string {
   const base = process.env.PUBLIC_BASE_URL || "https://gigislongbranch.com";
-  const q = new URLSearchParams({ name: o.name, src: "receipt" });
-  if (o.phone) q.set("phone", o.phone);
-  if (o.email) q.set("email", o.email);
-  // Pickup orders carry no address, and the welcome pie is one per household.
-  if (o.fulfillment === "delivery" && o.address) q.set("address", o.address);
-  return `${base}/vip-club/?${q.toString()}`;
+  return `${base}/account/?join=1&source=receipt`;
 }
 
 /** Best-effort branded receipt email — env-gated, never blocks or fails the order. */
@@ -107,7 +102,7 @@ async function sendOrderReceipt(o: {
       paymentLine,
       readyLine: readyMessage(countUnits(o.lines), o.fulfillment),
       vipPitch: o.vipPitch,
-      vipJoinUrl: o.vipPitch ? vipJoinUrl(o) : undefined,
+      vipJoinUrl: o.vipPitch ? vipJoinUrl() : undefined,
     });
     const r = await sendReceiptEmail(o.email, `Order received — Gigi's NY Style Pizza (${money(o.totals.total)})`, html);
     if (!r.sent && r.error !== "email_not_configured") console.error("[order/create] receipt email failed:", r.error);

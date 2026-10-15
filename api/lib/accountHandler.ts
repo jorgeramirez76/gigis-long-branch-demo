@@ -20,6 +20,9 @@ const GENERIC = { ok: true, message: "If this email can be used, a secure link w
 // the password step too). Saying which would turn this endpoint into a "does this email have a
 // membership / a signup in flight?" oracle for anyone past the rate limit.
 const ONE_LINK = { ok: true, message: "One link is all it takes. Check your inbox (and spam) for a link from Gigi's — if you just ordered and ticked the VIP box, it's the confirmation email already sitting there. Tap it once to confirm your email, get your free-pie code and choose your password." };
+/** Where a signup came from, as the admin's "Member sources" counts it. Anything else is
+ *  "rewards-account". "receipt" is the order receipt's join button. */
+const ACCOUNT_SIGNUP_SOURCES = new Set<unknown>(["menu-qr", "receipt"]);
 const text = (value: unknown, max = 160) => typeof value === "string" ? value.trim().slice(0,max) : "";
 const cleanEmail = (value: unknown) => text(value,254).toLowerCase();
 async function botCheck(token: unknown, ip: string): Promise<boolean> {
@@ -80,7 +83,7 @@ export function accountHandler(action: string) {
         if (!name || !phone || !EMAIL_RE.test(email) || street.length<4 || city.length<2 || !/^[A-Z]{2}$/.test(state) || !/^\d{5}(?:-\d{4})?$/.test(zip)) return void res.status(400).json({error:"invalid_profile",message:"Fill in your name, email, phone and complete address."});
         if (typeof body.smsConsent !== "boolean" || typeof body.emailConsent !== "boolean" || body.consentText !== CANONICAL_CONSENT_TEXT) return void res.status(400).json({error:"invalid_consent"});
         const payload = {name,phone,email,fullAddress:`${street}, ${city}, ${state} ${zip}`,apt:apt || null,
-          addrKey:addressDedupeKey(street,apt,city,state,zip),legacyAddrKey:legacyAddressDedupeKey(street,apt),smsConsent:body.smsConsent,emailConsent:body.emailConsent,source:body.source === "menu-qr" ? "menu-qr" : "rewards-account",street,city,state,zip};
+          addrKey:addressDedupeKey(street,apt,city,state,zip),legacyAddrKey:legacyAddressDedupeKey(street,apt),smsConsent:body.smsConsent,emailConsent:body.emailConsent,source:ACCOUNT_SIGNUP_SOURCES.has(body.source) ? body.source : "rewards-account",street,city,state,zip};
         // ONE EMAIL, ONE LINK. If this address is already holding a live VIP verification link —
         // the customer ticked the club box at checkout seconds ago and is now tapping "Create my
         // account" on the confirmation screen — ride on it instead of sending a second one. The

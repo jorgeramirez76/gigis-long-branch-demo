@@ -178,9 +178,8 @@ export function receiptHtml(opts: {
   readyLine?: string;
   /** Invite the customer to the free-pie VIP club (non-members only). */
   vipPitch?: boolean;
-  /** Where the invite's button goes. Callers pass the /vip-club/ page with the
-   * order's details in the query string so the customer doesn't retype what
-   * they just gave us; falls back to the homepage form's anchor. */
+  /** Where the invite's button goes: the rewards signup (/account/?join=1&source=receipt).
+   * Never put the customer's details in this URL — it ends up in logs and link scanners. */
   vipJoinUrl?: string;
 }): string {
   const rows = opts.lines

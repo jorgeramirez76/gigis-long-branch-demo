@@ -20,7 +20,7 @@ Required server configuration: `DATABASE_URL`, `ACCOUNTS_ENABLED=true`, `RESEND_
 
 ## Schema changes
 
-`db/migrations/` contains ordered migrations. This location currently ends at `009_unified_signup_link.sql`. `db/schema.sql` is the consolidated fresh-database schema; it is not an instruction to recreate a production database.
+`db/migrations/` contains ordered migrations. This location currently ends at `010_campaigns_and_scheduled_blasts.sql`. `db/schema.sql` is the consolidated fresh-database schema; it is not an instruction to recreate a production database.
 
 | Migration | Purpose |
 | --- | --- |
@@ -33,8 +33,9 @@ Required server configuration: `DATABASE_URL`, `ACCOUNTS_ENABLED=true`, `RESEND_
 | 007 | Reserve broadcast requests and content before provider delivery. |
 | 008 | Daily first-party site metric counts (`site_metric_daily`). |
 | 009 | Let a rewards-account signup ride on the pending VIP verification link (`vip_email_verifications.account_payload`). |
+| 010 | Bring `campaign_promos`, `campaign_redemptions` and `scheduled_broadcasts` into the migration history, exactly as the runtime's lazy DDL creates them (production already has them; the file is safe to repeat). |
 
-Some tables are still created only by the runtime's lazy DDL and `db/schema.sql`, not by a numbered migration: `campaign_promos`, `campaign_redemptions` and `scheduled_broadcasts`.
+The runtime still runs its lazy `CREATE TABLE IF NOT EXISTS` statements once per warm instance, so a fresh database never fails for want of a table. Removing that DDL from the order path and the crons is a later step: first confirm, with a read-only `information_schema` query, that production matches the migrations.
 
 Before applying a change, inspect the target schema and existing indexes/constraints. Check duplicates before adding uniqueness. Review each migration's actual SQL: `006` removes an obsolete consent constraint, and migrations must not be treated as universally additive or safe to rerun blindly. Record the migration filenames, deployed commit, project/branch, execution time, and validation result in the release record. There is no automatic migration history runner promised by this runbook.
 

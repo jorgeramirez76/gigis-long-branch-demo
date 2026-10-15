@@ -130,6 +130,8 @@ export async function ensureMemberHasCode(
   }
 }
 
+let smsRequestedEnsured = false;
+
 /** Create the member, issue the pie, send the welcome messages. Verbatim the logic
  *  the public endpoint ran before the verification gate existed. */
 export async function completeSignup(business: VipBusiness, p: ValidatedSignup): Promise<SignupOutcome> {
@@ -141,7 +143,13 @@ export async function completeSignup(business: VipBusiness, p: ValidatedSignup):
   // the phone's holder can send. Broadcast already filters on sms_consent, so an unconfirmed
   // number never gets a blast. The welcome text (code + how to confirm) is the one message
   // sent unconfirmed.
-  await sql`ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS sms_requested BOOLEAN NOT NULL DEFAULT FALSE`.catch(() => {});
+  // Migration 001 adds this column; the lazy ALTER stays for a database built without it, but runs
+  // once per warm instance, not on every signup (ALTER TABLE takes an exclusive lock on vip_members
+  // even when the column already exists, so it briefly blocked blasts and lookups each time).
+  if (!smsRequestedEnsured) {
+    await sql`ALTER TABLE vip_members ADD COLUMN IF NOT EXISTS sms_requested BOOLEAN NOT NULL DEFAULT FALSE`
+      .then(() => { smsRequestedEnsured = true; }, () => {});
+  }
   // ON CONFLICT DO NOTHING covers ALL three unique indexes (phone, email,
   // address+apt): a match on ANY one means this person/household already
   // claimed the welcome pie, so no row is inserted and no new pie is issued.

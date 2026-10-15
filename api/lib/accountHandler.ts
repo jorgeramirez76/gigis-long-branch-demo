@@ -2,7 +2,7 @@ import { EMAIL_RE } from "./emailAddress.js";
 import { randomBytes } from "node:crypto";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "./db.js";
-import { ACCOUNT_BUSINESS, ACCOUNT_ORIGIN, hashToken, sameOrigin, readSession, createSession, logout } from "./session.js";
+import { ACCOUNT_BUSINESS, ACCOUNT_ORIGIN, hashToken, sameOrigin, readSession, createSession, logout, sessionToken } from "./session.js";
 import { hashPassword, validPassword, verifyPassword } from "./password.js";
 import { claimWindow, rateLimitAllStrict } from "./rateLimit.js";
 import { sendReceiptEmail, sendSms } from "./notify.js";
@@ -26,6 +26,8 @@ const ONE_LINK = { ok: true, message: "One link is all it takes. Check your inbo
  *  the hero ticket, the homepage VIP section, the order-confirmation panel and the win-back email.
  *  Keep api/vip-code-recovery.ts WEB_SOURCES in step. */
 export const ACCOUNT_SIGNUP_SOURCES = new Set<unknown>(["menu-qr", "receipt", "footer", "menu-page", "hero", "vip-section", "order-confirm", "winback"]);
+/** The actions that work without a session. Every other action needs the session cookie. */
+const PUBLIC_ACTIONS = new Set(["config", "signup", "login", "logout", "password-reset-request", "password-reset-confirm", "claim"]);
 const text = (value: unknown, max = 160) => typeof value === "string" ? value.trim().slice(0,max) : "";
 const cleanEmail = (value: unknown) => text(value,254).toLowerCase();
 async function botCheck(token: unknown, ip: string): Promise<boolean> {
@@ -66,6 +68,11 @@ export function accountHandler(action: string) {
     if (req.method !== (get ? "GET" : "POST")) return void res.status(405).json({error:"method_not_allowed"});
     if (!get && !sameOrigin(req)) return void res.status(403).json({error:"origin_required"});
     if (process.env.ACCOUNTS_ENABLED !== "true") return void res.status(503).json({error:"accounts_not_enabled"});
+    // Most callers of the signed-in actions are anonymous visitors with no session cookie at all
+    // (every cart open asks /api/account/upsell; the account page asks /me). Answer them without
+    // the database: the rate-limit row and session lookup only woke Neon to say "sign in".
+    // A request that does carry a well-formed cookie still goes through both below.
+    if (!PUBLIC_ACTIONS.has(action) && !sessionToken(req)) return void res.status(401).json({error:"sign_in_required"});
     const body = req.body ?? {};
     const ip = text(req.headers["x-real-ip"],80) || "unknown";
     try {

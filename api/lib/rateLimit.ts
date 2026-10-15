@@ -39,15 +39,26 @@ export async function rateLimit(bucket: string, max: number, windowSec: number):
     `;
     const n = (r.rows[0]?.n as number) ?? 1;
     // Opportunistic cleanup — horizon well past the longest window (24h) we use.
-    if (++calls % 50 === 0) {
-      const cutoff = Math.floor(Date.now() / 1000) - 26 * 3600;
-      await sql`DELETE FROM rate_counters WHERE window_start < ${cutoff}`.catch(() => {});
-    }
+    if (++calls % 50 === 0) await pruneRateCounters().catch(() => {});
     return n <= max;
   } catch (e) {
     console.error("[rateLimit] fail-open due to error", e);
     return true;
   }
+}
+
+/** Rows older than this are finished windows: the longest window or claim in use is 24 hours. */
+const RATE_COUNTER_HORIZON_SEC = 26 * 3600;
+
+/**
+ * Delete finished windows. rateLimit() does this on every 50th call per warm instance, which a
+ * quiet shop rarely reaches, and rateLimitStrict/claimWindow never did, so the daily-digest cron
+ * also runs it once a day. Throws on a storage error; callers decide whether that matters.
+ */
+export async function pruneRateCounters(now = Date.now()): Promise<void> {
+  await ensure();
+  const cutoff = Math.floor(now / 1000) - RATE_COUNTER_HORIZON_SEC;
+  await sql`DELETE FROM rate_counters WHERE window_start < ${cutoff}`;
 }
 
 /** Admin/login variant: propagates storage errors so authentication can fail closed. */

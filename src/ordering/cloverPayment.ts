@@ -21,7 +21,16 @@ const APPLE_PAY_ON = (import.meta.env.VITE_CLOVER_APPLE_PAY as string | undefine
 const SDK_URL =
   (import.meta.env.VITE_CLOVER_SDK_URL as string | undefined) || "https://checkout.clover.com/sdk.js";
 
-/** The server also enforces this switch; this build-time flag removes card and wallet UI. */
+/**
+ * Emergency stop for online card payments. With prepay the only way to order, it closes online
+ * ordering outright (the checkout hides the card fields, Apple Pay and the $0.00 free-pie path,
+ * and tells customers to call). TWO variables exist because the browser can only read
+ * VITE_-prefixed env: this file reads VITE_CARD_PAYMENTS_OFF, and the server
+ * (api/order/create.ts) refuses new orders when EITHER CARD_PAYMENTS_OFF or
+ * VITE_CARD_PAYMENTS_OFF is "1". Set VITE_CARD_PAYMENTS_OFF=1 in Vercel to stop both, then
+ * redeploy — env changes reach neither the bundle nor the functions until the next deployment.
+ * Clear it (and redeploy) to re-enable.
+ */
 export function cardPaymentsKilled(): boolean {
   return (import.meta.env.VITE_CARD_PAYMENTS_OFF as string | undefined) === "1";
 }

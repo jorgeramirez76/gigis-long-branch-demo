@@ -29,6 +29,34 @@ function orderingCloseHour(day: number): number {
   return Math.min(CLOSE_HOUR[day] ?? 23, ORDER_LAST_HOUR);
 }
 
+/**
+ * Whole days the shop is shut on the owner's call, as YYYY-MM-DD (America/New_York) → reason
+ * ("Thanksgiving", "the storm"). Online ordering, the checkout and the open/closed pill all
+ * honor it, so a closed day can't take prepaid orders nobody will cook — weekday hours alone
+ * would happily charge cards on Thanksgiving. Ported from Sea Bright (27facdd).
+ *
+ * EMPTY ON PURPOSE: holiday hours are the owner's decision. Add a date only once the owner has
+ * confirmed the shop is closed that day, e.g. "2026-11-26": "Thanksgiving". Takes effect on the
+ * next deploy (pushing main), for the server and the checkout alike.
+ */
+export const CLOSED_DATES: Record<string, string> = {};
+
+/** Today's date in America/New_York as YYYY-MM-DD. */
+function todayInNY(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
+}
+
+/** Why the shop is closed all day today, or null on a normal day. */
+export function closedTodayReason(): string | null {
+  return CLOSED_DATES[todayInNY()] ?? null;
+}
+
+/** Customer-facing line for checkout and the order API when today is a closed day. */
+export function closedTodayMessage(): string | null {
+  const reason = closedTodayReason();
+  return reason ? `Gigi's is closed today for ${reason} — online ordering is paused until we reopen.` : null;
+}
+
 export type OpenStatus = {
   open: boolean;
   /** Short label, e.g. "Open now", "Closed · opens 10 AM", "Open till midnight". */
@@ -60,6 +88,7 @@ function nowInNY(): { day: number; hour: number; minute: number } {
  * that crosses the closing boundary rather than failing it mid-payment.
  */
 export function isOrderingOpen(graceMinutes = 0): boolean {
+  if (closedTodayReason()) return false;
   const { day, hour, minute } = nowInNY();
   const m = hour * 60 + minute;
   const close = orderingCloseHour(day) * 60;
@@ -102,6 +131,7 @@ export function deliveryClosedReason(): string {
 export const ORDERING_HOURS_LINE = "Online ordering is open daily from 10 AM to 11 PM";
 
 export function getOpenStatus(): OpenStatus {
+  if (closedTodayReason()) return { open: false, label: "Closed today", closingSoon: false };
   const { day, hour } = nowInNY();
   const close = CLOSE_HOUR[day] ?? 23;
   const open = hour >= OPEN_HOUR && hour < close;

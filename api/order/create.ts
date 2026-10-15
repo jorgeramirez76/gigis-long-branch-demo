@@ -23,7 +23,7 @@ import {
 } from "../lib/clover.js";
 import { priceLines, type ClientLine } from "../lib/menuCatalog.js";
 import { liveItemNames } from "../lib/menuLive.js";
-import { isOrderingOpen, isDeliveryOpen } from "../../src/lib/openStatus.js";
+import { closedTodayMessage, isOrderingOpen, isDeliveryOpen } from "../../src/lib/openStatus.js";
 import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, releaseOrder, reserveOrder, settleQueuedPrint, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
 import { applyFreePie, claimPromoCode, isFreePickupOrder, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
@@ -262,7 +262,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!isOrderingOpen(5) && !closedReplayAnswers) {
     res.status(409).json({
       error: "store_closed",
-      message: "Online ordering is closed right now — we take web orders daily from 10 AM to 11 PM. The counter is open later Thursday through Sunday: call (732) 377-2468 and we'll take care of you.",
+      message: closedTodayMessage() ?? "Online ordering is closed right now — we take web orders daily from 10 AM to 11 PM. The counter is open later Thursday through Sunday: call (732) 377-2468 and we'll take care of you.",
+    });
+    return;
+  }
+
+  // ---- card kill switch, server side (ported from Sea Bright) ----
+  // The emergency stop OPERATIONS-2026-09-12.md documents. Before this, only the browser read
+  // VITE_CARD_PAYMENTS_OFF, so a tab opened before the flip (or a direct POST) kept charging
+  // cards through an incident like Aug 12-15. With prepay the only way to order, killing cards
+  // closes online ordering outright — including $0.00 free-pie orders, which also create and
+  // fire Clover orders (the same "closes everything" rule as Sea Bright, and the checkout
+  // hides the free path while the switch is on). Honors BOTH variable names: the browser can
+  // only read the VITE_ one, and an operator setting either must stop the server.
+  // A REPLAY is exempt, same as the store-hours gate above: the switch gets flipped during
+  // exactly the payment trouble that leaves customers frozen on "tap again to check", and the
+  // replay ladder below is read-only for every status it answers.
+  // Like every Vercel env change, flipping it takes effect on the next deployment (redeploy).
+  const cardKilled = process.env.CARD_PAYMENTS_OFF === "1" || process.env.VITE_CARD_PAYMENTS_OFF === "1";
+  if (cardKilled && !closedReplayAnswers) {
+    res.status(503).json({
+      error: "card_payments_disabled",
+      message: "Online ordering is paused right now — please call (732) 377-2468 and we'll take your order.",
     });
     return;
   }

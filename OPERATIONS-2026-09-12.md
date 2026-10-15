@@ -21,7 +21,7 @@ Repository: `~/Projects/gigis-long-branch-demo`. Deployment runs through the exi
 | `TWILIO_API_KEY_SID`, `TWILIO_API_KEY_SECRET` | Optional Twilio API-key authentication |
 | `ADMIN_TOKEN`, `CRON_SECRET`, `UNSUB_SECRET` | Protected admin, cron and unsubscribe authorization; check helper names before provisioning |
 | `ACCOUNTS_ENABLED` | `true` only after account migrations and release gates |
-| `CARD_PAYMENTS_OFF`, `VITE_CARD_PAYMENTS_OFF` | Server/browser emergency payment stop |
+| `CARD_PAYMENTS_OFF`, `VITE_CARD_PAYMENTS_OFF` | Emergency stop for ALL online ordering (`1`). The server refuses new orders when either is `1`; the browser reads only `VITE_CARD_PAYMENTS_OFF`. Takes effect after a redeploy — see "Stopping online ordering" |
 | `CLOSE_ORDER_VERIFY_MS` | Optional close-order verification timeout |
 | `MENU_SYNC_ALLOW_SHRINK` | Explicit override for a known legitimate catalog shrink |
 | `VITE_CLOVER_SDK_URL` | Optional Clover SDK URL override; must also be allowed by CSP |
@@ -33,6 +33,19 @@ registration or proof of receipt. Test delivery only with the owner's explicit a
 Neon integration variables such as `DATABASE_URL_UNPOOLED`, `NEON_AUTH_BASE_URL`,
 `VITE_NEON_AUTH_URL`, `NEON_PROJECT_ID`, `PG*` and `POSTGRES_*` are not the custom account
 implementation's credentials. Leave integration-managed settings alone; never publish them.
+
+## Stopping online ordering, and closed days
+
+- **Emergency stop (payment bug, printer outage, kitchen overwhelmed):** set
+  `VITE_CARD_PAYMENTS_OFF=1` in Vercel (Production) and redeploy the latest production
+  deployment. Vercel env changes reach neither the functions nor the browser bundle until that
+  redeploy. The server then refuses every new order, $0.00 free-pie orders included, with "please
+  call the store"; a customer checking on an order already in flight still gets its answer.
+  Remove the variable and redeploy to reopen. There is no instant, staff-operated pause switch yet.
+- **A whole day closed (holiday, storm):** add the date to `CLOSED_DATES` in
+  `src/lib/openStatus.ts` (e.g. `"2026-11-26": "Thanksgiving"`) and push `main`. The order API,
+  checkout and open/closed pill all honor it. The list ships empty: holiday hours are the
+  owner's call, so add a date only after the owner confirms the closure.
 
 ## Release checklist
 

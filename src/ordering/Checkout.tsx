@@ -15,7 +15,7 @@ import {
 } from "./cloverPayment";
 import { Turnstile } from "../components/Turnstile";
 import { turnstileEnabled } from "../lib/turnstile";
-import { getOpenStatus, isOrderingOpen, isDeliveryOpen, deliveryClosedReason, type OpenStatus } from "../lib/openStatus";
+import { closedTodayMessage, closedTodayReason, getOpenStatus, isOrderingOpen, isDeliveryOpen, deliveryClosedReason, type OpenStatus } from "../lib/openStatus";
 import { countUnits, readyMessage } from "../lib/readyTime";
 import { DELIVERY_TOWNS, DELIVERY_FEES, deliveryFeeCents, formatFee, type DeliveryTown } from "../lib/deliveryZones";
 import { RewardsJoin } from "./RewardsJoin";
@@ -225,7 +225,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
     return () => { active = false; };
   }, [attemptUncertain]);
   const [errorMsg, setErrorMsg] = useState("");
-  const [cardInitFailed, setCardInitFailed] = useState(false);
+  // With the card kill switch on there are no card fields to wait for: start in the "call us"
+  // state rather than an endless "Card fields are still loading".
+  const [cardInitFailed, setCardInitFailed] = useState(!CARD_ENABLED);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileReset, setTurnstileReset] = useState(0);
   const [turnstileFailed, setTurnstileFailed] = useState(false);
@@ -270,7 +272,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
   const grandTotal = cart.subtotal - promoDiscount + cardPricing + deliveryFee + tax + tip;
   // Nothing to pay: the promo covers the whole pickup order. No card is collected and none is
   // sent — the server takes this exact case straight to the kitchen (api/order/create.ts).
-  const freeOrder = grandTotal === 0 && promoDiscount > 0 && fulfillment === "pickup";
+  // Not while the card kill switch is on: the server then refuses EVERY new order, free ones
+  // included (api/order/create.ts), so offering the free path would only fail at the last tap.
+  const freeOrder = CARD_ENABLED && grandTotal === 0 && promoDiscount > 0 && fulfillment === "pickup";
   // Apple Pay's button is built asynchronously and priced by message, so it needs
   // the live total rather than whatever it was on the render that started the load.
   const grandTotalRef = useRef(grandTotal);
@@ -682,7 +686,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       setOpenStatus(getOpenStatus());
       setOrderingOpen(false);
       setStatus("error");
-      setErrorMsg("Online ordering just closed for the night (10 AM–11 PM daily). The counter may still be open — give us a call.");
+      setErrorMsg(closedTodayMessage() ?? "Online ordering just closed for the night (10 AM–11 PM daily). The counter may still be open — give us a call.");
       return;
     }
     setStatus("submitting");
@@ -724,7 +728,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       if (!isOrderingOpen()) {
         setOpenStatus(getOpenStatus());
         setOrderingOpen(false);
-        throw new Error("Online ordering just closed for the night (10 AM–11 PM daily). The counter may still be open — give us a call.");
+        throw new Error(closedTodayMessage() ?? "Online ordering just closed for the night (10 AM–11 PM daily). The counter may still be open — give us a call.");
       }
       // Never charge a total the shopper didn't see. Face ID approved whatever the
       // sheet last displayed; if the cart has moved since, make them approve again.
@@ -856,9 +860,14 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       <div className="flex-1 space-y-5 overflow-y-auto p-5">
         {storeClosed && (
           <div className="rounded-2xl border border-[var(--color-brand-red)]/25 bg-[var(--color-brand-red)]/8 px-4 py-3 text-sm text-[var(--color-copy)]">
-            <span className="font-bold">Online ordering is closed right now.</span> We take web orders daily from
-            10 AM to 11 PM. The counter stays open later on Thursday through Sunday — call{" "}
-            {LOCATION.phone} and we'll take care of you. Your cart will be saved!
+            {closedTodayMessage() ?? (
+              <>
+                <span className="font-bold">Online ordering is closed right now.</span> We take web orders daily from
+                10 AM to 11 PM. The counter stays open later on Thursday through Sunday — call{" "}
+                {LOCATION.phone} and we'll take care of you.
+              </>
+            )}{" "}
+            Your cart will be saved!
           </div>
         )}
 
@@ -1258,7 +1267,7 @@ export function Checkout({ onClose }: { onClose: () => void }) {
         >
           <span>
             {storeClosed && !attemptUncertain
-              ? "Closed — ordering opens 10 AM"
+              ? closedTodayReason() ? "Closed today" : "Closed — ordering opens 10 AM"
               : submitting
                 ? "Placing order…"
                 : freeOrder

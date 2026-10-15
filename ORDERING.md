@@ -34,5 +34,5 @@ Use the checks in `README.md`, fixture-based provider tests and the build gates.
 send production payments, refunds, SMS or emails as an automated smoke test. Real register
 printing and alert receipt require a separately coordinated staff check.
 
-The September 12 changes, including accounts, remain a local release candidate until the
-main task records a successful deployment. See `OPERATIONS-2026-09-12.md`.
+The September 12 changes, including accounts, are live: production release `65df7d0` reached
+READY with accounts enabled. See `OPERATIONS-2026-09-12.md`.

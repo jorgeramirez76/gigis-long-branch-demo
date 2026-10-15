@@ -20,7 +20,7 @@ Required server configuration: `DATABASE_URL`, `ACCOUNTS_ENABLED=true`, `RESEND_
 
 ## Schema changes
 
-`db/migrations/` contains ordered migrations. This location currently ends at `007_broadcast_reservations.sql`. `db/schema.sql` is the consolidated fresh-database schema; it is not an instruction to recreate a production database.
+`db/migrations/` contains ordered migrations. This location currently ends at `009_unified_signup_link.sql`. `db/schema.sql` is the consolidated fresh-database schema; it is not an instruction to recreate a production database.
 
 | Migration | Purpose |
 | --- | --- |
@@ -31,6 +31,10 @@ Required server configuration: `DATABASE_URL`, `ACCOUNTS_ENABLED=true`, `RESEND_
 | 005 | Enforce one welcome reward per member and business. |
 | 006 | Allow both marketing channels to be off without deleting membership. |
 | 007 | Reserve broadcast requests and content before provider delivery. |
+| 008 | Daily first-party site metric counts (`site_metric_daily`). |
+| 009 | Let a rewards-account signup ride on the pending VIP verification link (`vip_email_verifications.account_payload`). |
+
+Some tables are still created only by the runtime's lazy DDL and `db/schema.sql`, not by a numbered migration: `campaign_promos`, `campaign_redemptions` and `scheduled_broadcasts`.
 
 Before applying a change, inspect the target schema and existing indexes/constraints. Check duplicates before adding uniqueness. Review each migration's actual SQL: `006` removes an obsolete consent constraint, and migrations must not be treated as universally additive or safe to rerun blindly. Record the migration filenames, deployed commit, project/branch, execution time, and validation result in the release record. There is no automatic migration history runner promised by this runbook.
 
@@ -38,7 +42,7 @@ First apply the migration to an isolated branch of the correct location. Keep ou
 
 ## Security and data integrity
 
-- Passwords are salted bcrypt hashes, not recoverable plaintext. The API requires at least 12 characters and rejects bcrypt input above 72 UTF-8 bytes. Support cannot retrieve or email an existing password.
+- Passwords are salted bcrypt hashes, not recoverable plaintext. The API requires at least 8 characters (owner's call, 2026-10-01; it was 12) and rejects bcrypt input above 72 UTF-8 bytes. Support cannot retrieve or email an existing password.
 - Email ownership is proved before creating an account or claiming a legacy membership. Email is the normalized username. Reset tokens use 32 random bytes; only a SHA-256 hash is stored, with a 30-minute expiry and single-use marker. The browser receives the token in a URL fragment.
 - Reset token consumption and credential changes share one SQL statement. Reset increments `credential_version`, revokes previous sessions, and invalidates other unused links. Session creation checks the expected password hash so a concurrent reset cannot create a valid stale session.
 - Sessions use random tokens stored hashed in the database. Cookies are `HttpOnly`, `Secure`, `SameSite=Lax`, and scoped to the host. Sessions expire after 30 days with sliding renewal. Account writes require the pinned origin and JSON content type; sensitive entry points require verification and rate limits.
@@ -46,7 +50,7 @@ First apply the migration to an isolated branch of the correct location. Keep ou
 - A unique database index prevents a second welcome reward for the same member. Redemption requires an unredeemed code and its matching order reservation. Used codes remain visible as used and cannot be redeemed again. Phone and household checks supplement account identity; these do not prove a physical address.
 - Reward holds have no automatic timeout. An uncertain payment may have captured; clearing its hold without reconciling the payment can issue a second free pie. Staff recovery must establish the payment/order outcome before release.
 - Foreign keys link accounts, sessions, addresses, orders, and line items. Unique `(order_id, line_index)` entries and the history trigger prevent duplicate line history on status changes. `enrollment_payload` lets sign-in finish an interrupted membership enrollment without requiring a second signup.
-- Account deletion removes sign-in access, saved addresses, pending links/enrollment, and upsell impressions, and detaches account history. Order and consent audit records are retained; deletion is not a purge of all business records.
+- Account deletion removes sign-in access, saved addresses, pending links/enrollment, and upsell impressions, detaches account history, and switches off the linked member's SMS/email marketing consent (`account_delete` opt-out events; email suppressed). Order and consent audit records are retained; deletion is not a purge of all business records. Expired sign-in links and sessions are deleted a week after expiry by the daily digest cron.
 
 These controls were reviewed and tested. They are not a claim of independent security certification, complete fraud prevention, or guaranteed availability.
 

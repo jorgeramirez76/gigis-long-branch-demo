@@ -14,9 +14,11 @@ email and Twilio handles SMS. A static-only host cannot run checkout or rewards.
 Use `npm ci`, then `vercel dev` to exercise both the storefront and `/api/*`.
 `npm run dev` is a storefront-only Vite preview. Local configuration belongs in
 `.env.local`; credentials must remain untracked. Build-time `VITE_*` values are public.
-Production ordering uses `ORDER_PROVIDER=inhouse`, `VITE_ORDER_PROVIDER=inhouse`,
-`VITE_DELIVERY_ENABLED=true` and `VITE_CLOVER_APPLE_PAY=1`. A local environment without
-real provider keys cannot complete payments or send account verification links.
+In-house prepaid ordering and delivery are always on in code: the old `ORDER_PROVIDER`,
+`VITE_ORDER_PROVIDER` and `VITE_DELIVERY_ENABLED` switches are no longer read by anything,
+so changing them stops nothing (to stop online ordering, see "Stopping online ordering" in
+`OPERATIONS-2026-09-12.md`). Apple Pay needs `VITE_CLOVER_APPLE_PAY=1`. A local environment
+without real provider keys cannot complete payments or send account verification links.
 
 Before release run `npm test`, `npm run lint` (eslint plus both type checks) and
 `npm run build` (which also runs `scripts/verify-prices.py`, the CSP gate and the SEO gate).
@@ -44,8 +46,9 @@ approved wording. Keep each location's database, merchant, keys and images separ
 
 ## September 12 implementation status
 
-The worklist changes are being prepared locally; this document does not assert they
-have been deployed. Rewards use verified email as the username, a password, and separate
+These changes are live: production release `65df7d0` (September 12, 2026) applied the
+account migrations and enabled accounts (see `OPERATIONS-2026-09-12.md`). Rewards use
+verified email as the username, a password, and separate
 accounts per location. Existing VIP codes remain attached to the member; redemption is
 single-use and their 90-day expiry remains. Accounts show code status and order history,
 with available usual items suggested at checkout. Activate only after migrations and

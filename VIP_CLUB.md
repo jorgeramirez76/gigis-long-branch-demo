@@ -34,5 +34,5 @@ that window the dashboard refuses a blast with a text leg (email-only blasts are
 scheduled blast with a text leg waits unclaimed for the next tick inside the window. The dry run
 also warns when people on the text list already got 4+ texts in the last 30 days.
 
-Run the account/security, promo and checkout tests before enabling the release. Migrations
-must precede activation. Do not claim that this local implementation is already live.
+Accounts are live (production release `65df7d0`). For later changes, run the account/security,
+promo and checkout tests first; migrations must precede activation of anything that needs them.

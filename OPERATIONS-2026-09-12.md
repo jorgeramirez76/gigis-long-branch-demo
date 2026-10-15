@@ -8,8 +8,8 @@ Repository: `~/Projects/gigis-long-branch-demo`. Deployment runs through the exi
 
 | Variables | Purpose |
 | --- | --- |
-| `ORDER_PROVIDER`, `VITE_ORDER_PROVIDER` | `inhouse` for API and browser ordering |
-| `VITE_DELIVERY_ENABLED`, `VITE_CLOVER_APPLE_PAY` | Delivery enabled (`true`); Apple Pay (`1`) |
+| `VITE_CLOVER_APPLE_PAY` | Apple Pay (`1`) |
+| `ORDER_PROVIDER`, `VITE_ORDER_PROVIDER`, `VITE_DELIVERY_ENABLED` | **No longer read by any code.** In-house ordering and delivery are always on; leftover values are harmless but stop nothing — use `VITE_CARD_PAYMENTS_OFF` below |
 | `CLOVER_API_TOKEN`, `CLOVER_MERCHANT_ID`, `VITE_CLOVER_PAKMS_KEY` | Merchant credentials and public tokenization key |
 | `DATABASE_URL` | This location's Neon database |
 | `TURNSTILE_SECRET_KEY`, `VITE_TURNSTILE_SITE_KEY` | Server bot verification and browser widget |

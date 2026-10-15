@@ -67,7 +67,7 @@
     },
     {
       "source": "/vip-club/",
-      "destination": "/account/?join=1&source=menu-qr",
+      "destination": "/account/?join=1",
       "permanent": false
     },
     {
@@ -92,12 +92,12 @@
     },
     {
       "source": "/vip-club",
-      "destination": "/account/?join=1&source=menu-qr",
+      "destination": "/account/?join=1",
       "permanent": false
     },
     {
       "source": "/vip-club/index.html",
-      "destination": "/account/?join=1&source=menu-qr",
+      "destination": "/account/?join=1",
       "permanent": false
     }
   ],

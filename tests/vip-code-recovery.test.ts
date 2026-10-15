@@ -82,7 +82,7 @@ describe("VIP code recovery safety pins", () => {
   });
 
   it("minting is reserved for web-flow members — imports never get a pie they weren't owed", () => {
-    assert.match(src, /const WEB_SOURCES = \["website", "checkout", "receipt", "menu-qr", "winback"\]/);
+    assert.match(src, /const WEB_SOURCES = \["website", "checkout", "receipt", "menu-qr", "winback", "rewards-account", "footer", "menu-page", "hero", "vip-section", "order-confirm"\]/);
     assert.match(src, /WEB_SOURCES\.includes\(member\.source \?\? ""\)/);
   });
 

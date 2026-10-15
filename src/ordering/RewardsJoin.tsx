@@ -16,6 +16,6 @@ export function RewardsJoin({name,phone,email,address,city="",vipJoin}: {name:st
   {sent
    ? <p className="my-3 text-sm">We just sent <strong>one email</strong> to {vipJoin?.email || email}. Tap the link in it once and it does everything: confirms your email, unlocks your free plain cheese pie code, and lets you choose a password so this order, your code and your favorites are saved. No second email to wait for.</p>
    : <p className="my-3 text-sm">Save this order to your account, find your welcome pie code, and reorder your favorites. One email, one link — you’ll choose your password from it.</p>}
-  <a className="btn-primary" href="/account/?join=1" onClick={()=>{try{sessionStorage.setItem("gigis_rewards_profile",JSON.stringify({name,phone,email,address,city,state:"NJ"}));}catch{/* The form still works without storage. */}}}>{sent ? "Set up my account" : "Create account / Sign in"}</a>
+  <a className="btn-primary" href="/account/?join=1&source=order-confirm" onClick={()=>{try{sessionStorage.setItem("gigis_rewards_profile",JSON.stringify({name,phone,email,address,city,state:"NJ"}));}catch{/* The form still works without storage. */}}}>{sent ? "Set up my account" : "Create account / Sign in"}</a>
  </div>;
 }

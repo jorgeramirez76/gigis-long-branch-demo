@@ -255,6 +255,6 @@ test("the receipt's join button carries no personal data and is credited to the 
   const fn = create.slice(start, create.indexOf("\n}\n", start) + 2);
   assert.match(fn, /return `\$\{base\}\/account\/\?join=1&source=receipt`;/);
   assert.doesNotMatch(fn, /phone|email|address|name/, "no customer field may reach the URL");
-  const handler = readFileSync(new URL("../api/lib/accountHandler.ts", import.meta.url), "utf8");
-  assert.match(handler, /const ACCOUNT_SIGNUP_SOURCES = new Set<unknown>\(\["menu-qr", "receipt"\]\);/);
+  const { ACCOUNT_SIGNUP_SOURCES } = await import("../api/lib/accountHandler.js");
+  assert.ok(ACCOUNT_SIGNUP_SOURCES.has("receipt"), "the account signup must keep the receipt label");
 });

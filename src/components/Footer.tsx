@@ -91,9 +91,10 @@ export function Footer() {
             <a href="/pizza-delivery-west-long-branch/" className="hover:text-[var(--color-copy)]">West Long Branch Delivery</a>
             <a href="/pizza-party-long-branch/" className="hover:text-[var(--color-copy)]">Kids’ Pizza Parties</a>
             <a href="/late-night-pizza-long-branch/" className="hover:text-[var(--color-copy)]">Late-Night Pizza</a>
-            {/* /vip-club/ had zero inbound links anywhere on the site, so Google never learned it
-                existed ("URL is unknown to Google"). One footer link makes it discoverable. */}
-            <a href="/vip-club/" className="hover:text-[var(--color-copy)]">VIP Club &mdash; free pie</a>
+            {/* Straight to the rewards signup, tagged so the admin's "Member sources" can tell the
+                footer apart from the printed menu's QR. (This used to point at /vip-club/, which now
+                only redirects here and is kept out of the sitemap.) */}
+            <a href="/account/?join=1&source=footer" className="hover:text-[var(--color-copy)]">VIP Club &mdash; free pie</a>
             <a href="/delivery/" className="hover:text-[var(--color-copy)]">Delivery Areas &amp; Fees</a>
             <a href="/gluten-free-pizza-long-branch/" className="hover:text-[var(--color-copy)]">Gluten-Free Pizza</a>
             <a href="/vegan-pizza-long-branch/" className="hover:text-[var(--color-copy)]">Vegan Pizza</a>

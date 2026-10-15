@@ -21,8 +21,11 @@ const GENERIC = { ok: true, message: "If this email can be used, a secure link w
 // membership / a signup in flight?" oracle for anyone past the rate limit.
 const ONE_LINK = { ok: true, message: "One link is all it takes. Check your inbox (and spam) for a link from Gigi's — if you just ordered and ticked the VIP box, it's the confirmation email already sitting there. Tap it once to confirm your email, get your free-pie code and choose your password." };
 /** Where a signup came from, as the admin's "Member sources" counts it. Anything else is
- *  "rewards-account". "receipt" is the order receipt's join button. */
-const ACCOUNT_SIGNUP_SOURCES = new Set<unknown>(["menu-qr", "receipt"]);
+ *  "rewards-account". Only the printed menu's QR (/vip, vercel.json) says "menu-qr"; every other
+ *  link names itself: the receipt email's join button, the site footer, the static /menu/ page,
+ *  the hero ticket, the homepage VIP section, the order-confirmation panel and the win-back email.
+ *  Keep api/vip-code-recovery.ts WEB_SOURCES in step. */
+export const ACCOUNT_SIGNUP_SOURCES = new Set<unknown>(["menu-qr", "receipt", "footer", "menu-page", "hero", "vip-section", "order-confirm", "winback"]);
 const text = (value: unknown, max = 160) => typeof value === "string" ? value.trim().slice(0,max) : "";
 const cleanEmail = (value: unknown) => text(value,254).toLowerCase();
 async function botCheck(token: unknown, ip: string): Promise<boolean> {

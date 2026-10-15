@@ -4,7 +4,7 @@
  *
  * Nine customers have ordered and none were ever asked to join the club (the
  * signup lived behind a hero button they scrolled past). This emails each of
- * them once, with the join form prefilled from their own order.
+ * them once, with a link to the rewards signup.
  *
  * EMAIL ONLY — never SMS. These people gave a phone number to receive an order,
  * not consent to be texted; a promotional text without express written consent
@@ -65,13 +65,10 @@ async function loadTemplate() {
 const unsubUrl = (email) =>
   `${BASE}/api/unsubscribe?e=${encodeURIComponent(email.toLowerCase())}&t=${createHmac("sha256", UNSUB_SECRET || "dry-run").update(email.toLowerCase()).digest("hex").slice(0, 32)}`;
 
-/** The join link, prefilled from the customer's own order. */
-function joinUrl(c) {
-  const q = new URLSearchParams({ name: c.name, src: "winback" });
-  if (c.phone) q.set("phone", c.phone);
-  if (c.email) q.set("email", c.email);
-  if (c.address) q.set("address", c.address);
-  return `${BASE}/vip-club/?${q.toString()}`;
+/** The join link. No personal data rides in the URL (it lands in logs and link scanners, and the
+ *  account page never read it); source=winback keeps these signups apart in "Member sources". */
+function joinUrl() {
+  return `${BASE}/account/?join=1&source=winback`;
 }
 
 const firstName = (n) => (n || "").trim().split(/\s+/)[0] || "there";
@@ -80,7 +77,7 @@ function bodyText(c) {
   return [
     `Hi ${firstName(c.name)} — thanks for ordering from Gigi's. We're glad the new website found its way to you.`,
     `We've started a VIP Club, and we'd like you in it: join and your next plain cheese pie is on us. Members also hear about the weekly specials first — a couple of messages a month, no more than that.`,
-    `Everything is already filled in from your order, so it's a tick and a tap. The free pie is one per household and yours is good for 90 days.`,
+    `Joining takes about a minute. The free pie is one per household and yours is good for 90 days.`,
     `— Tommy and the crew at Gigi's`,
   ].join("\n\n");
 }
@@ -146,9 +143,9 @@ async function main() {
       const preview = `${tmpdir()}/vip-invite-preview.html`;
       console.log(`\n--- subject ---\nYour next pie is on us, ${firstName(sample.name)}`);
       console.log(`\n--- body ---\n${bodyText(sample)}`);
-      console.log(`\n--- button ---\nClaim my free pie → ${joinUrl(sample)}`);
+      console.log(`\n--- button ---\nClaim my free pie → ${joinUrl()}`);
       console.log(`\n--- unsubscribe ---\n${UNSUB_SECRET ? unsubUrl(sample.email) : "(UNSUB_SECRET not loaded — link not shown)"}`);
-      writeFileSync(preview, emailHtml({ bodyText: bodyText(sample), unsubUrl: unsubUrl(sample.email), ctaText: "Claim my free pie", ctaUrl: joinUrl(sample) }));
+      writeFileSync(preview, emailHtml({ bodyText: bodyText(sample), unsubUrl: unsubUrl(sample.email), ctaText: "Claim my free pie", ctaUrl: joinUrl() }));
       console.log(`\nHTML preview: ${preview}`);
     }
     console.log(`\nDRY RUN — nothing sent. Re-run with --send to email these ${targets.length} people.`);
@@ -159,7 +156,7 @@ async function main() {
   let sent = 0;
   for (const c of targets) {
     const unsub = unsubUrl(c.email);
-    const html = emailHtml({ bodyText: bodyText(c), unsubUrl: unsub, ctaText: "Claim my free pie", ctaUrl: joinUrl(c) });
+    const html = emailHtml({ bodyText: bodyText(c), unsubUrl: unsub, ctaText: "Claim my free pie", ctaUrl: joinUrl() });
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
@@ -168,7 +165,7 @@ async function main() {
         to: [c.email],
         subject: `Your next pie is on us, ${firstName(c.name)}`,
         html,
-        text: `${bodyText(c)}\n\nJoin here: ${joinUrl(c)}\n\nUnsubscribe: ${unsub}`,
+        text: `${bodyText(c)}\n\nJoin here: ${joinUrl()}\n\nUnsubscribe: ${unsub}`,
         headers: { "List-Unsubscribe": `<${unsub}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
       }),
     });

@@ -45,10 +45,12 @@ import { verifyTurnstile } from "./lib/turnstile.js";
 const UNIFORM_MESSAGE =
   "If that email belongs to a VIP member, we've just sent the code details to it — check your inbox (and spam folder).";
 
-/** Sources whose members were created by a signup flow that promised a welcome pie —
- *  on Long Branch that is every allowlisted SIGNUP_SOURCES value (all 23 current
- *  members carry one of these). The gate exists for future hand-imported rows. */
-const WEB_SOURCES = ["website", "checkout", "receipt", "menu-qr", "winback"];
+/** Sources whose members were created by a signup flow that promised a welcome pie:
+ *  every allowlisted SIGNUP_SOURCES value (api/vip-signup.ts), every rewards-account link
+ *  source (ACCOUNT_SIGNUP_SOURCES in api/lib/accountHandler.ts) and that flow's untagged
+ *  default, "rewards-account". All of them go through completeSignup, which issues the pie.
+ *  The gate exists for hand-imported rows, which were never promised one. */
+const WEB_SOURCES = ["website", "checkout", "receipt", "menu-qr", "winback", "rewards-account", "footer", "menu-page", "hero", "vip-section", "order-confirm"];
 
 const HOW_TO =
   "Pickup orders only — redeem it in the promo code box at final checkout on gigislongbranch.com, or show it at the counter.";

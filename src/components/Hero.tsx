@@ -25,7 +25,7 @@ export function Hero() {
             <a href="#menu" className="btn-primary">Order pickup or delivery<ArrowIcon className="h-5 w-5" /></a>
             <a href={`tel:${LOCATION.phoneTel}`} className="food-call" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}><PhoneIcon className="h-4 w-4" />Call the shop</a>
           </div>
-          <a href="/account/?join=1" className="hero-vip-ticket">
+          <a href="/account/?join=1&source=hero" className="hero-vip-ticket">
             <span className="hero-vip-icon" aria-hidden="true">★</span>
             <span><small>A little welcome gift</small><strong>Your first VIP perk? A free pie.</strong><span>New members · Pickup only. Plus exclusive deals.</span></span>
             <ArrowIcon className="h-5 w-5 shrink-0" />

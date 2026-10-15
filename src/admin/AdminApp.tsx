@@ -211,6 +211,7 @@ function Overview({ stats, business, onRefresh }: { stats: Stats | null; busines
           <ChannelRow ok={stats.config.accountsEnabled} label="Customer accounts" />
           <ChannelRow ok={stats.config.twilioSignature === true} label="Inbound text signature check (STOP/START)" />
           <p>Member sources: {Object.entries(stats.membersBySource).map(([source,n])=>`${source}: ${n}`).join(" · ")}</p>
+          <p className="text-xs text-[var(--color-ink-mute)]">Until Oct 14, 2026, signups from the site footer, the /menu/ page and receipt emails were also counted as menu-qr, so older menu-qr numbers overstate the printed menu's QR code.</p>
         </div>
       </div>
     </div>

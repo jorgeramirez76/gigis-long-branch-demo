@@ -22,7 +22,7 @@ export type Member = {
 export type Stats = {
   rewards: {accounts:number;shown_7d:number;adds_7d:number};
   membersBySource: Record<string,number>;
-  config: {publicBaseUrl:string|null;staffAlertPhone:boolean;vipSignupAlertPhone:boolean;digest:boolean;accountsEnabled:boolean};
+  config: {publicBaseUrl:string|null;staffAlertPhone:boolean;vipSignupAlertPhone:boolean;digest:boolean;accountsEnabled:boolean;twilioSignature?:boolean};
   members: { total: number; sms_ok: number; sms_pending: number; email_ok: number; new_7d: number };
   sends: { sent: number; failed: number };
   broadcasts: { total: number };

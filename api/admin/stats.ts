@@ -65,6 +65,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         publicBaseUrl: process.env.PUBLIC_BASE_URL || null,
         staffAlertPhone: !!process.env.STAFF_ALERT_PHONE,
         vipSignupAlertPhone: !!process.env.VIP_SIGNUP_ALERT_PHONE,
+        // Whether inbound texts (STOP/START) must carry a valid Twilio signature. Off means the
+        // webhook rests on its URL token alone (anyone who has seen it can flip consent).
+        twilioSignature: !!process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_SIGNATURE_LOG_ONLY !== "1",
       },
     });
   } catch (err) {

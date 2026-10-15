@@ -18,7 +18,9 @@ Repository: `~/Projects/gigis-long-branch-demo`. Deployment runs through the exi
 | `STAFF_ALERT_PHONE`, `STAFF_ALERT_EMAIL` | Money/food-at-risk pages (paid order not fired, ticket not printed, uncertain card result, ordering down): sent by SMS **and** email every time |
 | `OPS_ALERT_EMAIL` | Optional. Where developer/owner alerts go (menu price drift, failed or blocked menu refresh, checkout failing before payment, card-decline spike). Defaults to `DIGEST_EMAIL`. These never text the store |
 | `VIP_SIGNUP_ALERT_PHONE` | Long Branch signup notices; Sea Bright currently uses `STAFF_ALERT_PHONE` |
-| `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | SMS sender and inbound signature verification |
+| `TWILIO_ACCOUNT_SID`, `TWILIO_FROM_NUMBER` | SMS sender |
+| `TWILIO_AUTH_TOKEN` | Optional. When set, `/api/sms-inbound` also requires Twilio's request signature (on top of the URL token). **Not set in production as of 2026-10-14**, so the signature check is OFF (admin Overview shows it). It is the account's master credential (HANDOFF.md chose a restricted API key instead), so decide deliberately — a Twilio subaccount for this number limits the blast radius. Roll out with `TWILIO_SIGNATURE_LOG_ONLY=1`, confirm the Twilio console webhook URL matches `https://gigislongbranch.com/api/sms-inbound?token=…` exactly (no mismatch lines in the logs for a day), then remove the flag and rotate `SMS_WEBHOOK_TOKEN` |
+| `TWILIO_SIGNATURE_LOG_ONLY` | `1` = log signature mismatches instead of refusing them (rollout aid only) |
 | `TWILIO_API_KEY_SID`, `TWILIO_API_KEY_SECRET` | Optional Twilio API-key authentication |
 | `ADMIN_TOKEN`, `CRON_SECRET`, `UNSUB_SECRET` | Protected admin, cron and unsubscribe authorization; check helper names before provisioning |
 | `ACCOUNTS_ENABLED` | `true` only after account migrations and release gates |

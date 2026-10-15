@@ -12,16 +12,44 @@ import { sql } from "./lib/db.js";
  * API key, not the auth token Twilio signs requests with.
  */
 
-const STOP_WORDS = new Set(["stop", "stopall", "unsubscribe", "cancel", "end", "quit"]);
+/** The six classic carrier opt-out keywords. Twilio blocks the number and sends its own
+ *  confirmation when one of these is the whole message, so our reply to them stays empty. */
+const CARRIER_STOP_WORDS = new Set(["stop", "stopall", "unsubscribe", "cancel", "end", "quit"]);
+/** Every single word that means "stop" here, the FCC's revocation words included. */
+const STOP_WORDS = new Set([...CARRIER_STOP_WORDS, "revoke", "optout"]);
 const START_WORDS = new Set(["start", "yes", "unstop"]);
+/** Plain-English revocations anywhere in the reply ("can you stop sending these"). */
+const STOP_PHRASE = /\b(opt ?out|stop (texting|txting|messaging|sending)|remove me|unsubscribe|(dont|do not) (text|txt|message|contact)|no more (texts?|messages))\b/;
+
+/** Lowercase letters and single spaces only — "STOP!!", "Stop." and "stop  texting" all normalize. */
+function normalizeSmsBody(input: string): string {
+  return input.trim().toLowerCase().replace(/[^a-z\s]/g, "").replace(/\s+/g, " ").trim();
+}
 
 export type SmsKeyword = "stop" | "start" | "help" | "other";
+/**
+ * STOP is checked FIRST, and matched beyond the exact keyword: a reply whose first or last word
+ * is a stop word ("please stop", "stop texting me", "YES STOP") or that says so in plain English
+ * ("opt out", "can you stop sending these") revokes consent. It used to take the whole message
+ * being one of six words, so "please stop" and "opt out" kept the person on the list, and "yes
+ * stop texting me" matched the YES opt-in first and re-subscribed them. Over-opting-out is
+ * harmless; texting someone who revoked consent is the TCPA exposure.
+ * "please stop by" stays "other" (neither end is a stop word). START keeps its deliberate
+ * first-word match (WORKLIST LB-2: "YES!" and "yes please" confirm the double opt-in), but only
+ * once no stop intent was found.
+ */
 export function classifySmsKeyword(input: string): SmsKeyword {
-  const body = input.trim().toLowerCase().replace(/[^a-z\s]/g, "").trim();
-  if (STOP_WORDS.has(body)) return "stop";
-  if (START_WORDS.has(body.split(/\s+/)[0])) return "start";
+  const body = normalizeSmsBody(input);
+  const words = body ? body.split(" ") : [];
+  if (words.length && (STOP_WORDS.has(words[0]) || STOP_WORDS.has(words[words.length - 1]) || STOP_PHRASE.test(body))) return "stop";
+  if (words.length && START_WORDS.has(words[0])) return "start";
   if (body === "help" || body === "info") return "help";
   return "other";
+}
+
+/** Whether Twilio itself recognized this as an opt-out (and so blocks and confirms on its own). */
+function carrierHandledStop(rawBody: string, optOutType: string): boolean {
+  return optOutType === "STOP" || CARRIER_STOP_WORDS.has(normalizeSmsBody(rawBody));
 }
 
 function xmlEscape(s: string): string {
@@ -59,7 +87,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // travels in URLs (Twilio console, request logs, any intermediary), so on its own anyone who
   // has seen it can flip a member's consent; the signature proves the POST came from Twilio.
   // Only enforced when TWILIO_AUTH_TOKEN is set — an API-key-only deployment cannot compute it.
+  // TWILIO_SIGNATURE_LOG_ONLY=1 is the safe way to switch it on: mismatches are logged, not
+  // refused, so you can confirm for a day that the Twilio console's webhook URL matches this
+  // host/path/query exactly (any difference fails every signature — including every STOP)
+  // before removing the flag to enforce.
   const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const signatureLogOnly = process.env.TWILIO_SIGNATURE_LOG_ONLY === "1";
   if (authToken) {
     const sig = req.headers["x-twilio-signature"];
     const url = `https://${req.headers.host}${req.url ?? ""}`;
@@ -69,9 +102,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const gotSig = typeof sig === "string" ? Buffer.from(sig) : null;
     const wantSig = Buffer.from(want);
     if (!gotSig || gotSig.length !== wantSig.length || !timingSafeEqual(gotSig, wantSig)) {
-      console.error("[sms-inbound] rejected: Twilio signature mismatch");
-      res.status(403).send("forbidden");
-      return;
+      if (signatureLogOnly) {
+        console.error("[sms-inbound] Twilio signature mismatch (TWILIO_SIGNATURE_LOG_ONLY — not refused)");
+      } else {
+        console.error("[sms-inbound] rejected: Twilio signature mismatch");
+        res.status(403).send("forbidden");
+        return;
+      }
     }
   }
 
@@ -82,7 +119,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   const body = typeof req.body?.Body === "string" ? req.body.Body.trim().toLowerCase() : "";
-  const keyword = classifySmsKeyword(body);
+  // With Twilio Advanced Opt-Out, Twilio tells us which keyword class it matched (including any
+  // custom keywords set in the console); honor it so our consent flags match what Twilio blocks.
+  const optOutType = typeof req.body?.OptOutType === "string" ? req.body.OptOutType.trim().toUpperCase() : "";
+  const keyword: SmsKeyword =
+    optOutType === "STOP" ? "stop" : optOutType === "START" ? "start" : optOutType === "HELP" ? "help" : classifySmsKeyword(body);
   res.setHeader("Content-Type", "text/xml");
 
   if (!from) {
@@ -103,9 +144,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           VALUES (${row.id}, 'sms', 'opt_out', 'sms_stop')
         `;
       }
-      // Twilio suppresses our reply to STOP and sends the carrier-mandated
-      // confirmation itself; returning empty TwiML is correct here.
-      res.status(200).send(twiml());
+      // An exact carrier keyword: Twilio suppresses our reply and sends the carrier-mandated
+      // confirmation itself, so empty TwiML is correct. A plain-English revocation ("please
+      // stop") is not one Twilio recognized, so nothing else confirms it — send the one
+      // permitted confirmation the SMS terms promise.
+      if (carrierHandledStop(body, optOutType)) {
+        res.status(200).send(twiml());
+        return;
+      }
+      res.status(200).send(
+        twiml("Gigi's VIP Club: you're unsubscribed and won't get more texts from us. Reply START to rejoin. Questions? Call (732) 377-2468."),
+      );
       return;
     }
 

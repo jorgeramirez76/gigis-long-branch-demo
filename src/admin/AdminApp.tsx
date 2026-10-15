@@ -209,6 +209,7 @@ function Overview({ stats, business, onRefresh }: { stats: Stats | null; busines
           <ChannelRow ok={stats.config.vipSignupAlertPhone} label="VIP signup staff alerts" />
           <ChannelRow ok={stats.config.digest} label="Daily owner digest" />
           <ChannelRow ok={stats.config.accountsEnabled} label="Customer accounts" />
+          <ChannelRow ok={stats.config.twilioSignature === true} label="Inbound text signature check (STOP/START)" />
           <p>Member sources: {Object.entries(stats.membersBySource).map(([source,n])=>`${source}: ${n}`).join(" · ")}</p>
         </div>
       </div>

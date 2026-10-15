@@ -14,12 +14,22 @@ import { MENU_PRICING_VERSION } from "./lib/cardPricing.mjs";
  *  only thing that changes the snapshot, and a deploy starts a fresh CDN cache. */
 export const MENU_REFRESH_UTC_HOURS = [8, 9] as const;
 /** Slack after each run before the cached copy expires, so a cron that starts a few minutes late
- *  is still read fresh. If it runs later than that, the next expiry (an hour on) picks it up. */
+ *  is still read fresh. */
 const MENU_REFRESH_SLACK_MIN = 10;
+/** When the cached copy expires (each at :10). Only ONE of the two runs is the real 4 AM refresh,
+ *  and in winter (EST) it is the later one, 09:00 UTC, so 09:10 would be the only expiry after it:
+ *  a run that started late or landed after 09:10 would leave yesterday's menu cached for about
+ *  23 hours. Two safety expiries an hour and two after the later run pick up a run up to ~2 hours
+ *  late, in either DST state, for at most two extra database reads per region a day. */
+const MENU_CACHE_EXPIRY_UTC_HOURS = [
+  ...MENU_REFRESH_UTC_HOURS,
+  MENU_REFRESH_UTC_HOURS[MENU_REFRESH_UTC_HOURS.length - 1] + 1,
+  MENU_REFRESH_UTC_HOURS[MENU_REFRESH_UTC_HOURS.length - 1] + 2,
+];
 
 /**
- * How long the CDN may keep the menu: until shortly after the next refresh-menu run, at most a
- * day. With a fixed 10-minute lifetime every region re-read Neon about every 10 minutes of
+ * How long the CDN may keep the menu: until shortly after the next refresh-menu run (or safety
+ * expiry, above), at most a day. With a fixed 10-minute lifetime every region re-read Neon about every 10 minutes of
  * traffic, waking the database between the cron ticks it is meant to sleep through (b8bcc15).
  * Checkout still re-checks every item against the live snapshot (liveItemNames), so a cached
  * menu can never sell something the POS removed.
@@ -28,7 +38,7 @@ export function menuCdnMaxAgeSec(now: Date): number {
   const t = now.getTime();
   const midnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   const next = Math.min(
-    ...[0, 1].flatMap((day) => MENU_REFRESH_UTC_HOURS.map((h) => midnight + day * 86_400_000 + (h * 60 + MENU_REFRESH_SLACK_MIN) * 60_000)).filter((at) => at > t),
+    ...[0, 1].flatMap((day) => MENU_CACHE_EXPIRY_UTC_HOURS.map((h) => midnight + day * 86_400_000 + (h * 60 + MENU_REFRESH_SLACK_MIN) * 60_000)).filter((at) => at > t),
   );
   return Math.max(60, Math.min(86_400, Math.ceil((next - t) / 1000)));
 }

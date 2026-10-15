@@ -73,8 +73,19 @@ describe("/api/menu CDN lifetime", () => {
     assert.equal(at("2026-10-14T07:00:00Z"), 70 * 60, "before the 08:00 UTC run: until 08:10");
     assert.equal(at("2026-10-14T08:05:00Z"), 5 * 60);
     assert.equal(at("2026-10-14T08:30:00Z"), 40 * 60, "between the two runs: until 09:10");
+    assert.equal(at("2026-10-14T09:30:00Z"), 40 * 60, "safety expiry at 10:10");
+    assert.equal(at("2026-10-14T10:30:00Z"), 40 * 60, "and at 11:10");
     assert.equal(at("2026-10-14T12:00:00Z"), (20 * 60 + 10) * 60, "after both: until 08:10 tomorrow");
     assert.equal(at("2026-10-14T23:59:00Z"), (8 * 60 + 11) * 60);
+  });
+
+  it("in winter a late 4 AM run (09:00 UTC) is picked up within the hour, not the next day", () => {
+    // EST from Nov 1: 4 AM Eastern is 09:00 UTC, the later of the two runs.
+    assert.equal(at("2026-12-01T09:05:00Z"), 5 * 60, "a punctual run is read at 09:10");
+    for (const late of ["09:10", "09:40", "10:15", "10:55"]) {
+      const s = at(`2026-12-01T${late}:00Z`);
+      assert.ok(s <= 60 * 60, `cached at ${late} UTC (a run that landed late) expires within the hour: ${s}s`);
+    }
   });
 
   it("never drops below a minute or exceeds a day", () => {

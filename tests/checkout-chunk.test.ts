@@ -77,4 +77,17 @@ describe("the checkout chunk", () => {
     assert.match(provider, /Checkout didn't load/);
     assert.match(provider, /checkoutModule = null;/);
   });
+
+  it("the checkout dialogs get a stable onClose, and the loading dialog keeps focus without stealing it", () => {
+    const provider = readFileSync(new URL("../src/ordering/OrderingProvider.tsx", import.meta.url), "utf8");
+    // An inline arrow is a new function on every render, which re-ran the dialogs' focus effects
+    // (Shell's and CheckoutLoading's) and pulled focus back to their first control.
+    assert.match(provider, /const closeCheckout = useCallback\(\(\) => setCheckoutOpen\(false\), \[\]\);/);
+    assert.match(provider, /<CheckoutView onClose=\{closeCheckout\} \/>/);
+    assert.match(provider, /<CheckoutLoading failed=\{checkoutLoadFailed\} onClose=\{closeCheckout\} \/>/);
+    assert.doesNotMatch(provider, /onClose=\{\(\) => setCheckoutOpen\(false\)\}/);
+    const loading = provider.slice(provider.indexOf("function CheckoutLoading"));
+    assert.match(loading, /useEffect\(\(\) => \{ actionRef\.current\?\.focus\(\); \}, \[failed\]\);/, "focus moves only on open and on failure");
+    assert.match(loading, /e\.key !== "Tab"/, "Tab is kept inside the dialog");
+  });
 });

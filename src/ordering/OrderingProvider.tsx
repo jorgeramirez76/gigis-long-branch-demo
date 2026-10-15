@@ -1,7 +1,7 @@
 import { savedAttemptUncertain } from "./checkoutAttempt";
 import { parsePrice } from "../lib/menuPricing";
 const fixedPriceCents = (price?: string) => /^\s*\$\s*[\d,]+(?:\.\d{1,2})?\s*$/.test(price ?? "") ? parsePrice(price) : 0;
-import { createContext, useContext, useState, useRef, useEffect, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useState, useRef, useEffect, type ReactNode } from "react";
 import type { MenuItem } from "../data/menu";
 import { getMenuSnapshot } from "../hooks/useMenu";
 import { CartProvider, useCart, type CartLine } from "./CartContext";
@@ -61,6 +61,9 @@ function OrderingInner({ children }: { children: ReactNode }) {
   const [cartNotice, setCartNotice] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const restoreEditFocus = useRef<string | null>(null);
+  // Stable, so a re-render here (a cart change, say) does not re-run the open dialog's
+  // focus-and-keyboard setup and pull focus back to its first control.
+  const closeCheckout = useCallback(() => setCheckoutOpen(false), []);
 
   useEffect(() => {
     if (!cart.isOpen || active || !restoreEditFocus.current) return;
@@ -154,8 +157,8 @@ function OrderingInner({ children }: { children: ReactNode }) {
         }}
       />
       {checkoutOpen && (CheckoutView
-        ? <CheckoutView onClose={() => setCheckoutOpen(false)} />
-        : <CheckoutLoading failed={checkoutLoadFailed} onClose={() => setCheckoutOpen(false)} />)}
+        ? <CheckoutView onClose={closeCheckout} />
+        : <CheckoutLoading failed={checkoutLoadFailed} onClose={closeCheckout} />)}
     </UICtx.Provider>
   );
 }
@@ -163,16 +166,38 @@ function OrderingInner({ children }: { children: ReactNode }) {
 /** Shown only while the checkout chunk is still downloading (it normally arrived long before the
  *  tap), or when it could not be downloaded. The cart lives in localStorage, so a reload is safe. */
 function CheckoutLoading({ failed, onClose }: { failed: boolean; onClose: () => void }) {
+  const panelRef = useRef<HTMLDivElement>(null);
   const actionRef = useRef<HTMLButtonElement>(null);
+  const onCloseRef = useRef(onClose);
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
+  // Focus the main action when the dialog opens and when it switches to the failure message —
+  // only then, so a re-render never yanks focus back while the customer is on another control.
+  useEffect(() => { actionRef.current?.focus(); }, [failed]);
+  // Escape closes; Tab and Shift+Tab stay inside the dialog (aria-modal alone does not).
   useEffect(() => {
-    actionRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onCloseRef.current();
+        return;
+      }
+      const panel = panelRef.current;
+      if (e.key !== "Tab" || !panel) return;
+      const items = Array.from(panel.querySelectorAll<HTMLElement>("a[href],button:not([disabled])"));
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const inside = panel.contains(document.activeElement);
+      if (!inside || (e.shiftKey && document.activeElement === first) || (!e.shiftKey && document.activeElement === last)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      }
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [failed, onClose]);
+  }, []);
   return (
     <div className="fixed inset-0 z-[70] flex items-end justify-center bg-black/55 backdrop-blur-sm sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label="Checkout">
-      <div className="w-full max-w-lg rounded-t-3xl bg-[var(--color-page)] p-6 text-center shadow-[var(--shadow-lg)] sm:rounded-3xl">
+      <div ref={panelRef} className="w-full max-w-lg rounded-t-3xl bg-[var(--color-page)] p-6 text-center shadow-[var(--shadow-lg)] sm:rounded-3xl">
         {failed ? (
           <>
             <p role="alert" className="text-base text-[var(--color-copy)]">

@@ -1,4 +1,9 @@
-name: Rendered SEO checks
+name: CI (tests, lint, build, rendered SEO)
+# Pushing main deploys production through Vercel, so this is the only automated check that
+# runs before customers see a change. It runs the checkout handler tests (mocked Clover and
+# Neon — no network or secrets needed), lint and type checks, then the full production build
+# with its price, CSP and SEO gates. To make it BLOCK a bad deploy, mark this check required
+# (branch protection on main, or Vercel Deployment Checks) — see README "Development and release".
 on:
   pull_request:
   push:
@@ -19,4 +24,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: npm run lint
       - run: npm run build

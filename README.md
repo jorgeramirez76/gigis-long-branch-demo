@@ -18,9 +18,12 @@ Production ordering uses `ORDER_PROVIDER=inhouse`, `VITE_ORDER_PROVIDER=inhouse`
 `VITE_DELIVERY_ENABLED=true` and `VITE_CLOVER_APPLE_PAY=1`. A local environment without
 real provider keys cannot complete payments or send account verification links.
 
-Before release run `npm test`, `npm run lint`, `npx tsc -p tsconfig.json --noEmit`,
-`npx tsc -p tsconfig.api.json --noEmit`, and `npm run build`.
-Also run `python3 scripts/verify-prices.py` for the Long Branch catalog. Pushing `main` deploys production through the existing Vercel integration.
+Before release run `npm test`, `npm run lint` (eslint plus both type checks) and
+`npm run build` (which also runs `scripts/verify-prices.py`, the CSP gate and the SEO gate).
+Pushing `main` deploys production through the existing Vercel integration. GitHub Actions
+(`.github/workflows/seo-check.yml`) runs the same three commands on every push and pull
+request, but it only *blocks* a bad deploy once it is a required check: enable branch
+protection on `main` with that check required, or Vercel Deployment Checks for it.
 Never place a real charge or send customer/staff messages merely to test a release.
 
 ## Source map

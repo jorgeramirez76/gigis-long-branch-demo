@@ -22,8 +22,9 @@ curated add-on suggestions. Prices are always recalculated from the current cata
 
 SMS requested is not SMS confirmed: a YES reply is required before marketing SMS.
 Unsubscribe works without a login. Password-reset emails are transactional. Account
-deletion anonymizes login data and order association while retaining required consent
-and welcome-offer records. Never put raw passwords, tokens or full customer phones in logs.
+deletion anonymizes login data and order association, switches off the linked member's SMS
+and email consent (recorded as `account_delete` opt-outs, email suppressed), and retains required
+consent and welcome-offer records. Expired sign-in links and sessions are pruned daily. Never put raw passwords, tokens or full customer phones in logs.
 
 Shared broadcast codes are register-only unless an explicit discount implementation is
 added. They do not use the `PIE-` checkout redemption path.

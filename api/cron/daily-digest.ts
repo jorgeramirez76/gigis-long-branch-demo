@@ -5,6 +5,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "../lib/db.js";
 import { getOrderSummary, listOpenWebsiteOrders } from "../lib/clover.js";
 import { getCaptureByCloverId, listWorklistCandidates } from "../lib/orderStore.js";
+import { pruneExpiredAccountRows } from "../lib/accountStore.js";
 import { sendEmail } from "../lib/notify.js";
 import { CLOSED_DATES } from "../../src/lib/openStatus.js";
 
@@ -80,6 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return void res.status(200).json({ok:true,skipped:"outside_7am_eastern"});
   }
   await pruneMetrics("gigis_long_branch").catch(() => console.warn("[metrics] retention cleanup unavailable"));
+  await pruneExpiredAccountRows().catch(() => console.warn("[accounts] expired link/session cleanup unavailable"));
   if (!DIGEST_TO || !(process.env.DIGEST_FROM || process.env.EMAIL_FROM)) return void res.status(503).json({ error: "digest_not_configured" });
 
   const sections: Section[] = [];

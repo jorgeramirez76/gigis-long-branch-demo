@@ -109,3 +109,27 @@ test('deletion loses safely to a concurrent credential change',async()=>{
   assert.match(mutation.query,/password_hash=\$\d+ RETURNING id/);
   assert.match(mutation.query,/EXISTS\(SELECT 1 FROM changed\)/);
 });
+test('deleting an account also turns off the linked member\'s marketing, with an audit trail',async()=>{
+  const password='Long enough deletion password';
+  const password_hash=await hashPassword(password);
+  const queries=storageRows(q=>q.includes('FROM account_sessions s JOIN accounts')?[{...signedIn,password_hash}]:q.includes("email='deleted-'")?[{id:7}]:[]);
+  const r=response();await accountHandler('delete')(sessionRequest({password}) as never,r.res as never);
+  assert.equal(r.state.status,200);
+  const mutation=queries.find(q=>q.query.includes("email='deleted-'"))!;
+  // One statement: the member's consent goes off only if the account delete itself happened.
+  assert.match(mutation.query,/UPDATE vip_members m SET sms_consent=false,sms_requested=false,email_consent=false FROM member p/);
+  assert.match(mutation.query,/AND EXISTS\(SELECT 1 FROM changed\)\),\s*quiet AS/);
+  assert.match(mutation.query,/'sms','opt_out','account_delete'/);
+  assert.match(mutation.query,/'email','opt_out','account_delete'/);
+  assert.match(mutation.query,/INSERT INTO email_suppressions\(email,source\)/);
+  assert.ok(mutation.params.map(String).includes('9'),'scoped to the account\'s own member row');
+});
+test('expired sign-in links and sessions are pruned by a daily job',async()=>{
+  const queries=storageRows(()=>[]);
+  const {pruneExpiredAccountRows}=await import('../api/lib/accountStore.js');
+  await pruneExpiredAccountRows();
+  assert.ok(queries.some(q=>/DELETE FROM account_tokens WHERE expires_at < now\(\) - interval '7 days'/.test(q.query)));
+  assert.ok(queries.some(q=>/DELETE FROM account_sessions WHERE expires_at < now\(\) - interval '7 days'/.test(q.query)));
+  const {readFileSync}=await import('node:fs');
+  assert.match(readFileSync(new URL('../api/cron/daily-digest.ts',import.meta.url),'utf8'),/await pruneExpiredAccountRows\(\)/);
+});

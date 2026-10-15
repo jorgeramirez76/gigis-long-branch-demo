@@ -214,7 +214,16 @@ export function accountHandler(action: string) {
       if (action === "delete") {
         if (!(await verifyPassword(body.password,account.password_hash))) return void res.status(401).json({error:"invalid_credentials"});
         // Financial and consent records retain their own required audit history.
+        // Deleting the account also ends marketing to the person: the linked VIP member row kept
+        // active SMS/email consent, so someone who deleted their account kept getting blasts. Its
+        // consent is switched off with an opt_out consent_event per channel (the history the
+        // privacy policy says is kept) and the email is suppressed, all in the same statement.
         const deleted = await sql`WITH changed AS (UPDATE accounts SET email='deleted-'||id||'@invalid.local',name='Deleted account',phone=NULL,password_hash='',member_id=NULL,enrollment_payload=NULL,deleted_at=now() WHERE id=${account.id} AND business=${ACCOUNT_BUSINESS} AND deleted_at IS NULL AND password_hash=${account.password_hash} RETURNING id),
+          member AS (SELECT id,email,sms_consent,sms_requested,email_consent FROM vip_members WHERE id=${account.member_id} AND business=${ACCOUNT_BUSINESS} AND EXISTS(SELECT 1 FROM changed)),
+          quiet AS (UPDATE vip_members m SET sms_consent=false,sms_requested=false,email_consent=false FROM member p WHERE m.id=p.id),
+          sms_out AS (INSERT INTO consent_events(member_id,channel,action,source) SELECT id,'sms','opt_out','account_delete' FROM member WHERE sms_consent OR sms_requested),
+          email_out AS (INSERT INTO consent_events(member_id,channel,action,source) SELECT id,'email','opt_out','account_delete' FROM member WHERE email_consent),
+          suppressed AS (INSERT INTO email_suppressions(email,source) SELECT DISTINCT LOWER(e),'account_delete' FROM (SELECT email AS e FROM member WHERE email IS NOT NULL UNION SELECT ${account.email}::text WHERE EXISTS(SELECT 1 FROM changed)) x ON CONFLICT(email) DO NOTHING),
           sessions AS (DELETE FROM account_sessions WHERE account_id IN (SELECT id FROM changed)),
           addresses AS (DELETE FROM saved_addresses WHERE account_id IN (SELECT id FROM changed)),
           impressions AS (DELETE FROM upsell_impressions WHERE account_id IN (SELECT id FROM changed)),

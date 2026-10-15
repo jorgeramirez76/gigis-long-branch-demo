@@ -55,3 +55,13 @@ export async function finishEnrollment(accountId: number) {
   await claimGuestOrders(accountId,String(row.email));
   await sql`UPDATE accounts SET enrollment_payload=NULL WHERE id=${accountId} AND business=${ACCOUNT_BUSINESS}`;
 }
+
+/**
+ * Delete sign-in links and sessions a week after they expire. Nothing else ever removed them,
+ * and an account_tokens row carries the signup's personal details (name, phone, address) in its
+ * payload. Runs from the daily digest cron; a week's grace keeps recent rows for support.
+ */
+export async function pruneExpiredAccountRows(): Promise<void> {
+  await sql`DELETE FROM account_tokens WHERE expires_at < now() - interval '7 days'`;
+  await sql`DELETE FROM account_sessions WHERE expires_at < now() - interval '7 days'`;
+}

@@ -1032,72 +1032,9 @@ export function Checkout({ onClose }: { onClose: () => void }) {
           </div>
         </div>
 
-        {/* Payment — CARD ONLY. Pay-at-pickup and cash were removed on 2026-08-11 after an order
-            was placed and never collected: the kitchen made food nobody paid for. Every website
-            order is now charged before it reaches the kitchen, and api/order/create.ts refuses any
-            other payment method, so this is not merely a hidden option. */}
-        <div>
-          <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Payment</p>
-          {freeOrder && (
-            <div className="mt-1 rounded-2xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy)]">
-              <span className="font-bold">Nothing to pay — this one's on us.</span> Your code covers the whole order, so no card is needed. Just place it and come pick it up.
-            </div>
-          )}
-          {/* The card fields stay mounted (hidden) on a free order: Clover's form is a one-time
-              mount, and the customer may still add an item and turn this back into a card order. */}
-          {CARD_ENABLED ? (
-            <div className={`mt-1 space-y-2.5 rounded-2xl bg-[var(--color-panel)] p-4 shadow-[var(--shadow-sm)]${freeOrder ? " hidden" : ""}`}>
-              {applePayOk && (
-                <div className="space-y-2">
-                  {/* The button is a Clover-hosted iframe, so it can't be
-                      disabled — block taps until the order is actually placeable. */}
-                  <div className={applePayBlocked ? "pointer-events-none opacity-40" : ""}>
-                    <div ref={applePayMountRef} className="h-[46px] w-full overflow-hidden rounded-xl" />
-                  </div>
-                  <p className="text-center text-[11px] text-[var(--color-copy-muted)]">
-                    {applePayBlocked
-                      ? "Fill in your details above to use Apple Pay."
-                      : "One tap — no card typing."}
-                  </p>
-                  <div className="flex items-center gap-3 pt-1">
-                    <span className="h-px flex-1 bg-[var(--color-chrome)]/10" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-copy-muted)]">
-                      or pay by card
-                    </span>
-                    <span className="h-px flex-1 bg-[var(--color-chrome)]/10" />
-                  </div>
-                </div>
-              )}
-              <CardField label="Card number" innerRef={numRef} />
-              <div className="grid grid-cols-2 gap-2.5">
-                <CardField label="Expiry" innerRef={dateRef} />
-                <CardField label="CVV" innerRef={cvvRef} />
-              </div>
-              <CardField label="ZIP" innerRef={postalRef} />
-              {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-copy-muted)]">Loading secure card fields…</p>}
-              {cardInitFailed && (
-                <div role="alert" className="rounded-xl bg-[var(--color-brand-red)]/8 px-3 py-2.5 text-xs text-[var(--color-copy)]">
-                  Card payment isn't loading right now. Please reload the page, or call{" "}
-                  <a className="font-bold text-[var(--color-action-text)] underline" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
-                  and we'll take your order over the phone.
-                </div>
-              )}
-              <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-copy-muted)]">
-                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                Encrypted &amp; processed securely. We never see your card number.
-              </p>
-            </div>
-          ) : (
-            /* Card payments not configured — with no pay-later path left, the phone is the only
-               honest thing to offer. */
-            <div role="alert" className="rounded-2xl bg-[var(--color-panel)] p-4 text-sm text-[var(--color-copy-soft)] shadow-[var(--shadow-sm)]">
-              Online payment isn't available right now, and website orders are prepaid. Please call{" "}
-              <a className="font-bold text-[var(--color-action-text)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
-              and we'll take your order.
-            </div>
-          )}
-        </div>
-
+        {/* The order note and promo code sit ABOVE payment on purpose: the Apple Pay button
+            charges the moment it is tapped, so anything placed below it could only be filled in
+            after a customer had already paid full price without their code. */}
         {/* Order note */}
         <div>
           <label htmlFor="order-note" className="mb-1 block text-xs font-bold uppercase tracking-wider text-[var(--color-copy-muted)]">
@@ -1202,6 +1139,72 @@ export function Checkout({ onClose }: { onClose: () => void }) {
                 Got a promo code or a VIP welcome code? Redeem it here — pickup orders only.
               </p>
             </>
+          )}
+        </div>
+
+        {/* Payment — CARD ONLY. Pay-at-pickup and cash were removed on 2026-08-11 after an order
+            was placed and never collected: the kitchen made food nobody paid for. Every website
+            order is now charged before it reaches the kitchen, and api/order/create.ts refuses any
+            other payment method, so this is not merely a hidden option. */}
+        <div>
+          <p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Payment</p>
+          {freeOrder && (
+            <div className="mt-1 rounded-2xl border border-[var(--color-gold,#c89441)]/50 bg-[var(--color-page)] px-4 py-3 text-sm text-[var(--color-copy)]">
+              <span className="font-bold">Nothing to pay — this one's on us.</span> Your code covers the whole order, so no card is needed. Just place it and come pick it up.
+            </div>
+          )}
+          {/* The card fields stay mounted (hidden) on a free order: Clover's form is a one-time
+              mount, and the customer may still add an item and turn this back into a card order. */}
+          {CARD_ENABLED ? (
+            <div className={`mt-1 space-y-2.5 rounded-2xl bg-[var(--color-panel)] p-4 shadow-[var(--shadow-sm)]${freeOrder ? " hidden" : ""}`}>
+              {applePayOk && (
+                <div className="space-y-2">
+                  {/* The button is a Clover-hosted iframe, so it can't be
+                      disabled — block taps until the order is actually placeable. */}
+                  <div className={applePayBlocked ? "pointer-events-none opacity-40" : ""}>
+                    <div ref={applePayMountRef} className="h-[46px] w-full overflow-hidden rounded-xl" />
+                  </div>
+                  <p className="text-center text-[11px] text-[var(--color-copy-muted)]">
+                    {applePayBlocked
+                      ? "Fill in your details above to use Apple Pay."
+                      : "One tap — no card typing."}
+                  </p>
+                  <div className="flex items-center gap-3 pt-1">
+                    <span className="h-px flex-1 bg-[var(--color-chrome)]/10" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-copy-muted)]">
+                      or pay by card
+                    </span>
+                    <span className="h-px flex-1 bg-[var(--color-chrome)]/10" />
+                  </div>
+                </div>
+              )}
+              <CardField label="Card number" innerRef={numRef} />
+              <div className="grid grid-cols-2 gap-2.5">
+                <CardField label="Expiry" innerRef={dateRef} />
+                <CardField label="CVV" innerRef={cvvRef} />
+              </div>
+              <CardField label="ZIP" innerRef={postalRef} />
+              {!cardReady && !cardInitFailed && <p className="text-xs text-[var(--color-copy-muted)]">Loading secure card fields…</p>}
+              {cardInitFailed && (
+                <div role="alert" className="rounded-xl bg-[var(--color-brand-red)]/8 px-3 py-2.5 text-xs text-[var(--color-copy)]">
+                  Card payment isn't loading right now. Please reload the page, or call{" "}
+                  <a className="font-bold text-[var(--color-action-text)] underline" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
+                  and we'll take your order over the phone.
+                </div>
+              )}
+              <p className="flex items-center gap-1.5 text-[11px] text-[var(--color-copy-muted)]">
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                Encrypted &amp; processed securely. We never see your card number.
+              </p>
+            </div>
+          ) : (
+            /* Card payments not configured — with no pay-later path left, the phone is the only
+               honest thing to offer. */
+            <div role="alert" className="rounded-2xl bg-[var(--color-panel)] p-4 text-sm text-[var(--color-copy-soft)] shadow-[var(--shadow-sm)]">
+              Online payment isn't available right now, and website orders are prepaid. Please call{" "}
+              <a className="font-bold text-[var(--color-action-text)]" href={`tel:${LOCATION.phoneTel}`}>{LOCATION.phone}</a>{" "}
+              and we'll take your order.
+            </div>
           )}
         </div>
 

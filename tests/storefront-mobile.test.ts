@@ -56,3 +56,16 @@ describe("phones: no zoom-on-tap, real labels, light hero", () => {
       "the short hero strip must still be the max-width:767px rule");
   });
 });
+
+describe("checkout layout", () => {
+  it("the promo code and order note come before Apple Pay, which charges on the tap", () => {
+    const src = read("src/ordering/Checkout.tsx");
+    const promo = src.indexOf('<p className="mb-2 text-sm font-bold text-[var(--color-copy)]">Promo code</p>');
+    const note = src.indexOf('htmlFor="order-note"');
+    const applePay = src.indexOf("ref={applePayMountRef}");
+    const cardFields = src.indexOf('<CardField label="Card number"');
+    assert.ok(promo > 0 && note > 0 && applePay > 0 && cardFields > 0);
+    assert.ok(promo < applePay && promo < cardFields, "promo box must render above the payment buttons");
+    assert.ok(note < applePay && note < cardFields, "order note must render above the payment buttons");
+  });
+});

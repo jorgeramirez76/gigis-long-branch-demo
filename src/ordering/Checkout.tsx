@@ -554,7 +554,18 @@ export function Checkout({ onClose }: { onClose: () => void }) {
       // The server has answered, so it redeemed the Turnstile token — from here a retry needs
       // a fresh one. Before this point the token is untouched.
       onDispatched?.();
-      const data = await res.json();
+      // Only the handler's own verdicts are JSON. A body that isn't — a platform crash page, an
+      // edge 502 — came from something between us and the handler, possibly AFTER the card was
+      // captured, so it says nothing about whether the order landed: treat it as a response
+      // lost on the way back. Rethrown as the TypeError a dropped connection gives, so the catch
+      // below freezes the priced inputs and advises the same-key replay (which the server answers
+      // from its ledger, or with a readable "call the store" while the ledger is down). Left as a
+      // bare SyntaxError it was shown verbatim, unfrozen — an edit then minted a fresh key and the
+      // next tap could charge a second order. A stall while reading the body stays a stall.
+      // (Ported from Sea Bright's Checkout.tsx.)
+      const data = await res.json().catch((e: unknown) => {
+        throw e instanceof Error && e.name === "AbortError" ? e : new TypeError("unreadable order response");
+      });
       if (!res.ok) {
         // Only ever SET the freeze here — never clear it on a generic error. Pre-replay
         // failures (store closed, delivery closed, the 503 when the order store is down —

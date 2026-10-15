@@ -28,7 +28,7 @@ import { rateLimitAll } from "../lib/rateLimit.js";
 import { peekOrder, releaseOrder, reserveOrder, settleQueuedPrint, updateOrder, updateOrderStrict } from "../lib/orderStore.js";
 import { applyFreePie, claimPromoCode, isFreePickupOrder, normalizePromoCode, redeemPromoCode, releasePromoCode } from "../lib/promo.js";
 import { applyBogoPizza, applyPizzaPercent, normalizeCampaignCode, recordCampaignRedemption, resolvePromo } from "../lib/campaignPromo.js";
-import { alertStaffOnce, alertStaff, sendReceiptEmail } from "../lib/notify.js";
+import { alertStaffOnce, alertStaff, sendReceiptEmail, STAFF_PAGE_COOLDOWN_SEC } from "../lib/notify.js";
 import { receiptHtml } from "../lib/emailTemplate.js";
 import { verifyTurnstile } from "../lib/turnstile.js";
 import { lookupVipCustomer } from "../lib/vipLookup.js";
@@ -199,6 +199,34 @@ async function startVipEnrollment(join: ValidatedSignup | null): Promise<VipJoin
   }
 }
 
+/** What every customer is told while the order ledger is unreachable. Ordering without the
+ *  double-charge ledger is how the Aug-15 incident happened, so the answer is always "no". */
+const LEDGER_DOWN_ANSWER = {
+  error: "ordering_temporarily_unavailable",
+  message: "Online ordering is temporarily unavailable. Please call the store at (732) 377-2468 to order.",
+} as const;
+
+/**
+ * Page staff that the order database is unreachable and every web order is being refused.
+ *
+ * alertStaffOnce's cooldown lives in the same database, and claimWindow deliberately fails OPEN
+ * for staff pages when that database is down — exactly when this page fires. Without a second
+ * guard every refused checkout attempt would text staff. This per-instance memory caps it at one
+ * page per warm instance per cooldown window (a cold instance may page once more: duplicate over
+ * lost, as everywhere else). A page that failed to send is forgotten so the next attempt retries.
+ */
+let ledgerDownPagedAt = 0;
+async function pageLedgerDown(): Promise<void> {
+  const now = Date.now();
+  if (ledgerDownPagedAt && now - ledgerDownPagedAt < STAFF_PAGE_COOLDOWN_SEC * 1000) return;
+  ledgerDownPagedAt = now;
+  const outcome = await alertStaffOnce(
+    "order-database-unavailable",
+    `ONLINE ORDERING IS DOWN — the order database is unreachable, every web order is being refused with "call the store". Check Neon (outage or monthly compute quota) and Vercel.`,
+  );
+  if (outcome === "failed") ledgerDownPagedAt = 0;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "method_not_allowed" });
@@ -213,7 +241,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // The replay ladder below is read-only for every status it answers.
   const closedReplayKey =
     typeof (req.body ?? {})?.idempotencyKey === "string" ? String((req.body as Record<string, unknown>).idempotencyKey) : "";
-  const closedReplay = /^[0-9a-f-]{36}$/i.test(closedReplayKey) ? await peekOrder(closedReplayKey) : null;
+  // The FIRST database read of every checkout, so it is where a Neon outage (or a suspended
+  // Free-plan compute) shows up. Unguarded, it crashed the function: Vercel answered with a
+  // plain-text error page the browser could not parse, and the "ONLINE ORDERING IS DOWN" page
+  // further down was never reached. Fail closed with a readable answer and page staff.
+  let closedReplay: Awaited<ReturnType<typeof peekOrder>> = null;
+  if (/^[0-9a-f-]{36}$/i.test(closedReplayKey)) {
+    try {
+      closedReplay = await peekOrder(closedReplayKey);
+    } catch (err) {
+      console.error("[order/create] order database unavailable before payment", err);
+      await pageLedgerDown();
+      res.status(503).json(LEDGER_DOWN_ANSWER);
+      return;
+    }
+  }
   // "retry" is the one kind that means "go ahead and place a NEW order" — that must not slip
   // past the closed gate. Every other kind is a read-only answer about money already in flight.
   const closedReplayAnswers = closedReplay != null && replayOrder(closedReplay).kind !== "retry";
@@ -336,7 +378,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     prior = await peekOrder(idempotencyKey);
   } catch (err) {
     console.error("[order/create] order store unavailable before payment", err);
-    res.status(503).json({ error: "ordering_temporarily_unavailable", message: "Online ordering is temporarily unavailable. Please call the store to order." });
+    await pageLedgerDown();
+    res.status(503).json(LEDGER_DOWN_ANSWER);
     return;
   }
   // 'charged' means the card was taken but the order had not fired yet — it is
@@ -630,8 +673,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Failing closed is deliberate — ordering without the double-charge ledger is how the
     // Aug-15 incident happened. But every customer is being turned away, so a human must
     // hear about it: alertStaff reaches Resend/Twilio, which don't share Neon's fate.
-    await alertStaffOnce("order-database-unavailable", `ONLINE ORDERING IS DOWN — the order database is unreachable, every web order is being refused with "call the store". Check Neon/Vercel.`);
-    res.status(503).json({ error: "ordering_temporarily_unavailable", message: "Online ordering is temporarily unavailable. Please call the store to order." });
+    await pageLedgerDown();
+    res.status(503).json(LEDGER_DOWN_ANSWER);
     return;
   }
 

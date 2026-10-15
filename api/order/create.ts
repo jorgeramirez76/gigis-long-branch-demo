@@ -1031,8 +1031,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         console.error("[order/create] order fired, then a follow-up step failed", err);
         await settlePromo();
         await alertStaffOnce(`order:${idempotencyKey}`, `WEB ORDER — CHECK THE TICKET — ${cust.name} ${maskPhone(cust.phone)} — Clover order ${paidOrderId} is ${moneyState} and in the POS, but its kitchen ticket was not confirmed. Make it from the POS if no ticket printed.`);
+        // Staff were just told the ticket was not confirmed, so the customer is told to call too,
+        // in the same words the normal path uses for an unconfirmed ticket.
         res.status(200).json(freeOrder
-          ? { ok: true, orderId: paidOrderId, paid: true, free: true, totals, vipEligible: false }
+          ? { ok: true, orderId: paidOrderId, paid: true, free: true, totals, vipEligible: false, routingIssue: true, message: "Your order is in, but please call the store to confirm the kitchen received it." }
           : { ok: true, orderId: paidOrderId, paid: true, chargeId, totals, vipEligible: false, routingIssue: true, message: "Your payment went through, but please call the store to confirm the kitchen received your order." });
         return;
       }

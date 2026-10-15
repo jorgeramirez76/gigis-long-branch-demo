@@ -168,3 +168,46 @@ describe('Clover calls carry timeouts', () => {
     assert.ok(clover.PAY_TIMEOUT_MS >= 20_000, '/pay keeps a generous ceiling — a timeout there means "uncertain"');
   });
 });
+
+describe('a free-pie order whose ticket was not confirmed', () => {
+  it('tells the customer to call, as the paid order does, when a step after the fire throws', async (t) => {
+    t.mock.timers.enable({ apis: ['setTimeout', 'Date'], now: new Date('2026-09-12T16:00:00Z') });
+    const sms: string[] = [];
+    globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+      const u = String(url); const method = init?.method ?? 'GET';
+      if (u.includes('api.twilio.com')) { sms.push(String(new URLSearchParams(String(init?.body)).get('Body'))); return json({ sid: 'SM1' }, 201); }
+      if (u.includes('clover.com')) {
+        const path = new URL(u).pathname.replace('/v3/merchants/test-merchant', '');
+        assert.ok(!path.endsWith('/pay'), 'a $0.00 order never reaches /pay');
+        if (path === '/v1/orders/DRAFT1') return json({ items: [{ amount: 0 }] });
+        if (path === '/print_event' && method === 'POST') return json({ id: 'EV1', state: 'CREATED' });
+        if (path === '/print_event/EV1') return json({ state: 'CREATED' });
+        if (path === '/orders' && method === 'POST') return json({ id: 'DRAFT1' });
+        return json({ id: 'LI1' });
+      }
+      const { query: q } = JSON.parse(String(init?.body)) as { query: string };
+      if (q.includes('FROM vip_promo_codes') && q.includes('SELECT id, code, description')) {
+        return rows([{ id: 5, code: 'PIE-TEST1', description: 'Free Plain Pie', redeemed_at: null, expires_at: null, reservation_key: null }]);
+      }
+      if (q.includes('INSERT INTO web_orders')) return rows([{ id: 11 }]);
+      if (q.includes('RETURNING n')) return rows([{ n: 1 }]);
+      if (/^\s*(UPDATE|DELETE|CREATE|ALTER|INSERT)/.test(q)) return rows([{ id: 11 }], 1);
+      return rows();
+    }) as typeof fetch;
+    const create = (await import('../api/order/create.js')).default;
+    const req = order('11111111-2222-4333-8444-999999999993');
+    Object.assign(req.body, { promoCode: 'PIE-TEST1', expectedTotal: 0, cardToken: undefined });
+    // The first answer fails to serialize: the "something after the fire threw" case.
+    const state: { code: number; body: Record<string, unknown> } = { code: 0, body: {} };
+    let answers = 0;
+    const res = { setHeader() { return this; }, status(v: number) { state.code = v; return this; },
+      json(v: Record<string, unknown>) { if (answers++ === 0) throw new Error('fixture: response failed'); state.body = v; return this; } };
+    await pump(t, create(req as never, res as never));
+
+    assert.equal(state.code, 200, JSON.stringify(state.body));
+    assert.equal(state.body.free, true);
+    assert.ok(sms.some((m) => /its kitchen ticket was not confirmed/.test(m)), `staff paged: ${sms.join(' | ')}`);
+    assert.equal(state.body.routingIssue, true, 'staff were told the ticket is unconfirmed, so the customer is too');
+    assert.equal(state.body.message, 'Your order is in, but please call the store to confirm the kitchen received it.');
+  });
+});

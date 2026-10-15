@@ -4,7 +4,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { sql } from "./db.js";
 import { ACCOUNT_BUSINESS, ACCOUNT_ORIGIN, hashToken, sameOrigin, readSession, createSession, logout, sessionToken } from "./session.js";
 import { hashPassword, validPassword, verifyPassword } from "./password.js";
-import { claimWindow, rateLimitAllStrict } from "./rateLimit.js";
+import { claimWindow, rateLimitAllStrict, releaseWindow } from "./rateLimit.js";
 import { sendReceiptEmail, sendSms } from "./notify.js";
 import { normalizePhone } from "./phone.js";
 import { addressDedupeKey, legacyAddressDedupeKey } from "./address.js";
@@ -28,6 +28,10 @@ const ONE_LINK = { ok: true, message: "One link is all it takes. Check your inbo
 export const ACCOUNT_SIGNUP_SOURCES = new Set<unknown>(["menu-qr", "receipt", "footer", "menu-page", "hero", "vip-section", "order-confirm", "winback"]);
 /** The actions that work without a session. Every other action needs the session cookie. */
 const PUBLIC_ACTIONS = new Set(["config", "signup", "login", "logout", "password-reset-request", "password-reset-confirm", "claim"]);
+/** "Reply YES" confirmation texts one phone can be sent in 30 days by toggling texts on (F12).
+ *  The phone is never verified, so this caps how often the shop's number can be aimed at it. */
+export const CONSENT_TEXTS_PER_30_DAYS = 3;
+const CONSENT_TEXT_UNAVAILABLE = "Your preferences were saved, but we could not send the confirmation text. Contact the restaurant for help.";
 const text = (value: unknown, max = 160) => typeof value === "string" ? value.trim().slice(0,max) : "";
 const cleanEmail = (value: unknown) => text(value,254).toLowerCase();
 async function botCheck(token: unknown, ip: string): Promise<boolean> {
@@ -209,15 +213,40 @@ export function accountHandler(action: string) {
         if (body.sms && !member.sms_requested && !member.sms_consent && member.phone) {
           // The confirmation goes to the member's phone, which signup never verified, and toggling
           // texts off and on used to resend it every time: the shop's A2P number could be made to
-          // text any phone ~30 times per 15 minutes per IP. Two guards before any send:
+          // text any phone ~30 times per 15 minutes per IP. Three guards before any send:
           // 1) a number whose last keyword was STOP is blocked by Twilio until it texts START
           //    itself, so a send would only cost money and log an error;
           const keyword = (await sql`SELECT action FROM consent_events WHERE member_id=${member.id} AND channel='sms' AND source IN ('sms_stop','sms_start') ORDER BY created_at DESC, id DESC LIMIT 1`).rows[0];
           if (keyword?.action === "opt_out") return void res.status(200).json({ok:true,message:"Preferences saved. This number replied STOP to us earlier, so carriers block our texts until you text START to (848) 275-3977."});
-          // 2) at most one confirmation per phone per day (fails closed: no claim, no text).
-          if (!(await claimWindow(`consent-sms:${hashToken(String(member.phone))}`,86400))) return void res.status(200).json({ok:true,message:"Preferences saved. We already sent this number a confirmation text today — reply YES to it to start getting texts."});
-          const sent = await sendSms(String(member.phone),"Gigi's Rewards: Reply YES to confirm promotional texts. Up to 4 msgs/mo. Msg&data rates may apply. Reply STOP to opt out, HELP for help.");
-          if (!sent.sent) return void res.status(503).json({error:"confirmation_unavailable",message:"Your preferences were saved, but we could not send the confirmation text. Contact the restaurant for help."});
+          // 2) at most CONSENT_TEXTS_PER_30_DAYS confirmations per phone in 30 days, counted from
+          //    the durable vip_sends log (rate_counters rows are pruned after 26 hours), and
+          // 3) at most one per phone per day (fails closed: no claim, no text). A failed send hands
+          //    the day's claim back, so a brief Twilio error does not lock the customer out.
+          const phone = String(member.phone);
+          let recent: number;
+          try {
+            recent = Number((await sql`SELECT COUNT(*)::int AS n FROM vip_sends s JOIN vip_members m ON m.id=s.member_id
+              WHERE m.business=${ACCOUNT_BUSINESS} AND m.phone=${phone} AND s.channel='sms' AND s.status='sent'
+                AND s.broadcast_id IS NULL AND s.promo_code_id IS NULL AND s.created_at > now() - interval '30 days'`).rows[0]?.n ?? 0);
+          } catch (e) {
+            console.error("[account] consent-text count unavailable (no text sent)", e);
+            return void res.status(503).json({error:"confirmation_unavailable",message:CONSENT_TEXT_UNAVAILABLE});
+          }
+          if (recent >= CONSENT_TEXTS_PER_30_DAYS) return void res.status(200).json({ok:true,message:"Preferences saved. We've already sent this number several confirmation texts this month — reply YES to one of them, or text START to (848) 275-3977, to start getting texts."});
+          const claim = `consent-sms:${hashToken(phone)}`;
+          if (!(await claimWindow(claim,86400))) return void res.status(200).json({ok:true,message:"Preferences saved. We already sent this number a confirmation text today — reply YES to it to start getting texts."});
+          const sent = await sendSms(phone,"Gigi's Rewards: Reply YES to confirm promotional texts. Up to 4 msgs/mo. Msg&data rates may apply. Reply STOP to opt out, HELP for help.");
+          if (!sent.sent) {
+            await releaseWindow(claim,86400);
+            return void res.status(503).json({error:"confirmation_unavailable",message:CONSENT_TEXT_UNAVAILABLE});
+          }
+          // The audit row is what the 30-day cap counts (no broadcast, no promo code: a consent
+          // confirmation). Losing it must not turn a sent text into an error for the customer.
+          try {
+            await sql`INSERT INTO vip_sends (business, channel, member_id, status, provider_id) VALUES (${ACCOUNT_BUSINESS}, 'sms', ${member.id}, 'sent', ${sent.providerId ?? null})`;
+          } catch (e) {
+            console.error(`[account] consent-text vip_sends row lost (member ${String(member.id)})`, e);
+          }
         }
         return void res.status(200).json({ok:true});
       }

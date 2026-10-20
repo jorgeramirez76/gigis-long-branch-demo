@@ -19,3 +19,4 @@ yarn-error.log*
 .indexnow-key
 
 *.tsbuildinfo
+__pycache__/

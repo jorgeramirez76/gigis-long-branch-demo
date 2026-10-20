@@ -15,9 +15,12 @@ Run: python3 scripts/build-menu-page.py   (from the repo root)
 """
 
 import html
+import json
 import pathlib
 import re
 import sys
+
+import seo_photos
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "src" / "data" / "menuGenerated.ts"
@@ -44,12 +47,55 @@ def parse_menu():
         if not m:
             continue
         blurb = re.search(r'blurb:\s*"((?:[^"\\]|\\.)*)"', b)
-        items = re.findall(r'\{ name: "((?:[^"\\]|\\.)*)", price: "(\$[\d.]+)"', b)
-        cats.append((m.group(1), m.group(2), blurb.group(1).replace('\\"', '"') if blurb else "", items))
+        items = [
+            (unq(n), p, unq(d))
+            for n, p, d in re.findall(
+                r'\{ name: "((?:[^"\\]|\\.)*)", price: "(\$[\d.]+)"(?:, description: "((?:[^"\\]|\\.)*)")?', b
+            )
+        ]
+        cats.append((m.group(1), m.group(2), unq(blurb.group(1)) if blurb else "", items))
     total = sum(len(c[3]) for c in cats)
     if total < 100 or len(cats) < 10:
         sys.exit(f"build-menu-page: parsed only {total} items / {len(cats)} categories — catalog shape changed, refusing to write")
     return cats
+
+
+def unq(s: str) -> str:
+    return s.replace('\\"', '"')
+
+
+def menu_ld(cats):
+    """The full priced menu as schema.org Menu, so search engines and AI answers can quote any
+    item and price. index.html's Restaurant points its hasMenu at this @id; it used to point at a
+    hand-kept 19-item excerpt on the homepage that covered a fraction of the register."""
+    def item(name, price, desc):
+        node = {"@type": "MenuItem", "name": name}
+        if desc:
+            node["description"] = desc
+        if re.search(r"gluten[- ]free", name, re.I):
+            node["suitableForDiet"] = "https://schema.org/GlutenFreeDiet"
+        elif re.search(r"\bvegan\b", name, re.I):
+            node["suitableForDiet"] = "https://schema.org/VeganDiet"
+        node["offers"] = {"@type": "Offer", "price": price.lstrip("$"), "priceCurrency": "USD"}
+        return node
+
+    return {
+        "@type": "Menu",
+        "@id": f"{BASE}/menu/#menu",
+        "name": "Gigi's NY Style Pizza Menu — Long Branch",
+        "url": f"{BASE}/menu/",
+        "inLanguage": "en-US",
+        "hasMenuSection": [
+            {
+                "@type": "MenuSection",
+                "name": name,
+                **({"description": blurb} if blurb else {}),
+                "url": f"{BASE}/menu/#{cid}",
+                "hasMenuItem": [item(*i) for i in items],
+            }
+            for cid, name, blurb, items in cats if items
+        ],
+    }
 
 
 def css_from_donor() -> str:
@@ -73,7 +119,7 @@ def main():
         if not items:
             continue
         rows = "".join(
-            f'<tr><th scope="row">{E(n)}</th><td class="p">{E(p)}</td></tr>' for n, p in items
+            f'<tr><th scope="row">{E(n)}</th><td class="p">{E(p)}</td></tr>' for n, p, _ in items
         )
         blurb_html = f"<p>{E(blurb)}</p>" if blurb else ""
         sections.append(
@@ -84,16 +130,34 @@ def main():
             f"<tbody>{rows}</tbody></table></section>"
         )
 
-    ld = (
-        '<script type="application/ld+json">{"@context":"https://schema.org","@graph":['
-        f'{{"@type":"WebPage","@id":"{BASE}/menu/","url":"{BASE}/menu/",'
-        '"name":"Gigi\'s Long Branch Menu & Prices",'
-        f'"about":{{"@id":"{BASE}/#restaurant"}},'
-        '"description":"The full Gigi\'s NY Style Pizza menu with prices, fed from the register."},'
-        '{"@type":"BreadcrumbList","itemListElement":['
-        f'{{"@type":"ListItem","position":1,"name":"Gigi\'s Long Branch","item":"{BASE}/"}},'
-        f'{{"@type":"ListItem","position":2,"name":"Menu & Prices","item":"{BASE}/menu/"}}]}}'
-        "]}</script>"
+    graph = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebPage", "@id": f"{BASE}/menu/", "url": f"{BASE}/menu/",
+                "name": "Gigi's Long Branch Menu & Prices",
+                "about": {"@id": f"{BASE}/#restaurant"},
+                "mainEntity": {"@id": f"{BASE}/menu/#menu"},
+                "description": "The full Gigi's NY Style Pizza menu with prices, fed from the register.",
+            },
+            menu_ld(cats),
+            {
+                "@type": "BreadcrumbList", "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Gigi's Long Branch", "item": f"{BASE}/"},
+                    {"@type": "ListItem", "position": 2, "name": "Menu & Prices", "item": f"{BASE}/menu/"},
+                ],
+            },
+        ],
+    }
+    # "</" cannot appear inside the script element; item text is register data, so guard it.
+    ld = ('<script type="application/ld+json">'
+          + json.dumps(graph, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+          + "</script>")
+
+    photos = "".join(
+        seo_photos.figure(name, caption)
+        for name, caption in (("bee-sting", "Bee Sting"), ("drunken-grandma", "Drunken Grandma"),
+                              ("grandma", "Grandma pie"), ("plain-pie", "Plain pie"))
     )
 
     page = f"""<!doctype html>
@@ -102,12 +166,12 @@ def main():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pizza Menu &amp; Prices in Long Branch | Gigi's</title>
-<meta name="description" content="Browse Gigi's Long Branch menu: pizza, heroes, pasta and all-day breakfast. See menu prices and choose pickup or delivery when ordering.">
+<meta name="description" content="Gigi's Long Branch menu with prices: NY pies, Grandma squares, the Bee Sting, The Fonz and Drunken Grandma, heroes, pasta and all-day breakfast.">
 <link rel="canonical" href="{BASE}/menu/">
 <meta name="robots" content="index, follow, max-snippet:-1">
 <link rel="icon" href="/favicon.ico">
 {ld}
-<style>{css}</style>
+<style>{css}{seo_photos.STYLE}</style>
 <script type="module" src="/metrics.js"></script>
 </head>
 <body>
@@ -127,6 +191,7 @@ def main():
 </div></section>
 
 <main>
+<section class="wrap"><div class="photo-row">{photos}</div></section>
 <section class="wrap"><h2>Jump to a section</h2><p>{toc}</p></section>
 {"".join(sections)}
 <section class="wrap"><h2>Ready to order?</h2>
@@ -138,7 +203,7 @@ def main():
 <footer class="site"><div class="wrap">
 <strong>Gigi's NY Style Pizza — Long Branch</strong><br>140 Brighton Avenue, Long Branch, NJ 07740 · <a href="{TEL}">{PHONE}</a><br>
 Mon–Wed 10 AM–11 PM · Thu–Sun 10 AM–midnight · Open 7 days<br>
-<a href="/">Home</a> · <a href="{BASE}/#menu">Order online</a>
+<a href="/">Home</a> · <a href="{BASE}/#menu">Order online</a> · <a href="/breakfast">Breakfast</a> · <a href="/pizza-party-long-branch/">Kids' pizza parties</a> · <a href="/about/">About Gigi's</a>
 </div></footer>
 
 <nav class="stickybar" aria-label="Order actions">

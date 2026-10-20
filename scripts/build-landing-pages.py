@@ -17,6 +17,8 @@ Regenerate: python3 scripts/build-landing-pages.py   (then commit public/ + site
 import json, html, re
 from pathlib import Path
 
+import seo_photos
+
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "https://gigislongbranch.com"
 DATA = json.load(open(ROOT / "data" / "landing-pages.json"))
@@ -63,9 +65,9 @@ def ratings_from_reviews_ts():
     # Restaurant Guru was dropped on 2026-07-29: the 4.3 it showed is Google's rating that
     # Restaurant Guru republishes, while its own aggregateRating is 2.9/5 — so the tile paired
     # Google's score with Restaurant Guru's review count and credited both to Restaurant Guru.
-    # Add a "google" key to RATING_SNAPSHOT here once the score AND count both come from the
-    # Business Profile. Never mix a score from one source with a count from another.
-    for label, key in (("Restaurantji", "restaurantji"),):
+    # Google's score and count were both read off the Business Profile listing on 2026-09-06
+    # (reviews.ts). Never mix a score from one source with a count from another.
+    for label, key in (("Google", "google"), ("Restaurantji", "restaurantji")):
         m = re.search(key + r":\s*\{\s*score:\s*([\d.]+),\s*count:\s*(\d+)", src)
         if not m:
             raise SystemExit(f"build-landing-pages: could not read {key} from src/data/reviews.ts.")
@@ -194,7 +196,27 @@ box-shadow:0 -6px 20px rgba(0,0,0,.25)}
 font-size:1.05rem;letter-spacing:.03em;border-right:1px solid #dedede}
 .stickybar a:last-child{border-right:none}.stickybar a.order{background:var(--red);color:#fff}
 @media(min-width:760px){.stickybar{display:none}footer.site{padding-bottom:28px}}
-"""
+""" + seo_photos.STYLE
+
+# One real photo per page, near the top. Until now every landing page showed only the logo,
+# so none of them could surface in image results and the pages read as text-only.
+PAGE_PHOTOS = {
+    "late-night-pizza-long-branch": "slices",
+    "gluten-free-pizza-long-branch": "dining-room",
+    "vegan-pizza-long-branch": "dining-room",
+    "catering-long-branch": "plain-pie",
+    "pizza-delivery-pier-village": "pepperoni-slice",
+    "pizza-delivery-west-end-long-branch": "marquee",
+    "pizza-delivery-elberon": "margherita",
+    "square-pizza-long-branch": "grandma",
+    "pizza-delivery-west-long-branch": "plain-slice",
+}
+
+def render_photo(page):
+    name = PAGE_PHOTOS.get(page["slug"])
+    if not name:
+        raise SystemExit(f"build-landing-pages: no photo chosen for /{page['slug']}/ — add it to PAGE_PHOTOS.")
+    return f'<section class="wrap" style="padding-top:0">{seo_photos.figure(name, eager=True)}</section>'
 
 def order_url():
     return f"{BASE}/#menu"
@@ -408,7 +430,8 @@ def body(page, others, price_html):
 <div class="trust">{"".join(f"<span>{E(r)}</span>" for r in RATINGS)}<span>{E(BIZ["hours_line"])}</span></div>
 </div></section>
 
-<main>{sections}
+<main>{render_photo(page)}
+{sections}
 {price_html}
 {render_delivery_block(page)}
 {render_hours(page)}
@@ -426,7 +449,7 @@ def body(page, others, price_html):
 <strong>{E(BIZ['name'])} — Long Branch</strong><br>{E(BIZ['street'])}, {E(BIZ['city'])}, {E(BIZ['state'])} {E(BIZ['zip'])} · <a href="{tel}">{E(BIZ['phone_display'])}</a><br>
 {E(BIZ['hours_line'])}<br>
 <span style="font-size:.82rem">Delivery: {E(BIZ['areas'])}</span>
-<div class="links"><a href="{BASE}/">Home</a><a href="{order}">Menu &amp; Order</a>{sib}</div>
+<div class="links"><a href="{BASE}/">Home</a><a href="{order}">Menu &amp; Order</a><a href="/menu/">Full Menu &amp; Prices</a><a href="/breakfast">Breakfast</a><a href="/pizza-party-long-branch/">Kids' Pizza Parties</a><a href="/about/">About Gigi's</a>{sib}</div>
 <p class="fine">© Gigi's NY Style Pizza, Long Branch NJ. New York–style pizza, heroes, pasta &amp; Italian dinners — pickup, delivery &amp; catering.</p>
 </div></footer>
 

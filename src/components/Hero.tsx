@@ -18,8 +18,10 @@ export function Hero() {
             Closer to Sea Bright? Order from our Sea Bright location
             <ArrowIcon className="h-3.5 w-3.5 shrink-0" />
           </a>
-          <p className="eyebrow">Your neighborhood pizza spot · Long Branch</p>
-          <h1>Big slices.<br />Big cravings.<br /><span>That’s Gigi’s.</span></h1>
+          {/* The kicker sits inside the H1 so the page's main heading names what and where
+              (search engines weigh the H1; the slogan alone said neither). It keeps the old
+              eyebrow's look. */}
+          <h1><span className="eyebrow food-hero-kicker">New York–style pizza in Long Branch, NJ</span>{" "}Big slices.<br />Big cravings.<br /><span>That’s Gigi’s.</span></h1>
           <p className="food-hero-description">Real NY-style pizza. Bubbling cheese, a crisp golden crust, and the kind of slice you fold with both hands. Hungry yet?</p>
           <div className="food-hero-actions">
             <a href="#menu" className="btn-primary">Order pickup or delivery<ArrowIcon className="h-5 w-5" /></a>

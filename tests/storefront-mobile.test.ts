@@ -51,9 +51,28 @@ describe("phones: no zoom-on-tap, real labels, light hero", () => {
     assert.ok(portrait > wide, "the phone source must come first: a <picture> uses the first matching <source>");
     // The breakpoint must match the CSS that makes the hero a short strip.
     const css = read("src/styles/storefront.css");
-    const strip = css.indexOf(".food-hero-photo { grid-row:1; height:clamp(170px, 52vw, 230px)");
+    const strip = css.indexOf(".food-hero-photo { grid-row:2; height:clamp(170px, 52vw, 230px)");
     assert.ok(strip > 0 && css.lastIndexOf("@media (max-width:767px) {", strip) > css.lastIndexOf("}\n}", strip),
       "the short hero strip must still be the max-width:767px rule");
+  });
+});
+
+describe("homepage hero order (matches Sea Bright's phone layout)", () => {
+  it("cross-location strip, address, headline, Order, Call + Directions, Join VIP, then hours", () => {
+    const hero = read("src/components/Hero.tsx");
+    const steps = [
+      'className="food-hero-crosslink"',
+      'className="food-hero-address"',
+      "<h1>",
+      'className="btn-primary"',
+      "Call the shop",
+      "Directions",
+      'className="hero-vip-button"',
+      "Online pickup until 11 PM",
+    ].map((needle) => [needle, hero.indexOf(needle)] as const);
+    for (const [needle, at] of steps) assert.ok(at > 0, `Hero is missing ${needle}`);
+    for (let i = 1; i < steps.length; i++) assert.ok(steps[i - 1][1] < steps[i][1], `${steps[i - 1][0]} must come before ${steps[i][0]}`);
+    assert.ok(hero.includes("Pickup only"), "the free pie is new members and pickup only; keep that line on the VIP button");
   });
 });
 

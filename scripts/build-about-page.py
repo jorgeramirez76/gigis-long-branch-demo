@@ -14,6 +14,11 @@ once it is confirmed; do not guess at founding years or history.
 Styling is lifted from a generated landing page, as build-menu-page.py does, so the static pages
 stay in lockstep. Runs after build-landing-pages.py in `npm run generate:seo`.
 
+Sea Bright (Jorge, 2026-10-20): the two shops are separate businesses run by the same two partners.
+The page says so in words and links to the Sea Bright site, but the markup never ties them
+together: no sameAs, no shared @id, no parent organization. Merging them in schema would hand
+Long Branch's address, hours and menu to Sea Bright queries and the reverse.
+
 Run: python3 scripts/build-about-page.py   (from the repo root)
 """
 
@@ -126,7 +131,7 @@ def main():
 <section class="hero"><div class="wrap">
 <p class="eyebrow">About us · Long Branch, NJ</p>
 <h1>About Gigi's NY Style Pizza in Long Branch</h1>
-<p class="dek">Gigi's NY Style Pizza &amp; Restaurant is a family-run pizzeria at 140 Brighton Avenue in the West End of Long Branch, New Jersey. The shop is run day to day by its owner-operators, Tommy Basile and Kenneth Gambella.</p>
+<p class="dek">Gigi's NY Style Pizza &amp; Restaurant is a family-run pizzeria at 140 Brighton Avenue in the West End of Long Branch, New Jersey. The shop is run day to day by its owner-operators, Tommy Basile and Kenneth Gambella, two friends and partners.</p>
 <div class="cta"><a class="btn btn-gold" href="/menu/">See the Menu</a>
 <a class="btn btn-ghost" href="{TEL}">Call {PHONE}</a></div>
 </div></section>
@@ -147,6 +152,10 @@ def main():
 <ul style="padding-left:1.1em">{press_items}</ul>
 <h2 style="margin-top:1em">What customers say</h2>
 <ul style="padding-left:1.1em">{rating_items}</ul>
+</section>
+
+<section class="wrap"><h2>Our Sea Bright location</h2>
+<p>Tommy and Kenneth are friends and partners, and they also run Gigi's in Sea Bright. The two shops are separate businesses, each with its own menu, prices, hours and phone number, so everything on this site is for Long Branch. Closer to Sea Bright? Order from <a href="https://gigisnystylepizza.com/sea-bright">our Sea Bright location</a>.</p>
 </section>
 
 <section class="wrap"><h2>Visit</h2>

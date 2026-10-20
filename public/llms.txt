@@ -16,11 +16,14 @@ Sitemap: https://gigislongbranch.com/sitemap.xml
 - Address: 140 Brighton Avenue, Long Branch, NJ 07740 (West End neighborhood).
 - Phone: (732) 377-2468 — the only contact number for this location.
 - Category: New York–style pizzeria and Italian restaurant.
-- Owners: run by owner-operators Tommy Basile and Kenneth Gambella. Family-run.
+- Owners: run by owner-operators Tommy Basile and Kenneth Gambella, two friends and partners. Family-run.
 - Service: pickup and delivery. Delivery covers Long Branch and nearby towns.
 - Payment: online orders are PREPAID by card (or Apple Pay) via Clover. There is no pay-at-pickup or cash option online; call the store to pay in person.
 - Pricing: the website shows the same prices as the in-store menu.
-- This site represents the Long Branch location only. Any other Gigi's is a separate business.
+- This site represents the Long Branch location only. Gigi's Long Branch and Gigi's Sea Bright
+  (https://gigisnystylepizza.com/sea-bright) are two separate businesses with their own menus,
+  prices, hours, phone numbers and websites. Both are run by the same two partners, Tommy Basile
+  and Kenneth Gambella. Facts on this site apply to Long Branch only.
 
 ## Hours (owner-confirmed)
 - Monday, Tuesday, Wednesday: 10:00 AM – 11:00 PM

@@ -1,6 +1,6 @@
 import { LOCATION, DIRECTIONS_URL } from "../data/location";
 import { HERO_IMAGE } from "../data/gallery";
-import { PhoneIcon, ArrowIcon } from "./Icons";
+import { PhoneIcon, PinIcon, ArrowIcon } from "./Icons";
 import { OpenStatusPill } from "./OpenStatusPill";
 
 export function Hero() {
@@ -9,15 +9,16 @@ export function Hero() {
       <div className="food-hero-grid container-x">
         <div className="food-hero-copy">
           {/* Owner request (Kenny, 2026-09-24): Sea Bright must be as easy to find from here as Long
-              Branch is from Sea Bright — a highlighted button on first load, not fine print below the
-              hero details (which on a phone sat under the photo, a scroll away). */}
-          <a
-            href="https://gigisnystylepizza.com/sea-bright"
-            className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#b8202a] px-4 py-2.5 text-xs font-bold text-white shadow-[0_6px_18px_#b8202a40] transition hover:-translate-y-0.5 hover:bg-[#9b121a] active:scale-[0.97] md:px-5 md:text-sm"
-          >
+              Branch is from Sea Bright, a highlighted button on first load.
+              Owner request (Tommy, 2026-10-20): match Sea Bright's phone layout. On a phone this sat
+              dead center under the photo and pulled the eye away from ordering; it now opens the
+              hero as a small strip, the way Sea Bright's does, so the Order button is what sits
+              in the middle of the screen. */}
+          <a href="https://gigisnystylepizza.com/sea-bright" className="food-hero-crosslink">
             Closer to Sea Bright? Order from our Sea Bright location
             <ArrowIcon className="h-3.5 w-3.5 shrink-0" />
           </a>
+          <p className="food-hero-address">{LOCATION.street} · {LOCATION.city}</p>
           {/* The kicker sits inside the H1 so the page's main heading names what and where
               (search engines weigh the H1; the slogan alone said neither). It keeps the old
               eyebrow's look. */}
@@ -25,15 +26,19 @@ export function Hero() {
           <p className="food-hero-description">Real NY-style pizza. Bubbling cheese, a crisp golden crust, and the kind of slice you fold with both hands. Hungry yet?</p>
           <div className="food-hero-actions">
             <a href="#menu" className="btn-primary">Order pickup or delivery<ArrowIcon className="h-5 w-5" /></a>
-            <a href={`tel:${LOCATION.phoneTel}`} className="food-call" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}><PhoneIcon className="h-4 w-4" />Call the shop</a>
+            <a href={`tel:${LOCATION.phoneTel}`} className="btn-outline food-hero-secondary" aria-label={`Call Gigi's Long Branch at ${LOCATION.phone}`}><PhoneIcon className="h-4 w-4" />Call the shop</a>
+            <a href={DIRECTIONS_URL} target="_blank" rel="noreferrer" className="btn-outline food-hero-secondary"><PinIcon className="h-4 w-4" />Directions</a>
           </div>
-          <a href="/account/?join=1&source=hero" className="hero-vip-ticket">
+          {/* Owner request (Tommy, 2026-10-20): a red Join VIP button right under Order / Call /
+              Directions, in the same spot as Sea Bright's, so it shows on a phone without
+              scrolling. The free pie is for new members and pickup only; keep that line. */}
+          <a href="/account/?join=1&source=hero" className="hero-vip-button">
             <span className="hero-vip-icon" aria-hidden="true">★</span>
-            <span><small>A little welcome gift</small><strong>Your first VIP perk? A free pie.</strong><span>New members · Pickup only. Plus exclusive deals.</span></span>
+            <span><strong>Join VIP: get a free pie</strong><span>New members · Pickup only. Plus exclusive deals.</span></span>
             <ArrowIcon className="h-5 w-5 shrink-0" />
           </a>
           <div className="food-hero-details">
-            <p><OpenStatusPill /> <span aria-hidden="true"> · </span><a href={DIRECTIONS_URL} target="_blank" rel="noreferrer">{LOCATION.street}</a></p>
+            <p><span>Counter:</span><OpenStatusPill /></p>
             <p>Online pickup until 11 PM · Delivery until 10 PM</p>
             <p>Counter until 11 PM Mon–Wed / midnight Thu–Sun.</p>
           </div>

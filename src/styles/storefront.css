@@ -23,6 +23,7 @@
 .food-hero-copy .eyebrow { font-size:12px; letter-spacing:.15em; }
 .food-hero h1 { font-size:clamp(64px,6.6vw,102px); line-height:1.02; margin:22px 0; }
 .food-hero h1 span { color:#b8202a; }
+.food-hero h1 .food-hero-kicker { display:block; margin-bottom:22px; font-family:var(--font-sans); font-size:12px; line-height:1.4; letter-spacing:.15em; }
 .food-hero-description { max-width:460px; font-size:16px; line-height:1.75; color:#55483d; }
 .food-hero-actions { display:flex; align-items:center; flex-wrap:wrap; gap:22px; margin:26px 0; }
 .food-hero-actions .btn-primary { padding:17px 25px; text-transform:none; font-size:15px; }

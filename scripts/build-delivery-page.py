@@ -166,11 +166,13 @@ def main():
     else:
         tier_summary = " · ".join(tier_phrase(c, towns) for c, towns in tiers)
 
+    # The description used to add pickup and counter hours too, which ran it to 229 characters and
+    # got it cut off in results before the fees. Those hours stay on the page and in og:description.
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pizza Delivery Areas &amp; Fees &mdash; Long Branch &amp; Nearby | Gigi's</title>
-<meta name="description" content="Gigi's delivers to {len(town_list)} towns near Long Branch. Flat fee: {tier_summary}. Online delivery until {DELIVERY_LAST}; online pickup until 11 PM. Counter open until 11 PM Mon–Wed, midnight Thu–Sun.">
+<meta name="description" content="Gigi's delivers to {len(town_list)} towns near Long Branch. Flat fee: {tier_summary}. Online delivery orders until {DELIVERY_LAST}.">
 <link rel="canonical" href="{BASE}/delivery/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#ffffff">
@@ -301,6 +303,7 @@ it's the same whether you order online or call us.</p>
 140 Brighton Avenue, Long Branch, NJ 07740 &middot; <a href="tel:+17323772468">(732) 377-2468</a><br>
 Mon&ndash;Wed 10 AM&ndash;11 PM &middot; Thu&ndash;Sun 10 AM&ndash;midnight &middot; delivery until {DELIVERY_LAST}
 <div class="links"><a href="{BASE}/">Home</a><a href="{BASE}/#menu">Menu &amp; Order</a>
+<a href="/menu/">Full Menu &amp; Prices</a><a href="/about/">About Gigi's</a>
 <a href="/privacy-policy/">Privacy</a><a href="/sms-terms/">SMS Terms</a></div>
 </div></footer>
 </body></html>
